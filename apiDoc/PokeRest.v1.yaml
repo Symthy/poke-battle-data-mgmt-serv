@@ -1,0 +1,470 @@
+openapi: 3.0.0
+info:
+  title: PokeRest
+  version: '1.0'
+  description: PokeRest API
+  contact:
+    name: SYM
+    url: 'https://twitter.com/SYM_souten'
+servers:
+  - url: 'http://localhost:3000/PokeRest'
+paths:
+  /pokemons:
+    parameters: []
+    get:
+      summary: GET Pokemons
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pokemons'
+        '404':
+          description: User Not Found
+      operationId: get-pokemons
+      description: 'all '
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: move
+          description: 技名検索
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: タイプ検索
+        - schema:
+            type: string
+          in: query
+          name: name
+          description: 名前検索
+  '/pokemons/{pokemonId}':
+    parameters:
+      - schema:
+          type: string
+        name: pokemonId
+        in: path
+        required: true
+        description: ポケモンID
+    get:
+      summary: GET Pokemon
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pokemon'
+      operationId: get-pokemons-Id
+      parameters: []
+      description: 指定ポケモン情報取得
+  /moves:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Moves'
+      operationId: get-Moves
+      description: 技一覧取得
+    parameters: []
+  '/moves/{moveId}':
+    parameters:
+      - schema:
+          type: string
+        name: moveId
+        in: path
+        required: true
+        description: 技ID
+    get:
+      summary: GET Move
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Move'
+      operationId: get-Moves-Id
+      description: 技取得
+  '/abilities/{avilityId}':
+    parameters:
+      - schema:
+          type: string
+        name: avilityId
+        in: path
+        required: true
+        description: 特定ID
+    get:
+      summary: GET Ability
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ability'
+          headers:
+            header-0:
+              schema:
+                type: string
+      operationId: get-abilities-Id
+      description: 特性取得
+      tags:
+        - Pokemon Base Data
+  /abilities:
+    get:
+      summary: GET Abilities
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Abilities'
+              examples: {}
+      operationId: get-abilities
+      description: 特性の一覧取得
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+          description: 名前検索
+  /types/compability:
+    get:
+      summary: GET Type Compability
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/typeCompatibility'
+      operationId: get-types-compability
+      description: タイプ相性表取得
+    parameters: []
+  '/types/compability/attack/{type}':
+    parameters:
+      - schema:
+          type: string
+        name: type
+        in: path
+        required: true
+        description: タイプ指定
+    get:
+      summary: GET Type Compability Attack Side
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/typeCompatibility'
+      operationId: get-typeCompability-type
+      description: タイプ相性（攻撃側）
+  '/types/compability/defense/{type}':
+    parameters:
+      - schema:
+          type: string
+        name: type
+        in: path
+        required: true
+        description: タイプ指定
+    get:
+      summary: GET Type Compability Defense Side
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/typeCompatibility'
+      operationId: get-typeCompability-defense-type
+      description: タイプ相性（防御側）取得
+  '/pokemons/avilities/{pokemonId}':
+    get:
+      summary: GET Avilities of Specify Pokemon
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonAvilities'
+      operationId: get-pokemonAvilities
+      description: 指定ポケモンの特性一覧取得
+    parameters:
+      - schema:
+          type: string
+        name: pokemonId
+        in: path
+        required: true
+        description: ポケモンID
+  '/pokemons/moves/{pokemonId}':
+    parameters:
+      - schema:
+          type: string
+        name: pokemonId
+        in: path
+        required: true
+        description: ポケモンID
+    get:
+      summary: GET Moves of Specify Pokemon
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonMoves'
+      operationId: get-pokemon-moves-pokemonId
+      description: 指定ポケモンの技一覧取得
+  /types:
+    get:
+      summary: Your GET Types
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  types:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - types
+      operationId: get-types
+      description: タイプ一覧取得
+components:
+  schemas:
+    Pokemon:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        englishName:
+          type: string
+          minLength: 1
+        baseStatsH:
+          type: number
+        baseStatsA:
+          type: number
+        baseStatsB:
+          type: number
+        baseStatsC:
+          type: number
+        baseStatsD:
+          type: number
+        baseStatsS:
+          type: number
+        type:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - englishName
+        - baseStatsH
+        - baseStatsA
+        - baseStatsB
+        - baseStatsC
+        - baseStatsD
+        - baseStatsS
+        - type
+    Move:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        species:
+          description: 分類（物理/特殊）
+          type: string
+        power:
+          type: number
+          description: 威力
+        specialMovePower:
+          type: number
+          description: 威力（ダイマックス技等）
+        accuracy:
+          type: number
+          description: 命中
+        pp:
+          type: number
+          description: PP
+        isContactMove:
+          type: boolean
+          description: 接触/非接触
+        isCanGuard:
+          type: boolean
+          description: 守る
+      required:
+        - id
+        - name
+        - type
+        - power
+        - specialMovePower
+        - accuracy
+        - pp
+        - isContactMove
+        - isCanGuard
+    Pokemons:
+      description: pokemon data list
+      type: object
+      properties:
+        pokemons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pokemon'
+        count:
+          type: number
+      required:
+        - pokemons
+        - count
+      title: Pokemons
+    Moves:
+      description: ''
+      type: object
+      properties:
+        moves:
+          type: array
+          items:
+            $ref: '#/components/schemas/Move'
+        count:
+          type: number
+      required:
+        - moves
+        - count
+    Ability:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        effect:
+          type: string
+      required:
+        - id
+        - name
+        - effect
+    Abilities:
+      description: 特性一覧
+      type: object
+      properties:
+        abilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ability'
+        count:
+          type: number
+      required:
+        - abilities
+        - count
+      title: Abilities
+    PokemonMoves:
+      description: 指定ポケモンが覚える技一覧
+      type: object
+      properties:
+        id:
+          type: string
+        moves:
+          type: array
+          items:
+            $ref: '#/components/schemas/Moves'
+      required:
+        - id
+        - moves
+    PokemonAvilities:
+      description: 指定ポケモンの特性一覧
+      type: object
+      properties:
+        id:
+          type: string
+        avilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ability'
+      required:
+        - id
+        - avilities
+      title: PokemonAvilities
+    typeCompatibility:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          compatibilityTable:
+            - '0':
+                - {}
+          typeOrder:
+            - {}
+      properties:
+        compatibilityTable:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+        typeOrder:
+          type: array
+          description: テーブル行列のタイプ順序
+          items:
+            type: string
+      required:
+        - compatibilityTable
+        - typeOrder
+  responses:
+    Normal:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+tags:
+  - name: Pokemon Base Data

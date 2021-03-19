@@ -1,0 +1,17 @@
+.openapi-generator-ignore
+Dockerfile
+api/openapi.yaml
+go/README.md
+go/api_pokemon_base_data.go
+go/model_abilities.go
+go/model_ability.go
+go/model_inline_response_200.go
+go/model_move.go
+go/model_moves.go
+go/model_pokemon.go
+go/model_pokemon_avilities.go
+go/model_pokemon_moves.go
+go/model_pokemons.go
+go/model_type_compatibility.go
+go/routers.go
+main.go
