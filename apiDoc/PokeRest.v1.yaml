@@ -6,13 +6,15 @@ info:
   contact:
     name: SYM
     url: 'https://twitter.com/SYM_souten'
+  license:
+    name: MIT
 servers:
   - url: 'http://localhost:3000/PokeRest'
 paths:
   /pokemons:
     parameters: []
     get:
-      summary: GET Pokemons
+      summary: get pokemons
       tags:
         - Pokemon Base Data
       responses:
@@ -42,16 +44,16 @@ paths:
           in: query
           name: name
           description: 名前検索
-  '/pokemons/{pokemonId}':
+  '/pokemons/{pokedexId}':
     parameters:
       - schema:
           type: string
-        name: pokemonId
+        name: pokedexId
         in: path
         required: true
-        description: ポケモンID
+        description: 図鑑No
     get:
-      summary: GET Pokemon
+      summary: get pokemon by id
       tags:
         - Pokemon Base Data
       responses:
@@ -66,7 +68,7 @@ paths:
       description: 指定ポケモン情報取得
   /moves:
     get:
-      summary: Your GET endpoint
+      summary: get moves
       tags:
         - Pokemon Base Data
       responses:
@@ -76,7 +78,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Moves'
-      operationId: get-Moves
+      operationId: get-moves
       description: 技一覧取得
     parameters: []
   '/moves/{moveId}':
@@ -88,7 +90,7 @@ paths:
         required: true
         description: 技ID
     get:
-      summary: GET Move
+      summary: get move by id
       tags:
         - Pokemon Base Data
       responses:
@@ -98,7 +100,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Move'
-      operationId: get-Moves-Id
+      operationId: get-Moves-by-Id
       description: 技取得
   '/abilities/{avilityId}':
     parameters:
@@ -107,9 +109,9 @@ paths:
         name: avilityId
         in: path
         required: true
-        description: 特定ID
+        description: 特性ID
     get:
-      summary: GET Ability
+      summary: get ability by id
       responses:
         '200':
           description: OK
@@ -121,13 +123,13 @@ paths:
             header-0:
               schema:
                 type: string
-      operationId: get-abilities-Id
+      operationId: get-ability-by-Id
       description: 特性取得
       tags:
         - Pokemon Base Data
   /abilities:
     get:
-      summary: GET Abilities
+      summary: get abilities
       tags:
         - Pokemon Base Data
       responses:
@@ -148,7 +150,7 @@ paths:
           description: 名前検索
   /types/compability:
     get:
-      summary: GET Type Compability
+      summary: get type compability
       tags:
         - Pokemon Base Data
       responses:
@@ -170,7 +172,7 @@ paths:
         required: true
         description: タイプ指定
     get:
-      summary: GET Type Compability Attack Side
+      summary: get type compability of attack side
       tags:
         - Pokemon Base Data
       responses:
@@ -180,7 +182,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/typeCompatibility'
-      operationId: get-typeCompability-type
+      operationId: get-type-compability-of-attack-side
       description: タイプ相性（攻撃側）
   '/types/compability/defense/{type}':
     parameters:
@@ -191,7 +193,7 @@ paths:
         required: true
         description: タイプ指定
     get:
-      summary: GET Type Compability Defense Side
+      summary: get type compability of defense side
       tags:
         - Pokemon Base Data
       responses:
@@ -201,11 +203,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/typeCompatibility'
-      operationId: get-typeCompability-defense-type
+      operationId: get-type-compability-of-defense-side
       description: タイプ相性（防御側）取得
-  '/pokemons/avilities/{pokemonId}':
+  '/pokemons/avilities/{pokedexId}':
     get:
-      summary: GET Avilities of Specify Pokemon
+      summary: get avilities of specify pokemon
       tags:
         - Pokemon Base Data
       responses:
@@ -215,25 +217,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PokemonAvilities'
-      operationId: get-pokemonAvilities
+      operationId: get-avilities-of-specify-pokemon
       description: 指定ポケモンの特性一覧取得
     parameters:
       - schema:
           type: string
-        name: pokemonId
+        name: pokedexId
         in: path
         required: true
-        description: ポケモンID
-  '/pokemons/moves/{pokemonId}':
+        description: 図鑑No
+  '/pokemons/moves/{pokedexId}':
     parameters:
       - schema:
           type: string
-        name: pokemonId
+        name: pokedexId
         in: path
         required: true
-        description: ポケモンID
+        description: 図鑑No
     get:
-      summary: GET Moves of Specify Pokemon
+      summary: get moves of specify pokemon
       tags:
         - Pokemon Base Data
       responses:
@@ -243,11 +245,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PokemonMoves'
-      operationId: get-pokemon-moves-pokemonId
+      operationId: get-moves-of-specify-pokemon
       description: 指定ポケモンの技一覧取得
   /types:
     get:
-      summary: Your GET Types
+      summary: get types
       tags:
         - Pokemon Base Data
       responses:
@@ -458,13 +460,22 @@ components:
         - compatibilityTable
         - typeOrder
   responses:
-    Normal:
+    Error:
       description: Example response
       content:
         application/json:
           schema:
+            description: ''
+            type: object
             properties:
               id:
                 type: string
+              message:
+                type: string
+              description:
+                type: string
+            required:
+              - id
+              - message
 tags:
   - name: Pokemon Base Data

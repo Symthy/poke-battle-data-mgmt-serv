@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class Pokemon {
 
   @ApiProperty()
-  id: string;
+  pokedexId: string;
 
   @ApiProperty()
   name: string;

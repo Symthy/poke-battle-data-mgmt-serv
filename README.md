@@ -7,6 +7,8 @@ Use OpenApi Generator
 ## API Specification
 apiDoc/PokeRest.v1.yaml
 
+http://localhost:3000/api
+
 ## API spec create tool
 
 Stoplight Studio
