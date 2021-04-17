@@ -12,15 +12,131 @@ generator client {
 
 // add models
 
-model Profile {
-  id     Int     @default(autoincrement()) @id
+model profile {
+  id     Int     @id @default(autoincrement())
   bio    String?
-  user   User    @relation(fields: [userId], references: [id])
+  user   user    @relation(fields: [userId], references: [id])
   userId Int     @unique
 }
-model User {
-  id      Int      @default(autoincrement()) @id
+
+model user {
+  id      Int      @id @default(autoincrement())
   email   String   @unique
-  name    String?
-  profile Profile?
+  name    String   @db.VarChar(20)
+  role    Role     @default(USER)
+  profile profile?
+  party   party[]
+}
+
+model pokemons {
+  id               Int                @id
+  name             String             @unique @db.VarChar(20)
+  type1            Type
+  type2            Type
+  base_stats_h     Int                @default(0)
+  base_stats_a     Int                @default(0)
+  base_stats_b     Int                @default(0)
+  base_stats_c     Int                @default(0)
+  base_stats_d     Int                @default(0)
+  base_stats_s     Int                @default(0)
+  trained_pokemons trained_pokemons[]
+}
+
+model abilities {
+  id                              Int     @id @default(autoincrement())
+  name                            String  @unique @db.VarChar(20)
+  description                     String?
+  physical_move_power_correction  Int     @default(1)
+  special_move_power_correction   Int     @default(1)
+  attack_power_correction         Int     @default(1)
+  special_attack_power_correction Int     @default(1)
+  attack_correction               Int     @default(1)
+  special_attack_correction       Int     @default(1)
+  damage_correction               Int     @default(1)
+  weight_correction               Int     @default(1)
+}
+
+model moves {
+  id              Int     @id @default(autoincrement())
+  name            String  @unique @db.VarChar(20)
+  type            Type
+  move_species    Species
+  powers          Int
+  accuracy        Int
+  pp              Int
+  is_contact_move Boolean @db.Boolean
+  is_can_guard    Boolean @db.Boolean
+  party1          party[] @relation("move1")
+  party2          party[] @relation("move2")
+  party3          party[] @relation("move3")
+  party4          party[] @relation("move4")
+}
+
+model type_compatibility {
+  attack_type   Type
+  defence_type  Type
+  compatibility Int  @default(1)
+
+  @@id([attack_type, defence_type])
+}
+
+model trained_pokemons {
+  id             Int @id @default(autoincrement())
+  effort_value_h Int
+  effort_value_a Int
+  effort_value_b Int
+  effort_value_c Int
+  effort_value_d Int
+  effort_value_s Int
+
+  pokemons   pokemons @relation(fields: [pokemon_id], references: [id])
+  pokemon_id Int
+  party      party[]
+}
+
+model party {
+  user               user             @relation(fields: [user_id], references: [id])
+  user_id            Int
+  trained_pokemons   trained_pokemons @relation(fields: [trained_pokemon_id], references: [id])
+  trained_pokemon_id Int
+
+  moves  moves @relation("move1", fields: [move1], references: [id])
+  move1  Int
+  moves2 moves @relation("move2", fields: [move2], references: [id])
+  move2  Int
+  moves3 moves @relation("move3", fields: [move3], references: [id])
+  move3  Int
+  moves4 moves @relation("move4", fields: [move4], references: [id])
+  move4  Int
+  @@id([user_id, trained_pokemon_id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Species {
+  Physical
+  Special
+}
+
+enum Type {
+  Normal
+  Fighting
+  Flying
+  Poison
+  Ground
+  Rock
+  Bug
+  Ghost
+  Steel
+  Fire
+  Water
+  Grass
+  Electric
+  Psychic
+  Ice
+  Dragon
+  Dark
 }
