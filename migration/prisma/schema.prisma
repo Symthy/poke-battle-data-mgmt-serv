@@ -139,4 +139,5 @@ enum Type {
   Ice
   Dragon
   Dark
+  None
 }
