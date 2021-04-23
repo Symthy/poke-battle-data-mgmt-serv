@@ -1,6 +1,6 @@
+import { TypeCompatibility, TypeCompatibilityTable, Types } from '@/models/typeCompatibility';
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { TypeCompatibility, TypeCompatibilityTable, Types } from '../models/typeCompatibility';
 import { TypesService } from '../provider/types.service';
 
 @ApiTags('Get Poke Base Data')

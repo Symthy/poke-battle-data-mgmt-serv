@@ -1,5 +1,5 @@
+import { Pokemon, Pokemons } from '@/models/pokemons';
 import { Injectable } from '@nestjs/common';
-import { Pokemon, Pokemons } from 'src/app/models/pokemons';
 
 @Injectable()
 export class PokemonsService {

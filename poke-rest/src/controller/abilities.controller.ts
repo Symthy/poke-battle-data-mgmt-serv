@@ -1,7 +1,7 @@
+import { Abilities, Ability } from '@/models/abilities';
+import { AbilitiesService } from '@/provider/abilities.service';
 import { Controller, DefaultValuePipe, Get, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Abilities, Ability } from '../models/abilities';
-import { AbilitiesService } from '../provider/abilities.service';
 
 @ApiTags('Get Poke Base Data')
 @Controller('abilities')

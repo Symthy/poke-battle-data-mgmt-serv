@@ -1,7 +1,7 @@
+import { Move, Moves } from '@/models/moves';
+import { MovesService } from '@/provider/moves.service';
 import { Controller, DefaultValuePipe, Get, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Move, Moves } from '../models/moves';
-import { MovesService } from '../provider/moves.service';
 
 @ApiTags('Get Poke Base Data')
 @Controller('moves')

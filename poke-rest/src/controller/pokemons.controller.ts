@@ -1,7 +1,7 @@
+import { Pokemon, Pokemons } from '@/models/pokemons';
+import { PokemonsService } from '@/provider/pokemons.service';
 import { Controller, DefaultValuePipe, Get, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Pokemon, Pokemons } from '../models/pokemons';
-import { PokemonsService } from '../provider/pokemons.service';
 
 @ApiTags('Get Poke Base Data')
 @Controller('pokemons')

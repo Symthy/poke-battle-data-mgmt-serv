@@ -1,5 +1,5 @@
+import { TypeCompatibility, TypeCompatibilityTable, Types } from '@/models/typeCompatibility';
 import { Injectable } from '@nestjs/common';
-import { TypeCompatibility, TypeCompatibilityTable, Types } from '../models/typeCompatibility';
 
 @Injectable()
 export class TypesService {

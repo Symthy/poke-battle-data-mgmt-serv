@@ -1,5 +1,5 @@
+import { Move, Moves } from '@/models/moves';
 import { Injectable } from '@nestjs/common';
-import { Move, Moves } from 'src/app/models/moves';
 
 @Injectable()
 export class MovesService {
