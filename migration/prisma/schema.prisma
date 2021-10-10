@@ -12,103 +12,148 @@ generator client {
 
 // add models
 
-model profile {
+model Profile {
   id     Int     @id @default(autoincrement())
   bio    String?
-  user   user    @relation(fields: [userId], references: [id])
   userId Int     @unique
+  user   User    @relation(fields: [userId], references: [id])
+
+  @@map("profile")
 }
 
-model user {
+model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
   name    String   @db.VarChar(20)
   role    Role     @default(USER)
-  profile profile?
-  party   party[]
+  profile Profile?
+  party   Party[]
+
+  @@map("user")
 }
 
-model pokemons {
-  id               Int                @id
-  name             String             @unique @db.VarChar(20)
-  type1            Type
-  type2            Type
-  base_stats_h     Int                @default(0)
-  base_stats_a     Int                @default(0)
-  base_stats_b     Int                @default(0)
-  base_stats_c     Int                @default(0)
-  base_stats_d     Int                @default(0)
-  base_stats_s     Int                @default(0)
-  trained_pokemons trained_pokemons[]
+model Pokemons {
+  id         Int    @id
+  name       String @unique @db.VarChar(20)
+  type1      Type
+  type2      Type
+  baseStatsH Int    @default(0) @map("base_stats_h")
+  baseStatsA Int    @default(0) @map("base_stats_a")
+  baseStatsB Int    @default(0) @map("base_stats_b")
+  BaseStatsC Int    @default(0) @map("base_stats_c")
+  BaseStatsD Int    @default(0) @map("base_stats_d")
+  baseStatsS Int    @default(0) @map("base_stats_s")
+
+  trainedPokemons TrainedPokemons[]
+
+  @@map("pokemons")
 }
 
-model abilities {
-  id                              Int     @id @default(autoincrement())
-  name                            String  @unique @db.VarChar(20)
-  description                     String?
-  physical_move_power_correction  Int     @default(1)
-  special_move_power_correction   Int     @default(1)
-  attack_power_correction         Int     @default(1)
-  special_attack_power_correction Int     @default(1)
-  attack_correction               Int     @default(1)
-  special_attack_correction       Int     @default(1)
-  damage_correction               Int     @default(1)
-  weight_correction               Int     @default(1)
+model Abilities {
+  id                               Int     @id @default(autoincrement())
+  name                             String  @unique @db.VarChar(20)
+  description                      String?
+  // 物理技威力補正値
+  physicalMovePowerCorrectionValue Int     @default(1) @map("physical_move_power_correction_value")
+  // 特殊技威力補正値
+  specialMovePowerCorrectionValue  Int     @default(1) @map("special_move_power_correction_value")
+  // 攻撃威力補正値
+  attackPowerCorrectionValue       Int     @default(1) @map("attack_power_correction_value")
+  // 特殊攻撃威力補正値
+  specialPowerCorrectionValue      Int     @default(1) @map("special_power_correction_value")
+  // 攻撃(力)補正値
+  attackCorrectionValue            Int     @default(1) @map("attack_correction_value")
+  // 特殊攻撃(力)補正値
+  specialCorrectionValue           Int     @default(1) @map("special_correction_value")
+  // ダメージ補正値
+  damageCorrectionValue            Int     @default(1) @map("damage_correction_value")
+  // 重さ補正値
+  weightCorrectionValue            Int     @default(1) @map("weight_correction_value")
+
+  @@map("abilities")
 }
 
-model moves {
-  id              Int     @id @default(autoincrement())
-  name            String  @unique @db.VarChar(20)
-  type            Type
-  move_species    Species
-  powers          Int
-  accuracy        Int
-  pp              Int
-  is_contact_move Boolean @db.Boolean
-  is_can_guard    Boolean @db.Boolean
-  party1          party[] @relation("move1")
-  party2          party[] @relation("move2")
-  party3          party[] @relation("move3")
-  party4          party[] @relation("move4")
+model Moves {
+  id            Int     @id @default(autoincrement())
+  name          String  @unique @db.VarChar(20)
+  type          Type
+  moveSpecies   Species @map("move_species")
+  powers        Int
+  accuracy      Int
+  pp            Int
+  isContactMove Boolean @map("is_contact_move") @db.Boolean
+  isCanGuard    Boolean @map("is_can_guard") @db.Boolean
+
+  trainedPokemons1 TrainedPokemons[] @relation("move1")
+  trainedPokemons2 TrainedPokemons[] @relation("move2")
+  trainedPokemons3 TrainedPokemons[] @relation("move3")
+  trainedPokemons4 TrainedPokemons[] @relation("move4")
+  @@map("moves")
 }
 
-model type_compatibility {
-  attack_type   Type
-  defence_type  Type
+// タイプ対照表
+model TypeCompatibility {
+  attackType    Type @map("attack_type")
+  defenceType   Type @map("defence_type")
   compatibility Int  @default(1)
 
-  @@id([attack_type, defence_type])
+  @@id([attackType, defenceType])
+  @@map("type_compatibility")
 }
 
-model trained_pokemons {
-  id             Int @id @default(autoincrement())
-  effort_value_h Int
-  effort_value_a Int
-  effort_value_b Int
-  effort_value_c Int
-  effort_value_d Int
-  effort_value_s Int
+// 育成済み個体
+model TrainedPokemons {
+  id        Int      @unique @default(autoincrement())
+  pokemonId Int      @unique @map("pokemon_id")
+  pokemons  Pokemons @relation(fields: [pokemonId], references: [id])
 
-  pokemons   pokemons @relation(fields: [pokemon_id], references: [id])
-  pokemon_id Int
-  party      party[]
-}
+  effortValueH Int @map("effort_value_h")
+  effortValueA Int @map("effort_value_a")
+  effortValueB Int @map("effort_value_b")
+  effortValueC Int @map("effort_value_c")
+  effortValueD Int @map("effort_value_d")
+  effortValueS Int @map("effort_value_s")
 
-model party {
-  user               user             @relation(fields: [user_id], references: [id])
-  user_id            Int
-  trained_pokemons   trained_pokemons @relation(fields: [trained_pokemon_id], references: [id])
-  trained_pokemon_id Int
-
-  moves  moves @relation("move1", fields: [move1], references: [id])
   move1  Int
-  moves2 moves @relation("move2", fields: [move2], references: [id])
   move2  Int
-  moves3 moves @relation("move3", fields: [move3], references: [id])
   move3  Int
-  moves4 moves @relation("move4", fields: [move4], references: [id])
   move4  Int
-  @@id([user_id, trained_pokemon_id])
+  moves1 Moves @relation("move1", fields: [move1], references: [id])
+  moves2 Moves @relation("move2", fields: [move2], references: [id])
+  moves3 Moves @relation("move3", fields: [move3], references: [id])
+  moves4 Moves @relation("move4", fields: [move4], references: [id])
+
+  party1 Party[] @relation("trainedPokemons1")
+  party2 Party[] @relation("trainedPokemons2")
+  party3 Party[] @relation("trainedPokemons3")
+  party4 Party[] @relation("trainedPokemons4")
+  party5 Party[] @relation("trainedPokemons5")
+  party6 Party[] @relation("trainedPokemons6")
+
+  @@id([id, pokemonId])
+  @@map("trained_pokemons")
+}
+
+model Party {
+  id     Int  @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  trainedPokemonId1 Int
+  trainedPokemons1  TrainedPokemons @relation("trainedPokemons1", fields: [trainedPokemonId1], references: [id])
+  trainedPokemonId2 Int
+  trainedPokemons2  TrainedPokemons @relation("trainedPokemons2", fields: [trainedPokemonId2], references: [id])
+  trainedPokemonId3 Int
+  trainedPokemons3  TrainedPokemons @relation("trainedPokemons3", fields: [trainedPokemonId3], references: [id])
+  trainedPokemonId4 Int
+  trainedPokemons4  TrainedPokemons @relation("trainedPokemons4", fields: [trainedPokemonId4], references: [id])
+  trainedPokemonId5 Int
+  trainedPokemons5  TrainedPokemons @relation("trainedPokemons5", fields: [trainedPokemonId5], references: [id])
+  trainedPokemonId6 Int
+  trainedPokemons6  TrainedPokemons @relation("trainedPokemons6", fields: [trainedPokemonId6], references: [id])
+
+  @@id([id, userId])
+  @@map("party")
 }
 
 enum Role {
