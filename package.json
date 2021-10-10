@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.4.10",
     "@types/node": "^14.14.37",
     "prisma": "^2.21.2",
     "ts-node": "^9.1.1",
