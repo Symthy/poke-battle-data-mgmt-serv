@@ -12,19 +12,27 @@ generator client {
 
 // --- master data ---
 model Pokemons {
-  id               Int     @default(autoincrement())
-  formId           Int     @map("form_id")
-  forms            Forms   @relation(fields: [formId], references: [id])
-  name             String  @db.VarChar(20)
+  id     Int   @default(autoincrement())
+  formId Int   @map("form_id")
+  forms  Forms @relation(fields: [formId], references: [id])
+
+  name             String    @db.VarChar(20)
   type1            Type
   type2            Type
-  isFinalEvolution Boolean @db.Boolean
-  baseStatsH       Int     @default(0) @map("base_stats_h")
-  baseStatsA       Int     @default(0) @map("base_stats_a")
-  baseStatsB       Int     @default(0) @map("base_stats_b")
-  BaseStatsC       Int     @default(0) @map("base_stats_c")
-  BaseStatsD       Int     @default(0) @map("base_stats_d")
-  baseStatsS       Int     @default(0) @map("base_stats_s")
+  abilityId1       Int       @map("ability_id1")
+  abilities1       Abilities @relation("ability1", fields: [abilityId1], references: [id])
+  abilityId2       Int       @map("ability_id2")
+  abilities2       Abilities @relation("ability2", fields: [abilityId2], references: [id])
+  hiddenAbilityId  Int       @map("hidden_ability_id")
+  abilities3       Abilities @relation("ability3", fields: [hiddenAbilityId], references: [id])
+  isFinalEvolution Boolean   @db.Boolean
+
+  baseStatsH Int @default(0) @map("base_stats_h")
+  baseStatsA Int @default(0) @map("base_stats_a")
+  baseStatsB Int @default(0) @map("base_stats_b")
+  BaseStatsC Int @default(0) @map("base_stats_c")
+  BaseStatsD Int @default(0) @map("base_stats_d")
+  baseStatsS Int @default(0) @map("base_stats_s")
 
   trainedPokemons TrainedPokemons[]
 
@@ -65,6 +73,10 @@ model Abilities {
   damageCorrectionValue            Int @default(1) @map("damage_correction_value")
   // 重さ補正値
   weightCorrectionValue            Int @default(1) @map("weight_correction_value")
+
+  Pokemons1 Pokemons[] @relation("ability1")
+  Pokemons2 Pokemons[] @relation("ability2")
+  Pokemons3 Pokemons[] @relation("ability3")
 
   @@map("abilities")
 }
