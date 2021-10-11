@@ -10,69 +10,76 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// add models
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  userId Int     @unique
-  user   User    @relation(fields: [userId], references: [id])
-
-  @@map("profile")
-}
-
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String   @db.VarChar(20)
-  role    Role     @default(USER)
-  profile Profile?
-  party   Party[]
-
-  @@map("user")
-}
-
+// --- master data ---
 model Pokemons {
-  id         Int    @id
-  name       String @unique @db.VarChar(20)
-  type1      Type
-  type2      Type
-  baseStatsH Int    @default(0) @map("base_stats_h")
-  baseStatsA Int    @default(0) @map("base_stats_a")
-  baseStatsB Int    @default(0) @map("base_stats_b")
-  BaseStatsC Int    @default(0) @map("base_stats_c")
-  BaseStatsD Int    @default(0) @map("base_stats_d")
-  baseStatsS Int    @default(0) @map("base_stats_s")
+  id               Int     @default(autoincrement())
+  formId           Int     @map("form_id")
+  forms            Forms   @relation(fields: [formId], references: [id])
+  name             String  @db.VarChar(20)
+  type1            Type
+  type2            Type
+  isFinalEvolution Boolean @db.Boolean
+  baseStatsH       Int     @default(0) @map("base_stats_h")
+  baseStatsA       Int     @default(0) @map("base_stats_a")
+  baseStatsB       Int     @default(0) @map("base_stats_b")
+  BaseStatsC       Int     @default(0) @map("base_stats_c")
+  BaseStatsD       Int     @default(0) @map("base_stats_d")
+  baseStatsS       Int     @default(0) @map("base_stats_s")
 
   trainedPokemons TrainedPokemons[]
 
+  @@id([id, formId])
   @@map("pokemons")
 }
 
+model Forms {
+  id                Int     @id
+  formName          String  @map("form_name") @db.VarChar(40)
+  isRegionalVariant Boolean @default(false) @map("is_regional_variant") @db.Boolean
+  regionName        String  @map("region_name") @db.VarChar(20)
+
+  pokemons Pokemons[]
+
+  @@map("forms")
+}
+
+// 特性
 model Abilities {
-  id                               Int     @id @default(autoincrement())
-  name                             String  @unique @db.VarChar(20)
-  description                      String?
+  id          Int     @id @default(autoincrement())
+  name        String  @unique @db.VarChar(20)
+  description String?
+
   // 物理技威力補正値
-  physicalMovePowerCorrectionValue Int     @default(1) @map("physical_move_power_correction_value")
+  physicalMovePowerCorrectionValue Int @default(1) @map("physical_move_power_correction_value")
   // 特殊技威力補正値
-  specialMovePowerCorrectionValue  Int     @default(1) @map("special_move_power_correction_value")
+  specialMovePowerCorrectionValue  Int @default(1) @map("special_move_power_correction_value")
   // 攻撃威力補正値
-  attackPowerCorrectionValue       Int     @default(1) @map("attack_power_correction_value")
+  attackPowerCorrectionValue       Int @default(1) @map("attack_power_correction_value")
   // 特殊攻撃威力補正値
-  specialPowerCorrectionValue      Int     @default(1) @map("special_power_correction_value")
+  specialPowerCorrectionValue      Int @default(1) @map("special_power_correction_value")
   // 攻撃(力)補正値
-  attackCorrectionValue            Int     @default(1) @map("attack_correction_value")
+  attackCorrectionValue            Int @default(1) @map("attack_correction_value")
   // 特殊攻撃(力)補正値
-  specialCorrectionValue           Int     @default(1) @map("special_correction_value")
+  specialCorrectionValue           Int @default(1) @map("special_correction_value")
   // ダメージ補正値
-  damageCorrectionValue            Int     @default(1) @map("damage_correction_value")
+  damageCorrectionValue            Int @default(1) @map("damage_correction_value")
   // 重さ補正値
-  weightCorrectionValue            Int     @default(1) @map("weight_correction_value")
+  weightCorrectionValue            Int @default(1) @map("weight_correction_value")
 
   @@map("abilities")
 }
 
+// タイプ対照表
+model TypeCompatibility {
+  attackType    Type @map("attack_type")
+  defenceType   Type @map("defence_type")
+  compatibility Int  @default(1)
+
+  @@id([attackType, defenceType])
+  @@map("type_compatibility")
+}
+
+// 技
 model Moves {
   id            Int     @id @default(autoincrement())
   name          String  @unique @db.VarChar(20)
@@ -91,21 +98,62 @@ model Moves {
   @@map("moves")
 }
 
-// タイプ対照表
-model TypeCompatibility {
-  attackType    Type @map("attack_type")
-  defenceType   Type @map("defence_type")
-  compatibility Int  @default(1)
+model HeldItems {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique @db.VarChar(40)
+  description String?
 
-  @@id([attackType, defenceType])
-  @@map("type_compatibility")
+  // 物理技威力補正値
+  physicalMovePowerCorrectionValue Int @default(1) @map("physical_move_power_correction_value")
+  // 特殊技威力補正値
+  specialMovePowerCorrectionValue  Int @default(1) @map("special_move_power_correction_value")
+  // 攻撃威力補正値
+  attackPowerCorrectionValue       Int @default(1) @map("attack_power_correction_value")
+  // 特殊攻撃威力補正値
+  specialPowerCorrectionValue      Int @default(1) @map("special_power_correction_value")
+  // 攻撃(力)補正値
+  attackCorrectionValue            Int @default(1) @map("attack_correction_value")
+  // 特殊攻撃(力)補正値
+  specialCorrectionValue           Int @default(1) @map("special_correction_value")
+  // ダメージ補正値
+  damageCorrectionValue            Int @default(1) @map("damage_correction_value")
+  // 重さ補正値
+  weightCorrectionValue            Int @default(1) @map("weight_correction_value")
+
+  TrainedPokemons TrainedPokemons[]
+  @@map("held_items")
+}
+
+// --- transaction data ---
+
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String   @db.VarChar(20)
+  role    Role     @default(USER)
+  profile Profile?
+  party   Party[]
+
+  @@map("user")
+}
+
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  userId Int     @unique
+  user   User    @relation(fields: [userId], references: [id])
+
+  @@map("profile")
 }
 
 // 育成済み個体
 model TrainedPokemons {
-  id        Int      @unique @default(autoincrement())
-  pokemonId Int      @unique @map("pokemon_id")
-  pokemons  Pokemons @relation(fields: [pokemonId], references: [id])
+  id         Int       @id @default(autoincrement())
+  pokemonId  Int       @map("pokemon_id")
+  formId     Int       @map("form_id")
+  pokemons   Pokemons  @relation(fields: [pokemonId, formId], references: [id, formId])
+  heldItemId Int       @map("held_item_id")
+  heldItems  HeldItems @relation(fields: [heldItemId], references: [id])
 
   effortValueH Int @map("effort_value_h")
   effortValueA Int @map("effort_value_a")
@@ -115,12 +163,12 @@ model TrainedPokemons {
   effortValueS Int @map("effort_value_s")
 
   move1  Int
-  move2  Int
-  move3  Int
-  move4  Int
   moves1 Moves @relation("move1", fields: [move1], references: [id])
+  move2  Int
   moves2 Moves @relation("move2", fields: [move2], references: [id])
+  move3  Int
   moves3 Moves @relation("move3", fields: [move3], references: [id])
+  move4  Int
   moves4 Moves @relation("move4", fields: [move4], references: [id])
 
   party1 Party[] @relation("trainedPokemons1")
@@ -130,12 +178,11 @@ model TrainedPokemons {
   party5 Party[] @relation("trainedPokemons5")
   party6 Party[] @relation("trainedPokemons6")
 
-  @@id([id, pokemonId])
   @@map("trained_pokemons")
 }
 
 model Party {
-  id     Int  @default(autoincrement())
+  id     Int  @id @default(autoincrement())
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
@@ -152,8 +199,27 @@ model Party {
   trainedPokemonId6 Int
   trainedPokemons6  TrainedPokemons @relation("trainedPokemons6", fields: [trainedPokemonId6], references: [id])
 
-  @@id([id, userId])
+  partyTag PartyTag[] @relation("partyToTag")
+
   @@map("party")
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(50)
+
+  partyTag PartyTag[] @relation("tagToParty")
+  @@map("tag")
+}
+
+model PartyTag {
+  partyId Int   @map("party_id")
+  party   Party @relation("partyToTag", fields: [partyId], references: [id])
+  tagId   Int   @map("tag_id")
+  tag     Tag   @relation("tagToParty", fields: [tagId], references: [id])
+
+  @@id([partyId, tagId])
+  @@map("party_tag")
 }
 
 enum Role {
@@ -162,8 +228,8 @@ enum Role {
 }
 
 enum Species {
-  Physical
-  Special
+  Physical // 物理
+  Special // 特殊
 }
 
 enum Type {
