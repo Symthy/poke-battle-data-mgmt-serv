@@ -35,6 +35,12 @@ model Pokemons {
   baseStatsS Int @default(0) @map("base_stats_s")
 
   trainedPokemons TrainedPokemons[]
+  battleRecord1   BattleOpponentParty[] @relation("opponentPokemon1")
+  battleRecord2   BattleOpponentParty[] @relation("opponentPokemon2")
+  battleRecord3   BattleOpponentParty[] @relation("opponentPokemon3")
+  battleRecord4   BattleOpponentParty[] @relation("opponentPokemon4")
+  battleRecord5   BattleOpponentParty[] @relation("opponentPokemon5")
+  battleRecord6   BattleOpponentParty[] @relation("opponentPokemon6")
 
   @@id([id, formId])
   @@map("pokemons")
@@ -74,9 +80,10 @@ model Abilities {
   // 重さ補正値
   weightCorrectionValue            Int @default(1) @map("weight_correction_value")
 
-  Pokemons1 Pokemons[] @relation("ability1")
-  Pokemons2 Pokemons[] @relation("ability2")
-  Pokemons3 Pokemons[] @relation("ability3")
+  pokemons1       Pokemons[]        @relation("ability1")
+  pokemons2       Pokemons[]        @relation("ability2")
+  pokemons3       Pokemons[]        @relation("ability3")
+  trainedPokemons TrainedPokemons[]
 
   @@map("abilities")
 }
@@ -164,6 +171,10 @@ model TrainedPokemons {
   pokemonId  Int       @map("pokemon_id")
   formId     Int       @map("form_id")
   pokemons   Pokemons  @relation(fields: [pokemonId, formId], references: [id, formId])
+  nickname   String    @db.VarChar(12)
+  sex        SEX
+  abilityId  Int       @map("ability_id")
+  abilities  Abilities @relation(fields: [abilityId], references: [id])
   heldItemId Int       @map("held_item_id")
   heldItems  HeldItems @relation(fields: [heldItemId], references: [id])
 
@@ -183,6 +194,9 @@ model TrainedPokemons {
   move4  Int
   moves4 Moves @relation("move4", fields: [move4], references: [id])
 
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
   party1 Party[] @relation("trainedPokemons1")
   party2 Party[] @relation("trainedPokemons2")
   party3 Party[] @relation("trainedPokemons3")
@@ -194,9 +208,12 @@ model TrainedPokemons {
 }
 
 model Party {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  user       User       @relation(fields: [userId], references: [id])
+  name       String?    @db.VarChar(200)
+  battleRule BattleRule
+  maxRate    Int?
 
   trainedPokemonId1 Int
   trainedPokemons1  TrainedPokemons @relation("trainedPokemons1", fields: [trainedPokemonId1], references: [id])
@@ -211,14 +228,19 @@ model Party {
   trainedPokemonId6 Int
   trainedPokemons6  TrainedPokemons @relation("trainedPokemons6", fields: [trainedPokemonId6], references: [id])
 
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
   partyTag PartyTag[] @relation("partyToTag")
 
+  BattleRecord BattleRecord[]
   @@map("party")
 }
 
 model Tag {
-  id   Int    @id @default(autoincrement())
-  name String @unique @db.VarChar(50)
+  id           Int     @id @default(autoincrement())
+  name         String  @unique @db.VarChar(50)
+  isSeasonType Boolean @map("is_season_type") @db.Boolean
 
   partyTag PartyTag[] @relation("tagToParty")
   @@map("tag")
@@ -234,9 +256,66 @@ model PartyTag {
   @@map("party_tag")
 }
 
+model BattleRecord {
+  id         Int        @id @default(autoincrement())
+  partyId    Int        @map("party_id")
+  party      Party      @relation(fields: [partyId], references: [id])
+  battleRule BattleRule @map("battle_rule")
+
+  BattleOpponentPartyId Int @map("battle_opponent_party_id")
+
+  // 自身選出
+  selfElectionPokemonId1     Int
+  selfElectionPokemonId2     Int
+  selfElectionPokemonId3     Int
+  selfElectionPokemonId4     Int?
+  // 相手選出
+  opponentElectionPokemonId1 Int
+  opponentElectionPokemonId2 Int
+  opponentElectionPokemonId3 Int
+  opponentElectionPokemonId4 Int?
+}
+
+model BattleOpponentParty {
+  id Int @id @default(autoincrement())
+
+  opponentPokemonId1     Int      @map("opponent_pokemon_id1")
+  opponentPokemonFormId1 Int      @map("opponent_pokemon_form_id1")
+  pokemons1              Pokemons @relation("opponentPokemon1", fields: [opponentPokemonId1, opponentPokemonFormId1], references: [id, formId])
+
+  opponentPokemonId2     Int      @map("opponent_pokemon_id2")
+  opponentPokemonFormId2 Int      @map("opponent_pokemon_form_id2")
+  pokemons2              Pokemons @relation("opponentPokemon2", fields: [opponentPokemonId2, opponentPokemonFormId2], references: [id, formId])
+
+  opponentPokemonId3     Int      @map("opponent_pokemon_id3")
+  opponentPokemonFormId3 Int      @map("opponent_pokemon_form_id3")
+  pokemons3              Pokemons @relation("opponentPokemon3", fields: [opponentPokemonId3, opponentPokemonFormId3], references: [id, formId])
+
+  opponentPokemonId4     Int      @map("opponent_pokemon_id4")
+  opponentPokemonFormId4 Int      @map("opponent_pokemon_form_id4")
+  pokemons4              Pokemons @relation("opponentPokemon4", fields: [opponentPokemonId4, opponentPokemonFormId4], references: [id, formId])
+
+  opponentPokemonId5     Int      @map("opponent_pokemon_id5")
+  opponentPokemonFormId5 Int      @map("opponent_pokemon_form_id5")
+  pokemons5              Pokemons @relation("opponentPokemon5", fields: [opponentPokemonId5, opponentPokemonFormId5], references: [id, formId])
+
+  opponentPokemonId6     Int      @map("opponent_pokemon_id6")
+  opponentPokemonFormId6 Int      @map("opponent_pokemon_form_id6")
+  pokemons6              Pokemons @relation("opponentPokemon6", fields: [opponentPokemonId6, opponentPokemonFormId6], references: [id, formId])
+
+  @@map("BattleOpponentRecord")
+}
+
+// --- constant ---
+
 enum Role {
   USER
   ADMIN
+}
+
+enum SEX {
+  Male
+  Female
 }
 
 enum Species {
@@ -263,4 +342,9 @@ enum Type {
   Dragon
   Dark
   None
+}
+
+enum BattleRule {
+  Single
+  Double
 }
