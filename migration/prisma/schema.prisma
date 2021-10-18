@@ -64,21 +64,30 @@ model Abilities {
   description String?
 
   // 物理技威力補正値
-  physicalMovePowerCorrectionValue Int @default(1) @map("physical_move_power_correction_value")
+  physicalMovePowerCorrectionValue  Int @default(1) @map("physical_move_power_correction_value")
   // 特殊技威力補正値
-  specialMovePowerCorrectionValue  Int @default(1) @map("special_move_power_correction_value")
+  specialMovePowerCorrectionValue   Int @default(1) @map("special_move_power_correction_value")
   // 攻撃威力補正値
-  attackPowerCorrectionValue       Int @default(1) @map("attack_power_correction_value")
+  attackPowerCorrectionValue        Int @default(1) @map("attack_power_correction_value")
   // 特殊攻撃威力補正値
-  specialPowerCorrectionValue      Int @default(1) @map("special_power_correction_value")
+  specialAttackPowerCorrectionValue Int @default(1) @map("special_attack_power_correction_value")
   // 攻撃(力)補正値
-  attackCorrectionValue            Int @default(1) @map("attack_correction_value")
+  attackCorrectionValue             Int @default(1) @map("attack_correction_value")
   // 特殊攻撃(力)補正値
-  specialCorrectionValue           Int @default(1) @map("special_correction_value")
+  specialAttackCorrectionValue      Int @default(1) @map("special_attack_correction_value")
+
+  // 防御(力)補正値
+  defenseCorrectionValue        Int @default(1) @map("deffense_correction_value")
+  // 特殊防御(力)補正値
+  specialDefenseCorrectionValue Int @default(1) @map("special_deffense_correction_value")
+
   // ダメージ補正値
-  damageCorrectionValue            Int @default(1) @map("damage_correction_value")
+  damageCorrectionType1  Type  @default(None) @map("damage_correction_type1")
+  damageCorrectionValue1 Int   @default(1) @map("damage_correction_value1")
+  damageCorrectionType2  Type? @map("damage_correction_type2")
+  damageCorrectionValue2 Int?  @map("damage_correction_value2")
   // 重さ補正値
-  weightCorrectionValue            Int @default(1) @map("weight_correction_value")
+  weightCorrectionValue  Int   @default(1) @map("weight_correction_value")
 
   pokemons1       Pokemons[]        @relation("ability1")
   pokemons2       Pokemons[]        @relation("ability2")
@@ -104,8 +113,8 @@ model Moves {
   name          String  @unique @db.VarChar(20)
   type          Type
   moveSpecies   Species @map("move_species")
-  powers        Int
-  accuracy      Int
+  power         Int // 威力
+  accuracy      Int // 命中率
   pp            Int
   isContactMove Boolean @map("is_contact_move") @db.Boolean
   isCanGuard    Boolean @map("is_can_guard") @db.Boolean
@@ -134,10 +143,14 @@ model HeldItems {
   attackCorrectionValue            Int @default(1) @map("attack_correction_value")
   // 特殊攻撃(力)補正値
   specialCorrectionValue           Int @default(1) @map("special_correction_value")
+
   // ダメージ補正値
-  damageCorrectionValue            Int @default(1) @map("damage_correction_value")
+  damageCorrectionType1  Type  @default(None) @map("damage_correction_type1")
+  damageCorrectionValue1 Int   @default(1) @map("damage_correction_value1")
+  damageCorrectionType2  Type? @map("damage_correction_type2")
+  damageCorrectionValue2 Int?  @map("damage_correction_value2")
   // 重さ補正値
-  weightCorrectionValue            Int @default(1) @map("weight_correction_value")
+  weightCorrectionValue  Int   @default(1) @map("weight_correction_value")
 
   TrainedPokemons TrainedPokemons[]
   @@map("held_items")
