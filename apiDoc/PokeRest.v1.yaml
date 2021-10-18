@@ -24,8 +24,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pokemons'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
         '404':
-          description: User Not Found
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-pokemons
       description: 'all '
       parameters:
@@ -63,6 +71,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pokemon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-pokemons-Id
       parameters: []
       description: 指定ポケモン情報取得
@@ -78,6 +96,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Moves'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-moves
       description: 技一覧取得
     parameters: []
@@ -100,6 +128,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Move'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-Moves-by-Id
       description: 技取得
   '/abilities/{avilityId}':
@@ -123,6 +161,16 @@ paths:
             header-0:
               schema:
                 type: string
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-ability-by-Id
       description: 特性取得
       tags:
@@ -140,6 +188,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Abilities'
               examples: {}
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-abilities
       description: 特性の一覧取得
       parameters:
@@ -160,6 +218,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/typeCompatibility'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-types-compability
       description: タイプ相性表取得
     parameters: []
@@ -182,6 +250,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/typeCompatibility'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-type-compability-of-attack-side
       description: タイプ相性（攻撃側）
   '/types/compability/defense/{type}':
@@ -203,29 +281,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/typeCompatibility'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-type-compability-of-defense-side
       description: タイプ相性（防御側）取得
-  '/pokemons/avilities/{pokedexId}':
-    get:
-      summary: get avilities of specify pokemon
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PokemonAvilities'
-      operationId: get-avilities-of-specify-pokemon
-      description: 指定ポケモンの特性一覧取得
-    parameters:
-      - schema:
-          type: string
-        name: pokedexId
-        in: path
-        required: true
-        description: 図鑑No
   '/pokemons/moves/{pokedexId}':
     parameters:
       - schema:
@@ -245,8 +312,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PokemonMoves'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-moves-of-specify-pokemon
       description: 指定ポケモンの技一覧取得
+  '/abilities/pokemons/{AbilityId}':
+    get:
+      summary: get avilities of specify pokemon
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbilityPokemons'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-avilities-of-specify-pokemon
+      description: 指定特性のポケモン一覧取得
+    parameters:
+      - schema:
+          type: string
+        name: AbilityId
+        in: path
+        required: true
   /types:
     get:
       summary: get types
@@ -267,17 +374,50 @@ paths:
                       type: string
                 required:
                   - types
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-types
       description: タイプ一覧取得
+  /items:
+    get:
+      summary: get items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Items'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-items
 components:
   schemas:
     Pokemon:
       description: ''
       type: object
       properties:
-        id:
+        pokedexNo:
+          type: number
+        form:
           type: string
-          minLength: 1
         name:
           type: string
           minLength: 1
@@ -296,12 +436,21 @@ components:
           type: number
         baseStatsS:
           type: number
-        type:
-          type: array
-          items:
-            type: string
+        type1:
+          type: string
+        type2:
+          type: string
+        ability1:
+          type: string
+        ability2:
+          type: string
+        hiddenAbility:
+          type: string
+        isFinalEvolution:
+          type: boolean
       required:
-        - id
+        - pokedexNo
+        - form
         - name
         - englishName
         - baseStatsH
@@ -310,7 +459,8 @@ components:
         - baseStatsC
         - baseStatsD
         - baseStatsS
-        - type
+        - type1
+        - ability1
     Move:
       description: ''
       type: object
@@ -346,6 +496,7 @@ components:
         - id
         - name
         - type
+        - species
         - power
         - specialMovePower
         - accuracy
@@ -387,12 +538,14 @@ components:
           type: number
         name:
           type: string
-        effect:
+        description:
           type: string
+        correctionValues:
+          $ref: '#/components/schemas/CorrectionData'
       required:
         - id
         - name
-        - effect
+        - description
     Abilities:
       description: 特性一覧
       type: object
@@ -411,29 +564,78 @@ components:
       description: 指定ポケモンが覚える技一覧
       type: object
       properties:
-        id:
-          type: string
         moves:
           type: array
           items:
             $ref: '#/components/schemas/Moves'
+        count:
+          type: number
       required:
-        - id
         - moves
-    PokemonAvilities:
-      description: 指定ポケモンの特性一覧
+    AbilityPokemons:
+      description: 指定特性を持つポケモン一覧
+      type: object
+      title: ''
+      properties:
+        pokemons:
+          $ref: '#/components/schemas/Pokemons'
+        count:
+          type: number
+    Items:
+      title: Items
       type: object
       properties:
         id:
+          type: number
+        name:
           type: string
-        avilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ability'
-      required:
-        - id
-        - avilities
-      title: PokemonAvilities
+        description:
+          type: string
+        correctionValues:
+          $ref: '#/components/schemas/CorrectionData'
+    CorrectionData:
+      description: ''
+      type: object
+      properties:
+        physicalMovePowerCorrectionValue:
+          type: number
+          description: 物理技威力補正値
+        specialMovePowerCorrectionValue:
+          type: number
+          description: 特殊技威力補正値
+        attackPowerCorrectionValue:
+          type: number
+          description: 攻撃威力補正値
+        specialPowerCorrectionValue:
+          type: number
+          description: 特殊攻撃威力補正値
+        attackCorrectionValue:
+          type: number
+          description: 攻撃(力)補正値
+        specialCorrectionValue:
+          type: number
+          description: 特殊攻撃(力)補正値
+        defenseCorrectionValue:
+          type: number
+          description: 防御(力)補正値
+        specialDefenseCorrectionValue:
+          type: number
+          description: 特殊防御(力)補正値
+        damageCorrectionType1:
+          type: string
+          description: ダメージ補正タイプ1
+        damageCorrectionValue1:
+          type: number
+          description: ダメージ補正値1
+        damageCorrectionType2:
+          type: string
+          description: ダメージ補正タイプ2
+        damageCorrectionValue2:
+          type: number
+          description: ダメージ補正値2
+        weightCorrectionValue:
+          type: number
+          description: 重さ補正値
     typeCompatibility:
       description: ''
       type: object
@@ -459,23 +661,46 @@ components:
       required:
         - compatibilityTable
         - typeOrder
-  responses:
     Error:
-      description: Example response
+      title: Error
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+  responses:
+    '400':
+      description: Bad Request
       content:
         application/json:
           schema:
-            description: ''
-            type: object
-            properties:
-              id:
-                type: string
-              message:
-                type: string
-              description:
-                type: string
-            required:
-              - id
-              - message
+            $ref: '#/components/schemas/Error'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
 tags:
   - name: Pokemon Base Data
