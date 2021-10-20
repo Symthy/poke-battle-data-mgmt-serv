@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/Symthy/PokeRest/pokeRest/autoGen/server"
-	"github.com/Symthy/PokeRest/pokeRest/handler"
+	"github.com/Symthy/PokeRest/pokeRest/controller/handler"
 	"github.com/labstack/echo/v4"
 	echomiddleware "github.com/labstack/echo/v4/middleware"
 )
@@ -22,7 +22,7 @@ func main() {
 	// Log all requests
 	e.Use(echomiddleware.Logger())
 
-	handler := handler.NewPokemonHandler()
+	handler := handler.NewPokeRestHandler()
 	server.RegisterHandlers(e, handler)
 
 	// And we serve HTTP until the world ends.

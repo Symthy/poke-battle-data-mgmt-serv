@@ -72,8 +72,32 @@ paths:
         description: フォルムNo
         required: true
     get:
-      summary: Your GET endpoint
+      summary: get pokemon by No
       tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pokemon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-pokemon-by-pokedexNo-and-formNo
+      description: 指定ポケモン情報取得
+  '/pokemons/abilities/{abilityId}':
+    get:
+      summary: get pokemons of specify ability
+      tags:
+        - Pokemon Base Data
       responses:
         '200':
           description: OK
@@ -91,24 +115,17 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-pokemons-pokedexNo-formNo
-      description: 指定ポケモン情報取得
-  '/pokemons/moves/{pokedexNo}/{formNo}':
+      operationId: get-pokemons-of-specified-ability
+      description: 指定特性のポケモン一覧取得
     parameters:
       - schema:
           type: number
-        name: pokedexNo
+        name: abilityId
         in: path
         required: true
-        description: 図鑑No
-      - schema:
-          type: number
-        name: formNo
-        in: path
-        description: フォルムNo
-        required: true
+  '/pokemons/moves/{moveId}':
     get:
-      summary: get moves of specify pokemon
+      summary: get pokemons with specified move
       tags:
         - Pokemon Base Data
       responses:
@@ -117,7 +134,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PokemonMoves'
+                $ref: '#/components/schemas/Pokemons'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -128,8 +145,14 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-moves-of-specify-pokemon
-      description: 指定ポケモンの技一覧取得
+      operationId: get-pokemons-with-specified-move
+      description: 指定技を覚えるポケモン一覧取得
+    parameters:
+      - schema:
+          type: string
+        name: moveId
+        in: path
+        required: true
   /moves:
     get:
       summary: get moves
@@ -195,12 +218,49 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-Moves-by-Id
+      operationId: get-move-by-Id
       description: 技取得
+  '/moves/pokemons/{pokedexNo}/{formNo}':
+    parameters:
+      - schema:
+          type: number
+        name: pokedexNo
+        in: path
+        required: true
+        description: 図鑑No
+      - schema:
+          type: number
+        name: formNo
+        in: path
+        description: フォルムNo
+        required: true
+    get:
+      summary: get move with specified pokemon
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Moves'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-moves-with-specified-pokemon
+      description: 指定ポケモンの技一覧取得
   /abilities:
     parameters: []
     get:
-      summary: get ability
+      summary: get abilities
       responses:
         '200':
           description: OK
@@ -219,7 +279,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-ability
+      operationId: get-abilities
       description: 特性取得
       tags:
         - Pokemon Base Data
@@ -258,98 +318,6 @@ paths:
       description: 特性取得
       tags:
         - Pokemon Base Data
-  '/abilities/pokemons/{abilityId}':
-    get:
-      summary: get avilities of specify pokemon
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AbilityPokemons'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-avilities-of-specify-pokemon
-      description: 指定特性のポケモン一覧取得
-    parameters:
-      - schema:
-          type: number
-        name: abilityId
-        in: path
-        required: true
-  '/types/compability/attack/{type}':
-    parameters:
-      - schema:
-          type: string
-        name: type
-        in: path
-        required: true
-        description: タイプ指定
-    get:
-      summary: get type compability of attack side
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/typeCompatibility'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-type-compability-of-attack-side
-      description: タイプ相性（攻撃側）
-  '/types/compability/defense/{type}':
-    parameters:
-      - schema:
-          type: string
-        name: type
-        in: path
-        required: true
-        description: タイプ指定
-    get:
-      summary: get type compability of defense side
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/typeCompatibility'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-type-compability-of-defense-side
-      description: タイプ相性（防御側）取得
   /types:
     get:
       summary: get types
@@ -413,6 +381,68 @@ paths:
       operationId: get-types-compability
       description: タイプ相性表取得
     parameters: []
+  '/types/compability/attack/{type}':
+    parameters:
+      - schema:
+          type: string
+        name: type
+        in: path
+        required: true
+        description: タイプ指定
+    get:
+      summary: get type compability of attack side
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/typeCompatibility'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-type-compability-of-attack-side
+      description: タイプ相性（攻撃側）
+  '/types/compability/defense/{type}':
+    parameters:
+      - schema:
+          type: string
+        name: type
+        in: path
+        required: true
+        description: タイプ指定
+    get:
+      summary: get type compability of defense side
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/typeCompatibility'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-type-compability-of-defense-side
+      description: タイプ相性（防御側）取得
   /items:
     get:
       summary: get items
@@ -598,27 +628,6 @@ components:
         - abilities
         - count
       title: Abilities
-    PokemonMoves:
-      description: 指定ポケモンが覚える技一覧
-      type: object
-      properties:
-        moves:
-          type: array
-          items:
-            $ref: '#/components/schemas/Moves'
-        count:
-          type: number
-      required:
-        - moves
-    AbilityPokemons:
-      description: 指定特性を持つポケモン一覧
-      type: object
-      title: ''
-      properties:
-        pokemons:
-          $ref: '#/components/schemas/Pokemons'
-        count:
-          type: number
     Items:
       title: Items
       type: object

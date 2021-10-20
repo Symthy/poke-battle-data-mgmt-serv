@@ -4,24 +4,31 @@ Poke REST API
 
 Use OpenApi Generator
 
-## API Specification
+## API Specification File
+
 apiDoc/PokeRest.v1.yaml
 
-http://localhost:3000/api
+## Code Auto Generate
 
-## API spec create tool
+```
+./autoGen.sh
+```
+
+## Use tools
+
+### Create API spec tool
 
 Stoplight Studio
 
 https://stoplight.io/studio/
 
-## Migration Tool
+### Migration tool
 
 prisma: 
 - https://github.com/prisma/prisma
 - https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-typescript-postgres
 
-## ER Diagram Create Tool
+### Create ER Diagram tool
 
 - https://www.npmjs.com/package/prisma-uml
 - https://www.npmjs.com/package/prisma-erd-generator
