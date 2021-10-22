@@ -2,6 +2,6 @@
 
 mkdir -p ./pokeRest/autoGen/server
 
-oapi-codegen -generate "server" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/autogen/server/api.gen.go
+oapi-codegen -generate "server" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/adapters/rest/autogen/server/api.gen.go
 
-oapi-codegen -generate "types" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/autogen/server/types.gen.go
+oapi-codegen -generate "types" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/adapters/rest/autogen/server/types.gen.go

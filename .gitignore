@@ -1,2 +1,6 @@
 node_modules
-pokeRest/autoGen/*
+
+pokeRest/adapters/rest/autogen/*
+
+pokeRest/adapters/orm/autogen/ent/*
+!pokeRest/adapters/orm/autogen/ent/generate.go

@@ -12,9 +12,11 @@ generator client {
 
 // --- master data ---
 model Pokemons {
-  id     Int   @default(autoincrement())
-  formId Int   @map("form_id")
-  forms  Forms @relation(fields: [formId], references: [id])
+  id        Int    @id @default(autoincrement())
+  pokedexNo Int    @map("pokedex_no")
+  formNo    Int    @map("form_no")
+  formName  String @map("form_name") @db.VarChar(20)
+  forms     Forms  @relation(fields: [formNo, formName], references: [formNo, formName])
 
   name             String    @db.VarChar(20)
   type1            Type
@@ -42,18 +44,18 @@ model Pokemons {
   battleRecord5   BattleOpponentParty[] @relation("opponentPokemon5")
   battleRecord6   BattleOpponentParty[] @relation("opponentPokemon6")
 
-  @@id([id, formId])
   @@map("pokemons")
 }
 
 model Forms {
-  id                Int     @id
-  formName          String  @map("form_name") @db.VarChar(40)
+  formNo            Int
+  formName          String  @map("form_name") @db.VarChar(20)
   isRegionalVariant Boolean @default(false) @map("is_regional_variant") @db.Boolean
   regionName        String  @map("region_name") @db.VarChar(20)
 
   pokemons Pokemons[]
 
+  @@id([formNo, formName])
   @@map("forms")
 }
 
@@ -182,8 +184,9 @@ model Profile {
 model TrainedPokemons {
   id         Int       @id @default(autoincrement())
   pokemonId  Int       @map("pokemon_id")
-  formId     Int       @map("form_id")
-  pokemons   Pokemons  @relation(fields: [pokemonId, formId], references: [id, formId])
+  formNo     Int       @map("form_no")
+  formName   String    @map("form_name")
+  pokemons   Pokemons  @relation(fields: [id], references: [id])
   nickname   String    @db.VarChar(12)
   sex        SEX
   abilityId  Int       @map("ability_id")
@@ -292,29 +295,23 @@ model BattleRecord {
 model BattleOpponentParty {
   id Int @id @default(autoincrement())
 
-  opponentPokemonId1     Int      @map("opponent_pokemon_id1")
-  opponentPokemonFormId1 Int      @map("opponent_pokemon_form_id1")
-  pokemons1              Pokemons @relation("opponentPokemon1", fields: [opponentPokemonId1, opponentPokemonFormId1], references: [id, formId])
+  opponentPokemonId1 Int      @map("opponent_pokemon_id1")
+  pokemons1          Pokemons @relation("opponentPokemon1", fields: [opponentPokemonId1], references: [id])
 
-  opponentPokemonId2     Int      @map("opponent_pokemon_id2")
-  opponentPokemonFormId2 Int      @map("opponent_pokemon_form_id2")
-  pokemons2              Pokemons @relation("opponentPokemon2", fields: [opponentPokemonId2, opponentPokemonFormId2], references: [id, formId])
+  opponentPokemonId2 Int      @map("opponent_pokemon_id2")
+  pokemons2          Pokemons @relation("opponentPokemon2", fields: [opponentPokemonId2], references: [id])
 
-  opponentPokemonId3     Int      @map("opponent_pokemon_id3")
-  opponentPokemonFormId3 Int      @map("opponent_pokemon_form_id3")
-  pokemons3              Pokemons @relation("opponentPokemon3", fields: [opponentPokemonId3, opponentPokemonFormId3], references: [id, formId])
+  opponentPokemonId3 Int      @map("opponent_pokemon_id3")
+  pokemons3          Pokemons @relation("opponentPokemon3", fields: [opponentPokemonId3], references: [id])
 
-  opponentPokemonId4     Int      @map("opponent_pokemon_id4")
-  opponentPokemonFormId4 Int      @map("opponent_pokemon_form_id4")
-  pokemons4              Pokemons @relation("opponentPokemon4", fields: [opponentPokemonId4, opponentPokemonFormId4], references: [id, formId])
+  opponentPokemonId4 Int      @map("opponent_pokemon_id4")
+  pokemons4          Pokemons @relation("opponentPokemon4", fields: [opponentPokemonId4], references: [id])
 
-  opponentPokemonId5     Int      @map("opponent_pokemon_id5")
-  opponentPokemonFormId5 Int      @map("opponent_pokemon_form_id5")
-  pokemons5              Pokemons @relation("opponentPokemon5", fields: [opponentPokemonId5, opponentPokemonFormId5], references: [id, formId])
+  opponentPokemonId5 Int      @map("opponent_pokemon_id5")
+  pokemons5          Pokemons @relation("opponentPokemon5", fields: [opponentPokemonId5], references: [id])
 
-  opponentPokemonId6     Int      @map("opponent_pokemon_id6")
-  opponentPokemonFormId6 Int      @map("opponent_pokemon_form_id6")
-  pokemons6              Pokemons @relation("opponentPokemon6", fields: [opponentPokemonId6, opponentPokemonFormId6], references: [id, formId])
+  opponentPokemonId6 Int      @map("opponent_pokemon_id6")
+  pokemons6          Pokemons @relation("opponentPokemon6", fields: [opponentPokemonId6], references: [id])
 
   @@map("BattleOpponentRecord")
 }

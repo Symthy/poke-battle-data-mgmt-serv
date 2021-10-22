@@ -14,6 +14,18 @@ apiDoc/PokeRest.v1.yaml
 ./autoGen.sh
 ```
 
+## Use Libraries
+
+- ent: https://entgo.io/ja/docs/getting-started/
+```
+go get entgo.io/ent/cmd/ent
+cd pokeRest/adapters/orm
+go run entgo.io/ent/cmd/ent init --target ./schema Users Pokemons Abilities Moves Types Items Forms
+cd autogen/ent/
+go run entgo.io/ent/cmd/entc generate --target . ../../schema
+```
+- wire
+
 ## Use tools
 
 ### Create API spec tool

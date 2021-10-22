@@ -3,7 +3,7 @@ package handler
 import (
 	"sync"
 
-	"github.com/Symthy/PokeRest/pokeRest/autoGen/server"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/labstack/echo/v4"
 )
 
