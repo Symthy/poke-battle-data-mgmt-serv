@@ -1,7 +1,10 @@
 package schema
 
 import (
+	"regexp"
+
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/property"
 )
@@ -14,10 +17,11 @@ type Pokemons struct {
 // Fields of the Pokemons.
 func (Pokemons) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("pokedex_no").Positive(),
-		field.Int("form_no").Positive(),
+		field.Int("pokedex_no").Positive().Min(0),
+		field.Int("form_no").Positive().Min(0),
 		field.String("form_name").NotEmpty(),
 		field.String("name").NotEmpty(),
+		field.String("english_name").Match(regexp.MustCompile("^[A-Z].*$")),
 		field.Enum("type1").GoType(property.Types("")),
 		field.Enum("type2").GoType(property.Types("")).Optional(),
 		field.Int("ability_id1").Positive(),
@@ -35,5 +39,20 @@ func (Pokemons) Fields() []ent.Field {
 
 // Edges of the Pokemons.
 func (Pokemons) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("ability1", Abilities.Type).
+			Field("ability_id1").
+			Required().
+			Unique(),
+		edge.To("ability2", Abilities.Type).
+			Field("ability_id2").
+			Unique(),
+		edge.To("hidden_ability", Abilities.Type).
+			Field("hidden_ability_id").
+			Unique(),
+		edge.To("form", Forms.Type).
+			Field("form_no").
+			Required().
+			Unique(),
+	}
 }
