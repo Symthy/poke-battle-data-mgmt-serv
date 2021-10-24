@@ -54,5 +54,9 @@ func (Pokemons) Edges() []ent.Edge {
 			Field("form_no").
 			Required().
 			Unique(),
+		edge.From("to_trained_pokemon", TrainedPokemons.Type).
+			Ref("use_pokemon"),
+		edge.From("pokemon_to_move", Moves.Type).
+			Ref("move_to_pokemon"),
 	}
 }

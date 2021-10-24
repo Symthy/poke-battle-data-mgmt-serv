@@ -48,30 +48,31 @@ func (Role) Values() (values []string) {
 }
 
 // 性別
-type Sex string
+type Gender string
 
 const (
-	Male   Sex = "Male"
-	Female Sex = "Female"
+	Male   Gender = "Male"
+	Female Gender = "Female"
 )
 
-func (Sex) Values() (values []string) {
-	for _, s := range []Sex{Male, Female} {
+func (Gender) Values() (values []string) {
+	for _, s := range []Gender{Male, Female} {
 		values = append(values, string(s))
 	}
 	return
 }
 
 // 分類
-type Species string
+type MoveSpecies string
 
 const (
-	Physical Species = "Physical" // 物理
-	Special  Species = "Special"  // 特殊
+	Physical MoveSpecies = "Physical" // 物理
+	Special  MoveSpecies = "Special"  // 特殊
+	Status   MoveSpecies = "Status"   // 変化
 )
 
-func (Species) Values() (values []string) {
-	for _, s := range []Species{Physical, Special} {
+func (MoveSpecies) Values() (values []string) {
+	for _, s := range []MoveSpecies{Physical, Special, Status} {
 		values = append(values, string(s))
 	}
 	return
@@ -87,6 +88,56 @@ const (
 
 func (BattleFormats) Values() (values []string) {
 	for _, s := range []BattleFormats{Single, Double} {
+		values = append(values, string(s))
+	}
+	return
+}
+
+// 性格
+type Nature string
+
+const (
+	Lonely  Nature = "Lonely"  // さみしがりや（A↑B↓）
+	Adamant Nature = "Adamant" // いじっぱり（A↑C↓）
+	Naughty Nature = "Naughty" // やんちゃ（A↑D↓）
+	Brave   Nature = "Brave"   // ゆうかん（A↑S↓）
+
+	Bold    Nature = "Bold"    // ずぶとい（B↑A↓）
+	Impish  Nature = "Impish"  // わんぱく（B↑C↓）
+	Lax     Nature = "Lax"     // のうてんき（B↑D↓）
+	Relaxed Nature = "Relaxed" // のんき（B↑S↓）
+
+	Modest Nature = "Modest" // ひかえめ（C↑A↓）
+	Mild   Nature = "Mild"   // おっとり（C↑B↓）
+	Rash   Nature = "Rash"   // うっかりや（C↑D↓）
+	Quiet  Nature = "Quiet"  // れいせい（C↑S↓）
+
+	Calm    Nature = "Calm"    // おだやか（D↑A↓）
+	Gentle  Nature = "Gentle"  // おとなしい（D↑B↓）
+	Careful Nature = "Careful" // しんちょう（D↑C↓）
+	Sassy   Nature = "Sassy"   // なまいき（D↑S↓）
+
+	Timid Nature = "Timid" // おくびょう（S↑A↓）
+	Hasty Nature = "Hasty" // せっかち（S↑B↓）
+	Jolly Nature = "Jolly" // ようき（S↑C↓）
+	Naive Nature = "Naive" // むじゃき（S↑D↓）
+
+	Hardy   Nature = "Hardy"   // がんばりや（補正無し）
+	Docile  Nature = "Docile"  // すなお（補正無し）
+	Serious Nature = "Serious" // まじめ（補正無し）
+	Bashful Nature = "Bashful" // てれや（補正無し）
+	Quirky  Nature = "Quirky"  // きまぐれ（補正無し）
+)
+
+func (Nature) Values() (values []string) {
+	for _, s := range []Nature{
+		Lonely, Adamant, Naughty, Brave,
+		Bold, Impish, Lax, Relaxed,
+		Modest, Mild, Rash, Quiet,
+		Calm, Gentle, Careful, Sassy,
+		Timid, Hasty, Jolly, Naive,
+		Hardy,
+	} {
 		values = append(values, string(s))
 	}
 	return
