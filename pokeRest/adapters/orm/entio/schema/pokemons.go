@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/property"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/entio/property"
 )
 
 // Pokemons holds the schema definition for the Pokemons entity.
@@ -34,6 +34,7 @@ func (Pokemons) Fields() []ent.Field {
 		field.Int("base_stats_c").Positive().Default(0),
 		field.Int("base_stats_d").Positive().Default(0),
 		field.Int("base_stats_s").Positive().Default(0),
+		field.Int("generation").Positive().Min(0),
 	}
 }
 

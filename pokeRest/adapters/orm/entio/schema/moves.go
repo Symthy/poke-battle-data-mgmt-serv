@@ -4,7 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/property"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/entio/property"
 )
 
 // Moves holds the schema definition for the Moves entity.

@@ -4,7 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/schema/common"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/entio/schema/common"
 )
 
 // Abilities holds the schema definition for the Abilities entity.

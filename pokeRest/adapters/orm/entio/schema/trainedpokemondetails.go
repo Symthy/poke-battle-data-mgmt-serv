@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/property"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/entio/property"
 )
 
 // TrainedPokemonDetails holds the schema definition for the TrainedPokemonDetails entity.

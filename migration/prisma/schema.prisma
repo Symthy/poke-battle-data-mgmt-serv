@@ -48,14 +48,13 @@ model Pokemons {
 }
 
 model Forms {
-  formNo            Int
-  formName          String  @map("form_name") @db.VarChar(20)
+  id                Int     @id @default(autoincrement())
+  name              String  @db.VarChar(20)
   isRegionalVariant Boolean @default(false) @map("is_regional_variant") @db.Boolean
   regionName        String  @map("region_name") @db.VarChar(20)
 
   pokemons Pokemons[]
 
-  @@id([formNo, formName])
   @@map("forms")
 }
 
@@ -114,7 +113,7 @@ model Moves {
   id            Int     @id @default(autoincrement())
   name          String  @unique @db.VarChar(20)
   type          Type
-  moveSpecies   Species @map("move_species")
+  species       Species
   power         Int // 威力
   accuracy      Int // 命中率
   pp            Int
@@ -126,6 +125,14 @@ model Moves {
   trainedPokemons3 TrainedPokemons[] @relation("move3")
   trainedPokemons4 TrainedPokemons[] @relation("move4")
   @@map("moves")
+}
+
+model PokemonMoves {
+  pokemonId Int @map("pokemon_id")
+  moveId    Int @map("move_id")
+
+  @@id([pokemonId, moveId])
+  @@map("pokemon_moves")
 }
 
 model HeldItems {
@@ -184,8 +191,6 @@ model Profile {
 model TrainedPokemons {
   id         Int       @id @default(autoincrement())
   pokemonId  Int       @map("pokemon_id")
-  formNo     Int       @map("form_no")
-  formName   String    @map("form_name")
   pokemons   Pokemons  @relation(fields: [id], references: [id])
   nickname   String    @db.VarChar(12)
   sex        SEX
