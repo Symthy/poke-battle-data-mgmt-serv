@@ -6,6 +6,7 @@ type PartyResult struct {
 	Seasons    int
 	MaxRate    int
 	MaxRanking int
+	PartyId    uint // has many
 }
 
 func (PartyResult) TableName() string {

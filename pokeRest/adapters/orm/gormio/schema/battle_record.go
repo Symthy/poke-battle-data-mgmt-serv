@@ -5,9 +5,8 @@ import "gorm.io/gorm"
 type BattleRecord struct {
 	gorm.Model
 	PartyId               uint
-	Party                 Party
-	BattleOpponentPartyID uint
-	BattleOpponentParty   BattleOpponentParty
+	Party                 Party `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	BattleOpponentPartyId uint  // has one (感覚的に向き逆だがデータ流用のため許容)
 	// 自身選出
 	SelfElectionPokemonId1 uint
 	SelfElectionPokemonId2 uint

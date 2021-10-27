@@ -3,7 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/property"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/entio/property"
 )
 
 // TypeCompatibility holds the schema definition for the TypeCompatibility entity.

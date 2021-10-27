@@ -8,6 +8,9 @@ type HeldItem struct {
 	Description       string
 	CorrectionValueId uint
 	CorrectionValue   mixin.CorrectionValue `gorm:"embedded"`
+
+	// relation
+	TrainedPokemonBase TrainedPokemonBase `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (HeldItem) TableName() string {

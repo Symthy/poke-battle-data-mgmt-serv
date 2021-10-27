@@ -12,6 +12,11 @@ type User struct {
 	Email       *string
 	Profile     *string
 	Role        enum.Role
+
+	// relation
+	TrainedPokemon     []*TrainedPokemon     `gorm:"foreignKey:id;references:CreateUserId"` // has many
+	TrainedPokemonBase []*TrainedPokemonBase `gorm:"foreignKey:id;references:CreateUserId"` // has many
+	Party              []*Party              `gorm:"foreignKey:id;references:CreateUserId"` // has many
 }
 
 func (User) TableName() string {

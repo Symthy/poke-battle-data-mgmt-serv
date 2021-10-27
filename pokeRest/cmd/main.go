@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/Symthy/PokeRest/pokeRest/autoGen/server"
-	"github.com/Symthy/PokeRest/pokeRest/controller/handler"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/handler"
 	"github.com/labstack/echo/v4"
 	echomiddleware "github.com/labstack/echo/v4/middleware"
 )

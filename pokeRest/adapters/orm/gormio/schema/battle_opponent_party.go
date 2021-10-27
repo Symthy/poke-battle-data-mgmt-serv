@@ -8,6 +8,8 @@ type BattleOpponentParty struct {
 	OpponentPokemonId4 int
 	OpponentPokemonId5 int
 	OpponentPokemonId6 int
+	// relation
+	BattleRecord BattleRecord `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"` // has one
 }
 
 func (BattleOpponentParty) TableName() string {
