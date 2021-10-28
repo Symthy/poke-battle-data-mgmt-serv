@@ -1,6 +1,7 @@
 node_modules
 
 pokeRest/adapters/rest/autogen/*
-
 pokeRest/adapters/orm/autogen/ent/*
 !pokeRest/adapters/orm/autogen/ent/generate.go
+
+conf/config.yml

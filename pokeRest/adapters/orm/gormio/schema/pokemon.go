@@ -7,7 +7,7 @@ type Pokemon struct {
 	PokedexNo        int
 	FormNo           uint
 	FormName         string
-	Form             Form `gorm:"foreignKey:id,name;references:FormNo"` // belongs to
+	Form             Form `gorm:"foreignKey:id,name;references:FormNo,FormName"` // belongs to
 	Name             string
 	EnglishName      string
 	Generation       int

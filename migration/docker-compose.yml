@@ -1,15 +1,32 @@
 version: '3'
 services:
   postgres:
-    container_name: pokedb
+    container_name: posgtres
     image: postgres:latest
-    restart: always
+#    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pokedb
+      PGPASSWORD: postgres
+    ports:
+      - '54321:5432'
     volumes:
       - postgres:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+#    restart: always
     ports:
-      - '5432:5432'
+      - 30080:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: info@dummy.info
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
 volumes:
   postgres:
+  pgadmin:
