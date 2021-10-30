@@ -1,4 +1,4 @@
-package main
+package migration
 
 import (
 	"log"
@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func main() {
+func RunMigration() {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer

@@ -13,11 +13,11 @@ type Move struct {
 	IsCanGuard  *bool `gorm:"default:true"`
 
 	// relation
-	Pokemon         []Pokemon      `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Many To Many
-	TrainedPokemon1 TrainedPokemon `gorm:"foreignKey:MoveId1;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`     // has one
-	TrainedPokemon2 TrainedPokemon `gorm:"foreignKey:MoveId2;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`     // has one
-	TrainedPokemon3 TrainedPokemon `gorm:"foreignKey:MoveId3;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`     // has one
-	TrainedPokemon4 TrainedPokemon `gorm:"foreignKey:MoveId4;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`     // has one
+	Pokemon             []*Pokemon         `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`           // Many To Many
+	TrainedPokemonBase1 TrainedPokemonBase `gorm:"foreignKey:MoveId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // has one
+	TrainedPokemonBase2 TrainedPokemonBase `gorm:"foreignKey:MoveId2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // has one
+	TrainedPokemonBase3 TrainedPokemonBase `gorm:"foreignKey:MoveId3;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // has one
+	TrainedPokemonBase4 TrainedPokemonBase `gorm:"foreignKey:MoveId4;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // has one
 }
 
 func (Move) TableName() string {
