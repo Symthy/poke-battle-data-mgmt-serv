@@ -7,16 +7,20 @@ import (
 
 type TrainedPokemonBase struct {
 	gorm.Model
-	Gender     *enum.Gender `sql:"type:gender"`
-	AbilityId  *uint        // has one
-	HeldItemId *uint        // has one
-	MoveId1    *uint        // has one
-	MoveId2    *uint        // has one
-	MoveId3    *uint        // has one
-	MoveId4    *uint        // has one
-	UserId     *uint        // has one
-	// relation
-	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"` // has many
+	Nature       enum.Nature
+	AbilityId    *uint // M:1 <- Ability
+	HeldItemId   *uint // M:1 <- HeldItem
+	MoveId1      *uint // M:1 <- Move
+	MoveId2      *uint // M:1 <- Move
+	MoveId3      *uint // M:1 <- Move
+	MoveId4      *uint // M:1 <- Move
+	EffortValueH int   `gorm:"default:0"`
+	EffortValueA int   `gorm:"default:0"`
+	EffortValueB int   `gorm:"default:0"`
+	EffortValueC int   `gorm:"default:0"`
+	EffortValueD int   `gorm:"default:0"`
+	EffortValueS int   `gorm:"default:0"`
+	CreateUserId *uint // M:1 from User
 }
 
 func (TrainedPokemonBase) TableName() string {

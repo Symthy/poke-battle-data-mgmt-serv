@@ -14,13 +14,19 @@ import (
 
 func main() {
 	var port = flag.Int("port", 8080, "Port for test HTTP server")
-	var is_migration = flag.Bool("migration", false, "run migration")
+	var isMigration = flag.Bool("migrate", false, "run migration")
+	var isDropTables = flag.Bool("alldrop", false, "run drop all table")
 	flag.Parse()
 
-	if *is_migration {
+	if *isMigration {
 		log.Print("Start Migration")
-		migration.RunMigration()
+		migration.RunAutoMigration()
 		log.Print("End Migration")
+		return
+	} else if *isDropTables {
+		log.Print("Start Drop All Tables")
+		migration.RunDropTables()
+		log.Print("End Drop All Tables")
 		return
 	}
 

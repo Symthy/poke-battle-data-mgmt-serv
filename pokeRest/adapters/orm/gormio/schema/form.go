@@ -10,5 +10,5 @@ type Form struct {
 }
 
 func (Form) TableName() string {
-	return "form"
+	return "forms"
 }

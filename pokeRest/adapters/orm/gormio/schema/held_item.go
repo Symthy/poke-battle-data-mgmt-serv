@@ -10,9 +10,9 @@ type HeldItem struct {
 	CorrectionValue   mixin.CorrectionValue `gorm:"embedded"`
 
 	// relation
-	TrainedPokemonBase TrainedPokemonBase `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TrainedPokemonBase []TrainedPokemonBase `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> TrainedPokemonBase
 }
 
 func (HeldItem) TableName() string {
-	return "held_item"
+	return "held_items"
 }

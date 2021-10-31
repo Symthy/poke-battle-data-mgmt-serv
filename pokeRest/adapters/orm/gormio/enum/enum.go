@@ -149,3 +149,12 @@ func (na *Nature) Scan(value interface{}) error {
 func (na Nature) Value() (driver.Value, error) {
 	return string(na), nil
 }
+
+// 対戦結果
+type BattleResult string
+
+const (
+	Win  BattleResult = "Win"
+	Lose BattleResult = "Lose"
+	Draw BattleResult = "Draw"
+)

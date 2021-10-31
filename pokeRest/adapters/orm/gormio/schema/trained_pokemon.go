@@ -10,17 +10,20 @@ type TrainedPokemon struct {
 	PokemonId            uint
 	Pokemon              Pokemon // belongs to
 	Nickname             *string
-	TrainedPokemonBaseId uint // has many
-	Nature               enum.Nature
-	EffortValueH         int  `gorm:"default:0"`
-	EffortValueA         int  `gorm:"default:0"`
-	EffortValueB         int  `gorm:"default:0"`
-	EffortValueC         int  `gorm:"default:0"`
-	EffortValueD         int  `gorm:"default:0"`
-	EffortValueS         int  `gorm:"default:0"`
-	CreateUserId         uint // has many
+	Gender               *enum.Gender `sql:"type:gender"`
+	Description          *string
+	TrainedPokemonBaseId uint
+	TrainedPokemonBase   TrainedPokemonBase `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
+	// belong to
+	CreateUserId uint // M:1 from User
+
+	// relation
+	BattleRecord1 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord
+	BattleRecord2 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord
+	BattleRecord3 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId3;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord
+	BattleRecord4 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId4;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord
 }
 
 func (TrainedPokemon) TableName() string {
-	return "trained_pokemon"
+	return "trained_pokemons"
 }

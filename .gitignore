@@ -5,3 +5,6 @@ pokeRest/adapters/orm/autogen/ent/*
 !pokeRest/adapters/orm/autogen/ent/generate.go
 
 conf/config.yml
+
+schema/erd.png
+schema/output/
