@@ -22,6 +22,14 @@ apiDoc/PokeRest.v1.yaml
 
 - Echo
 
+### DI 
+
+- wire
+https://github.com/google/wire
+```
+go get github.com/google/wire/cmd/wire
+```
+
 ### ORM 
 - gorm: 本使用
 https://gorm.io/ja_JP/docs/index.html

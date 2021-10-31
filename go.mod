@@ -9,6 +9,12 @@ require (
 )
 
 require (
+	github.com/google/subcommands v1.0.1 // indirect
+	github.com/google/wire v0.5.0 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+)
+
+require (
 	entgo.io/ent v0.9.1 // indirect
 	github.com/buildkite/interpolate v0.0.0-20200526001904-07f35b4ae251
 	github.com/getkin/kin-openapi v0.61.0 // indirect

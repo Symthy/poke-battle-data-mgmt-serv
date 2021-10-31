@@ -1,12 +1,12 @@
 package migration
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/db"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/db"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/schema"
 )
 
 func RunAutoMigration() {
-	db := db.GetDb()
+	db := db.NewGormDbAccessor().GetDb()
 
 	db.AutoMigrate(
 		&schema.Ability{},
@@ -25,7 +25,7 @@ func RunAutoMigration() {
 }
 
 func RunDropTables() {
-	db := db.GetDb()
+	db := db.NewGormDbAccessor().GetDb()
 	db.Migrator().DropTable(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},
