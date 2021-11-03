@@ -1,20 +1,23 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/enum"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+)
 
 type Pokemon struct {
-	ID               uint `gorm:"primaryKey;autoIncrement"`
+	ID               int `gorm:"primaryKey;autoIncrement"`
 	PokedexNo        int
-	FormNo           uint
+	FormNo           int
 	FormName         string
 	Name             string
 	EnglishName      string
 	Generation       int
 	Type1            enum.PokemonType
 	Type2            enum.PokemonType
-	AbilityId1       *uint // has one
-	AbilityId2       *uint // has one
-	HiddenAbilityId  *uint // has one
+	AbilityId1       *int  // has one
+	AbilityId2       *int  // has one
+	HiddenAbilityId  *int  // has one
 	IsFinalEvolution *bool `gorm:"default:false"`
 
 	// relation
@@ -37,4 +40,22 @@ type Pokemon struct {
 
 func (Pokemon) TableName() string {
 	return "pokemons"
+}
+
+func (p Pokemon) ConvertToDomain() model.Pokemon {
+	return model.NewPokemon(
+		p.ID,
+		p.PokedexNo,
+		p.FormNo,
+		p.FormName,
+		p.Name,
+		p.EnglishName,
+		p.Generation,
+		p.Type1.String(),
+		p.Type2.String(),
+		p.AbilityId1,
+		p.AbilityId2,
+		p.HiddenAbilityId,
+		*p.IsFinalEvolution,
+	)
 }

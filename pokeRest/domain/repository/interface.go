@@ -1,12 +1,15 @@
-package datastore
+package repository
+
+import "github.com/Symthy/PokeRest/pokeRest/domain/model"
 
 type IBasicRepository interface {
-	FindById()
+	FindById(id int)
 	FindAll()
 }
 
 type IPokemonRepository interface {
-	IBasicRepository
+	FindById(id int) model.Pokemon
+	FindAll() model.PokemonList
 }
 
 type IAbilityRepository interface {
@@ -27,16 +30,4 @@ type IItemRepository interface {
 
 type IUserRepository interface {
 	IBasicRepository
-}
-
-type IPokemonQueryService interface {
-	QueryPokemon()
-}
-
-type IAbilityQueryService interface {
-	QueryAbility()
-}
-
-type IMoveQueryService interface {
-	QueryMove()
 }

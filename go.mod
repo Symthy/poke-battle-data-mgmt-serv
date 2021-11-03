@@ -12,6 +12,7 @@ require (
 	github.com/google/subcommands v1.0.1 // indirect
 	github.com/google/wire v0.5.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/thoas/go-funk v0.9.1 // indirect
 )
 
 require (

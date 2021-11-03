@@ -1,7 +1,14 @@
 package pokemon
 
-import "github.com/Symthy/PokeRest/pokeRest/application/datastore"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+)
 
 type PokemonReadService struct {
-	repository datastore.IAbilityRepository
+	pokemonRepository repository.IPokemonRepository
+}
+
+func (s PokemonReadService) GetPokemon(id int) model.Pokemon {
+	s.pokemonRepository.FindById(id)
 }

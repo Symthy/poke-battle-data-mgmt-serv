@@ -1,6 +1,10 @@
 package enum
 
-import "database/sql/driver"
+import (
+	"database/sql/driver"
+
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+)
 
 // ポケモンタイプ
 type PokemonType string
@@ -23,6 +27,7 @@ const (
 	Ice      PokemonType = "Ice"
 	Dragon   PokemonType = "Dragon"
 	Dark     PokemonType = "Dark"
+	Fairy    PokemonType = "Fairy"
 	None     PokemonType = "None"
 )
 
@@ -33,6 +38,18 @@ func (ty *PokemonType) Scan(value interface{}) error {
 
 func (ty PokemonType) Value() (driver.Value, error) {
 	return string(ty), nil
+}
+
+func (ty PokemonType) String() string {
+	return string(ty)
+}
+
+func (ty PokemonType) ConvertToDomain() value.PokemonType {
+	return value.NewPokemonType(ty.String())
+}
+
+func Convert(t value.PokemonType) PokemonType {
+	return PokemonType(t.EnglishName())
 }
 
 // ロール

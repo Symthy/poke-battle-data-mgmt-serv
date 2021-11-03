@@ -47,7 +47,11 @@ go run entgo.io/ent/cmd/ent init --target ./schema Pokemons Forms Abilities Move
 cd autogen/ent/
 go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ./autogen/ent/schema
 ```
-- wire
+
+### Other
+
+- go-funk: 戻り値がinterface{}になるため使用は限定的にする
+https://github.com/thoas/go-funk
 
 ## Use tools
 
