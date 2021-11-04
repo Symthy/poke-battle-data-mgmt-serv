@@ -1,753 +1,1427 @@
-openapi: 3.0.0
-info:
-  title: PokeRest
-  version: '1.0'
-  description: PokeRest API
-  contact:
-    name: SYM
-    url: 'https://twitter.com/SYM_souten'
-  license:
-    name: MIT
-servers:
-  - url: 'http://localhost:3000/PokeRest'
-paths:
-  /pokemons:
-    parameters: []
-    get:
-      summary: get pokemons
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pokemons'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-pokemons
-      description: 'all '
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: move
-          description: 技名検索
-        - schema:
-            type: string
-          in: query
-          name: type
-          description: タイプ検索
-        - schema:
-            type: string
-          in: query
-          name: name
-          description: 名前検索
-        - schema:
-            type: string
-          in: query
-          name: pokedexNo
-          description: 図鑑No検索
-  '/pokemons/{pokedexNo}/{formNo}':
-    parameters:
-      - schema:
-          type: number
-        name: pokedexNo
-        in: path
-        required: true
-        description: 図鑑No
-      - schema:
-          type: number
-        name: formNo
-        in: path
-        description: フォルムNo
-        required: true
-    get:
-      summary: get pokemon by No
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pokemon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-pokemon-by-pokedexNo-and-formNo
-      description: 指定ポケモン情報取得
-  '/pokemons/abilities/{abilityId}':
-    get:
-      summary: get pokemons of specify ability
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pokemons'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-pokemons-of-specified-ability
-      description: 指定特性のポケモン一覧取得
-    parameters:
-      - schema:
-          type: number
-        name: abilityId
-        in: path
-        required: true
-  '/pokemons/moves/{moveId}':
-    get:
-      summary: get pokemons with specified move
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pokemons'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-pokemons-with-specified-move
-      description: 指定技を覚えるポケモン一覧取得
-    parameters:
-      - schema:
-          type: string
-        name: moveId
-        in: path
-        required: true
-  /moves:
-    get:
-      summary: get moves
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Moves'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-moves
-      description: 技一覧取得
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: name
-          description: 技名検索
-        - schema:
-            type: string
-          in: query
-          name: type
-          description: タイプ検索
-    parameters: []
-  '/moves/{moveId}':
-    parameters:
-      - schema:
-          type: number
-        name: moveId
-        in: path
-        required: true
-        description: 技ID
-    get:
-      summary: get move by id
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Move'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-move-by-Id
-      description: 技取得
-  '/moves/pokemons/{pokedexNo}/{formNo}':
-    parameters:
-      - schema:
-          type: number
-        name: pokedexNo
-        in: path
-        required: true
-        description: 図鑑No
-      - schema:
-          type: number
-        name: formNo
-        in: path
-        description: フォルムNo
-        required: true
-    get:
-      summary: get move with specified pokemon
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Moves'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-moves-with-specified-pokemon
-      description: 指定ポケモンの技一覧取得
-  /abilities:
-    parameters: []
-    get:
-      summary: get abilities
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Abilities'
-          headers: {}
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-abilities
-      description: 特性取得
-      tags:
-        - Pokemon Base Data
-  '/abilities/{avilityId}':
-    parameters:
-      - schema:
-          type: number
-        name: avilityId
-        in: path
-        description: 特性ID
-        required: true
-    get:
-      summary: get ability by id
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ability'
-          headers:
-            header-0:
-              schema:
-                type: string
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-ability-by-Id
-      description: 特性取得
-      tags:
-        - Pokemon Base Data
-  /types:
-    get:
-      summary: get types
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  types:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - types
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-types
-      description: タイプ一覧取得
-      parameters:
-        - schema:
-            type: number
-          in: query
-          name: effect
-          description: '効果倍率指定(0,0.5,1,2)'
-  /types/compability:
-    get:
-      summary: get type compability
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/typeCompatibility'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-types-compability
-      description: タイプ相性表取得
-    parameters: []
-  '/types/compability/attack/{type}':
-    parameters:
-      - schema:
-          type: string
-        name: type
-        in: path
-        required: true
-        description: タイプ指定
-    get:
-      summary: get type compability of attack side
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/typeCompatibility'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-type-compability-of-attack-side
-      description: タイプ相性（攻撃側）
-  '/types/compability/defense/{type}':
-    parameters:
-      - schema:
-          type: string
-        name: type
-        in: path
-        required: true
-        description: タイプ指定
-    get:
-      summary: get type compability of defense side
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/typeCompatibility'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-type-compability-of-defense-side
-      description: タイプ相性（防御側）取得
-  /items:
-    get:
-      summary: get items
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Items'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-items
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: name
-          description: アイテム名検索
-        - schema:
-            type: string
-          in: query
-          name: specifies
-          description: 分類指定(All/Attack/Deffence)
-components:
-  schemas:
-    Pokemon:
-      description: ''
-      type: object
-      properties:
-        pokedexNo:
-          type: number
-        formId:
-          type: number
-        name:
-          type: string
-          minLength: 1
-        englishName:
-          type: string
-          minLength: 1
-        baseStatsH:
-          type: number
-        baseStatsA:
-          type: number
-        baseStatsB:
-          type: number
-        baseStatsC:
-          type: number
-        baseStatsD:
-          type: number
-        baseStatsS:
-          type: number
-        type1:
-          type: string
-        type2:
-          type: string
-        ability1:
-          type: string
-        ability2:
-          type: string
-        hiddenAbility:
-          type: string
-        isFinalEvolution:
-          type: boolean
-      required:
-        - pokedexNo
-        - formId
-        - name
-        - englishName
-        - baseStatsH
-        - baseStatsA
-        - baseStatsB
-        - baseStatsC
-        - baseStatsD
-        - baseStatsS
-        - type1
-        - ability1
-    Move:
-      description: ''
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-        species:
-          description: 分類（物理/特殊）
-          type: string
-        power:
-          type: number
-          description: 威力
-        specialMovePower:
-          type: number
-          description: 威力（ダイマックス技等）
-        accuracy:
-          type: number
-          description: 命中
-        pp:
-          type: number
-          description: PP
-        isContactMove:
-          type: boolean
-          description: 接触/非接触
-        isCanGuard:
-          type: boolean
-          description: 守る
-      required:
-        - id
-        - name
-        - type
-        - species
-        - power
-        - specialMovePower
-        - accuracy
-        - pp
-        - isContactMove
-        - isCanGuard
-    Pokemons:
-      description: pokemon data list
-      type: object
-      properties:
-        pokemons:
-          type: array
-          items:
-            $ref: '#/components/schemas/Pokemon'
-        count:
-          type: number
-      required:
-        - pokemons
-        - count
-      title: Pokemons
-    Moves:
-      description: ''
-      type: object
-      properties:
-        moves:
-          type: array
-          items:
-            $ref: '#/components/schemas/Move'
-        count:
-          type: number
-      required:
-        - moves
-        - count
-    Ability:
-      description: ''
-      type: object
-      properties:
-        id:
-          type: number
-        name:
-          type: string
-        description:
-          type: string
-        correctionValues:
-          $ref: '#/components/schemas/CorrectionData'
-      required:
-        - id
-        - name
-        - description
-    Abilities:
-      description: 特性一覧
-      type: object
-      properties:
-        abilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ability'
-        count:
-          type: number
-      required:
-        - abilities
-        - count
-      title: Abilities
-    Items:
-      title: Items
-      type: object
-      properties:
-        id:
-          type: number
-        name:
-          type: string
-        description:
-          type: string
-        correctionValues:
-          $ref: '#/components/schemas/CorrectionData'
-    CorrectionData:
-      description: ''
-      type: object
-      properties:
-        physicalMovePowerCorrectionValue:
-          type: number
-          description: 物理技威力補正値
-        specialMovePowerCorrectionValue:
-          type: number
-          description: 特殊技威力補正値
-        attackPowerCorrectionValue:
-          type: number
-          description: 攻撃威力補正値
-        specialPowerCorrectionValue:
-          type: number
-          description: 特殊攻撃威力補正値
-        attackCorrectionValue:
-          type: number
-          description: 攻撃(力)補正値
-        specialCorrectionValue:
-          type: number
-          description: 特殊攻撃(力)補正値
-        defenseCorrectionValue:
-          type: number
-          description: 防御(力)補正値
-        specialDefenseCorrectionValue:
-          type: number
-          description: 特殊防御(力)補正値
-        damageCorrectionType1:
-          type: string
-          description: ダメージ補正タイプ1
-        damageCorrectionValue1:
-          type: number
-          description: ダメージ補正値1
-        damageCorrectionType2:
-          type: string
-          description: ダメージ補正タイプ2
-        damageCorrectionValue2:
-          type: number
-          description: ダメージ補正値2
-        weightCorrectionValue:
-          type: number
-          description: 重さ補正値
-    typeCompatibility:
-      description: ''
-      type: object
-      x-examples:
-        example-1:
-          compatibilityTable:
-            - '0':
-                - {}
-          typeOrder:
-            - {}
-      properties:
-        compatibilityTable:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-        typeOrder:
-          type: array
-          description: テーブル行列のタイプ順序
-          items:
-            type: string
-      required:
-        - compatibilityTable
-        - typeOrder
-    Error:
-      title: Error
-      type: object
-      properties:
-        id:
-          type: string
-        message:
-          type: string
-        type:
-          type: string
-  responses:
-    '400':
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    '401':
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    '403':
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    '404':
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-tags:
-  - name: Pokemon Base Data
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PokeRest",
+    "version": "1.0",
+    "description": "PokeRest API",
+    "contact": {
+      "name": "SYM",
+      "url": "https://twitter.com/SYM_souten"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/PokeRest"
+    }
+  ],
+  "paths": {
+    "/pokemons": {
+      "parameters": [],
+      "get": {
+        "summary": "get pokemons",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemons"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemons",
+        "description": "all ",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "move",
+            "description": "技名検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "type",
+            "description": "タイプ検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "description": "名前検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "pokedexNo",
+            "description": "図鑑No検索"
+          }
+        ]
+      }
+    },
+    "/pokemons/details": {
+      "parameters": [],
+      "get": {
+        "summary": "get pokemons",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemons"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemons-details",
+        "description": "all ",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "move",
+            "description": "技名検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "type",
+            "description": "タイプ検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "description": "名前検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "pokedexNo",
+            "description": "図鑑No検索"
+          }
+        ]
+      }
+    },
+    "/pokemons/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "get pokemon by Id",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemon"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemon-by-id",
+        "description": "指定ポケモン情報取得"
+      }
+    },
+    "/pokemons/details/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "get pokemon by Id",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemon"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemon-detail-by-id",
+        "description": "指定ポケモン情報取得"
+      }
+    },
+    "/pokemons/{pokedexNo}/{formNo}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "pokedexNo",
+          "in": "path",
+          "required": true,
+          "description": "図鑑No"
+        },
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "formNo",
+          "in": "path",
+          "description": "フォルムNo",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "get pokemon by No",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemon"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemon-by-pokedexNo-and-formNo",
+        "description": "指定ポケモン情報取得"
+      }
+    },
+    "/pokemons/abilities/{abilityId}": {
+      "get": {
+        "summary": "get pokemons of specify ability",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemons"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemons-of-specified-ability",
+        "description": "指定特性のポケモン一覧取得"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "abilityId",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/pokemons/moves/{moveId}": {
+      "get": {
+        "summary": "get pokemons with specified move",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemons"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-pokemons-with-specified-move",
+        "description": "指定技を覚えるポケモン一覧取得"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "moveId",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/moves": {
+      "get": {
+        "summary": "get moves",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Moves"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-moves",
+        "description": "技一覧取得",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "description": "技名検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "type",
+            "description": "タイプ検索"
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/moves/{moveId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "moveId",
+          "in": "path",
+          "required": true,
+          "description": "技ID"
+        }
+      ],
+      "get": {
+        "summary": "get move by id",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Move"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-move-by-Id",
+        "description": "技取得"
+      }
+    },
+    "/moves/pokemons/{pokedexNo}/{formNo}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "pokedexNo",
+          "in": "path",
+          "required": true,
+          "description": "図鑑No"
+        },
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "formNo",
+          "in": "path",
+          "description": "フォルムNo",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "get move with specified pokemon",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Moves"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-moves-with-specified-pokemon",
+        "description": "指定ポケモンの技一覧取得"
+      }
+    },
+    "/abilities": {
+      "parameters": [],
+      "get": {
+        "summary": "get abilities",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Abilities"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-abilities",
+        "description": "特性取得",
+        "tags": [
+          "Pokemon Base Data"
+        ]
+      }
+    },
+    "/abilities/{avilityId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "avilityId",
+          "in": "path",
+          "description": "特性ID",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "get ability by id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ability"
+                }
+              }
+            },
+            "headers": {
+              "header-0": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-ability-by-Id",
+        "description": "特性取得",
+        "tags": [
+          "Pokemon Base Data"
+        ]
+      }
+    },
+    "/types": {
+      "get": {
+        "summary": "get types",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "types": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "types"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-types",
+        "description": "タイプ一覧取得",
+        "parameters": [
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "effect",
+            "description": "効果倍率指定(0,0.5,1,2)"
+          }
+        ]
+      }
+    },
+    "/types/compability": {
+      "get": {
+        "summary": "get type compability",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/typeCompatibility"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-types-compability",
+        "description": "タイプ相性表取得"
+      },
+      "parameters": []
+    },
+    "/types/compability/attack/{type}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "description": "タイプ指定"
+        }
+      ],
+      "get": {
+        "summary": "get type compability of attack side",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/typeCompatibility"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-type-compability-of-attack-side",
+        "description": "タイプ相性（攻撃側）"
+      }
+    },
+    "/types/compability/defense/{type}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "description": "タイプ指定"
+        }
+      ],
+      "get": {
+        "summary": "get type compability of defense side",
+        "tags": [
+          "Pokemon Base Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/typeCompatibility"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-type-compability-of-defense-side",
+        "description": "タイプ相性（防御側）取得"
+      }
+    },
+    "/items": {
+      "get": {
+        "summary": "get items",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Items"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "operationId": "get-items",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "description": "アイテム名検索"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "specifies",
+            "description": "分類指定(All/Attack/Deffence)"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pokemon": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "pokedexNo": {
+            "type": "number"
+          },
+          "formId": {
+            "type": "number"
+          },
+          "formName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "englishName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "baseStatsH": {
+            "type": "number"
+          },
+          "baseStatsA": {
+            "type": "number"
+          },
+          "baseStatsB": {
+            "type": "number"
+          },
+          "baseStatsC": {
+            "type": "number"
+          },
+          "baseStatsD": {
+            "type": "number"
+          },
+          "baseStatsS": {
+            "type": "number"
+          },
+          "type1": {
+            "type": "string"
+          },
+          "type2": {
+            "type": "string"
+          },
+          "ability1": {
+            "type": "string"
+          },
+          "ability2": {
+            "type": "string"
+          },
+          "hiddenAbility": {
+            "type": "string"
+          },
+          "isFinalEvolution": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "pokedexNo",
+          "formId",
+          "formName",
+          "name",
+          "englishName",
+          "baseStatsH",
+          "baseStatsA",
+          "baseStatsB",
+          "baseStatsC",
+          "baseStatsD",
+          "baseStatsS",
+          "type1",
+          "ability1",
+          "isFinalEvolution"
+        ]
+      },
+      "PokemonDetail": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "pokedexNo": {
+            "type": "number"
+          },
+          "form": {
+            "$ref": "#/components/schemas/Form"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "englishName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "baseStatsH": {
+            "type": "number"
+          },
+          "baseStatsA": {
+            "type": "number"
+          },
+          "baseStatsB": {
+            "type": "number"
+          },
+          "baseStatsC": {
+            "type": "number"
+          },
+          "baseStatsD": {
+            "type": "number"
+          },
+          "baseStatsS": {
+            "type": "number"
+          },
+          "type1": {
+            "type": "string"
+          },
+          "type2": {
+            "type": "string"
+          },
+          "ability1": {
+            "$ref": "#/components/schemas/Ability"
+          },
+          "ability2": {
+            "$ref": "#/components/schemas/Ability"
+          },
+          "hiddenAbility": {
+            "$ref": "#/components/schemas/Ability"
+          },
+          "isFinalEvolution": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "pokedexNo",
+          "form",
+          "name",
+          "englishName",
+          "baseStatsH",
+          "baseStatsA",
+          "baseStatsB",
+          "baseStatsC",
+          "baseStatsD",
+          "baseStatsS",
+          "type1",
+          "ability1",
+          "isFinalEvolution"
+        ]
+      },
+      "Pokemons": {
+        "description": "pokemon data list",
+        "type": "object",
+        "properties": {
+          "pokemons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pokemon"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "pokemons",
+          "count"
+        ],
+        "title": "Pokemons"
+      },
+      "PokemonDetails": {
+        "description": "pokemon data list",
+        "type": "object",
+        "title": "Pokemons",
+        "properties": {
+          "pokemons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PokemonDetail"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "pokemons",
+          "count"
+        ]
+      },
+      "Move": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "species": {
+            "description": "分類（物理/特殊）",
+            "type": "string"
+          },
+          "power": {
+            "type": "number",
+            "description": "威力"
+          },
+          "specialMovePower": {
+            "type": "number",
+            "description": "威力（ダイマックス技等）"
+          },
+          "accuracy": {
+            "type": "number",
+            "description": "命中"
+          },
+          "pp": {
+            "type": "number",
+            "description": "PP"
+          },
+          "isContactMove": {
+            "type": "boolean",
+            "description": "接触/非接触"
+          },
+          "isCanGuard": {
+            "type": "boolean",
+            "description": "守る"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "species",
+          "power",
+          "specialMovePower",
+          "accuracy",
+          "pp",
+          "isContactMove",
+          "isCanGuard"
+        ]
+      },
+      "Moves": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "moves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Move"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "moves",
+          "count"
+        ]
+      },
+      "Ability": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "correctionValues": {
+            "$ref": "#/components/schemas/CorrectionData"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "Abilities": {
+        "description": "特性一覧",
+        "type": "object",
+        "properties": {
+          "abilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ability"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "abilities",
+          "count"
+        ],
+        "title": "Abilities"
+      },
+      "Items": {
+        "title": "Items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "correctionValues": {
+            "$ref": "#/components/schemas/CorrectionData"
+          }
+        }
+      },
+      "CorrectionData": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "physicalMovePowerCorrectionValue": {
+            "type": "number",
+            "description": "物理技威力補正値"
+          },
+          "specialMovePowerCorrectionValue": {
+            "type": "number",
+            "description": "特殊技威力補正値"
+          },
+          "attackPowerCorrectionValue": {
+            "type": "number",
+            "description": "攻撃威力補正値"
+          },
+          "specialPowerCorrectionValue": {
+            "type": "number",
+            "description": "特殊攻撃威力補正値"
+          },
+          "attackCorrectionValue": {
+            "type": "number",
+            "description": "攻撃(力)補正値"
+          },
+          "specialCorrectionValue": {
+            "type": "number",
+            "description": "特殊攻撃(力)補正値"
+          },
+          "defenseCorrectionValue": {
+            "type": "number",
+            "description": "防御(力)補正値"
+          },
+          "specialDefenseCorrectionValue": {
+            "type": "number",
+            "description": "特殊防御(力)補正値"
+          },
+          "damageCorrectionType1": {
+            "type": "string",
+            "description": "ダメージ補正タイプ1"
+          },
+          "damageCorrectionValue1": {
+            "type": "number",
+            "description": "ダメージ補正値1"
+          },
+          "damageCorrectionType2": {
+            "type": "string",
+            "description": "ダメージ補正タイプ2"
+          },
+          "damageCorrectionValue2": {
+            "type": "number",
+            "description": "ダメージ補正値2"
+          },
+          "weightCorrectionValue": {
+            "type": "number",
+            "description": "重さ補正値"
+          }
+        }
+      },
+      "typeCompatibility": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "compatibilityTable": [
+              {
+                "0": [
+                  {}
+                ]
+              }
+            ],
+            "typeOrder": [
+              {}
+            ]
+          }
+        },
+        "properties": {
+          "compatibilityTable": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "typeOrder": {
+            "type": "array",
+            "description": "テーブル行列のタイプ順序",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "compatibilityTable",
+          "typeOrder"
+        ]
+      },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Form": {
+        "title": "Form",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "IsRegionalVariant": {
+            "type": "boolean"
+          },
+          "regionName": {
+            "type": "string"
+          }
+        },
+        "description": "フォルム"
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Pokemon Base Data"
+    }
+  ]
+}

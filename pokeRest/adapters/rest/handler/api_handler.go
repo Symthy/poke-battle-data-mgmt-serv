@@ -4,15 +4,19 @@ import (
 	"sync"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
+	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
 	"github.com/labstack/echo/v4"
 )
 
 type PokeRestHandler struct {
-	Lock sync.Mutex
+	Lock               sync.Mutex
+	pokemonContoroller controller.PokemonController
 }
 
 func NewPokeRestHandler() *PokeRestHandler {
-	return &PokeRestHandler{}
+	return &PokeRestHandler{
+		pokemonContoroller: controller.DefaultPokemonController(), // Todo: use wire
+	}
 }
 
 // get abilities
@@ -51,9 +55,27 @@ func (h *PokeRestHandler) GetMoveById(ctx echo.Context, moveId float32) error {
 	return nil
 }
 
+// get pokemon by Id
+// (GET /pokemons/{id})
+func (h *PokeRestHandler) GetPokemonById(ctx echo.Context, id float32) error {
+	return nil
+}
+
 // get pokemons
 // (GET /pokemons)
 func (h *PokeRestHandler) GetPokemons(ctx echo.Context, params server.GetPokemonsParams) error {
+	return nil
+}
+
+// get pokemons details
+// (GET /pokemons/details)
+func (h *PokeRestHandler) GetPokemonsDetails(ctx echo.Context, params server.GetPokemonsDetailsParams) error {
+	return nil
+}
+
+// get pokemon detail by Id
+// (GET /pokemons/details/{id})
+func (h *PokeRestHandler) GetPokemonDetailById(ctx echo.Context, id float32) error {
 	return nil
 }
 
@@ -65,7 +87,7 @@ func (h *PokeRestHandler) GetPokemonsOfSpecifiedAbility(ctx echo.Context, abilit
 
 // get pokemons with specified move
 // (GET /pokemons/moves/{moveId})
-func (h *PokeRestHandler) GetPokemonsWithSpecifiedMove(ctx echo.Context, moveId string) error {
+func (h *PokeRestHandler) GetPokemonsWithSpecifiedMove(ctx echo.Context, moveId float32) error {
 	return nil
 }
 

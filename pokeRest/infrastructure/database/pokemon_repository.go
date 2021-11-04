@@ -1,4 +1,4 @@
-package repository
+package database
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/db"
@@ -33,13 +33,13 @@ func (rep *PokemonRepository) FindById(id uint) model.Pokemon {
 }
 
 // Todo: return domain
-func (rep *PokemonRepository) Save(pokemon schema.Pokemon) schema.Pokemon {
+func (rep *PokemonRepository) Save(pokemon model.Pokemon) model.Pokemon {
 	db := rep.dbAccessor.GetDb()
 	db.Save(&pokemon)
 	return pokemon
 }
 
-func (rep *PokemonRepository) Update(pokemon schema.Pokemon) schema.Pokemon {
+func (rep *PokemonRepository) Update(pokemon model.Pokemon) model.Pokemon {
 	// Todo: args change
 	db := rep.dbAccessor.GetDb()
 	target := rep.FindById(pokemon.ID)
@@ -47,9 +47,9 @@ func (rep *PokemonRepository) Update(pokemon schema.Pokemon) schema.Pokemon {
 	return pokemon
 }
 
-func (rep *PokemonRepository) Delete(id uint) schema.Pokemon {
+func (rep *PokemonRepository) Delete(id uint) model.Pokemon {
 	db := rep.dbAccessor.GetDb()
-	var pokemon = schema.Pokemon{}
+	var pokemon = model.Pokemon{}
 	db.Delete(&pokemon, id)
 	return pokemon
 }

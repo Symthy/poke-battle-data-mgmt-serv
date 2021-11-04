@@ -50,3 +50,7 @@ func NewPokemon(
 		IsFinalEvolution:   IsFinalEvolution,
 	}
 }
+
+func (p Pokemon) Id() int {
+	return p.id
+}

@@ -50,7 +50,7 @@ go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ./autogen/ent/schem
 
 ### Other
 
-- go-funk: 戻り値がinterface{}になるため使用は限定的にする
+- go-funk: 戻り値がinterface{}になるため使用は限定的にする。genericsが来ればWrapして使える
 https://github.com/thoas/go-funk
 
 ## Use tools

@@ -1,4 +1,4 @@
-package repository
+package database
 
 // TODO: common repository by generics
 type BaseRepository struct {
