@@ -1,7 +1,7 @@
 package user
 
-import "github.com/Symthy/PokeRest/pokeRest/application/datastore"
+import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type UserReadService struct {
-	repository datastore.IUserRepository
+	repository repository.IUserRepository
 }

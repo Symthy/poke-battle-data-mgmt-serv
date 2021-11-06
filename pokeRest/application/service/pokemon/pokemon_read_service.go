@@ -11,7 +11,7 @@ type PokemonReadService struct {
 }
 
 func DefaultPokemonReadService() PokemonReadService {
-	return PokemonReadService{pokemonRepository: database.NewPokemonRepository()}
+	return PokemonReadService{pokemonRepository: *database.DefaultPokemonRepository()}
 }
 
 func NewPokemonReadService(repository repository.IPokemonRepository) PokemonReadService {

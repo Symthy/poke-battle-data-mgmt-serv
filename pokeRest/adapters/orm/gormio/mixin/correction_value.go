@@ -1,6 +1,6 @@
 package mixin
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/enum"
+import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 
 type CorrectionValue struct {
 	// 技威力

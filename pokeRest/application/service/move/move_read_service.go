@@ -1,7 +1,7 @@
 package move
 
-import "github.com/Symthy/PokeRest/pokeRest/application/datastore"
+import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type MoveReadService struct {
-	repository datastore.IMoveRepository
+	repository repository.IMoveRepository
 }

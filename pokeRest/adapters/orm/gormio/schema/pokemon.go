@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 )
 

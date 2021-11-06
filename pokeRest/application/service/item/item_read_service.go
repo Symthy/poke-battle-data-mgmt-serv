@@ -1,7 +1,7 @@
 package item
 
-import "github.com/Symthy/PokeRest/pokeRest/application/datastore"
+import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type ItemReadService struct {
-	repository datastore.IItemRepository
+	repository repository.IItemRepository
 }

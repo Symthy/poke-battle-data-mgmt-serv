@@ -1,14 +1,18 @@
 package database
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/thoas/go-funk"
 )
 
 type PokemonRepository struct {
 	dbClient orm.IDbClient
+}
+
+func DefaultPokemonRepository() *PokemonRepository {
+	return &PokemonRepository{dbClient: orm.GormDbClient{}}
 }
 
 func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {

@@ -1,6 +1,6 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/mixin"
+import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 
 type HeldItem struct {
 	ID                uint `gorm:"primaryKey; autoIncrement"`

@@ -1,7 +1,7 @@
 package ability
 
-import "github.com/Symthy/PokeRest/pokeRest/application/datastore"
+import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type AbilityReadService struct {
-	repository datastore.IAbilityRepository
+	repository repository.IAbilityRepository
 }

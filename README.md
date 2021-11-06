@@ -29,6 +29,9 @@ https://github.com/google/wire
 ```
 go get github.com/google/wire/cmd/wire
 ```
+```
+wire pokeRest/adapters/di/wire.go 
+```
 
 ### ORM 
 - gorm: 本使用
@@ -47,6 +50,26 @@ go run entgo.io/ent/cmd/ent init --target ./schema Pokemons Forms Abilities Move
 cd autogen/ent/
 go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ./autogen/ent/schema
 ```
+
+### Test/Mock
+
+- testify
+テストのセットアップ・終了時の処理のコードが重複しないテストコードを書ける
+
+
+- go-sqlmock
+https://github.com/DATA-DOG/go-sqlmock
+```
+go get -u github.com/DATA-DOG/go-sqlmock
+```
+gorm + postgresql + go-sqlmock の場合、INSERTのモックがうまく行かないらしい。以下参照。
+- https://github.com/DATA-DOG/go-sqlmock/issues/118
+- https://betterprogramming.pub/how-to-unit-test-a-gorm-application-with-sqlmock-97ee73e36526
+- https://simple-minds-think-alike.moritamorie.com/entry/go-sqlmock-gorm
+
+2021/11時点で解決策なし。代替案は以下。INSERTのみ以下を使用する？
+- go-mocket
+https://github.com/Selvatico/go-mocket
 
 ### Other
 

@@ -1,7 +1,7 @@
 package _type
 
-import "github.com/Symthy/PokeRest/pokeRest/application/datastore"
+import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type TypeReadService struct {
-	repository datastore.ITypeRepository
+	repository repository.ITypeRepository
 }

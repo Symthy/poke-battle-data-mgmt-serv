@@ -1,6 +1,6 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/enum"
+import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 
 type TypeCompatibility struct {
 	AttackType    enum.PokemonType `gorm:"primaryKey"`
