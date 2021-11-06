@@ -1,22 +1,26 @@
 package database
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/db"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/db/orm/gormio/schema"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/thoas/go-funk"
 )
 
 type PokemonRepository struct {
-	dbAccessor db.IDbAccessor
+	dbClient orm.IDbClient
+}
+
+func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
+	return &PokemonRepository{dbClient: dbClient}
 }
 
 // Todo: args is condition
-func (rep *PokemonRepository) FindAll() model.PokemonList {
-	db := rep.dbAccessor.GetDb()
+func (rep PokemonRepository) FindAll() model.PokemonList {
+	db := rep.dbClient.GetDb()
 	var pokemons = []schema.Pokemon{}
 
-	paginate := rep.dbAccessor.Paginate(1, 100)
+	paginate := rep.dbClient.Paginate(1, 100)
 	db.Scopes(paginate).Find(&pokemons)
 
 	pokemonDomains := funk.Map(pokemons, func(p schema.Pokemon) model.Pokemon {
@@ -25,30 +29,30 @@ func (rep *PokemonRepository) FindAll() model.PokemonList {
 	return model.NewPokemonList(pokemonDomains)
 }
 
-func (rep *PokemonRepository) FindById(id uint) model.Pokemon {
-	db := rep.dbAccessor.GetDb()
+func (rep PokemonRepository) FindById(id int) model.Pokemon {
+	db := rep.dbClient.GetDb()
 	var pokemon = schema.Pokemon{}
 	db.First(&pokemon, id)
 	return pokemon.ConvertToDomain()
 }
 
 // Todo: return domain
-func (rep *PokemonRepository) Save(pokemon model.Pokemon) model.Pokemon {
-	db := rep.dbAccessor.GetDb()
+func (rep PokemonRepository) Save(pokemon model.Pokemon) model.Pokemon {
+	db := rep.dbClient.GetDb()
 	db.Save(&pokemon)
 	return pokemon
 }
 
-func (rep *PokemonRepository) Update(pokemon model.Pokemon) model.Pokemon {
+func (rep PokemonRepository) Update(pokemon model.Pokemon) model.Pokemon {
 	// Todo: args change
-	db := rep.dbAccessor.GetDb()
-	target := rep.FindById(pokemon.ID)
+	db := rep.dbClient.GetDb()
+	target := rep.FindById(pokemon.Id())
 	db.Model(&target).Updates(pokemon)
 	return pokemon
 }
 
-func (rep *PokemonRepository) Delete(id uint) model.Pokemon {
-	db := rep.dbAccessor.GetDb()
+func (rep PokemonRepository) Delete(id uint) model.Pokemon {
+	db := rep.dbClient.GetDb()
 	var pokemon = model.Pokemon{}
 	db.Delete(&pokemon, id)
 	return pokemon

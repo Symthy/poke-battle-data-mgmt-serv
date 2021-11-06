@@ -3,6 +3,7 @@ node_modules
 pokeRest/adapters/rest/autogen/*
 pokeRest/adapters/orm/autogen/ent/*
 !pokeRest/adapters/orm/autogen/ent/generate.go
+pokeRest/adapters/di/wire_gen.go
 
 conf/config.yml
 
