@@ -6,7 +6,7 @@ import (
 )
 
 func RunAutoMigration() {
-	db := orm.NewGormDbClient().GetDb()
+	db := orm.NewGormDbClient().Db()
 
 	db.AutoMigrate(
 		&schema.Ability{},
@@ -25,7 +25,7 @@ func RunAutoMigration() {
 }
 
 func RunDropTables() {
-	db := orm.NewGormDbClient().GetDb()
+	db := orm.NewGormDbClient().Db()
 	db.Migrator().DropTable(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},

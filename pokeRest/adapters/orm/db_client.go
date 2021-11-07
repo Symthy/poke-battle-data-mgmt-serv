@@ -22,6 +22,10 @@ func NewGormDbClient() *GormDbClient {
 	return dc
 }
 
+func NewGormDbClientForTesting(db *gorm.DB) *GormDbClient {
+	return &GormDbClient{db: db}
+}
+
 func (dc *GormDbClient) initialize() {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -44,8 +48,13 @@ func (dc *GormDbClient) initialize() {
 	dc.db = db
 }
 
-func (dc GormDbClient) GetDb() *gorm.DB {
+func (dc GormDbClient) Db() *gorm.DB {
 	return dc.db
+}
+
+func (dc GormDbClient) Close() {
+	sqldb, _ := dc.db.DB()
+	sqldb.Close()
 }
 
 func (dc GormDbClient) Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.DB {

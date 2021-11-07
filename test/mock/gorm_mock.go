@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func getDBMock() (*gorm.DB, sqlmock.Sqlmock, error) {
+func GetGormDBMock() (*gorm.DB, sqlmock.Sqlmock, error) {
 	sqldb, mock, _ := sqlmock.New()
 
 	gdb, _ := gorm.Open(postgres.New(postgres.Config{

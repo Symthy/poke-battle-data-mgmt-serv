@@ -7,6 +7,7 @@ type IDbClientProvider interface {
 }
 
 type IDbClient interface {
-	GetDb() *gorm.DB
+	Db() *gorm.DB
+	Close()
 	Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.DB
 }
