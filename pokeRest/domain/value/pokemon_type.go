@@ -18,7 +18,7 @@ func (t PokemonType) Name() string {
 func NewPokemonType(typeName string) PokemonType {
 	return funk.Filter(listPokemonTypes(), func(t PokemonType) bool {
 		return t.EnglishName() == typeName
-	}).(PokemonType)
+	}).([]PokemonType)[0]
 }
 
 func listPokemonTypes() []PokemonType {

@@ -32,7 +32,9 @@ const (
 )
 
 func (ty *PokemonType) Scan(value interface{}) error {
+	//fmt.Printf("value: %#v\n", value)
 	*ty = PokemonType(value.([]byte))
+	//fmt.Printf("value: %#v\n", *ty)
 	return nil
 }
 

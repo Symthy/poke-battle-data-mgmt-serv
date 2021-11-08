@@ -18,12 +18,12 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 // Todo: args is condition
 func (rep PokemonRepository) FindAll() model.PokemonList {
 	db := rep.dbClient.Db()
-	var pokemons = []schema.Pokemon{}
+	var pokemons = []schema.PokemonDto{}
 
 	paginate := rep.dbClient.Paginate(1, 100)
 	db.Scopes(paginate).Find(&pokemons)
 
-	pokemonDomains := funk.Map(pokemons, func(p schema.Pokemon) model.Pokemon {
+	pokemonDomains := funk.Map(pokemons, func(p schema.PokemonDto) model.Pokemon {
 		return p.ConvertToDomain()
 	}).([]model.Pokemon)
 	return model.NewPokemonList(pokemonDomains)

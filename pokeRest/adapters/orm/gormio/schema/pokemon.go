@@ -1,11 +1,14 @@
 package schema
 
 import (
+	"database/sql"
+	"fmt"
+
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 )
 
-type Pokemon struct {
+type PokemonDto struct {
 	ID               int `gorm:"primaryKey;autoIncrement"`
 	PokedexNo        int
 	FormNo           int
@@ -15,10 +18,59 @@ type Pokemon struct {
 	Generation       int
 	Type1            enum.PokemonType
 	Type2            enum.PokemonType
-	AbilityId1       *int  // has one
-	AbilityId2       *int  // has one
-	HiddenAbilityId  *int  // has one
-	IsFinalEvolution *bool `gorm:"default:false"`
+	AbilityId1       sql.NullInt16 // has one
+	AbilityId2       sql.NullInt16 // has one
+	HiddenAbilityId  sql.NullInt16 // has one
+	IsFinalEvolution bool          `gorm:"default:false"`
+}
+
+func (p PokemonDto) ConvertToDomain() model.Pokemon {
+	// Todo: refactor
+	value1, _ := p.AbilityId1.Value()
+	var ability1 *int = nil
+	if value1 != nil {
+		convertVal := int(value1.(int64))
+		ability1 = &convertVal
+	}
+
+	value2, _ := p.AbilityId1.Value()
+	var ability2 *int = nil
+	if value2 != nil {
+		convertVal := int(value2.(int64))
+		ability2 = &convertVal
+	}
+
+	value3, _ := p.AbilityId1.Value()
+	var ability3 *int = nil
+	if value3 != nil {
+		convertVal := int(value3.(int64))
+		ability3 = &convertVal
+	}
+	fmt.Printf("%#v\n", value1)
+	fmt.Printf("%#v\n", value2)
+	fmt.Printf("%#v\n", value3)
+	fmt.Printf("%#v\n", ability1)
+	fmt.Printf("%#v\n", ability2)
+	fmt.Printf("%#v\n", ability3)
+	return model.NewPokemon(
+		p.ID,
+		p.PokedexNo,
+		p.FormNo,
+		p.FormName,
+		p.Name,
+		p.EnglishName,
+		p.Generation,
+		p.Type1.String(),
+		p.Type2.String(),
+		ability1,
+		ability2,
+		ability3,
+		p.IsFinalEvolution,
+	)
+}
+
+type Pokemon struct {
+	PokemonDto `gorm:"embedded"`
 
 	// relation
 	Move                  []*Move               `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`        // M:M
@@ -40,22 +92,4 @@ type Pokemon struct {
 
 func (Pokemon) TableName() string {
 	return "pokemons"
-}
-
-func (p Pokemon) ConvertToDomain() model.Pokemon {
-	return model.NewPokemon(
-		p.ID,
-		p.PokedexNo,
-		p.FormNo,
-		p.FormName,
-		p.Name,
-		p.EnglishName,
-		p.Generation,
-		p.Type1.String(),
-		p.Type2.String(),
-		p.AbilityId1,
-		p.AbilityId2,
-		p.HiddenAbilityId,
-		*p.IsFinalEvolution,
-	)
 }

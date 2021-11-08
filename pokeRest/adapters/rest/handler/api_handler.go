@@ -13,9 +13,9 @@ type PokeRestHandler struct {
 	pokemonContoroller controller.PokemonController
 }
 
-func NewPokeRestHandler() *PokeRestHandler {
+func NewPokeRestHandler(controller controller.PokemonController) *PokeRestHandler {
 	return &PokeRestHandler{
-		pokemonContoroller: controller.DefaultPokemonController(), // Todo: use wire
+		pokemonContoroller: controller,
 	}
 }
 

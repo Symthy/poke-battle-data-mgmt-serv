@@ -14,7 +14,7 @@ type Pokemon struct {
 	generation         int
 	typePrimary        value.PokemonType
 	typeSecondary      value.PokemonType
-	abilityIdPrimary   int
+	abilityIdPrimary   value.OptionaAbilitylId
 	abilityIdSecondary value.OptionaAbilitylId
 	hiddenAbilityId    value.OptionaAbilitylId
 	IsFinalEvolution   bool
@@ -44,7 +44,7 @@ func NewPokemon(
 		generation:         generation,
 		typePrimary:        value.NewPokemonType(type1),
 		typeSecondary:      value.NewPokemonType(type2),
-		abilityIdPrimary:   *abilityId1, // always exist.
+		abilityIdPrimary:   value.NewOptionalAbilityId(abilityId1), // always exist.
 		abilityIdSecondary: value.NewOptionalAbilityId(abilityId2),
 		hiddenAbilityId:    value.NewOptionalAbilityId(hiddenAbilityId),
 		IsFinalEvolution:   IsFinalEvolution,

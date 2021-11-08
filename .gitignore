@@ -9,3 +9,5 @@ conf/config.yml
 
 schema/erd.png
 schema/output/
+
+.vscode

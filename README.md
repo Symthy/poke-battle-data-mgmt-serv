@@ -52,10 +52,12 @@ go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ./autogen/ent/schem
 ```
 
 ### Test/Mock
+ref: https://github.com/bmuschko/go-testing-frameworks
 
 - testify
-テストのセットアップ・終了時の処理のコードが重複しないテストコードを書ける
+テストのセットアップ・終了時の処理のコードが重複しないテストコードを書ける+ mock helper有
 
+https://github.com/stretchr/testify
 
 - go-sqlmock
 https://github.com/DATA-DOG/go-sqlmock
@@ -73,8 +75,11 @@ https://github.com/Selvatico/go-mocket
 
 ### Other
 
-- go-funk: 戻り値がinterface{}になるため使用は限定的にする。genericsが来ればWrapして使える
+- go-funk: 戻り値がinterface{}になるため使用は限定的にしておく。※genericsが来ればWrapして使えるはず
 https://github.com/thoas/go-funk
+
+- gonstructor: コンストラクタ(ビルダー)自動生成ツール。自前で用意する時間がないため暫定使用と思ったが、`gorm:～` の指定入れている物には使えず保留
+https://github.com/moznion/gonstructor
 
 ## Use tools
 
@@ -98,7 +103,7 @@ prisma:
 
 #### SchemaSpy
 
-コンテナのpostgresに繋がらずうまくいかず
+コンテナのpostgresに繋げられず使用中断
 
 フォルダ： ./schema
 

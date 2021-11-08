@@ -12,7 +12,7 @@ import (
 	"github.com/google/wire"
 )
 
-func initPokemonController() *controller.PokemonController {
+func InitPokemonController() *controller.PokemonController {
 	wire.Build(
 		controller.NewPokemonController,
 		pokemon.NewPokemonReadService,
