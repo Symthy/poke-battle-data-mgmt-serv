@@ -2,9 +2,9 @@ package schema
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/sqltype"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 )
 
@@ -25,33 +25,6 @@ type PokemonDto struct {
 }
 
 func (p PokemonDto) ConvertToDomain() model.Pokemon {
-	// Todo: refactor
-	value1, _ := p.AbilityId1.Value()
-	var ability1 *int = nil
-	if value1 != nil {
-		convertVal := int(value1.(int64))
-		ability1 = &convertVal
-	}
-
-	value2, _ := p.AbilityId1.Value()
-	var ability2 *int = nil
-	if value2 != nil {
-		convertVal := int(value2.(int64))
-		ability2 = &convertVal
-	}
-
-	value3, _ := p.AbilityId1.Value()
-	var ability3 *int = nil
-	if value3 != nil {
-		convertVal := int(value3.(int64))
-		ability3 = &convertVal
-	}
-	fmt.Printf("%#v\n", value1)
-	fmt.Printf("%#v\n", value2)
-	fmt.Printf("%#v\n", value3)
-	fmt.Printf("%#v\n", ability1)
-	fmt.Printf("%#v\n", ability2)
-	fmt.Printf("%#v\n", ability3)
 	return model.NewPokemon(
 		p.ID,
 		p.PokedexNo,
@@ -62,9 +35,9 @@ func (p PokemonDto) ConvertToDomain() model.Pokemon {
 		p.Generation,
 		p.Type1.String(),
 		p.Type2.String(),
-		ability1,
-		ability2,
-		ability3,
+		sqltype.ResolveNullInt16(p.AbilityId1),
+		sqltype.ResolveNullInt16(p.AbilityId2),
+		sqltype.ResolveNullInt16(p.HiddenAbilityId),
 		p.IsFinalEvolution,
 	)
 }

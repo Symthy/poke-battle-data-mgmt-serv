@@ -54,3 +54,7 @@ func NewPokemon(
 func (p Pokemon) Id() int {
 	return p.id
 }
+
+func (p Pokemon) AbilityIdPrimary() value.OptionaAbilitylId {
+	return p.abilityIdPrimary
+}

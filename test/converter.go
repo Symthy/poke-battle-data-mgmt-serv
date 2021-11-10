@@ -34,9 +34,11 @@ func ConvertToObjectStructure(s interface{}) ObjectStructure {
 		value := reflectValue.FieldByName(field.Name)
 
 		trimName := strings.TrimSpace(field.Name)
-		topStr := trimName[0:]
-		fieldName := strings.Replace(trimName, topStr, strings.ToLower(topStr), 1)
-		objectStructure.fields = append(objectStructure.fields, fieldName)
+		// 先頭を小文字にする必要があるかと思い実施したが全て小文字にしていた。
+		// これが原因でsqlmockからabilityIdの値が渡らずnilになっていた
+		//topStr := trimName[0:]
+		//fieldName := strings.Replace(trimName, topStr, strings.ToLower(topStr), 1)
+		objectStructure.fields = append(objectStructure.fields, trimName)
 		objectStructure.values = append(objectStructure.values, value.String())
 	}
 	return objectStructure
