@@ -2,25 +2,25 @@ package value
 
 import "github.com/Symthy/PokeRest/pokeRest/exception"
 
-type OptionaAbilitylId struct {
+type OptionalAbilityId struct {
 	id *int
 }
 
-func NewOptionalAbilityId(id *int) OptionaAbilitylId {
-	return OptionaAbilitylId{id: id}
+func NewOptionalAbilityId(id *int) OptionalAbilityId {
+	return OptionalAbilityId{id: id}
 }
 
-func NewOptionalAbilityIdEmpty() OptionaAbilitylId {
-	return OptionaAbilitylId{id: nil}
+func NewOptionalAbilityIdEmpty() OptionalAbilityId {
+	return OptionalAbilityId{id: nil}
 }
 
-func (o OptionaAbilitylId) Get() (*int, error) {
-	if o.IsEmpty() {
+func (o OptionalAbilityId) Get() (*int, error) {
+	if o.isEmpty() {
 		return nil, exception.NewNoValueError("Ability ID")
 	}
 	return o.id, nil
 }
 
-func (o OptionaAbilitylId) IsEmpty() bool {
+func (o OptionalAbilityId) isEmpty() bool {
 	return o.id == nil
 }

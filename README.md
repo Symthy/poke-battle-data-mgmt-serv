@@ -48,7 +48,7 @@ go get entgo.io/ent/cmd/ent
 cd pokeRest/adapters/orm/entio
 go run entgo.io/ent/cmd/ent init --target ./schema Pokemons Forms Abilities Moves TypeCompatibility HeldItems Users TrainedPokemons Party Tag BattleRecord BattleOpponentParty
 cd autogen/ent/
-go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ./autogen/ent/schema
+go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ../../orm/entio/schema
 ```
 
 ### Test/Mock
@@ -78,7 +78,7 @@ https://github.com/Selvatico/go-mocket
 - go-funk: 戻り値がinterface{}になるため使用は限定的にしておく。※genericsが来ればWrapして使えるはず
 https://github.com/thoas/go-funk
 
-- gonstructor: コンストラクタ(ビルダー)自動生成ツール。自前で用意する時間がないため暫定使用と思ったが、`gorm:～` の指定入れている物には使えず保留
+- gonstructor: コンストラクタ(ビルダー)自動生成ツール。自前で用意する時間がないため暫定使用。ただし`gorm:～` の指定入れている物には使えず
 https://github.com/moznion/gonstructor
 
 ## Use tools

@@ -7,7 +7,7 @@ import (
 
 type ObjectStructure struct {
 	fields []string
-	values []string
+	values []interface{}
 }
 
 func NewObjectStructure(length int) ObjectStructure {
@@ -21,11 +21,15 @@ func (o ObjectStructure) Fields() []string {
 	return o.fields
 }
 
-func (o ObjectStructure) Values() []string {
+func (o ObjectStructure) Values() []interface{} {
 	return o.values
 }
 
-func ConvertToObjectStructure(s interface{}) ObjectStructure {
+func Convert(s interface{}) ObjectStructure {
+	return ConvertInEnum(s, []int{})
+}
+
+func ConvertInEnum(s interface{}, enumIndexes []int) ObjectStructure {
 	reflectValue := reflect.ValueOf(s)
 	reflectType := reflect.TypeOf(s)
 	objectStructure := NewObjectStructure(reflectType.NumField())
@@ -39,7 +43,20 @@ func ConvertToObjectStructure(s interface{}) ObjectStructure {
 		//topStr := trimName[0:]
 		//fieldName := strings.Replace(trimName, topStr, strings.ToLower(topStr), 1)
 		objectStructure.fields = append(objectStructure.fields, trimName)
-		objectStructure.values = append(objectStructure.values, value.String())
+		if isContains := contains(i, enumIndexes); isContains {
+			objectStructure.values = append(objectStructure.values, value.Convert(reflect.TypeOf([]byte{})).Interface())
+		} else {
+			objectStructure.values = append(objectStructure.values, value.Interface())
+		}
 	}
 	return objectStructure
+}
+
+func contains(i int, indexes []int) bool {
+	for _, v := range indexes {
+		if i == v {
+			return true
+		}
+	}
+	return false
 }

@@ -12,7 +12,7 @@ func FindById() {
 	return
 }
 
-func Save() {
+func Create() {
 	return
 }
 

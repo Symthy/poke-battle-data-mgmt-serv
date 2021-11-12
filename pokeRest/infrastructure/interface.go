@@ -11,7 +11,7 @@ package infrastructure
 type Repository interface {
 	Find() []interface{}
 	FindById(id uint) interface{}
-	Save(dto interface{}) interface{}
+	Create(dto interface{}) interface{}
 	Update(dto interface{}) interface{}
 	Delete(id uint) interface{}
 }

@@ -24,9 +24,30 @@ type PokemonDto struct {
 	IsFinalEvolution bool          `gorm:"default:false"`
 }
 
+func (PokemonDto) EnumIndex() []int {
+	return []int{7, 8}
+}
+
 func (p PokemonDto) ConvertToDomain() model.Pokemon {
 	return model.NewPokemon(
 		p.ID,
+		p.PokedexNo,
+		p.FormNo,
+		p.FormName,
+		p.Name,
+		p.EnglishName,
+		p.Generation,
+		p.Type1.String(),
+		p.Type2.String(),
+		sqltype.ResolveNullInt16(p.AbilityId1),
+		sqltype.ResolveNullInt16(p.AbilityId2),
+		sqltype.ResolveNullInt16(p.HiddenAbilityId),
+		p.IsFinalEvolution,
+	)
+}
+
+func (p PokemonDto) ConvertToDomainNonId() model.Pokemon {
+	return model.NewPokemonNonId(
 		p.PokedexNo,
 		p.FormNo,
 		p.FormName,

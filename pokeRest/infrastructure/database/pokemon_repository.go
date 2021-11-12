@@ -1,7 +1,10 @@
 package database
 
 import (
+	"fmt"
+
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/thoas/go-funk"
@@ -16,17 +19,21 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 }
 
 // Todo: args is condition
-func (rep PokemonRepository) FindAll() model.PokemonList {
+func (rep PokemonRepository) FindAll() (*model.PokemonList, error) {
 	db := rep.dbClient.Db()
 	var pokemons = []schema.PokemonDto{}
 
 	paginate := rep.dbClient.Paginate(1, 100)
-	db.Scopes(paginate).Find(&pokemons)
+	tx := db.Scopes(paginate).Find(&pokemons)
 
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
 	pokemonDomains := funk.Map(pokemons, func(p schema.PokemonDto) model.Pokemon {
 		return p.ConvertToDomain()
 	}).([]model.Pokemon)
-	return model.NewPokemonList(pokemonDomains)
+	pokemonList := model.NewPokemonList(pokemonDomains)
+	return &pokemonList, nil
 }
 
 func (rep PokemonRepository) FindById(id int) model.Pokemon {
@@ -37,10 +44,12 @@ func (rep PokemonRepository) FindById(id int) model.Pokemon {
 }
 
 // Todo: return domain
-func (rep PokemonRepository) Save(pokemon model.Pokemon) model.Pokemon {
+func (rep PokemonRepository) Create(pokemon *model.Pokemon) error {
+	schemaPokemon := gormio.ConvertDomainToSchema(*pokemon)
 	db := rep.dbClient.Db()
-	db.Save(&pokemon)
-	return pokemon
+	fmt.Printf("%#v\n", schemaPokemon)
+	tx := db.Create(schemaPokemon)
+	return tx.Error
 }
 
 func (rep PokemonRepository) Update(pokemon model.Pokemon) model.Pokemon {
