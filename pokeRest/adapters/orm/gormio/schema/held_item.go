@@ -3,7 +3,7 @@ package schema
 import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 
 type HeldItem struct {
-	ID                uint `gorm:"primaryKey; autoIncrement"`
+	ID                uint `gorm:"primaryKey;autoIncrement:true"`
 	Name              string
 	Description       string
 	CorrectionValueId uint

@@ -1,7 +1,7 @@
 package schema
 
 type BattleOpponentParty struct {
-	ID                 uint `gorm:"primaryKey;autoIncrement"`
+	ID                 uint `gorm:"primaryKey;autoIncrement:true"`
 	OpponentPokemonId1 int  // M:1 <- Pokemon
 	OpponentPokemonId2 *int
 	OpponentPokemonId3 *int

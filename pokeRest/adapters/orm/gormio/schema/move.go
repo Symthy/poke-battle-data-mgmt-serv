@@ -3,7 +3,7 @@ package schema
 import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 
 type Move struct {
-	ID          uint `gorm:"primaryKey;autoIncrement"`
+	ID          uint `gorm:"primaryKey;autoIncrement:true"`
 	Name        string
 	Species     enum.MoveSpecies `sql:"type:species"`
 	Power       int

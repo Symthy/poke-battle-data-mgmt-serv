@@ -9,7 +9,7 @@ type IBasicRepository interface {
 
 type IPokemonRepository interface {
 	FindById(id int) model.Pokemon
-	FindAll() model.PokemonList
+	FindAll() (*model.PokemonList, error)
 }
 
 type IAbilityRepository interface {

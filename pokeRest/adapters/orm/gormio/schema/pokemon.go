@@ -8,8 +8,8 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 )
 
-type PokemonDto struct {
-	ID               int `gorm:"primaryKey;autoIncrement"`
+type Pokemon struct {
+	ID               uint `gorm:"primaryKey;autoIncrement:true"`
 	PokedexNo        int
 	FormNo           int
 	FormName         string
@@ -22,49 +22,6 @@ type PokemonDto struct {
 	AbilityId2       sql.NullInt16 // has one
 	HiddenAbilityId  sql.NullInt16 // has one
 	IsFinalEvolution bool          `gorm:"default:false"`
-}
-
-func (PokemonDto) EnumIndex() []int {
-	return []int{7, 8}
-}
-
-func (p PokemonDto) ConvertToDomain() model.Pokemon {
-	return model.NewPokemon(
-		p.ID,
-		p.PokedexNo,
-		p.FormNo,
-		p.FormName,
-		p.Name,
-		p.EnglishName,
-		p.Generation,
-		p.Type1.String(),
-		p.Type2.String(),
-		sqltype.ResolveNullInt16(p.AbilityId1),
-		sqltype.ResolveNullInt16(p.AbilityId2),
-		sqltype.ResolveNullInt16(p.HiddenAbilityId),
-		p.IsFinalEvolution,
-	)
-}
-
-func (p PokemonDto) ConvertToDomainNonId() model.Pokemon {
-	return model.NewPokemonNonId(
-		p.PokedexNo,
-		p.FormNo,
-		p.FormName,
-		p.Name,
-		p.EnglishName,
-		p.Generation,
-		p.Type1.String(),
-		p.Type2.String(),
-		sqltype.ResolveNullInt16(p.AbilityId1),
-		sqltype.ResolveNullInt16(p.AbilityId2),
-		sqltype.ResolveNullInt16(p.HiddenAbilityId),
-		p.IsFinalEvolution,
-	)
-}
-
-type Pokemon struct {
-	PokemonDto `gorm:"embedded"`
 
 	// relation
 	Move                  []*Move               `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`        // M:M
@@ -86,4 +43,39 @@ type Pokemon struct {
 
 func (Pokemon) TableName() string {
 	return "pokemons"
+}
+
+func (p Pokemon) ConvertToDomain() model.Pokemon {
+	return model.NewPokemon(
+		p.ID,
+		p.PokedexNo,
+		p.FormNo,
+		p.FormName,
+		p.Name,
+		p.EnglishName,
+		p.Generation,
+		p.Type1.String(),
+		p.Type2.String(),
+		sqltype.ResolveNullInt16(p.AbilityId1),
+		sqltype.ResolveNullInt16(p.AbilityId2),
+		sqltype.ResolveNullInt16(p.HiddenAbilityId),
+		p.IsFinalEvolution,
+	)
+}
+
+func (p Pokemon) ConvertToDomainNonId() model.Pokemon {
+	return model.NewPokemonNonId(
+		p.PokedexNo,
+		p.FormNo,
+		p.FormName,
+		p.Name,
+		p.EnglishName,
+		p.Generation,
+		p.Type1.String(),
+		p.Type2.String(),
+		sqltype.ResolveNullInt16(p.AbilityId1),
+		sqltype.ResolveNullInt16(p.AbilityId2),
+		sqltype.ResolveNullInt16(p.HiddenAbilityId),
+		p.IsFinalEvolution,
+	)
 }

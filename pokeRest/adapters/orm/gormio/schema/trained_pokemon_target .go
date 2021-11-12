@@ -3,7 +3,7 @@ package schema
 import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 
 type TrainedPokemonTarget struct {
-	ID                         uint `gorm:"primaryKey;autoIncrement"`
+	ID                         uint `gorm:"primaryKey;autoIncrement:true"`
 	SelfPokemonId              uint
 	SelfPokemonNature          enum.Nature
 	SelfPokemonEffortValue     int

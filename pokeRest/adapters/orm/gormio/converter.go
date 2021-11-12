@@ -10,9 +10,7 @@ import (
 )
 
 func ConvertDomainToSchema(p model.Pokemon) schema.Pokemon {
-	var pokemon = schema.Pokemon{}
-
-	pokemon.PokemonDto = schema.PokemonDto{
+	pokemon := schema.Pokemon{
 		ID:               p.Id(),
 		PokedexNo:        p.PokedexNo(),
 		FormNo:           p.FormNo(),
@@ -20,8 +18,8 @@ func ConvertDomainToSchema(p model.Pokemon) schema.Pokemon {
 		Name:             p.Name(),
 		EnglishName:      p.EnglishName(),
 		Generation:       p.Generation(),
-		Type1:            enum.PokemonType(p.TypePrimary().Name()),
-		Type2:            enum.PokemonType(p.TypeSecondary().Name()),
+		Type1:            enum.PokemonType(p.TypePrimary().EnglishName()),
+		Type2:            enum.PokemonType(p.TypeSecondary().EnglishName()),
 		AbilityId1:       convertOptionalIdToNullInt16(p.AbilityIdPrimary()),
 		AbilityId2:       convertOptionalIdToNullInt16(p.AbilityIdSecondary()),
 		HiddenAbilityId:  convertOptionalIdToNullInt16(p.HiddenAbilityId()),

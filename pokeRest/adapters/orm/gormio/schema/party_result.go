@@ -1,7 +1,7 @@
 package schema
 
 type PartyResult struct {
-	ID         uint `gorm:"primaryKey;autoIncrement"` // has many
+	ID         uint `gorm:"primaryKey;autoIncrement:true"` // has many
 	PartyId    uint
 	Generation int
 	Series     int

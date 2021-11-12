@@ -6,7 +6,7 @@ import (
 
 //go:generate gonstructor --type=Pokemon --constructorTypes=builder --output=./builder/pokemon_builder.go
 type Pokemon struct {
-	id                 int
+	id                 uint
 	pokedexNo          int
 	formNo             int
 	formName           string
@@ -22,7 +22,7 @@ type Pokemon struct {
 }
 
 func NewPokemon(
-	id int,
+	id uint,
 	pokedexNo int,
 	formNo int,
 	formName string,
@@ -66,6 +66,7 @@ func NewPokemonNonId(
 	hiddenAbilityId *int,
 	IsFinalEvolution bool) Pokemon {
 	return Pokemon{
+		id:                 0,
 		pokedexNo:          pokedexNo,
 		formNo:             formNo,
 		formName:           formName,
@@ -81,7 +82,7 @@ func NewPokemonNonId(
 	}
 }
 
-func (p Pokemon) Id() int {
+func (p Pokemon) Id() uint {
 	return p.id
 }
 

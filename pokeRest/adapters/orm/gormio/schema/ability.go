@@ -3,7 +3,7 @@ package schema
 import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 
 type Ability struct {
-	ID              uint   `gorm:"primaryKey"`
+	ID              uint   `gorm:"primaryKey;autoIncrement:true"`
 	Name            string `gorm:"unique"`
 	Description     string
 	CorrectionValue mixin.CorrectionValue `gorm:"embedded"`
