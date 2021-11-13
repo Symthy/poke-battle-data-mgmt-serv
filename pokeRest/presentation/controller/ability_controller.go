@@ -1,7 +1,7 @@
 package controller
 
-import "github.com/Symthy/PokeRest/pokeRest/application/service/ability"
+import "github.com/Symthy/PokeRest/pokeRest/application/service"
 
 type AbilityController struct {
-	service ability.AbilityReadService
+	service service.AbilityReadService
 }

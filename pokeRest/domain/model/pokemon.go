@@ -4,7 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
-//go:generate gonstructor --type=Pokemon --constructorTypes=builder --output=./builder/pokemon_builder.go
+// Todo: add fields
 type Pokemon struct {
 	id                 uint
 	pokedexNo          int

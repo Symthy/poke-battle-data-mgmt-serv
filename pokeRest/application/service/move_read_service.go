@@ -1,4 +1,4 @@
-package move
+package service
 
 import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 

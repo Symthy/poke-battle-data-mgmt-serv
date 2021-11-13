@@ -1,4 +1,4 @@
-package pokemon
+package service
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
@@ -13,6 +13,7 @@ func NewPokemonReadService(repository repository.IPokemonRepository) PokemonRead
 	return PokemonReadService{pokemonRepository: repository}
 }
 
-func (s PokemonReadService) GetPokemon(id int) model.Pokemon {
-	return s.pokemonRepository.FindById(id)
+func (s PokemonReadService) GetPokemon(id uint) (model.Pokemon, error) {
+	pokemon, err := s.pokemonRepository.FindById(id)
+	return pokemon, err
 }

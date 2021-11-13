@@ -1,6 +1,5 @@
-package value
+package optional
 
 type OptionalId interface {
 	Get() (*int, error)
-	isEmpty() bool
 }

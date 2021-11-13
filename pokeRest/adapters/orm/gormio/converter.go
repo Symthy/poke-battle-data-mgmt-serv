@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
 
 func ConvertDomainToSchema(p model.Pokemon) schema.Pokemon {
@@ -28,7 +28,7 @@ func ConvertDomainToSchema(p model.Pokemon) schema.Pokemon {
 	return pokemon
 }
 
-func convertOptionalIdToNullInt16(id value.OptionalId) sql.NullInt16 {
+func convertOptionalIdToNullInt16(id optional.OptionalId) sql.NullInt16 {
 	value, _ := id.Get()
 	nullInt := sql.NullInt16{}
 	if value == nil {

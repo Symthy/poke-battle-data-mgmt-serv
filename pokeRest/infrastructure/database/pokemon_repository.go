@@ -17,7 +17,7 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 }
 
 // Todo: args is condition
-func (rep PokemonRepository) FindAll() (*model.PokemonList, error) {
+func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
 	db := rep.dbClient.Db()
 	var pokemons = []schema.Pokemon{}
 
@@ -25,23 +25,22 @@ func (rep PokemonRepository) FindAll() (*model.PokemonList, error) {
 	tx := db.Scopes(paginate).Find(&pokemons)
 
 	if tx.Error != nil {
-		return nil, tx.Error
+		return model.PokemonList{}, tx.Error
 	}
 	pokemonDomains := funk.Map(pokemons, func(p schema.Pokemon) model.Pokemon {
 		return p.ConvertToDomain()
 	}).([]model.Pokemon)
 	pokemonList := model.NewPokemonList(pokemonDomains)
-	return &pokemonList, nil
+	return pokemonList, nil
 }
 
-func (rep PokemonRepository) FindById(id uint) model.Pokemon {
+func (rep PokemonRepository) FindById(id uint) (model.Pokemon, error) {
 	db := rep.dbClient.Db()
 	var pokemon = schema.Pokemon{}
-	db.First(&pokemon, id)
-	return pokemon.ConvertToDomain()
+	tx := db.First(&pokemon, id)
+	return pokemon.ConvertToDomain(), tx.Error
 }
 
-// Todo: return domain
 func (rep PokemonRepository) Create(pokemon *model.Pokemon) (model.Pokemon, error) {
 	schemaPokemon := gormio.ConvertDomainToSchema(*pokemon)
 	db := rep.dbClient.Db()
@@ -50,12 +49,15 @@ func (rep PokemonRepository) Create(pokemon *model.Pokemon) (model.Pokemon, erro
 	return created, tx.Error
 }
 
-func (rep PokemonRepository) Update(pokemon model.Pokemon) model.Pokemon {
+func (rep PokemonRepository) Update(pokemon model.Pokemon) (model.Pokemon, error) {
 	// Todo: args change
 	db := rep.dbClient.Db()
-	target := rep.FindById(pokemon.Id())
+	target, err := rep.FindById(pokemon.Id())
+	if err != nil {
+		return pokemon, err
+	}
 	db.Model(&target).Updates(pokemon)
-	return pokemon
+	return pokemon, nil
 }
 
 func (rep PokemonRepository) Delete(id uint) model.Pokemon {

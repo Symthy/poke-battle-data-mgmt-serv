@@ -3,13 +3,14 @@ package repository
 import "github.com/Symthy/PokeRest/pokeRest/domain/model"
 
 type IBasicRepository interface {
-	FindById(id int)
+	FindById(id uint)
 	FindAll()
 }
 
 type IPokemonRepository interface {
-	FindById(id int) model.Pokemon
-	FindAll() (*model.PokemonList, error)
+	FindById(id uint) (model.Pokemon, error)
+	FindAll() (model.PokemonList, error)
+	Create(pokemon *model.Pokemon) (model.Pokemon, error)
 }
 
 type IAbilityRepository interface {
