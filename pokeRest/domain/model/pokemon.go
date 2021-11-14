@@ -18,9 +18,16 @@ type Pokemon struct {
 	abilityIdPrimary   value.OptionalAbilityId
 	abilityIdSecondary value.OptionalAbilityId
 	hiddenAbilityId    value.OptionalAbilityId
+	baseStatsH         int
+	baseStatsA         int
+	baseStatsB         int
+	baseStatsC         int
+	baseStatsD         int
+	baseStatsS         int
 	isFinalEvolution   bool
 }
 
+// Todo: builder
 func NewPokemon(
 	id uint,
 	pokedexNo int,
@@ -34,6 +41,12 @@ func NewPokemon(
 	abilityId1 *int,
 	abilityId2 *int,
 	hiddenAbilityId *int,
+	baseStatsH int,
+	baseStatsA int,
+	baseStatsB int,
+	baseStatsC int,
+	baseStatsD int,
+	baseStatsS int,
 	IsFinalEvolution bool) Pokemon {
 	return Pokemon{
 		id:                 id,
@@ -48,6 +61,12 @@ func NewPokemon(
 		abilityIdPrimary:   value.NewOptionalAbilityId(abilityId1), // always exist.
 		abilityIdSecondary: value.NewOptionalAbilityId(abilityId2),
 		hiddenAbilityId:    value.NewOptionalAbilityId(hiddenAbilityId),
+		baseStatsH:         baseStatsH,
+		baseStatsA:         baseStatsA,
+		baseStatsB:         baseStatsB,
+		baseStatsC:         baseStatsC,
+		baseStatsD:         baseStatsD,
+		baseStatsS:         baseStatsS,
 		isFinalEvolution:   IsFinalEvolution,
 	}
 }
@@ -64,6 +83,12 @@ func NewPokemonNonId(
 	abilityId1 *int,
 	abilityId2 *int,
 	hiddenAbilityId *int,
+	baseStatsH int,
+	baseStatsA int,
+	baseStatsB int,
+	baseStatsC int,
+	baseStatsD int,
+	baseStatsS int,
 	IsFinalEvolution bool) Pokemon {
 	return Pokemon{
 		id:                 0,
@@ -78,6 +103,12 @@ func NewPokemonNonId(
 		abilityIdPrimary:   value.NewOptionalAbilityId(abilityId1), // always exist.
 		abilityIdSecondary: value.NewOptionalAbilityId(abilityId2),
 		hiddenAbilityId:    value.NewOptionalAbilityId(hiddenAbilityId),
+		baseStatsH:         baseStatsH,
+		baseStatsA:         baseStatsA,
+		baseStatsB:         baseStatsB,
+		baseStatsC:         baseStatsC,
+		baseStatsD:         baseStatsD,
+		baseStatsS:         baseStatsS,
 		isFinalEvolution:   IsFinalEvolution,
 	}
 }
@@ -128,6 +159,30 @@ func (p Pokemon) AbilityIdSecondary() value.OptionalAbilityId {
 
 func (p Pokemon) HiddenAbilityId() value.OptionalAbilityId {
 	return p.hiddenAbilityId
+}
+
+func (p Pokemon) BaseStatsH() int {
+	return p.baseStatsH
+}
+
+func (p Pokemon) BaseStatsA() int {
+	return p.baseStatsA
+}
+
+func (p Pokemon) BaseStatsB() int {
+	return p.baseStatsB
+}
+
+func (p Pokemon) BaseStatsC() int {
+	return p.baseStatsC
+}
+
+func (p Pokemon) BaseStatsD() int {
+	return p.baseStatsD
+}
+
+func (p Pokemon) BaseStatsS() int {
+	return p.baseStatsS
 }
 
 func (p Pokemon) IsFinalEvolution() bool {

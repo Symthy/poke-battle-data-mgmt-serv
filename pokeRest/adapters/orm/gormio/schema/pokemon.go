@@ -21,7 +21,13 @@ type Pokemon struct {
 	AbilityId1       sql.NullInt16 // has one
 	AbilityId2       sql.NullInt16 // has one
 	HiddenAbilityId  sql.NullInt16 // has one
-	IsFinalEvolution bool          `gorm:"default:false"`
+	BaseStatsH       int
+	BaseStatsA       int
+	BaseStatsB       int
+	BaseStatsC       int
+	BaseStatsD       int
+	BaseStatsS       int
+	IsFinalEvolution bool `gorm:"default:false"`
 
 	// relation
 	Move                  []*Move               `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`        // M:M
@@ -59,6 +65,12 @@ func (p Pokemon) ConvertToDomain() model.Pokemon {
 		sqltype.ResolveNullInt16(p.AbilityId1),
 		sqltype.ResolveNullInt16(p.AbilityId2),
 		sqltype.ResolveNullInt16(p.HiddenAbilityId),
+		p.BaseStatsH,
+		p.BaseStatsA,
+		p.BaseStatsB,
+		p.BaseStatsC,
+		p.BaseStatsD,
+		p.BaseStatsS,
 		p.IsFinalEvolution,
 	)
 }
@@ -76,6 +88,12 @@ func (p Pokemon) ConvertToDomainNonId() model.Pokemon {
 		sqltype.ResolveNullInt16(p.AbilityId1),
 		sqltype.ResolveNullInt16(p.AbilityId2),
 		sqltype.ResolveNullInt16(p.HiddenAbilityId),
+		p.BaseStatsH,
+		p.BaseStatsA,
+		p.BaseStatsB,
+		p.BaseStatsC,
+		p.BaseStatsD,
+		p.BaseStatsS,
 		p.IsFinalEvolution,
 	)
 }

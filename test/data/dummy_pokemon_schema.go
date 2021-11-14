@@ -25,6 +25,12 @@ func DummyPokemon3() schema.Pokemon {
 		AbilityId1:       *abilityId1,
 		AbilityId2:       *abilityId2,
 		HiddenAbilityId:  *abilityId3,
+		BaseStatsH:       80,
+		BaseStatsA:       82,
+		BaseStatsB:       83,
+		BaseStatsC:       100,
+		BaseStatsD:       100,
+		BaseStatsS:       80,
 		IsFinalEvolution: true,
 	}
 }

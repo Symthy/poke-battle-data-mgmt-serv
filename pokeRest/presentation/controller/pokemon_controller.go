@@ -10,14 +10,13 @@ type PokemonController struct {
 	service service.PokemonReadService
 }
 
-// Todo: use wire
 func NewPokemonController(service service.PokemonReadService) *PokemonController {
 	return &PokemonController{service: service}
 }
 
 func (c PokemonController) GetPokemon(id float32) server.Pokemon {
 	ret := server.Pokemon{}
-	if pokemon, err := c.service.GetPokemon(uint(id)); err != nil {
+	if pokemon, err := c.service.GetPokemon(uint(id)); err == nil {
 		ret = ConvertToResponse(pokemon)
 	}
 	return ret
@@ -38,12 +37,12 @@ func ConvertToResponse(domain model.Pokemon) server.Pokemon {
 	return server.Pokemon{
 		Ability1:         float32(*ability1),
 		Ability2:         ability2,
-		BaseStatsA:       0,
-		BaseStatsB:       0,
-		BaseStatsC:       0,
-		BaseStatsD:       0,
-		BaseStatsH:       0,
-		BaseStatsS:       0,
+		BaseStatsH:       float32(domain.BaseStatsH()),
+		BaseStatsA:       float32(domain.BaseStatsA()),
+		BaseStatsB:       float32(domain.BaseStatsB()),
+		BaseStatsC:       float32(domain.BaseStatsC()),
+		BaseStatsD:       float32(domain.BaseStatsD()),
+		BaseStatsS:       float32(domain.BaseStatsS()),
 		EnglishName:      domain.EnglishName(),
 		FormId:           float32(domain.FormNo()),
 		FormName:         domain.FormName(),
