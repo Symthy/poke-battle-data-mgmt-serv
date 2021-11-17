@@ -2,12 +2,14 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Name        *string
+	Name        string
 	DisplayName *string
 	Email       *string
 	Profile     *string
@@ -21,4 +23,18 @@ type User struct {
 
 func (User) TableName() string {
 	return "users"
+}
+
+func (u User) ConvertToDomain() model.User {
+	name, _ := value.NewName(u.Name)
+	email, _ := value.NewEmail(*u.Email)
+	role := value.Role(u.Role.String())
+	return model.NewUser(
+		u.ID,
+		*name,
+		*u.DisplayName,
+		*email,
+		*u.Profile,
+		role,
+	)
 }

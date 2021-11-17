@@ -16,6 +16,13 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 	return &PokemonRepository{dbClient: dbClient}
 }
 
+func (rep PokemonRepository) FindById(id uint) (model.Pokemon, error) {
+	db := rep.dbClient.Db()
+	var pokemon = schema.Pokemon{}
+	tx := db.First(&pokemon, id)
+	return pokemon.ConvertToDomain(), tx.Error
+}
+
 // Todo: args is condition
 func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
 	db := rep.dbClient.Db()
@@ -34,15 +41,8 @@ func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
 	return pokemonList, nil
 }
 
-func (rep PokemonRepository) FindById(id uint) (model.Pokemon, error) {
-	db := rep.dbClient.Db()
-	var pokemon = schema.Pokemon{}
-	tx := db.First(&pokemon, id)
-	return pokemon.ConvertToDomain(), tx.Error
-}
-
 func (rep PokemonRepository) Create(pokemon *model.Pokemon) (model.Pokemon, error) {
-	schemaPokemon := gormio.ConvertDomainToSchema(*pokemon)
+	schemaPokemon := gormio.ConvertPokemonToSchema(*pokemon)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaPokemon)
 	created := schemaPokemon.ConvertToDomain()

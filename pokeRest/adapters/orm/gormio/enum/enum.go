@@ -70,6 +70,10 @@ func (ro Role) Value() (driver.Value, error) {
 	return string(ro), nil
 }
 
+func (ro Role) String() string {
+	return string(ro)
+}
+
 // 性別
 type Gender string
 

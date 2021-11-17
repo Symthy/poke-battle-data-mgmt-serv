@@ -9,7 +9,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
 
-func ConvertDomainToSchema(p model.Pokemon) schema.Pokemon {
+func ConvertPokemonToSchema(p model.Pokemon) schema.Pokemon {
 	pokemon := schema.Pokemon{
 		ID:               p.Id(),
 		PokedexNo:        p.PokedexNo(),
@@ -26,6 +26,19 @@ func ConvertDomainToSchema(p model.Pokemon) schema.Pokemon {
 		IsFinalEvolution: p.IsFinalEvolution(),
 	}
 	return pokemon
+}
+
+func ConvertUserToSchema(u model.User) schema.User {
+	email := u.Email().Value()
+	user := schema.User{
+		Name:        u.Name().Value(),
+		DisplayName: u.DisplayName(),
+		Email:       &email,
+		Profile:     u.Profile(),
+		Role:        enum.Role(u.Role().String()),
+	}
+	user.ID = u.Id()
+	return user
 }
 
 func convertOptionalIdToNullInt16(id optional.OptionalId) sql.NullInt16 {
