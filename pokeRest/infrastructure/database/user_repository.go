@@ -11,8 +11,8 @@ type UserRepository struct {
 	dbClient orm.IDbClient
 }
 
-func NewUserRepository(dbClient orm.IDbClient) *PokemonRepository {
-	return &PokemonRepository{dbClient: dbClient}
+func NewUserRepository(dbClient orm.IDbClient) *UserRepository {
+	return &UserRepository{dbClient: dbClient}
 }
 
 func (rep UserRepository) FindById(id uint) (model.User, error) {

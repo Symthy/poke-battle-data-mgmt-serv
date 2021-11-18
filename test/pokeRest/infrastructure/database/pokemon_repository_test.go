@@ -58,7 +58,7 @@ func (suite *PokemonRepositoryTestSuite) TestFind() {
 		expected := dummyPokemon.ConvertToDomain()
 		actual, err := suite.repository.FindById(id)
 		if err != nil {
-			suite.Fail("error")
+			suite.Fail(err.Error())
 		}
 		if !reflect.DeepEqual(expected, actual) {
 			suite.Fail("expected and actual is unmatched")

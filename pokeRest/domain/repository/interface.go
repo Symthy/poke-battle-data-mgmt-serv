@@ -30,5 +30,6 @@ type IItemRepository interface {
 }
 
 type IUserRepository interface {
-	IBasicRepository
+	FindById(id uint) (model.User, error)
+	Create(user *model.User) (model.User, error)
 }

@@ -25,12 +25,27 @@ func (User) TableName() string {
 	return "users"
 }
 
+// Todo: error
 func (u User) ConvertToDomain() model.User {
 	name, _ := value.NewName(u.Name)
 	email, _ := value.NewEmail(*u.Email)
 	role := value.Role(u.Role.String())
 	return model.NewUser(
 		u.ID,
+		*name,
+		*u.DisplayName,
+		*email,
+		*u.Profile,
+		role,
+	)
+}
+
+func (u User) ConvertToDomainNonId() model.User {
+	name, _ := value.NewName(u.Name)
+	email, _ := value.NewEmail(*u.Email)
+	role := value.Role(u.Role.String())
+	return model.NewUser(
+		0,
 		*name,
 		*u.DisplayName,
 		*email,
