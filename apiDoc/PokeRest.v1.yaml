@@ -580,6 +580,34 @@ paths:
           in: query
           name: specifies
           description: 分類指定(All/Attack/Deffence)
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id
 components:
   schemas:
     Pokemon:
@@ -888,16 +916,6 @@ components:
       required:
         - compatibilityTable
         - typeOrder
-    Error:
-      title: Error
-      type: object
-      properties:
-        id:
-          type: string
-        message:
-          type: string
-        type:
-          type: string
     Form:
       title: Form
       type: object
@@ -911,6 +929,31 @@ components:
         regionName:
           type: string
       description: フォルム
+    User:
+      title: User
+      type: object
+      description: user
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        displayName:
+          type: string
+        email:
+          type: string
+        profile:
+          type: string
+    Error:
+      title: Error
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
   responses:
     '400':
       description: Bad Request

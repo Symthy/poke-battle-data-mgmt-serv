@@ -39,8 +39,9 @@ func main() {
 	// Log all requests
 	e.Use(echomiddleware.Logger())
 
-	controller := di.InitPokemonController()
-	handler := handler.NewPokeRestHandler(*controller)
+	pokeCon := di.InitPokemonController()
+	userCon := di.InitUserController()
+	handler := handler.NewPokeRestHandler(pokeCon, userCon)
 	server.RegisterHandlers(e, handler)
 
 	// And we serve HTTP until the world ends.

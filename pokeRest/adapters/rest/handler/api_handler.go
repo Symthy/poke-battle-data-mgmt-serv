@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"net/http"
 	"sync"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
@@ -9,13 +10,18 @@ import (
 )
 
 type PokeRestHandler struct {
-	Lock               sync.Mutex
-	pokemonContoroller controller.PokemonController
+	Lock              sync.Mutex
+	pokemonController *controller.PokemonController
+	userController    *controller.UserController
 }
 
-func NewPokeRestHandler(controller controller.PokemonController) *PokeRestHandler {
+func NewPokeRestHandler(
+	pokeCon *controller.PokemonController,
+	userCon *controller.UserController,
+) *PokeRestHandler {
 	return &PokeRestHandler{
-		pokemonContoroller: controller,
+		pokemonController: pokeCon,
+		userController:    userCon,
 	}
 }
 
@@ -58,7 +64,12 @@ func (h *PokeRestHandler) GetMoveById(ctx echo.Context, moveId float32) error {
 // get pokemon by Id
 // (GET /pokemons/{id})
 func (h *PokeRestHandler) GetPokemonById(ctx echo.Context, id float32) error {
-	return nil
+	user, err := h.pokemonController.GetPokemon(id)
+	if err != nil {
+		ctx.JSON(http.StatusOK, user)
+		return nil
+	}
+	return err
 }
 
 // get pokemons
@@ -119,4 +130,15 @@ func (h *PokeRestHandler) GetTypeCompabilityOfAttackSide(ctx echo.Context, pType
 // (GET /types/compability/defense/{type})
 func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pType string) error {
 	return nil
+}
+
+// Your GET endpoint
+// (GET /users/{id})
+func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id float32) error {
+	user, err := h.userController.GetUser(id)
+	if err != nil {
+		ctx.JSON(http.StatusOK, user)
+		return nil
+	}
+	return err
 }

@@ -10,7 +10,7 @@ func DummyUser1() schema.User {
 	email := "test@test.com"
 	profile := "detail\nprofile"
 	dummyUser := schema.User{
-		Name:        "dummy user",
+		Name:        "dummy_user",
 		DisplayName: &displayName,
 		Email:       &email,
 		Profile:     &profile,

@@ -1,4 +1,4 @@
-package presentation
+package auth
 
 import (
 	"net/http"
@@ -46,7 +46,7 @@ func (a Authorizer) SignUp(c echo.Context) error {
 		}
 	}
 
-	if u := a.controller.FindUser(&User{Name: user.Name}); u.ID != 0 {
+	if u := a.controller.GetUser(&User{Name: user.Name}); u.ID != 0 {
 		return &echo.HTTPError{
 			Code:    http.StatusConflict,
 			Message: "name already exists",

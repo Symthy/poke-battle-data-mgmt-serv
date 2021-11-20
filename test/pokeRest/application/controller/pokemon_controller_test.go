@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/di"
+	"github.com/Symthy/PokeRest/pokeRest/presentation"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/stretchr/testify/suite"
@@ -31,9 +32,12 @@ func TestPokemonControllerTestSuite(t *testing.T) {
 
 func (suite *PokemonControllerTestSuite) TestGetPokemon() {
 	var id float32 = 3
-	actual := suite.controller.GetPokemon(id)
-	expected := controller.ConvertToResponse(data.DummyPokemon3().ConvertToDomain())
+	actual, err := suite.controller.GetPokemon(id)
+	expected := presentation.ConvertPokemonToResponse(data.DummyPokemon3().ConvertToDomain())
 
+	if err != nil {
+		suite.Fail(err.Error())
+	}
 	if !reflect.DeepEqual(expected, actual) {
 		suite.Fail("expected and actual is unmatched")
 		fmt.Printf("expected:\n%#v\n", expected)

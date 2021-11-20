@@ -13,6 +13,30 @@ import (
 	"github.com/google/wire"
 )
 
+/* User */
+func InitUserController() *controller.UserController {
+	wire.Build(
+		controller.NewUserController,
+		service.NewUserReadService,
+		database.NewUserRepository,
+		orm.NewGormDbClient,
+		wire.Bind(new(repository.IUserRepository), new(*database.UserRepository)),
+		wire.Bind(new(orm.IDbClient), new(*orm.GormDbClient)),
+	)
+	return nil
+}
+
+func InitUserControllerByRepoMock() *controller.UserController {
+	wire.Build(
+		controller.NewUserController,
+		service.NewUserReadService,
+		mock.NewUserRepositoryMock,
+		wire.Bind(new(repository.IUserRepository), new(*mock.UserRepositoryMock)),
+	)
+	return nil
+}
+
+/* Pokemon */
 func InitPokemonController() *controller.PokemonController {
 	wire.Build(
 		controller.NewPokemonController,

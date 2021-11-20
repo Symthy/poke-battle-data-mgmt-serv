@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"regexp"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
@@ -44,10 +45,10 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 	suite.Run("find by id", func() {
 		var id uint = 1
 		dummyUser := data.DummyUser1()
-		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" LIMIT 1`)).
+		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL ORDER BY "users"."id" LIMIT 1`)).
 			WithArgs(id).
-			WillReturnRows(sqlmock.NewRows([]string{"ID", "Name", "DisplayName", "Email", "Profile", "Role"}).
-				AddRow(1, "dummy user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
+			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "DisplayName", "Email", "Profile", "Role"}).
+				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
 
 		expected := dummyUser.ConvertToDomain()
 		actual, err := suite.repository.FindById(id)
@@ -67,8 +68,8 @@ func (suite *UserRepositoryTestSuite) TestCreate() {
 	dummyUser := data.DummyUser1()
 	suite.mock.ExpectBegin()
 	suite.mock.ExpectQuery(regexp.QuoteMeta(
-		`INSERT INTO "users" ("name","display_name","email","profile","role") ` +
-			`VALUES ($1,$2,$3,$4,$5) RETURNING "id"`)).
+		`INSERT INTO "users" ("created_at","updated_at","deleted_at","name","display_name","email","profile","role") ` +
+			`VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING "id"`)).
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(id))
 	suite.mock.ExpectCommit()
 

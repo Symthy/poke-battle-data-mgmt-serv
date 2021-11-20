@@ -20,3 +20,7 @@ func (mock UserRepositoryMock) FindById(id uint) (model.User, error) {
 	}
 	return dummyUser.ConvertToDomain(), nil
 }
+
+func (mock UserRepositoryMock) Create(user *model.User) (model.User, error) {
+	return model.User{}, nil
+}

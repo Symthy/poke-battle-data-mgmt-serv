@@ -11,11 +11,11 @@ type Name struct {
 }
 
 func NewName(value string) (*Name, error) {
-	if len(value) <= 16 {
+	if len(value) > 16 || len(value) < 1 {
 		return nil, exception.NewInvalidValueError("user name")
 	}
-	r := regexp.MustCompile(`^[a-zA-Z0-9_+-]+`)
-	if r.MatchString(value) {
+	r := regexp.MustCompile(`[a-zA-Z0-9-_]+`)
+	if !r.MatchString(value) {
 		return nil, exception.NewInvalidValueError("user name")
 	}
 	return &Name{value: value}, nil

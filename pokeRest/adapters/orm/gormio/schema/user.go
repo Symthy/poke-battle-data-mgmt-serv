@@ -40,6 +40,7 @@ func (u User) ConvertToDomain() model.User {
 	)
 }
 
+// Todo: error log output
 func (u User) ConvertToDomainNonId() model.User {
 	name, _ := value.NewName(u.Name)
 	email, _ := value.NewEmail(*u.Email)
