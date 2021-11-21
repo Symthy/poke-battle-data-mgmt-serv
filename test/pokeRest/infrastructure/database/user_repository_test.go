@@ -61,6 +61,45 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 			fmt.Printf("actual:  \n%#v\n", actual)
 		}
 	})
+
+	suite.Run("find by name when non filter", func() {
+		dummyUser := data.DummyUser1()
+		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE name = $1 AND "users"."deleted_at" IS NULL`)).
+			WithArgs("dummy_user").
+			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "DisplayName", "Email", "Profile", "Role"}).
+				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
+
+		expected := dummyUser.ConvertToDomain()
+		actual, err := suite.repository.FindByName("dummy_user")
+		if err != nil {
+			suite.Fail(err.Error())
+		}
+		if !reflect.DeepEqual(expected, actual) {
+			suite.Fail("expected and actual is unmatched")
+			fmt.Printf("expected:\n%#v\n", expected)
+			fmt.Printf("actual:  \n%#v\n", actual)
+		}
+	})
+
+	suite.Run("find by name when exist filter", func() {
+		filterFields := []string{"id", "name", "displayName", "role"}
+		dummyUser := data.DummyUser1(filterFields...)
+		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT "id","name","display_name","role" FROM "users" WHERE name = $1 AND "users"."deleted_at" IS NULL`)).
+			WithArgs("dummy_user").
+			WillReturnRows(sqlmock.NewRows([]string{"ID", "Name", "DisplayName", "Role"}).
+				AddRow(1, "dummy_user", "dummy dummy user", []byte(enum.User)))
+
+		expected := dummyUser.ConvertToDomain()
+		actual, err := suite.repository.FindByName("dummy_user", filterFields...)
+		if err != nil {
+			suite.Fail(err.Error())
+		}
+		if !reflect.DeepEqual(expected, actual) {
+			suite.Fail("expected and actual is unmatched")
+			fmt.Printf("expected:\n%#v\n", expected)
+			fmt.Printf("actual:  \n%#v\n", actual)
+		}
+	})
 }
 
 func (suite *UserRepositoryTestSuite) TestCreate() {

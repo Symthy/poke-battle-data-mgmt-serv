@@ -31,5 +31,6 @@ type IItemRepository interface {
 
 type IUserRepository interface {
 	FindById(id uint) (model.User, error)
+	FindByName(targetName string, filterFields ...string) (model.User, error)
 	Create(user *model.User) (model.User, error)
 }

@@ -73,6 +73,9 @@ gorm + postgresql + go-sqlmock の場合、INSERTのモックがうまく行か�
 - go-mocket
 https://github.com/Selvatico/go-mocket
 
+- array の contains
+https://zenn.dev/glassonion1/articles/7c7830a269909c
+
 ### Other
 
 - go-funk: 戻り値がinterface{}になるため使用は限定的にしておく。※genericsが来ればWrapして使えるはず
@@ -80,6 +83,9 @@ https://github.com/thoas/go-funk
 
 - gonstructor: コンストラクタ(ビルダー)自動生成ツール。自前で用意する時間がないため暫定使用。ただし`gorm:～` の指定入れている物には使えず
 https://github.com/moznion/gonstructor
+
+- golang-set：使用していないがメモ。凝ったSet型を使いたければ以下を使う
+https://github.com/deckarep/golang-set
 
 ## Use tools
 

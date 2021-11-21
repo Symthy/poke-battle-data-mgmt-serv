@@ -135,7 +135,7 @@ func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pTyp
 // Your GET endpoint
 // (GET /users/{id})
 func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id float32) error {
-	user, err := h.userController.GetUser(id)
+	user, err := h.userController.GetUserById(id)
 	if err != nil {
 		ctx.JSON(http.StatusOK, user)
 		return nil

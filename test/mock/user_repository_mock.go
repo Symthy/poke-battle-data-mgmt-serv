@@ -3,6 +3,7 @@ package mock
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/test/data"
+	"gorm.io/gorm"
 )
 
 // implements IUserRepository
@@ -17,6 +18,14 @@ func (mock UserRepositoryMock) FindById(id uint) (model.User, error) {
 	dummyUser := data.DummyUser1()
 	if dummyUser.ID != id {
 		return model.User{}, nil
+	}
+	return dummyUser.ConvertToDomain(), nil
+}
+
+func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...string) (model.User, error) {
+	dummyUser := data.DummyUser1(filterFields...)
+	if dummyUser.Name != targetName {
+		return model.User{}, gorm.ErrRecordNotFound
 	}
 	return dummyUser.ConvertToDomain(), nil
 }

@@ -65,7 +65,7 @@ func (a Authorizer) SignIn(c echo.Context) error {
 		return err
 	}
 
-	user := a.controller.FindUser(&User{Name: u.Name})
+	user := a.controller.GetUser(&User{Name: u.Name})
 	if user.ID == 0 || user.Password != u.Password {
 		return &echo.HTTPError{
 			Code:    http.StatusUnauthorized,

@@ -15,16 +15,16 @@ type User struct {
 func NewUser(
 	id uint,
 	name value.Name,
-	displayName string,
-	email value.Email,
-	profile string,
+	displayName *string,
+	email *value.Email,
+	profile *string,
 	role value.Role) User {
 	return User{
 		id:          id,
 		name:        name,
-		displayName: &displayName,
-		email:       &email,
-		profile:     &profile,
+		displayName: displayName,
+		email:       email,
+		profile:     profile,
 		role:        role,
 	}
 }

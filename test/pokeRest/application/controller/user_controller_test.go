@@ -30,9 +30,9 @@ func TestUserControllerTestSuite(t *testing.T) {
 	suite.Run(t, new(UserControllerTestSuite))
 }
 
-func (suite *UserControllerTestSuite) TestGetPokemon() {
+func (suite *UserControllerTestSuite) TestGetUser() {
 	var id float32 = 1
-	actual, err := suite.controller.GetUser(id)
+	actual, err := suite.controller.GetUserById(id)
 	expected := presentation.ConvertUserToResponse(data.DummyUser1().ConvertToDomain())
 
 	if err != nil {
@@ -43,4 +43,8 @@ func (suite *UserControllerTestSuite) TestGetPokemon() {
 		fmt.Printf("expected:\n%#v\n", expected)
 		fmt.Printf("actual:  \n%#v\n", actual)
 	}
+}
+
+func (suite *UserControllerTestSuite) TestGetUserByName() {
+
 }
