@@ -9,7 +9,9 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/handler"
 	"github.com/Symthy/PokeRest/pokeRest/cmd/migration"
+	"github.com/Symthy/PokeRest/pokeRest/presentation/auth"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	echomiddleware "github.com/labstack/echo/v4/middleware"
 )
 
@@ -38,11 +40,16 @@ func main() {
 	e := echo.New()
 	// Log all requests
 	e.Use(echomiddleware.Logger())
+	e.Use(middleware.CSRF())
 
 	pokeCon := di.InitPokemonController()
 	userCon := di.InitUserController()
 	handler := handler.NewPokeRestHandler(pokeCon, userCon)
 	server.RegisterHandlers(e, handler)
+
+	// JWT auth
+	r := e.Group("/users")
+	r.Use(middleware.JWTWithConfig(auth.Config))
 
 	// And we serve HTTP until the world ends.
 	e.Logger.Fatal(e.Start(fmt.Sprintf("0.0.0.0:%d", *port)))

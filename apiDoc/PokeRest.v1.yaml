@@ -608,6 +608,59 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id
+  /signin:
+    post:
+      summary: SignIn
+      operationId: post-signin
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthUser'
+  /signup:
+    post:
+      summary: SignUp
+      operationId: post-signup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthUser'
+    parameters: []
 components:
   schemas:
     Pokemon:
@@ -953,6 +1006,22 @@ components:
         message:
           type: string
         type:
+          type: string
+    AuthUser:
+      title: AuthUser
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        password:
+          type: string
+    LoginSuccess:
+      title: LoginSuccess
+      type: object
+      properties:
+        token:
           type: string
   responses:
     '400':

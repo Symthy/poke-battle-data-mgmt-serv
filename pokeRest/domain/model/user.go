@@ -6,6 +6,7 @@ type User struct {
 	id          uint
 	name        value.Name
 	displayName *string
+	password    string
 	email       *value.Email
 	profile     *string
 	role        value.Role
@@ -39,6 +40,10 @@ func (u User) Name() value.Name {
 
 func (u User) DisplayName() *string {
 	return u.displayName
+}
+
+func (u User) Password() string {
+	return u.password
 }
 
 func (u User) Email() *value.Email {

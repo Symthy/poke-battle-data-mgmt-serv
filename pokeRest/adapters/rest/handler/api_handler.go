@@ -108,6 +108,18 @@ func (h *PokeRestHandler) GetPokemonByPokedexNoAndFormNo(ctx echo.Context, poked
 	return nil
 }
 
+// SignIn
+// (POST /signin)
+func (h *PokeRestHandler) PostSignin(ctx echo.Context) error {
+	return nil
+}
+
+// SignUp
+// (POST /signup)
+func (h *PokeRestHandler) PostSignup(ctx echo.Context) error {
+	return nil
+}
+
 // get types
 // (GET /types)
 func (h *PokeRestHandler) GetTypes(ctx echo.Context, params server.GetTypesParams) error {

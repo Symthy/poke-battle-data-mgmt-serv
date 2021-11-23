@@ -4,14 +4,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
+	"github.com/Symthy/PokeRest/pokeRest/application/command"
+	"github.com/Symthy/PokeRest/pokeRest/application/service"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type jwtCustomClaims struct {
-	UID  int    `json:"uid"`
+	UID  uint   `json:"uid"`
 	Name string `json:"name"`
 	jwt.StandardClaims
 }
@@ -30,52 +33,34 @@ var Config = middleware.JWTConfig{
 }
 
 type Authorizer struct {
-	controller controller.UserController
+	service service.UserReadService
 }
 
-func (a Authorizer) SignUp(c echo.Context) error {
-	user := new(User)
-	if err := c.Bind(user); err != nil {
-		return err
-	}
-
-	if user.Name == "" || user.Password == "" {
-		return &echo.HTTPError{
-			Code:    http.StatusBadRequest,
-			Message: "invalid name or password",
-		}
-	}
-
-	if u := a.controller.GetUser(&User{Name: user.Name}); u.ID != 0 {
-		return &echo.HTTPError{
-			Code:    http.StatusConflict,
-			Message: "name already exists",
-		}
-	}
-
-	model.CreateUser(user)
-	user.Password = ""
-
-	return c.JSON(http.StatusCreated, user)
-}
-
+// Login
 func (a Authorizer) SignIn(c echo.Context) error {
-	u := new(User)
+	u := new(server.AuthUser)
 	if err := c.Bind(u); err != nil {
 		return err
 	}
 
-	user := a.controller.GetUser(&User{Name: u.Name})
-	if user.ID == 0 || user.Password != u.Password {
+	command := command.NewGetUserCommand(*u.Name).SetFilterRequiredFields()
+	// Todo: error process
+	user, _ := a.service.GetUser(*command)
+	if user.Id() == 0 {
 		return &echo.HTTPError{
 			Code:    http.StatusUnauthorized,
-			Message: "invalid name or password",
+			Message: "invalid name",
 		}
 	}
 
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password()), []byte(*u.Password))
+	if err != nil {
+		return echo.ErrUnauthorized
+	}
+
 	claims := &jwtCustomClaims{
-		user.ID,
-		user.Name,
+		user.Id(),
+		user.Name().Value(),
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 		},
@@ -87,9 +72,38 @@ func (a Authorizer) SignIn(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	return c.JSON(http.StatusOK, echo.Map{
 		"token": t,
 	})
+}
+
+// first register
+func (a Authorizer) SignUp(c echo.Context) error {
+	signupUser := new(User)
+	if err := c.Bind(signupUser); err != nil {
+		return err
+	}
+
+	if signupUser.Name == "" || signupUser.Password == "" {
+		return &echo.HTTPError{
+			Code:    http.StatusBadRequest,
+			Message: "invalid name or password",
+		}
+	}
+
+	command := command.NewGetUserCommand(signupUser.Name).SetFilterRequiredFields()
+	// Todo: error process
+	if u, _ := a.service.GetUser(*command); u.Id() != 0 {
+		return &echo.HTTPError{
+			Code:    http.StatusConflict,
+			Message: "name already exists",
+		}
+	}
+
+	// Todo: command
+	user, err := a.service.CreateUser(signupUser)
+
+	return c.JSON(http.StatusCreated, user)
 }
 
 func (a Authorizer) validateUserIdInToken(c echo.Context) error {
