@@ -7,6 +7,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/application/command"
 	"github.com/Symthy/PokeRest/pokeRest/application/service"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -17,12 +18,6 @@ type jwtCustomClaims struct {
 	UID  uint   `json:"uid"`
 	Name string `json:"name"`
 	jwt.StandardClaims
-}
-
-type User struct {
-	ID       uint   `json:"id" form:"id" query:"id"`
-	Name     string `json:"name" form:"name" query:"name"`
-	Password string `json:"password" form:"password" query:"password"`
 }
 
 var signingKey = []byte("secret")
@@ -44,8 +39,11 @@ func (a Authorizer) SignIn(c echo.Context) error {
 	}
 
 	command := command.NewGetUserCommand(*u.Name).SetFilterRequiredFields()
+	user, err := a.service.GetUser(*command)
 	// Todo: error process
-	user, _ := a.service.GetUser(*command)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
 	if user.Id() == 0 {
 		return &echo.HTTPError{
 			Code:    http.StatusUnauthorized,
@@ -53,8 +51,7 @@ func (a Authorizer) SignIn(c echo.Context) error {
 		}
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password()), []byte(*u.Password))
-	if err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password()), []byte(*u.Password)); err != nil {
 		return echo.ErrUnauthorized
 	}
 
@@ -68,8 +65,9 @@ func (a Authorizer) SignIn(c echo.Context) error {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString(signingKey)
+	// Todo: error process
 	if err != nil {
-		return err
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{
@@ -79,39 +77,56 @@ func (a Authorizer) SignIn(c echo.Context) error {
 
 // first register
 func (a Authorizer) SignUp(c echo.Context) error {
-	signupUser := new(User)
+	signupUser := new(server.AuthUser)
 	if err := c.Bind(signupUser); err != nil {
 		return err
 	}
 
-	if signupUser.Name == "" || signupUser.Password == "" {
+	if *signupUser.Name == "" || *signupUser.Password == "" {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
 			Message: "invalid name or password",
 		}
 	}
 
-	command := command.NewGetUserCommand(signupUser.Name).SetFilterRequiredFields()
+	getCommand := command.NewGetUserCommand(*signupUser.Name).SetFilterRequiredFields()
+
+	u, err := a.service.GetUser(*getCommand)
 	// Todo: error process
-	if u, _ := a.service.GetUser(*command); u.Id() != 0 {
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	if u.Id() != 0 {
 		return &echo.HTTPError{
 			Code:    http.StatusConflict,
 			Message: "name already exists",
 		}
 	}
 
-	// Todo: command
-	user, err := a.service.CreateUser(signupUser)
-
+	createCommand := command.NewCreateUserCommand(
+		uint(*signupUser.Id),
+		*signupUser.Name,
+		*signupUser.Password,
+		value.User,
+	)
+	user, err := a.service.CreateUser(createCommand)
+	// Todo: error process
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
 	return c.JSON(http.StatusCreated, user)
 }
 
 func (a Authorizer) validateUserIdInToken(c echo.Context) error {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(*jwtCustomClaims)
+	accessUser := c.Get("user").(*jwt.Token)
+	claims := accessUser.Claims.(*jwtCustomClaims)
 	var uid uint = uint(claims.UID)
-	if user := a.controller.FindUser(&User{ID: uid}); user.ID == 0 {
+	user, err := a.service.GetUserById(uid)
+	if user.Id() == 0 {
 		return echo.ErrNotFound
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return nil
 }

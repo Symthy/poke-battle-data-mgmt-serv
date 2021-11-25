@@ -1,6 +1,9 @@
 package model
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/application/command"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+)
 
 type User struct {
 	id          uint
@@ -30,6 +33,18 @@ func NewUser(
 	}
 }
 
+func NewUserFromCommand(command command.CreateUserCommand) User {
+	name, _ := value.NewName(command.Name())
+	return NewUser(
+		command.Id(),
+		*name,
+		nil,
+		nil,
+		nil,
+		command.Role(),
+	)
+}
+
 func (u User) Id() uint {
 	return u.id
 }
@@ -56,4 +71,8 @@ func (u User) Profile() *string {
 
 func (u User) Role() value.Role {
 	return u.role
+}
+
+func (u *User) ResetPassword() {
+	u.password = ""
 }

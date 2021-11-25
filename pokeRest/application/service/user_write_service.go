@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/Symthy/PokeRest/pokeRest/application/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
@@ -14,8 +15,9 @@ func NewUserWriteService(repository repository.IUserRepository) UserWriteService
 }
 
 // Todo: input command
-func (s UserReadService) CreateUser(user *model.User) (model.User, error) {
-	created, err := s.repository.Create(user)
-	// password delete
-	return created, err
+func (s UserReadService) CreateUser(command command.CreateUserCommand) (model.User, error) {
+	user := model.NewUserFromCommand(command)
+	createdUser, err := s.repository.Create(user)
+	createdUser.ResetPassword()
+	return createdUser, err
 }

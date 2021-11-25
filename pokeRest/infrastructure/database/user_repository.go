@@ -36,8 +36,8 @@ func (rep UserRepository) FindByName(targetName string, filterFields ...string) 
 	return user.ConvertToDomain(), tx.Error
 }
 
-func (rep UserRepository) Create(user *model.User) (model.User, error) {
-	schemaUser := gormio.ConvertUserToSchema(*user)
+func (rep UserRepository) Create(user model.User) (model.User, error) {
+	schemaUser := gormio.ConvertUserToSchema(user)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaUser)
 	created := schemaUser.ConvertToDomain()
