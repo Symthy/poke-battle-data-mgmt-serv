@@ -3,23 +3,17 @@ package command
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
 type CreateUserCommand struct {
-	id       uint
 	name     string
 	password string
 	role     value.Role
 }
 
-func NewCreateUserCommand(id uint, name string, password string, role value.Role) CreateUserCommand {
+func NewCreateUserCommand(name string, password string, role value.Role) CreateUserCommand {
 	return CreateUserCommand{
-		id:       id,
 		name:     name,
 		password: password,
 		role:     role,
 	}
-}
-
-func (c CreateUserCommand) Id() uint {
-	return c.id
 }
 
 func (c CreateUserCommand) Name() string {

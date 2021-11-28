@@ -4,3 +4,5 @@ db:
   password:
   dbname:
   port:
+jwt:
+  secretKey:

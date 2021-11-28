@@ -6,6 +6,7 @@ package di
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/application/service"
+	"github.com/Symthy/PokeRest/pokeRest/config"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/database"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
@@ -14,7 +15,7 @@ import (
 )
 
 /* User */
-func InitUserController() *controller.UserController {
+func InitUserController(dbConfig config.DbConfig) *controller.UserController {
 	wire.Build(
 		controller.NewUserController,
 		service.NewUserReadService,
@@ -37,7 +38,7 @@ func InitUserControllerByRepoMock() *controller.UserController {
 }
 
 /* Pokemon */
-func InitPokemonController() *controller.PokemonController {
+func InitPokemonController(dbConfig config.DbConfig) *controller.PokemonController {
 	wire.Build(
 		controller.NewPokemonController,
 		service.NewPokemonReadService,

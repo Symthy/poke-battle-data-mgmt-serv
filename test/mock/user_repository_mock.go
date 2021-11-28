@@ -30,6 +30,6 @@ func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...str
 	return dummyUser.ConvertToDomain(), nil
 }
 
-func (mock UserRepositoryMock) Create(user *model.User) (model.User, error) {
+func (mock UserRepositoryMock) Create(user model.User) (model.User, error) {
 	return model.User{}, nil
 }

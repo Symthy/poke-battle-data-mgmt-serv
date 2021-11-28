@@ -15,8 +15,13 @@ type DbConfig struct {
 	Port     string `json:"port" yaml:"port"`
 }
 
+type AuthConfig struct {
+	SecretKey string `json:"secretKey" yaml:"secretKey"`
+}
+
 type ConfigYaml struct {
-	DbConfig DbConfig `json:"db" yaml:"db"`
+	DbConfig   DbConfig   `json:"db" yaml:"db"`
+	AuthConfig AuthConfig `json:"auth" yaml:"auth"`
 }
 
 func LoadConfigYaml() (*ConfigYaml, error) {

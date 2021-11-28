@@ -10,6 +10,8 @@
 
 ## Golang
 
+### 基本
+
 - [Golangのnew()とmake()の違い](https://cipepser.hatenablog.com/entry/go-new-make)
   - make は slice, map, channelのみ。初期化する
   - new は、任意の型。初期化しない。戻り値はポインタ
@@ -17,6 +19,173 @@
 - [GoでSet型を実現する場合の選択肢](https://kitakitabauer.hatenablog.com/entry/2017/04/04/204701)
   - map × struct で実現 `map[string]struct{}`
   - ライブラリ  https://github.com/deckarep/golang-set
+
+### エラーハンドリング
+
+#### エラーの基本
+
+pkg/errorsのスタックトレース出力
+```go
+import (
+	"fmt"
+ 	"github.com/pkg/errors"
+)
+
+err := errors.New("error")
+fmt.Printf("%+v\n", err)
+```
+
+[[Go 1.13~] errors.Is と errors.As の違いについてお気持ちを理解する](https://qiita.com/hiro_o918/items/fb01014e51354b8bb49f)
+- errors.Is: 特定のエラーとの比較(あるエラーが特定のエラーを Wrap したものかを判別するためのもの)
+- errors.As: エラーに対する型アサーション(自前でエラーを用意した時に，ビルトインのエラーなのか自前で用意したエラーかを判別する際に使える)
+
+#### 見解
+
+- ログへの出力は上位層で
+- カスタムエラーにして、level,code,msg 等を付与する
+- 下位から上位に上げる時、必要に応じてWrapして必要情報付与
+- 以下を pkg/errors で実装。(スタックとレース`fmt.Printf("%+v\n", err)`取れる)
+
+★[Goでのオススメエラーハンドリング手法 (2020/10)](https://medium.com/eureka-engineering/golang-errors-wrapping-1531bdf409f8)
+
+- もしくはスタックとレースは`zap.Stack("").String`での取得にまかせる
+
+#### reference
+
+[Go Tips 連載5: エラーコードベースの例外ハンドリングの実装＋morikuni/failureサンプル](https://future-architect.github.io/articles/20200522/)
+- エラーコードを利用した際に重要なことは、エラーコード外のエラーを発生させないことにある
+
+---
+
+[Error handling and Go](https://go.dev/blog/error-handling-and-go)
+
+[APIサーバのおけるGoのエラーハンドリングについて考えてみる](https://tutuz-tech.hatenablog.com/entry/2020/03/26/193519)
+
+- 処理部分はerrorを返して、呼び元(Controller相当)でエラーの種類に応じて、Http Status Code を設定する
+
+```go
+func (u *UserHandle) CreateHandler(w http.ResponseWriter, r *http.Request) {
+    err := u.Create(w, r)
+    if err != nil {
+        writeLog()
+        var xe *XError
+        if errors.As(err, &xe) {
+            http.Error(w, fmt.Sprintf("...: %w", err) , 400)
+            return
+        }
+        var ye *YError
+        if errors.As(err, &ye) {
+            http.Error(w, fmt.Sprintf("...: %w", err) , 500)
+            return
+        }
+
+        // application unknown error
+        http.Error(w, fmt.Sprintf("...: %w", err) , 500)
+        return
+    }
+}
+```
+
+---
+
+★[今goのエラーハンドリングを無難にしておく方法（2021.09現在）](https://zenn.dev/nekoshita/articles/097e00c6d3d1c9)
+
+- golang.org/x/xerrors はもうメンテされてない (go1.13で一部取り込まれて役目を終えた？)
+- pkg/errors を使う
+  - stacktraceが不要な場合
+    - fmt.Errorfでラップし、errors.Isで判定する
+  - stacktraceが必要な場合
+    - pkg/errors.Wrapでラップし、pkg/errors.Causeで判定する
+    - log.Printf("%+v", err)でstacktraceを出力する
+    - 新しいエラーを返す時はpkg/errors.New or pkg/errors.Errorfを使う
+
+```go
+switch errors.Cause(err) {
+case ErrRecordNotFound:
+	log.Print("ユーザーが存在しなかった場合のハンドリングをする")
+default:
+	return err
+}
+
+// エラー発生箇所でいずれかを行う
+// スタックトレースは綺麗に出る。ただし、外部ライブラリから返ってきたエラーに対してはpkg/errors.WithStackを絶対にしなければいけない。漏れるとトレースが出ない
+return errors.WithStack(ErrRecordNotFound)
+// どんなエラーを返すときにも、絶対にpkg/errors.Wrapを使う。ただしWrapした分全て出るため見づらい
+return errors.Wrap(ErrRecordNotFound, "failed to query")
+```
+
+---
+
+[運用を意識したGo言語でのエラーハンドリング/ロギング](https://qiita.com/nayuneko/items/dea02377b797c2a52053)
+- エラーはWrapして必要な情報を付与して呼び出し元に返す
+  - 発生した箇所を特定できるようメッセージを付与
+  - データが原因になりうる場合はキー情報など最低限の情報も付与
+- カスタムエラー型を作りエラー特定に必要な情報を持たせる
+- ログを出す箇所をまとめる
+  - 特定の層のみでログ出力
+  - echoではエラーハンドリング関数HTTPErrorHandlerがあるためそこで
+
+★[Goでのオススメエラーハンドリング手法 (2020/10)](https://medium.com/eureka-engineering/golang-errors-wrapping-1531bdf409f8)
+
+- errorsパッケージを作成して独自のエラー構造体を定義
+- エラーは全ての箇所でラップして綺麗にスタックトレースを出力
+- エラーレベルやエラーメッセージを付与して汎用性を高める
+
+---
+
+[【Go】エラーハンドリング&ログ出力にまとめて向き合う](https://zenn.dev/yagi_eng/articles/go-error-handling)
+- カスタムエラーを活用 (zap.Stack("").Stringでスタックトレース取得できる)
+```go
+type MyError struct {
+  Code       string
+  Msg        string
+  StackTrace string
+}
+
+func (me *MyError) Error() string {
+  return fmt.Sprintf("my error: code[%s], message[%s]", me.Code, me.Msg)
+}
+
+func New(code string, msg string) *MyError {
+  stack := zap.Stack("").String
+  return &MyError{
+    Code:       code,
+    Msg:        msg,
+    StackTrace: stack,
+  }
+}
+```
+- controllerで複数のエラーを区別する(例：エラーコードでHttpステータス分岐)
+- 下位から上位に戻すに連れてエラーメッセージを追加可能()
+```go
+func (me *MyError) WrapMessage(msg string) {
+	me.Msg = fmt.Sprintf("%s %s", msg, me.Msg)
+}
+// または
+type MyError struct {
+  Code       int
+  Msg        string
+  StackTrace string
+  err        error  // エラーごとwrapできるようにする（こっちの方が良いかも？）
+}
+```
+- Custom HTTP Error Handlerの活用（echo：echo.NewHTTPErrorをreturnするとe.HTTPErrorHandlerに設定しておいた関数が呼び出される）
+
+---
+
+[サードパーティのパッケージ](https://zenn.dev/spiegel/books/error-handling-in-golang/viewer/third-party-errors)
+
+- golang.org/x/xerrors < pkg/errors
+
+
+[Goでスタックトレースを上書きせずにエラーをラップする方法](https://tech.liquid.bio/entry/2021/07/02/135816?utm_source=feed)
+
+
+[Goでスタックトレースを構造化して取り扱う](https://developers.freee.co.jp/entry/2018/12/23/213000)
+- 独自の スタックトレースを作成する例
+
+[Goエラーハンドリング戦略](https://zenn.dev/nobonobo/articles/0b722c9c2b18d5)
+
 
 
 ## echo

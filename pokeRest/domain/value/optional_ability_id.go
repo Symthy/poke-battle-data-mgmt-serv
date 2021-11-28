@@ -1,6 +1,6 @@
 package value
 
-import "github.com/Symthy/PokeRest/pokeRest/exception"
+import "github.com/Symthy/PokeRest/pokeRest/errors"
 
 type OptionalAbilityId struct {
 	id *int
@@ -16,7 +16,7 @@ func NewOptionalAbilityIdEmpty() OptionalAbilityId {
 
 func (o OptionalAbilityId) Get() (*int, error) {
 	if o.isEmpty() {
-		return nil, exception.NewNoValueError("Ability ID")
+		return nil, errors.NewNoValueError("Ability ID")
 	}
 	return o.id, nil
 }

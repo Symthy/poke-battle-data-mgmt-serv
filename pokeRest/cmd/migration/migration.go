@@ -3,10 +3,11 @@ package migration
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
+	"github.com/Symthy/PokeRest/pokeRest/config"
 )
 
-func RunAutoMigration() {
-	db := orm.NewGormDbClient().Db()
+func RunAutoMigration(dbConfig config.DbConfig) {
+	db := orm.NewGormDbClient(dbConfig).Db()
 
 	db.AutoMigrate(
 		&schema.Ability{},
@@ -24,8 +25,8 @@ func RunAutoMigration() {
 	)
 }
 
-func RunDropTables() {
-	db := orm.NewGormDbClient().Db()
+func RunDropTables(dbConfig config.DbConfig) {
+	db := orm.NewGormDbClient(dbConfig).Db()
 	db.Migrator().DropTable(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},

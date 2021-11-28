@@ -1,4 +1,4 @@
-package exception
+package errors
 
 import "golang.org/x/xerrors"
 
@@ -7,7 +7,7 @@ type InvalidValueError struct {
 }
 
 func NewInvalidValueError(fieldName string) error {
-	return xerrors.Errorf("%w", &NoValueError{
+	return xerrors.Errorf("%w", &InvalidValueError{
 		fieldName: fieldName,
 	})
 }

@@ -2,33 +2,19 @@ package auth
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/application/command"
-	"github.com/Symthy/PokeRest/pokeRest/application/service"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/Symthy/PokeRest/pokeRest/application/auth"
+	"github.com/Symthy/PokeRest/pokeRest/presentation"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	"golang.org/x/crypto/bcrypt"
 )
 
-type jwtCustomClaims struct {
-	UID  uint   `json:"uid"`
-	Name string `json:"name"`
-	jwt.StandardClaims
-}
-
-var signingKey = []byte("secret")
-
-var Config = middleware.JWTConfig{
-	Claims:     &jwtCustomClaims{},
-	SigningKey: signingKey,
-}
-
 type Authorizer struct {
-	service service.UserReadService
+	authService auth.AuthorizationService
+}
+
+func NewAuthorizer(service auth.AuthorizationService) Authorizer {
+	return Authorizer{authService: service}
 }
 
 // Login
@@ -37,41 +23,15 @@ func (a Authorizer) SignIn(c echo.Context) error {
 	if err := c.Bind(u); err != nil {
 		return err
 	}
+	token, err := a.authService.GenerateToken(*u.Name, *u.Password)
 
-	command := command.NewGetUserCommand(*u.Name).SetFilterRequiredFields()
-	user, err := a.service.GetUser(*command)
-	// Todo: error process
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
-	}
-	if user.Id() == 0 {
-		return &echo.HTTPError{
-			Code:    http.StatusUnauthorized,
-			Message: "invalid name",
-		}
-	}
-
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password()), []byte(*u.Password)); err != nil {
-		return echo.ErrUnauthorized
-	}
-
-	claims := &jwtCustomClaims{
-		user.Id(),
-		user.Name().Value(),
-		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, err := token.SignedString(signingKey)
 	// Todo: error process
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{
-		"token": t,
+		"token": token,
 	})
 }
 
@@ -89,44 +49,14 @@ func (a Authorizer) SignUp(c echo.Context) error {
 		}
 	}
 
-	getCommand := command.NewGetUserCommand(*signupUser.Name).SetFilterRequiredFields()
-
-	u, err := a.service.GetUser(*getCommand)
-	// Todo: error process
+	user, err := a.authService.CreateSignUpUser(*signupUser.Name, *signupUser.Password)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
-	}
-	if u.Id() != 0 {
-		return &echo.HTTPError{
-			Code:    http.StatusConflict,
-			Message: "name already exists",
-		}
+		return err
 	}
 
-	createCommand := command.NewCreateUserCommand(
-		uint(*signupUser.Id),
-		*signupUser.Name,
-		*signupUser.Password,
-		value.User,
-	)
-	user, err := a.service.CreateUser(createCommand)
-	// Todo: error process
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
-	}
-	return c.JSON(http.StatusCreated, user)
+	return c.JSON(http.StatusOK, presentation.ConvertUserToResponse(*user))
 }
 
-func (a Authorizer) validateUserIdInToken(c echo.Context) error {
-	accessUser := c.Get("user").(*jwt.Token)
-	claims := accessUser.Claims.(*jwtCustomClaims)
-	var uid uint = uint(claims.UID)
-	user, err := a.service.GetUserById(uid)
-	if user.Id() == 0 {
-		return echo.ErrNotFound
-	}
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
-	}
-	return nil
-}
+// Todo
+// func errorHandling(err error) error {
+// }

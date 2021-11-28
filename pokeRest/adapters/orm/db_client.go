@@ -16,9 +16,9 @@ type GormDbClient struct {
 	db *gorm.DB
 }
 
-func NewGormDbClient() *GormDbClient {
+func NewGormDbClient(dbConfig config.DbConfig) *GormDbClient {
 	dc := &GormDbClient{}
-	dc.initialize()
+	dc.initialize(dbConfig)
 	return dc
 }
 
@@ -26,7 +26,7 @@ func NewGormDbClientForTesting(db *gorm.DB) *GormDbClient {
 	return &GormDbClient{db: db}
 }
 
-func (dc *GormDbClient) initialize() {
+func (dc *GormDbClient) initialize(dbConfig config.DbConfig) {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -39,7 +39,7 @@ func (dc *GormDbClient) initialize() {
 
 	//	db, err := gorm.Open(postgres.Open(resolveDsn()), &gorm.Config{})
 	db, err := gorm.Open(postgres.New(postgres.Config{
-		DSN:                  resolveDsn(),
+		DSN:                  resolveDsn(dbConfig),
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
 	}), &gorm.Config{Logger: newLogger})
 	if err != nil {
@@ -75,19 +75,16 @@ func (dc GormDbClient) Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.
 	}
 }
 
-func resolveDsn() string {
-	conf, _ := config.LoadConfigYaml()
-
+func resolveDsn(dbConfig config.DbConfig) string {
 	var confArray = []string{}
-	if conf != nil {
-		confArray = []string{
-			"Host=" + conf.DbConfig.Host,
-			"User=" + conf.DbConfig.User,
-			"Password=" + conf.DbConfig.Password,
-			"DbName=" + conf.DbConfig.DbName,
-			"Port=" + conf.DbConfig.Port,
-		}
+	confArray = []string{
+		"Host=" + dbConfig.Host,
+		"User=" + dbConfig.User,
+		"Password=" + dbConfig.Password,
+		"DbName=" + dbConfig.DbName,
+		"Port=" + dbConfig.Port,
 	}
+
 	env := interpolate.NewSliceEnv(confArray)
 
 	dsn, err := interpolate.Interpolate(env,

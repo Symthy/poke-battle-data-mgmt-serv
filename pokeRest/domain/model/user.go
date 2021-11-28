@@ -3,13 +3,14 @@ package model
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
 	id          uint
 	name        value.Name
 	displayName *string
-	password    string
+	password    *[]byte
 	email       *value.Email
 	profile     *string
 	role        value.Role
@@ -36,13 +37,17 @@ func NewUser(
 func NewUserFromCommand(command command.CreateUserCommand) User {
 	name, _ := value.NewName(command.Name())
 	return NewUser(
-		command.Id(),
+		0,
 		*name,
 		nil,
 		nil,
 		nil,
 		command.Role(),
 	)
+}
+
+func (u User) ValidatePassword(password string) error {
+	return bcrypt.CompareHashAndPassword(*u.Password(), []byte(password))
 }
 
 func (u User) Id() uint {
@@ -57,7 +62,7 @@ func (u User) DisplayName() *string {
 	return u.displayName
 }
 
-func (u User) Password() string {
+func (u User) Password() *[]byte {
 	return u.password
 }
 
@@ -74,5 +79,5 @@ func (u User) Role() value.Role {
 }
 
 func (u *User) ResetPassword() {
-	u.password = ""
+	u.password = nil
 }
