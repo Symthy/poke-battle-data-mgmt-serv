@@ -3,7 +3,7 @@ package value
 import (
 	"regexp"
 
-	"github.com/Symthy/PokeRest/pokeRest/errors"
+	"github.com/Symthy/PokeRest/pokeRest/errs"
 )
 
 type Email struct {
@@ -13,7 +13,7 @@ type Email struct {
 func NewEmail(value string) (*Email, error) {
 	r := regexp.MustCompile(`^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$`)
 	if !r.MatchString(value) {
-		return nil, errors.NewInvalidValueError("email")
+		return nil, errs.NewInvalidValueError("email")
 	}
 	return &Email{value: value}, nil
 }

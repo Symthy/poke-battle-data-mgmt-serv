@@ -1,8 +1,6 @@
-package errors
+package errs
 
 import (
-	"github.com/pkg/errors"
-
 	"golang.org/x/xerrors"
 )
 
@@ -11,7 +9,7 @@ type UnauthorizedError struct {
 }
 
 func NewUnauthorizedError() UnauthorizedError {
-	return errors.New("error")
+	return UnauthorizedError{}
 }
 func (e UnauthorizedError) Error() string {
 	return "An authentication error. Invalid Password"

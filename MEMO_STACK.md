@@ -8,9 +8,14 @@
 - [Effective Go](https://go.dev/doc/effective_go)
 - [逆引きGolang](https://ashitani.jp/golangtips/index.html)
 
+- [エキスパートGo](https://www.slideshare.net/takuyaueda967/go-77689475) 
+- [今どきの Go の書き方まとめ (2020 年末版)](https://www.m3tech.blog/entry/golang-way-primer)
+
 ## Golang
 
 ### 基本
+
+- メモリアロケーション(割り当て)の回数が多いと速度低下に繋がる
 
 - [Golangのnew()とmake()の違い](https://cipepser.hatenablog.com/entry/go-new-make)
   - make は slice, map, channelのみ。初期化する
@@ -20,9 +25,21 @@
   - map × struct で実現 `map[string]struct{}`
   - ライブラリ  https://github.com/deckarep/golang-set
 
+- [忘れがちなGo言語の書式指定子を例付きでまとめた](https://qiita.com/Sekky0905/items/c9cbda2498a685517ad0)
+
 ### エラーハンドリング
 
-#### エラーの基本
+#### エラー基礎
+
+[Error handling and Go](https://go.dev/blog/error-handling-and-go)
+
+スタックトレース不要時のerrorラップ
+```
+fmt.Errorf("detail: %w", err)
+```
+[go1.13のerrorのラップ](https://qiita.com/gal1996/items/eceacef3a8453cfdb3bf)
+
+
 
 pkg/errorsのスタックトレース出力
 ```go
@@ -35,20 +52,37 @@ err := errors.New("error")
 fmt.Printf("%+v\n", err)
 ```
 
+
+
 [[Go 1.13~] errors.Is と errors.As の違いについてお気持ちを理解する](https://qiita.com/hiro_o918/items/fb01014e51354b8bb49f)
 - errors.Is: 特定のエラーとの比較(あるエラーが特定のエラーを Wrap したものかを判別するためのもの)
 - errors.As: エラーに対する型アサーション(自前でエラーを用意した時に，ビルトインのエラーなのか自前で用意したエラーかを判別する際に使える)
 
 #### 見解
 
-- ログへの出力は上位層で
-- カスタムエラーにして、level,code,msg 等を付与する
-- 下位から上位に上げる時、必要に応じてWrapして必要情報付与
-- 以下を pkg/errors で実装。(スタックとレース`fmt.Printf("%+v\n", err)`取れる)
+- ログへの出力は上位層1箇所に留める
+- カスタムエラーにして、level,code,msg 等を付与するして汎用性を上げる
+- 下位から上位に上げる時、必要に応じてWrapして綺麗にスタックレースに出す
+- pkg/errors で実装。(スタックとレース`fmt.Printf("%+v\n", err)`で取れる)
 
+- 物が複雑で、エラーの多重ラップがほぼ常に必要なら、xerrors で以下のようにした方が良いかもしれない
 ★[Goでのオススメエラーハンドリング手法 (2020/10)](https://medium.com/eureka-engineering/golang-errors-wrapping-1531bdf409f8)
 
+- スタックトレース要否で以下方法を取る
+  - 不要なら fmt.Errorf でラップ＆ errors.Is でエラーの種類による処理分岐
+  - 必要なら(標準のerrorsではスタックとレース保持できないため) github.com/pkg/errors を使う。
+    - errors.WithStackを使うと狙ったStackTraceだけを綺麗に出せる(し忘れるとstackTraceが出ない)
+    - errors.Wrapは、Wrap毎のStackTraceが全部出る。パフォーマンスに懸念ありだが、調査には100困らない
+[今goのエラーハンドリングを無難にしておく方法（2021.09現在）](https://zenn.dev/nekoshita/articles/097e00c6d3d1c9)
+
 - もしくはスタックとレースは`zap.Stack("").String`での取得にまかせる
+
+- RESTfulなら、以下のようにするのが良さそう
+  - API用のエラーとApp用のエラーは分けた方が良い（単一責任）
+[Error handling in Go HTTP applications](https://www.joeshaw.org/error-handling-in-go-http-applications/)
+  
+- 独自エラークラスでも、Is/As/Unwrap等名前は揃えよう
+[Go1.17で警告されるようになったerror#Is/As/Unwrap](https://future-architect.github.io/articles/20210819b/)
 
 #### reference
 
@@ -133,7 +167,7 @@ return errors.Wrap(ErrRecordNotFound, "failed to query")
 
 ---
 
-[【Go】エラーハンドリング&ログ出力にまとめて向き合う](https://zenn.dev/yagi_eng/articles/go-error-handling)
+★[【Go】エラーハンドリング&ログ出力にまとめて向き合う](https://zenn.dev/yagi_eng/articles/go-error-handling)
 - カスタムエラーを活用 (zap.Stack("").Stringでスタックトレース取得できる)
 ```go
 type MyError struct {
@@ -171,6 +205,28 @@ type MyError struct {
 ```
 - Custom HTTP Error Handlerの活用（echo：echo.NewHTTPErrorをreturnするとe.HTTPErrorHandlerに設定しておいた関数が呼び出される）
 
+- [golangの高速な構造化ログライブラリ「zap」の使い方](https://qiita.com/emonuh/items/28dbee9bf2fe51d28153)
+
+---
+
+[Goでスタックトレースを構造化して取り扱う](https://developers.freee.co.jp/entry/2018/12/23/213000)
+- 独自の スタックトレースを作成する例
+- モチベーション：ロギングサービス？に独自フォーマットで整形したスタックトレースを送りたかったから
+
+[Goで独自エラー型を定義する](https://qiita.com/minoritea/items/5785f9c8394c7e62bec6)
+- 例1: エラーコードを持たせる
+- 例2: エラーに追加情報を加える
+- 例3: パッケージ間の依存性をなくす
+- 例4: 元のエラーを取り出す
+- 例5: 複数回ラップしたとき、目当ての情報を取り出す
+- 例6: エラー発生時の状態を元にハンドリングする
+
+[Wrap(err) in our production #golang](https://www.wantedly.com/companies/wantedly/post_articles/139554)
+- Wantedly の本番 Web アプリケーション上でどのようにしてエラーをハンドリングしているか
+
+---
+
+[Go1.13のError wrappingを触ってみる](https://cipepser.hatenablog.com/entry/go1.13-error-wrapping)
 ---
 
 [サードパーティのパッケージ](https://zenn.dev/spiegel/books/error-handling-in-golang/viewer/third-party-errors)
@@ -180,9 +236,6 @@ type MyError struct {
 
 [Goでスタックトレースを上書きせずにエラーをラップする方法](https://tech.liquid.bio/entry/2021/07/02/135816?utm_source=feed)
 
-
-[Goでスタックトレースを構造化して取り扱う](https://developers.freee.co.jp/entry/2018/12/23/213000)
-- 独自の スタックトレースを作成する例
 
 [Goエラーハンドリング戦略](https://zenn.dev/nobonobo/articles/0b722c9c2b18d5)
 
@@ -203,6 +256,10 @@ type MyError struct {
 
 サインアップ
 - 
+
+### Custom Http Error Handler
+
+[【Go】エラーハンドリング&ログ出力にまとめて向き合う](https://zenn.dev/yagi_eng/articles/go-error-handling) 
 
 ### ログ出力
 

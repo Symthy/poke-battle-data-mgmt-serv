@@ -8,7 +8,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/config"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
-	"github.com/Symthy/PokeRest/pokeRest/errors"
+	"github.com/Symthy/PokeRest/pokeRest/errs"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 )
@@ -34,11 +34,11 @@ func (as *AuthorizationService) GenerateToken(name string, password string) (*st
 	}
 
 	if user.Id() == 0 {
-		return nil, errors.NewAuthorizedUserNameInvalidError()
+		return nil, errs.NewAuthorizedUserNameInvalidError()
 	}
 
 	if err := user.ValidatePassword(password); err != nil {
-		return nil, errors.NewUnauthorizedError()
+		return nil, errs.NewUnauthorizedError()
 	}
 
 	claims := config.NewJwtCustomClaims(user.Id(), user.Name().Value())
