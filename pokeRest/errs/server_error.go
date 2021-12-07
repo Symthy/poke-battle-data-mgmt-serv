@@ -3,58 +3,113 @@ package errs
 import (
 	"fmt"
 
-	"github.com/pkg/errors"
+	pkgerrors "github.com/pkg/errors"
 )
 
 var (
-	ErrAuth         = &ServerError{level: Error, errCode: 1, message: "invalid token"}
-	ErrUserNotFound = &ServerError{level: Warn, errCode: 1, message: "user not found"}
+	ErrAuth         = "ErrAuth"
+	ErrUserNotFound = "ErrUserNotFound"
+	ErrUnexpected   = "ErrUnexpected"
+
+	errorList = map[string]*ServerError{
+		"ErrAuth":         {err: nil, level: Error, errCode: 1, message: "invalid token"},
+		"ErrUserNotFound": {err: nil, level: Warn, errCode: 2, message: "user not found"},
+		"ErrUnexpected":   {err: nil, level: Error, errCode: 9999, message: "unexpected error"},
+	}
 )
 
+// visible for testing
+func GetServerError(errKey string) *ServerError {
+	return errorList[errKey]
+}
+
 type ServerError struct {
-	error
-	level   Level
-	errCode int
-	message string
+	err        error
+	level      Level
+	errCode    int
+	message    string
+	stackTrace *string
 }
 
-func NewServerError(err error, level Level, errCode int, message string) *ServerError {
-	return &ServerError{
-		error:   err,
-		level:   level,
-		errCode: errCode,
-		message: message,
+type errorMessageHolder interface {
+	getMessage() string
+	isNextError() bool
+}
+
+func ThrowServerError(errKey string) error {
+	e := GetServerError(errKey)
+	if e.isSaveOwnStackTrace() {
+		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
+		e.stackTrace = &trace
 	}
+	return e
 }
 
+// dupplicate code. because don't increase the stack trace layer.
+func WrapServerError(errKey string, target error) error {
+	e := GetServerError(errKey)
+	if e.isSaveOwnStackTrace() {
+		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
+		e.stackTrace = &trace
+	}
+	e.err = target
+	return e
+}
+
+// func NewServerError(e error, level Level, errCode int, message string) *ServerError {
+// 	return &ServerError{
+// 		err:     e,
+// 		level:   level,
+// 		errCode: errCode,
+// 		message: message,
+// 	}
+// }
+
+// (private method) error interface implements
 func (e ServerError) Error() string {
-	if e.error == nil {
-		return e.getMessage()
+	var msg string
+	if e.stackTrace == nil {
+		msg = e.getMessage()
+	} else {
+		msg = e.getMessageAndStackTrace()
 	}
-
-	return fmt.Sprintf("%s\n%+v", e.getMessage(), e.error)
+	return msg + "\n" + e.err.Error()
 }
 
-func (e *ServerError) Wrap(target error) {
-
-	if e.error == nil {
-		e.error = target
-		return
+func BuildErrorMessage(target error) string {
+	var errTopMsg string = ""
+	var errDetailHeader string = ""
+	var errDetailFooter string = ""
+	if errMsgHolder, ok := target.(errorMessageHolder); ok {
+		errTopMsg = errMsgHolder.getMessage()
+		if errMsgHolder.isNextError() {
+			errDetailHeader = "\n---detail---\n"
+			errDetailFooter = "\n------------\n"
+		}
 	}
-	e.error = errors.Wrap(e.error, target.Error())
+
+	errMsg := errTopMsg +
+		errDetailHeader +
+		target.Error() +
+		errDetailFooter
+	return errMsg
 }
 
 func (e ServerError) getMessage() string {
-	return fmt.Sprintf("[%s - %04d] %s\n", e.level, e.errCode, e.message)
+	return fmt.Sprintf("[%5s - %04d] %s", e.level, e.errCode, e.message)
 }
 
-func (e ServerError) isSaveOwnStackTrace(target error) bool {
-	var serverError ServerError
-	if errors.As(target, &serverError) {
-		if serverError.level == Error || serverError.level == Fatal {
-			return true
-		}
-		return false
+func (e ServerError) getMessageAndStackTrace() string {
+	return fmt.Sprintf("%s%s", e.getMessage(), *e.stackTrace)
+}
+
+func (e ServerError) isSaveOwnStackTrace() bool {
+	if e.level == Error || e.level == Fatal {
+		return true
 	}
-	return true
+	return false
+}
+
+func (e ServerError) isNextError() bool {
+	return e.err != nil
 }
