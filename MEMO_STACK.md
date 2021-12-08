@@ -32,6 +32,7 @@
 #### エラー基礎
 
 [Error handling and Go](https://go.dev/blog/error-handling-and-go)
+- 公式情報だが参考にならないかも
 
 スタックトレース不要時のerrorラップ
 ```
@@ -90,8 +91,6 @@ fmt.Printf("%+v\n", err)
 - エラーコードを利用した際に重要なことは、エラーコード外のエラーを発生させないことにある
 
 ---
-
-[Error handling and Go](https://go.dev/blog/error-handling-and-go)
 
 [APIサーバのおけるGoのエラーハンドリングについて考えてみる](https://tutuz-tech.hatenablog.com/entry/2020/03/26/193519)
 
@@ -268,3 +267,12 @@ type MyError struct {
 ```go
  e.Use(middleware.BodyDump(bodyDumpHandler))
 ```
+
+
+## テスト（Testify)
+
+[Testify の assert を使ってテストを書く](https://qiita.com/egawata/items/7c18bbc54dc353034f5f)
+
+## 設定ファイル
+
+[Go言語で.envファイルを環境ごとに読み込む godotenv](https://shi-mo-web.com/golang/gogodotenv-environment-setting-file/)

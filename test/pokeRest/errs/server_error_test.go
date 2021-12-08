@@ -2,16 +2,25 @@ package errs
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
+	"errors"
+
 	"github.com/Symthy/PokeRest/pokeRest/errs"
-	"github.com/Symthy/PokeRest/test/mock"
-	"github.com/pkg/errors"
+	"github.com/Symthy/PokeRest/test"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
 type ServerErrorTestSuite struct {
 	suite.Suite
+	isStandardOutput bool
+}
+
+// Before
+func (suite *ServerErrorTestSuite) SetupTest() {
+	suite.isStandardOutput = test.InitTestConfig().IsStandardOutput()
 }
 
 func TestServerErrorTestSuite(t *testing.T) {
@@ -19,45 +28,94 @@ func TestServerErrorTestSuite(t *testing.T) {
 }
 
 func (suite *ServerErrorTestSuite) TestServerError() {
-	suite.Run("wrap", func() {
+	suite.Run("oss error wrap and server error wrap", func() {
+		dummyModule := ErrorTestOssAndServerErrWrap{}
+		wrappedErr1 := dummyModule.FuncA()
 
-		dummyModule := mock.ErrorModule{}
-		dummyError := dummyModule.FuncA()
-		//err := errs.ErrAuth
-		//err.Wrap(dummyError)
-		//fmt.Printf("dummy:  %+v\n", dummyError)
-		//err.Wrap(errs.ErrUserNotFound)
-		//suite.Fail("unmatched name")
-		fmt.Printf("actual:\n%s\n", errs.BuildErrorMessage(dummyError))
-		fmt.Printf("--------------------\n")
-		// if err, ok := dummyError.(stackTracer); ok {
-		// 	for _, f := range err.StackTrace() {
-		// 		fmt.Printf("%+s:%d\n", f, f)
-		// 	}
-		// }
+		assert.NotNil(suite.T(), wrappedErr1)
+		//errs.ErrUserNotFound
+		if errUserNotFound, ok := errs.AsServerError(wrappedErr1); ok {
+			assert.Equal(suite.T(), "[ WARN - 0002] user not found", errUserNotFound.GetMessage())
+			assert.False(suite.T(), errUserNotFound.HasStackTrace())
+		} else {
+			suite.Fail("invalid wrap ErrUserNotFound")
+		}
+		//errs.ErrAuth
+		wrappedErr2 := errors.Unwrap(wrappedErr1)
+		assert.NotNil(suite.T(), wrappedErr2)
+		if errAuth, ok := errs.AsServerError(wrappedErr2); ok {
+			assert.Equal(suite.T(), "[ERROR - 0001] invalid token", errAuth.GetMessage())
+			assert.True(suite.T(), errAuth.HasStackTrace())
+			assert.Contains(suite.T(), errAuth.GetStackTrace(), "ErrorTestOssAndServerErrWrap.funcD")
+			assert.NotContains(suite.T(), errAuth.GetStackTrace(), "ErrorTestOssAndServerErrWrap.funcF")
+		} else {
+			suite.Fail("invalid wrap ErrAuth")
+		}
+		//errs.ErrUnexpected
+		wrappedErr3 := errors.Unwrap(wrappedErr2)
+		assert.NotNil(suite.T(), wrappedErr3)
+		if errUnexpected, ok := errs.AsServerError(wrappedErr3); ok {
+			assert.Equal(suite.T(), "[ERROR - 9999] unexpected error", errUnexpected.GetMessage())
+			assert.True(suite.T(), errUnexpected.HasStackTrace())
+			assert.Contains(suite.T(), errUnexpected.GetStackTrace(), "ErrorTestOssAndServerErrWrap.funcF")
+		} else {
+			suite.Fail("invalid wrap ErrUnexpected")
+		}
+		//oss err
+		wrappedErr4 := errors.Unwrap(wrappedErr3)
+		assert.NotNil(suite.T(), wrappedErr4)
+		_, fileOpenErr := os.Open("dummy.txt")
+		expectedMsg := fmt.Sprintf("%v", fileOpenErr)
+		actualMsg := fmt.Sprintf("%v", wrappedErr4)
+		assert.Equal(suite.T(), expectedMsg, actualMsg)
 
-		// err, ok := errors.Cause(dummyModule.FuncE()).(stackTracer)
-		// if !ok {
-		// 	panic("oops, err does not implement stackTracer")
-		// }
-		// fmt.Printf("%+v", err)
-
-		//zap.Stack("").String
-		fmt.Printf("--------------------\n")
+		if suite.isStandardOutput {
+			fmt.Printf("actual err message all:\n%s\n", errs.BuildErrorMessage(wrappedErr1))
+		}
 	})
 
-	suite.Run("wrap test", func() {
-		// m := mock.ErrorModuleTwo{}
-		// e := m.Main()
-		// fmt.Printf("actual:\n%+v\n", e)
+	suite.Run("server error wrap only", func() {
+		dummyModule := ErrorTestServerErrOnlyWrap{}
+		wrappedErr1 := dummyModule.FuncA()
 
-		// _, err := os.Open("dummy.txt")
-		// if _, ok := err.(stackTracer); !ok {
-		// 	panic("oops, err does not implement stackTracer")
-		// }
+		assert.NotNil(suite.T(), wrappedErr1)
+		//errs.ErrUnexpected
+		if errUnexpected, ok := errs.AsServerError(wrappedErr1); ok {
+			assert.Equal(suite.T(), "[ERROR - 9999] unexpected error", errUnexpected.GetMessage())
+			assert.True(suite.T(), errUnexpected.HasStackTrace())
+			assert.Contains(suite.T(), errUnexpected.GetStackTrace(), "ErrorTestServerErrOnlyWrap.funcB")
+		} else {
+			suite.Fail("invalid wrap ErrUnexpected")
+		}
+		//errs.ErrUserNotFound
+		wrappedErr2 := errors.Unwrap(wrappedErr1)
+		assert.NotNil(suite.T(), wrappedErr2)
+		if errUserNotFound, ok := errs.AsServerError(wrappedErr2); ok {
+			assert.Equal(suite.T(), "[ WARN - 0002] user not found", errUserNotFound.GetMessage())
+			assert.False(suite.T(), errUserNotFound.HasStackTrace())
+		} else {
+			suite.Fail("invalid wrap ErrUserNotFound")
+		}
+		//no next
+		assert.Nil(suite.T(), errors.Unwrap(wrappedErr2))
+
+		if suite.isStandardOutput {
+			fmt.Printf("actual err message all:\n%s\n", errs.BuildErrorMessage(wrappedErr1))
+		}
 	})
 }
 
-type stackTracer interface {
-	StackTrace() errors.StackTrace
-}
+// type stackTracer interface {
+// 	StackTrace() errors.StackTrace
+// }
+// if err, ok := dummyError.(stackTracer); ok {
+// 	for _, f := range err.StackTrace() {
+// 		fmt.Printf("%+s:%d\n", f, f)
+// 	}
+// }
+
+// err, ok := errors.Cause(dummyModule.FuncE()).(stackTracer)
+// if !ok {
+// 	panic("oops, err does not implement stackTracer")
+// }
+// fmt.Printf("%+v", err)

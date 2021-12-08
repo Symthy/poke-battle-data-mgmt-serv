@@ -11,7 +11,7 @@ var (
 	ErrUserNotFound = "ErrUserNotFound"
 	ErrUnexpected   = "ErrUnexpected"
 
-	errorList = map[string]*ServerError{
+	errorList = map[string]ServerError{
 		"ErrAuth":         {err: nil, level: Error, errCode: 1, message: "invalid token"},
 		"ErrUserNotFound": {err: nil, level: Warn, errCode: 2, message: "user not found"},
 		"ErrUnexpected":   {err: nil, level: Error, errCode: 9999, message: "unexpected error"},
@@ -19,7 +19,7 @@ var (
 )
 
 // visible for testing
-func GetServerError(errKey string) *ServerError {
+func GetServerError(errKey string) ServerError {
 	return errorList[errKey]
 }
 
@@ -31,14 +31,9 @@ type ServerError struct {
 	stackTrace *string
 }
 
-type errorMessageHolder interface {
-	getMessage() string
-	isNextError() bool
-}
-
 func ThrowServerError(errKey string) error {
 	e := GetServerError(errKey)
-	if e.isSaveOwnStackTrace() {
+	if e.IsSaveOwnStackTrace() {
 		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
 		e.stackTrace = &trace
 	}
@@ -48,7 +43,7 @@ func ThrowServerError(errKey string) error {
 // dupplicate code. because don't increase the stack trace layer.
 func WrapServerError(errKey string, target error) error {
 	e := GetServerError(errKey)
-	if e.isSaveOwnStackTrace() {
+	if e.IsSaveOwnStackTrace() {
 		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
 		e.stackTrace = &trace
 	}
@@ -68,48 +63,79 @@ func WrapServerError(errKey string, target error) error {
 // (private method) error interface implements
 func (e ServerError) Error() string {
 	var msg string
-	if e.stackTrace == nil {
-		msg = e.getMessage()
+	if e.HasStackTrace() {
+		msg = e.GetMessageAndStackTrace()
 	} else {
-		msg = e.getMessageAndStackTrace()
+		msg = e.GetMessage()
+	}
+	if e.err == nil {
+		return msg
 	}
 	return msg + "\n" + e.err.Error()
 }
 
-func BuildErrorMessage(target error) string {
-	var errTopMsg string = ""
-	var errDetailHeader string = ""
-	var errDetailFooter string = ""
-	if errMsgHolder, ok := target.(errorMessageHolder); ok {
-		errTopMsg = errMsgHolder.getMessage()
-		if errMsgHolder.isNextError() {
-			errDetailHeader = "\n---detail---\n"
-			errDetailFooter = "\n------------\n"
-		}
-	}
-
-	errMsg := errTopMsg +
-		errDetailHeader +
-		target.Error() +
-		errDetailFooter
-	return errMsg
+func (e ServerError) Unwrap() error {
+	return e.err
 }
 
-func (e ServerError) getMessage() string {
+func (e ServerError) GetMessage() string {
 	return fmt.Sprintf("[%5s - %04d] %s", e.level, e.errCode, e.message)
 }
 
-func (e ServerError) getMessageAndStackTrace() string {
-	return fmt.Sprintf("%s%s", e.getMessage(), *e.stackTrace)
+func (e ServerError) GetStackTrace() string {
+	return *e.stackTrace
 }
 
-func (e ServerError) isSaveOwnStackTrace() bool {
+func (e ServerError) GetMessageAndStackTrace() string {
+	return fmt.Sprintf("%s%s", e.GetMessage(), e.GetStackTrace())
+}
+
+func (e ServerError) HasStackTrace() bool {
+	return e.stackTrace != nil
+}
+
+func (e ServerError) IsSaveOwnStackTrace() bool {
 	if e.level == Error || e.level == Fatal {
 		return true
 	}
 	return false
 }
 
-func (e ServerError) isNextError() bool {
+func (e ServerError) IsNextError() bool {
 	return e.err != nil
+}
+
+type IServerErrorAccessor interface {
+	GetMessage() string
+	GetStackTrace() string
+	GetMessageAndStackTrace() string
+	HasStackTrace() bool
+	IsSaveOwnStackTrace() bool
+	IsNextError() bool
+}
+
+func AsServerError(target error) (IServerErrorAccessor, bool) {
+	serverError, ok := target.(IServerErrorAccessor)
+	return serverError, ok
+}
+
+func BuildErrorMessage(target error) string {
+	serverError, isServerError := AsServerError(target)
+	if !isServerError {
+		return target.Error()
+	}
+
+	var errTopMsg string = ""
+	var errDetailHeader string = ""
+	var errDetailFooter string = ""
+	errTopMsg = serverError.GetMessage()
+	if serverError.IsNextError() {
+		errDetailHeader = "\n---detail---\n"
+		errDetailFooter = "\n------------\n"
+	}
+	errMsg := errTopMsg +
+		errDetailHeader +
+		target.Error() +
+		errDetailFooter
+	return errMsg
 }
