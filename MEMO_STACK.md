@@ -273,6 +273,8 @@ type MyError struct {
 
 [Testify の assert を使ってテストを書く](https://qiita.com/egawata/items/7c18bbc54dc353034f5f)
 
-## 設定ファイル
+## その他
 
 [Go言語で.envファイルを環境ごとに読み込む godotenv](https://shi-mo-web.com/golang/gogodotenv-environment-setting-file/)
+
+[Go path/filepathでファイルパスを操作する](https://takuroooooo.hatenablog.com/entry/2020/08/15/Go_path/filepath)

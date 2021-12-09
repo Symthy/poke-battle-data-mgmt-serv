@@ -93,6 +93,7 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		if errUserNotFound, ok := errs.AsServerError(wrappedErr2); ok {
 			assert.Equal(suite.T(), "[ WARN - 0002] user not found", errUserNotFound.GetMessage())
 			assert.False(suite.T(), errUserNotFound.HasStackTrace())
+			assert.NotContains(suite.T(), errUserNotFound.GetStackTrace(), "ErrorTestServerErrOnlyWrap.funcD")
 		} else {
 			suite.Fail("invalid wrap ErrUserNotFound")
 		}

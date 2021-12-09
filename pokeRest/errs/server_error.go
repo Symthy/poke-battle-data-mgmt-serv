@@ -6,32 +6,36 @@ import (
 	pkgerrors "github.com/pkg/errors"
 )
 
-var (
-	ErrAuth         = "ErrAuth"
-	ErrUserNotFound = "ErrUserNotFound"
-	ErrUnexpected   = "ErrUnexpected"
+type ServerErrKey string
 
-	errorList = map[string]ServerError{
-		"ErrAuth":         {err: nil, level: Error, errCode: 1, message: "invalid token"},
-		"ErrUserNotFound": {err: nil, level: Warn, errCode: 2, message: "user not found"},
-		"ErrUnexpected":   {err: nil, level: Error, errCode: 9999, message: "unexpected error"},
+const (
+	ErrAuth         ServerErrKey = "ErrAuth"
+	ErrUserNotFound ServerErrKey = "ErrUserNotFound"
+	ErrUnexpected   ServerErrKey = "ErrUnexpected"
+)
+
+var (
+	serverErrorMap = map[ServerErrKey]ServerError{
+		"ErrAuth":         {err: nil, level: Error, errCode: "0001", message: "invalid token"},
+		"ErrUserNotFound": {err: nil, level: Warn, errCode: "0002", message: "user not found"},
+		"ErrUnexpected":   {err: nil, level: Error, errCode: "9999", message: "unexpected error"},
 	}
 )
 
 // visible for testing
-func GetServerError(errKey string) ServerError {
-	return errorList[errKey]
+func GetServerError(errKey ServerErrKey) ServerError {
+	return serverErrorMap[errKey]
 }
 
 type ServerError struct {
 	err        error
 	level      Level
-	errCode    int
+	errCode    string
 	message    string
 	stackTrace *string
 }
 
-func ThrowServerError(errKey string) error {
+func ThrowServerError(errKey ServerErrKey) error {
 	e := GetServerError(errKey)
 	if e.IsSaveOwnStackTrace() {
 		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
@@ -41,7 +45,7 @@ func ThrowServerError(errKey string) error {
 }
 
 // dupplicate code. because don't increase the stack trace layer.
-func WrapServerError(errKey string, target error) error {
+func WrapServerError(errKey ServerErrKey, target error) error {
 	e := GetServerError(errKey)
 	if e.IsSaveOwnStackTrace() {
 		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
@@ -90,6 +94,10 @@ func (e ServerError) GetMessageAndStackTrace() string {
 	return fmt.Sprintf("%s%s", e.GetMessage(), e.GetStackTrace())
 }
 
+func (e ServerError) GetErrorCode() string {
+	return e.errCode
+}
+
 func (e ServerError) HasStackTrace() bool {
 	return e.stackTrace != nil
 }
@@ -109,6 +117,7 @@ type IServerErrorAccessor interface {
 	GetMessage() string
 	GetStackTrace() string
 	GetMessageAndStackTrace() string
+	GetErrorCode() string
 	HasStackTrace() bool
 	IsSaveOwnStackTrace() bool
 	IsNextError() bool
