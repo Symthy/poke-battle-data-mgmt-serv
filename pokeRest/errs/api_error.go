@@ -1,7 +1,6 @@
 package errs
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -38,16 +37,6 @@ type ApiError struct {
 	messageEN string
 }
 
-func (e ApiError) ApiError(errCode string) echo.HTTPError {
-	return echo.HTTPError{
-		Code:    e.status,
-		Message: e.buildResponseMessage(errCode),
-	}
-}
-
-func (e ApiError) buildResponseMessage(errCode string) string {
-	if errCode == "" {
-		return e.message
-	}
-	return fmt.Sprintf("[%s] %s", errCode, e.message)
+func (e ApiError) ApiError() (status int, message string) {
+	return e.status, e.message
 }

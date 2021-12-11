@@ -83,7 +83,7 @@ func (e ServerError) Unwrap() error {
 }
 
 func (e ServerError) GetMessage() string {
-	return fmt.Sprintf("[%5s - %04d] %s", e.level, e.errCode, e.message)
+	return fmt.Sprintf("[%5s - %4s] %s", e.level, e.errCode, e.message)
 }
 
 func (e ServerError) GetStackTrace() string {
