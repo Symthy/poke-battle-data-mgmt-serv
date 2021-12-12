@@ -51,6 +51,20 @@ cd autogen/ent/
 go run entgo.io/ent/cmd/entc generate --target ./autogen/ent ../../orm/entio/schema
 ```
 
+### Logging
+- ログローテション
+https://github.com/natefinch/lumberjack
+```golang
+log.SetOutput(&lumberjack.Logger{
+    Filename:   "/var/log/myapp/foo.log",
+    MaxSize:    500, // megabytes
+    MaxBackups: 3,
+    MaxAge:     28, //days
+    Compress:   true, // disabled by default
+})
+```
+
+
 ### Test/Mock
 ref: https://github.com/bmuschko/go-testing-frameworks
 
@@ -64,14 +78,10 @@ https://github.com/DATA-DOG/go-sqlmock
 ```
 go get -u github.com/DATA-DOG/go-sqlmock
 ```
-gorm + postgresql + go-sqlmock の場合、INSERTのモックがうまく行かないらしい。以下参照。
+gorm + postgresql + go-sqlmock の場合、通常のやり方ではINSERTのモックがうまく行かないらしい。以下参照。
 - https://github.com/DATA-DOG/go-sqlmock/issues/118
 - https://betterprogramming.pub/how-to-unit-test-a-gorm-application-with-sqlmock-97ee73e36526
 - https://simple-minds-think-alike.moritamorie.com/entry/go-sqlmock-gorm
-
-2021/11時点で解決策なし。代替案は以下。INSERTのみ以下を使用する？
-- go-mocket
-https://github.com/Selvatico/go-mocket
 
 - array の contains
 https://zenn.dev/glassonion1/articles/7c7830a269909c

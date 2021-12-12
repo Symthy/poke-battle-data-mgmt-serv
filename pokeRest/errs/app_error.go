@@ -51,12 +51,9 @@ func BuildAppError(target error) AppError {
 	return newAppError(target, serverErr.GetErrorCode())
 }
 
-func (e AppError) ApiErrorResponse() echo.HTTPError {
+func (e AppError) ApiErrorResponse() *echo.HTTPError {
 	status, message := e.apiError.ApiError()
-	return echo.HTTPError{
-		Code:    status,
-		Message: e.buildErrorResponseMsg(e.errorCode, message),
-	}
+	return echo.NewHTTPError(status, e.buildErrorResponseMsg(e.errorCode, message))
 }
 
 func (e AppError) buildErrorResponseMsg(errCode string, message string) string {
@@ -66,6 +63,25 @@ func (e AppError) buildErrorResponseMsg(errCode string, message string) string {
 	return fmt.Sprintf("[%s] %s", errCode, message)
 }
 
-func (e AppError) ServerErrorLogMsg() string {
-	return e.serverError.Error()
+func (e AppError) WriteServerError(logger echo.Logger) {
+	serverErr, ok := AsServerError(e.serverError)
+	if !ok {
+		// unexpected error
+		logger.Error("unexpected error:" + e.serverError.Error())
+	}
+	switch serverErr.GetLogLevel() {
+	case Fatal:
+		logger.Fatal(serverErr.Error())
+	case Error:
+		logger.Error(serverErr.Error())
+	case Warn:
+		logger.Warn(serverErr.Error())
+	case Info:
+		logger.Info(serverErr.Error())
+	case Debug:
+		logger.Debug(serverErr.Error())
+	default:
+		// unknown level error
+		logger.Error("unknown level error: " + serverErr.Error())
+	}
 }

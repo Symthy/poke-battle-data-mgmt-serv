@@ -238,7 +238,21 @@ type MyError struct {
 
 [Goエラーハンドリング戦略](https://zenn.dev/nobonobo/articles/0b722c9c2b18d5)
 
+## ロギング
 
+[Goでのログ出力に標準logとcologを使う](https://qiita.com/kmtr/items/406073651d7a12aab9c6)
+- 標準以外のログライブラリを使うと以下の問題がある
+  - 標準logを含め、利用するログライブラリが混在しないように気を使う
+    - 共通ライブラリを作った場合、そこでも同じログライブラリを使わないと面倒
+    - 強い言い方をすると関連するもの全てがログライブラリに汚染されてしまう
+  - そのログライブラリの使い方を覚える必要がある
+    - チーム開発の場合、全員に周知する必要がある
+
+[colog](https://github.com/comail/colog)
+- 文字列の先頭で log level を出し分け出来る手軽なライブラリ
+
+[lumberjack](https://github.com/natefinch/lumberjack)
+- ログローテーション
 
 ## echo
 ### JWT認証
@@ -256,11 +270,48 @@ type MyError struct {
 サインアップ
 - 
 
+### Custom Middleware
+
+- [Try Golang! EchoでオリジナルのMiddlewareを作ろう！](https://medium.com/veltra-engineering/echo-middleware-in-golang-90e1d301eb27)
+```golang
+func customMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+    return func(c echo.Context) error {
+        // before
+        err := next(c)
+        // after
+        return err
+    }
+}
+```
+
 ### Custom Http Error Handler
 
 [【Go】エラーハンドリング&ログ出力にまとめて向き合う](https://zenn.dev/yagi_eng/articles/go-error-handling) 
 
-### ログ出力
+
+### echoの ログ出力
+
+echo のロギングは以下２つある。どちらも labstack の gommon/log が使われている
+- logger middleware
+- echo.Logger
+[かけだし Gopher におくる Golang 製 Web Framework echo の logging について](https://goodpatch.com/blog/happy-logging)
+
+標準の出力先は os.Stdout。変更するには以下？
+```golang
+Echo#Logger.SetOutput(io.Writer)
+
+// middlewareがこれでいいか分からない
+fp, err := os.OpenFile("/path/to/log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+if err != nil {
+  panic(err)
+}
+e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+    Output: file,
+}))
+```
+
+- [ref：echoのログとcologの併用サンプル](https://github.com/kysnm/echo_log_practice/blob/master/main.go)
+
 
 - [golang echoでRequest/Response Bodyをログに出力](https://qiita.com/fushikky/items/d53b9abcf6fb49c07eda)
 
@@ -268,6 +319,31 @@ type MyError struct {
  e.Use(middleware.BodyDump(bodyDumpHandler))
 ```
 
+- echo のロギングを logrus に変える方法 
+[echo-logrus](https://github.com/plutov/echo-logrus)
+
+#### echoでログローテション
+
+標準では搭載してないため追加が必要。lumberjackがメジャー？
+
+logrusへのlumberjackの差し込みが以下でできるので
+
+```golang
+// Set the Lumberjack logger
+lumberjackLogger := &lumberjack.Logger{
+  Filename:   "/var/log/misc.log",
+  MaxSize:    10,
+  MaxBackups: 3,
+  MaxAge:     3,
+  LocalTime:  true,
+}
+logrus.SetOutput(lumberjackLogger)
+```
+
+echo の logger にも SetOutput があるので、以下でlumberjackを差し込めそう
+```golang
+
+```
 
 ## テスト（Testify)
 
@@ -278,3 +354,5 @@ type MyError struct {
 [Go言語で.envファイルを環境ごとに読み込む godotenv](https://shi-mo-web.com/golang/gogodotenv-environment-setting-file/)
 
 [Go path/filepathでファイルパスを操作する](https://takuroooooo.hatenablog.com/entry/2020/08/15/Go_path/filepath)
+
+[パッケージ fmt](https://xn--go-hh0g6u.com/pkg/fmt/)

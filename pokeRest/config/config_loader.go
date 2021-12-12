@@ -7,22 +7,43 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type DbConfig struct {
-	Host     string `json:"host" yaml:"host"`
-	User     string `json:"user" yaml:"user"`
-	Password string `json:"password" yaml:"password"`
-	DbName   string `json:"dbname" yaml:"dbname"`
-	Port     string `json:"port" yaml:"port"`
-}
+type (
+	DbConfig struct {
+		Host     string `json:"host" yaml:"host"`
+		User     string `json:"user" yaml:"user"`
+		Password string `json:"password" yaml:"password"`
+		DbName   string `json:"dbname" yaml:"dbname"`
+		Port     string `json:"port" yaml:"port"`
+	}
 
-type AuthConfig struct {
-	SecretKey string `json:"secretKey" yaml:"secretKey"`
-}
+	AuthConfig struct {
+		SecretKey string `json:"secretKey" yaml:"secretKey"`
+	}
 
-type ConfigYaml struct {
-	DbConfig   DbConfig   `json:"db" yaml:"db"`
-	AuthConfig AuthConfig `json:"auth" yaml:"auth"`
-}
+	LogsConfig struct {
+		DirPath         string          `json:"dirPath" yaml:"dirPath"`
+		ErrorLogConfig  ErrorLogConfig  `json:"error" yaml:"error"`
+		AccessLogConfig AccessLogConfig `json:"access" yaml:"access"`
+	}
+	ErrorLogConfig struct {
+		Filename         string `json:"filename" yaml:"filename"`
+		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
+		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`
+		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
+	}
+	AccessLogConfig struct {
+		Filename         string `json:"filename" yaml:"filename"`
+		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
+		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`
+		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
+	}
+
+	ConfigYaml struct {
+		DbConfig   DbConfig   `json:"db" yaml:"db"`
+		AuthConfig AuthConfig `json:"auth" yaml:"auth"`
+		LogsConfig LogsConfig `json:"logs" yaml:"logs"`
+	}
+)
 
 func LoadConfigYaml() (*ConfigYaml, error) {
 	f, err := os.Open("./conf/config.yml")

@@ -11,7 +11,8 @@ type ServerErrKey string
 const (
 	ErrAuth         ServerErrKey = "ErrAuth"
 	ErrUserNotFound ServerErrKey = "ErrUserNotFound"
-	ErrUnexpected   ServerErrKey = "ErrUnexpected"
+
+	ErrUnexpected ServerErrKey = "ErrUnexpected"
 )
 
 var (
@@ -83,7 +84,7 @@ func (e ServerError) Unwrap() error {
 }
 
 func (e ServerError) GetMessage() string {
-	return fmt.Sprintf("[%5s - %4s] %s", e.level, e.errCode, e.message)
+	return fmt.Sprintf("[%-5s - %4s] %s", e.level, e.errCode, e.message)
 }
 
 func (e ServerError) GetStackTrace() string {
@@ -96,6 +97,10 @@ func (e ServerError) GetMessageAndStackTrace() string {
 
 func (e ServerError) GetErrorCode() string {
 	return e.errCode
+}
+
+func (e ServerError) GetLogLevel() Level {
+	return e.level
 }
 
 func (e ServerError) HasStackTrace() bool {
@@ -113,18 +118,20 @@ func (e ServerError) IsNextError() bool {
 	return e.err != nil
 }
 
-type IServerErrorAccessor interface {
+type IServerError interface {
+	Error() string
 	GetMessage() string
 	GetStackTrace() string
 	GetMessageAndStackTrace() string
 	GetErrorCode() string
+	GetLogLevel() Level
 	HasStackTrace() bool
 	IsSaveOwnStackTrace() bool
 	IsNextError() bool
 }
 
-func AsServerError(target error) (IServerErrorAccessor, bool) {
-	serverError, ok := target.(IServerErrorAccessor)
+func AsServerError(target error) (IServerError, bool) {
+	serverError, ok := target.(IServerError)
 	return serverError, ok
 }
 

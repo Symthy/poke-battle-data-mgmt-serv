@@ -10,9 +10,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/handler"
 	"github.com/Symthy/PokeRest/pokeRest/cmd/migration"
 	"github.com/Symthy/PokeRest/pokeRest/config"
+	"github.com/Symthy/PokeRest/pokeRest/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	echomiddleware "github.com/labstack/echo/v4/middleware"
+	_labstacklog "github.com/labstack/gommon/log"
 )
 
 func main() {
@@ -43,14 +44,23 @@ func main() {
 
 	// This is how you set up a basic Echo router
 	e := echo.New()
-	// Log all requests
-	e.Use(echomiddleware.Logger())
+	e.HideBanner = true
+	e.HidePort = true
+
+	e.Use(middleware.Recover())
 	e.Use(middleware.CSRF())
 
-	pokeCon := di.InitPokemonController(conf.DbConfig)
-	userCon := di.InitUserController(conf.DbConfig)
-	handler := handler.NewPokeRestHandler(pokeCon, userCon)
-	server.RegisterHandlers(e, handler)
+	// Logging settings
+	if l, ok := e.Logger.(*_labstacklog.Logger); ok {
+		l.SetHeader("${time_rfc3339} ${level}")
+		l.SetOutput(logger.GenerateRotateErrorLogger(conf.LogsConfig))
+	} else {
+		e.Logger.Fatalf("failure logging settings. start abort.")
+	}
+	e.Use(middleware.Logger()) // Log all requests
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: logger.GenerateAccessErrorLogger(conf.LogsConfig),
+	}))
 
 	// JWT auth
 	r := e.Group("/users")
@@ -59,6 +69,15 @@ func main() {
 		SigningKey: conf.AuthConfig.SecretKey,
 	}
 	r.Use(middleware.JWTWithConfig(jwtConfig))
+
+	// controller initialization
+	pokeCon := di.InitPokemonController(conf.DbConfig)
+	userCon := di.InitUserController(conf.DbConfig)
+	pokeRestHandler := handler.NewPokeRestHandler(pokeCon, userCon)
+	server.RegisterHandlers(e, pokeRestHandler)
+
+	// custom http error handler
+	e.HTTPErrorHandler = handler.PokeRestHttpErrorHandler
 
 	// And we serve HTTP until the world ends.
 	e.Logger.Fatal(e.Start(fmt.Sprintf("0.0.0.0:%d", *port)))

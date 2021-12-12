@@ -6,3 +6,12 @@ db:
   port:
 jwt:
   secretKey:
+logs:
+  dirPath: /var/log/pokeRest/
+  error:
+    filename: error.log
+    maxFileSizeMB: 200
+    maxBackupNum: 5
+    maxRetentionDays: 30
+  access:
+    filename: access.log
