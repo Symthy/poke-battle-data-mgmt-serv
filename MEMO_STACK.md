@@ -356,3 +356,5 @@ echo の logger にも SetOutput があるので、以下でlumberjackを差し�
 [Go path/filepathでファイルパスを操作する](https://takuroooooo.hatenablog.com/entry/2020/08/15/Go_path/filepath)
 
 [パッケージ fmt](https://xn--go-hh0g6u.com/pkg/fmt/)
+
+[Go言語のGormを実践投入する時に最低限知っておくべきことのまとめ【ORM】](https://qiita.com/ttiger55/items/3606b8dd570637c12387)

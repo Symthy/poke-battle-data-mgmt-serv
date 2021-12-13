@@ -2,7 +2,7 @@ package common
 
 import "reflect"
 
-func Contains(list interface{}, elem interface{}) bool {
+func ListContains(list interface{}, elem interface{}) bool {
 	listV := reflect.ValueOf(list)
 
 	if listV.Kind() == reflect.Slice {

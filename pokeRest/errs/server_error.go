@@ -11,15 +11,16 @@ type ServerErrKey string
 const (
 	ErrAuth         ServerErrKey = "ErrAuth"
 	ErrUserNotFound ServerErrKey = "ErrUserNotFound"
-
-	ErrUnexpected ServerErrKey = "ErrUnexpected"
+	ErrInvalidValue ServerErrKey = "ErrInvalidValue"
+	ErrUnexpected   ServerErrKey = "ErrUnexpected"
 )
 
 var (
 	serverErrorMap = map[ServerErrKey]ServerError{
-		"ErrAuth":         {err: nil, level: Error, errCode: "0001", message: "invalid token"},
-		"ErrUserNotFound": {err: nil, level: Warn, errCode: "0002", message: "user not found"},
-		"ErrUnexpected":   {err: nil, level: Error, errCode: "9999", message: "unexpected error"},
+		"ErrAuth":         {level: Error, errCode: "0001", message: "invalid token"},
+		"ErrUserNotFound": {level: Warn, errCode: "0002", message: "user not found"},
+		"ErrInvalidValue": {level: Warn, errCode: "D0001", message: "invalid value.", fields: "class,field,value"},
+		"ErrUnexpected":   {level: Error, errCode: "9999", message: "unexpected error"},
 	}
 )
 
@@ -29,14 +30,20 @@ func GetServerError(errKey ServerErrKey) ServerError {
 }
 
 type ServerError struct {
-	err        error
-	level      Level
-	errCode    string
-	message    string
-	stackTrace *string
+	err           error
+	level         Level   // required
+	errCode       string  // required
+	message       string  // required
+	fields        string  // optional
+	fieldToValues *string // have data
+	stackTrace    *string // have data
 }
 
 func ThrowServerError(errKey ServerErrKey) error {
+	return initServerError(errKey)
+}
+
+func initServerError(errKey ServerErrKey) ServerError {
 	e := GetServerError(errKey)
 	if e.IsSaveOwnStackTrace() {
 		trace := fmt.Sprintf("%+v", pkgerrors.New(""))
@@ -84,7 +91,11 @@ func (e ServerError) Unwrap() error {
 }
 
 func (e ServerError) GetMessage() string {
-	return fmt.Sprintf("[%-5s - %4s] %s", e.level, e.errCode, e.message)
+	msg := fmt.Sprintf("[%-5s - %4s] %s", e.level, e.errCode, e.message)
+	if e.fieldToValues != nil {
+		msg += fmt.Sprintf(" (%s)", *e.fieldToValues)
+	}
+	return msg
 }
 
 func (e ServerError) GetStackTrace() string {
