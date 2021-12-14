@@ -34,11 +34,11 @@ func (as *AuthorizationService) GenerateToken(name string, password string) (*st
 	}
 
 	if user.Id() == 0 {
-		return nil, errs.NewAuthorizedUserNameInvalidError()
+		return nil, errs.ThrowServerError(errs.ErrUserNotFound)
 	}
 
 	if err := user.ValidatePassword(password); err != nil {
-		return nil, errs.NewUnauthorizedError()
+		return nil, errs.ThrowServerError(errs.ErrAuthentication)
 	}
 
 	claims := config.NewJwtCustomClaims(user.Id(), user.Name().Value())

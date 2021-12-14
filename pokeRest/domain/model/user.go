@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	id          uint
-	name        value.Name
+	name        value.UserName
 	displayName *string
 	password    *[]byte
 	email       *value.Email
@@ -19,7 +19,7 @@ type User struct {
 // Todo: builder
 func NewUser(
 	id uint,
-	name value.Name,
+	name value.UserName,
 	displayName *string,
 	email *value.Email,
 	profile *string,
@@ -35,7 +35,7 @@ func NewUser(
 }
 
 func NewUserFromCommand(command command.CreateUserCommand) User {
-	name, _ := value.NewName(command.Name())
+	name, _ := value.NewUserName(command.Name())
 	return NewUser(
 		0,
 		*name,
@@ -54,7 +54,7 @@ func (u User) Id() uint {
 	return u.id
 }
 
-func (u User) Name() value.Name {
+func (u User) Name() value.UserName {
 	return u.name
 }
 

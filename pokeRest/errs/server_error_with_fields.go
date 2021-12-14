@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func throwServerErrorInFields(errKey ServerErrKey, fieldValues ...string) error {
-	e := initServerError(errKey)
+func throwServerErrorWithFields(errKey ServerErrKey, fieldValues ...string) error {
+	e := buildServerError(errKey)
 	if len(fieldValues) == 0 {
 		return e
 	}
@@ -25,5 +25,9 @@ func throwServerErrorInFields(errKey ServerErrKey, fieldValues ...string) error 
 }
 
 func ThrowServerErrorInvalidValue(className string, fieldName string, value string) error {
-	return throwServerErrorInFields(ErrInvalidValue, className, fieldName, value)
+	return throwServerErrorWithFields(ErrInvalidValue, className, fieldName, value)
+}
+
+func ThrowServerErrorNoValue(class string, field string) error {
+	return throwServerErrorWithFields(ErrNoValue, class, field)
 }

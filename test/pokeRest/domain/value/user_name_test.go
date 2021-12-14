@@ -8,18 +8,18 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type NameTestSuite struct {
+type UserNameTestSuite struct {
 	suite.Suite
 }
 
-func TestNameTestSuite(t *testing.T) {
-	suite.Run(t, new(NameTestSuite))
+func TestUserNameTestSuite(t *testing.T) {
+	suite.Run(t, new(UserNameTestSuite))
 }
 
-func (suite *NameTestSuite) TestNewName() {
-	suite.Run("return Name", func() {
+func (suite *UserNameTestSuite) TestNewUserName() {
+	suite.Run("return UserName", func() {
 		expected := "dummy_user"
-		name, err := value.NewName(expected)
+		name, err := value.NewUserName(expected)
 
 		if err != nil {
 			suite.Fail(err.Error())
@@ -33,7 +33,7 @@ func (suite *NameTestSuite) TestNewName() {
 
 	suite.Run("return error", func() {
 		expected := "bad@name."
-		name, err := value.NewName(expected)
+		name, err := value.NewUserName(expected)
 
 		if err == nil {
 			suite.Fail("no error")

@@ -16,7 +16,7 @@ func NewOptionalAbilityIdEmpty() OptionalAbilityId {
 
 func (o OptionalAbilityId) Get() (*int, error) {
 	if o.isEmpty() {
-		return nil, errs.NewNoValueError("Ability ID")
+		return nil, errs.ThrowServerErrorNoValue("Pokemon", "ActivityId")
 	}
 	return o.id, nil
 }

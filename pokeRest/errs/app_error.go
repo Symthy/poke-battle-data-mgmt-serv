@@ -7,12 +7,12 @@ import (
 )
 
 var (
-	errMapping = map[string]ApiErrKey{
+	errMapping = map[ErrorCode]ApiErrKey{
 		"9999": ApiErrUnexpected,
 	}
 )
 
-func resolveApiErrorKey(errCode string) ApiErrKey {
+func resolveApiErrorKey(errCode ErrorCode) ApiErrKey {
 	return errMapping[errCode]
 }
 
@@ -23,11 +23,11 @@ type IAppError interface {
 
 type AppError struct {
 	serverError error
-	errorCode   string
+	errorCode   ErrorCode
 	apiError    ApiError
 }
 
-func newAppError(serverErr error, errCode string) AppError {
+func newAppError(serverErr error, errCode ErrorCode) AppError {
 	return AppError{
 		serverError: serverErr,
 		errorCode:   errCode,
@@ -56,7 +56,7 @@ func (e AppError) ApiErrorResponse() *echo.HTTPError {
 	return echo.NewHTTPError(status, e.buildErrorResponseMsg(e.errorCode, message))
 }
 
-func (e AppError) buildErrorResponseMsg(errCode string, message string) string {
+func (e AppError) buildErrorResponseMsg(errCode ErrorCode, message string) string {
 	if errCode == "" {
 		return message
 	}

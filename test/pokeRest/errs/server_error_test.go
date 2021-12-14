@@ -35,7 +35,7 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		assert.NotNil(suite.T(), wrappedErr1)
 		//errs.ErrUserNotFound
 		if errUserNotFound, ok := errs.AsServerError(wrappedErr1); ok {
-			assert.Equal(suite.T(), "[WARN  - 0002] user not found", errUserNotFound.GetMessage())
+			assert.Equal(suite.T(), "[WARN  - A0002] user not found", errUserNotFound.GetMessage())
 			assert.False(suite.T(), errUserNotFound.HasStackTrace())
 		} else {
 			suite.Fail("invalid wrap ErrUserNotFound")
@@ -91,7 +91,7 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		wrappedErr2 := errors.Unwrap(wrappedErr1)
 		assert.NotNil(suite.T(), wrappedErr2)
 		if errUserNotFound, ok := errs.AsServerError(wrappedErr2); ok {
-			assert.Equal(suite.T(), "[WARN  - 0002] user not found", errUserNotFound.GetMessage())
+			assert.Equal(suite.T(), "[WARN  - A0002] user not found", errUserNotFound.GetMessage())
 			assert.False(suite.T(), errUserNotFound.HasStackTrace())
 		} else {
 			suite.Fail("invalid wrap ErrUserNotFound")

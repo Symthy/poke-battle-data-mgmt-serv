@@ -27,7 +27,7 @@ func (User) TableName() string {
 
 // Todo: error
 func (u User) ConvertToDomain() model.User {
-	name, _ := value.NewName(u.Name)
+	name, _ := value.NewUserName(u.Name)
 
 	var email *value.Email = nil
 	if u.Email != nil {
@@ -46,7 +46,7 @@ func (u User) ConvertToDomain() model.User {
 
 // Todo: error log output
 func (u User) ConvertToDomainNonId() model.User {
-	name, _ := value.NewName(u.Name)
+	name, _ := value.NewUserName(u.Name)
 	email, _ := value.NewEmail(*u.Email)
 	role := value.Role(u.Role.String())
 	return model.NewUser(
