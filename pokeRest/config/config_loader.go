@@ -24,6 +24,7 @@ type (
 		DirPath         string          `json:"dirPath" yaml:"dirPath"`
 		ErrorLogConfig  ErrorLogConfig  `json:"error" yaml:"error"`
 		AccessLogConfig AccessLogConfig `json:"access" yaml:"access"`
+		DbLogConfig     DbLogConfig     `json:"db" yaml:"db"`
 	}
 	ErrorLogConfig struct {
 		Filename         string `json:"filename" yaml:"filename"`
@@ -32,6 +33,12 @@ type (
 		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
 	}
 	AccessLogConfig struct {
+		Filename         string `json:"filename" yaml:"filename"`
+		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
+		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`
+		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
+	}
+	DbLogConfig struct {
 		Filename         string `json:"filename" yaml:"filename"`
 		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
 		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`

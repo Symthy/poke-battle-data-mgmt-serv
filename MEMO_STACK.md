@@ -254,6 +254,14 @@ type MyError struct {
 [lumberjack](https://github.com/natefinch/lumberjack)
 - ログローテーション
 
+### Zap
+
+[zap]
+を使うのがよさそう。gorm でも使える ref: [Frequently Asked Questions](https://github.com/uber-go/zap/blob/master/FAQ.md)
+- zap + gorm: [github.com/moul/zapgorm](https://github.com/moul/zapgorm2) 
+
+- zap + echo: [github.com/brpaz/echozap](https://github.com/brpaz/echozap)
+
 ## echo
 ### JWT認証
 
@@ -322,6 +330,10 @@ e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 - echo のロギングを logrus に変える方法 
 [echo-logrus](https://github.com/plutov/echo-logrus)
 
+※ echo v5 で echo の logger がどうなるか分からない（変更or削除される可能性がある）
+https://github.com/labstack/echo/pull/1555
+
+
 #### echoでログローテション
 
 標準では搭載してないため追加が必要。lumberjackがメジャー？
@@ -342,7 +354,16 @@ logrus.SetOutput(lumberjackLogger)
 
 echo の logger にも SetOutput があるので、以下でlumberjackを差し込めそう
 ```golang
-
+  if l, ok := e.Logger.(*_labstacklog.Logger); ok {
+		l.SetHeader("${time_rfc3339} ${level}")
+		l.SetOutput(lumberjackLogger1)
+	} else {
+		e.Logger.Fatalf("failure logging settings. start abort.")
+	}
+	e.Use(middleware.Logger()) // Log all requests
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: lumberjackLogger2,
+	}))
 ```
 
 ## テスト（Testify)

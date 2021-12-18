@@ -6,14 +6,14 @@ import (
 	"log"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/di"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/handler"
 	"github.com/Symthy/PokeRest/pokeRest/cmd/migration"
 	"github.com/Symthy/PokeRest/pokeRest/config"
-	"github.com/Symthy/PokeRest/pokeRest/logger"
+	"github.com/Symthy/PokeRest/pokeRest/logs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	_labstacklog "github.com/labstack/gommon/log"
 )
 
 func main() {
@@ -46,21 +46,23 @@ func main() {
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
-
 	e.Use(middleware.Recover())
 	e.Use(middleware.CSRF())
 
 	// Logging settings
-	if l, ok := e.Logger.(*_labstacklog.Logger); ok {
-		l.SetHeader("${time_rfc3339} ${level}")
-		l.SetOutput(logger.GenerateRotateErrorLogger(conf.LogsConfig))
-	} else {
-		e.Logger.Fatalf("failure logging settings. start abort.")
-	}
-	e.Use(middleware.Logger()) // Log all requests
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Output: logger.GenerateAccessErrorLogger(conf.LogsConfig),
-	}))
+	serverLoggerFactory, accessLoggerFactory, dbLoggerFactory := logs.NewLoggerFactories(conf.LogsConfig)
+	serverLogInitializer := logs.NewServerGlobalLoggerInitializer(serverLoggerFactory)
+	accessLogInitializer := logs.NewAccessLoggerMiddlewareInitializer(accessLoggerFactory)
+	dbLogInitializer := logs.NewDbLoggerInitializer(dbLoggerFactory)
+	// if l, ok := e.Logger.(*_labstacklog.Logger); ok {
+	// 	l.SetHeader("${time_rfc3339} ${level}")
+	// 	l.SetOutput(logs.BuildRotateErrorLogger(conf.LogsConfig))
+	// } else {
+	// 	e.Logger.Fatalf("failure logging settings. start abort.")
+	// }
+	// e.Use(middleware.Logger()) // Log all requests
+	serverLogInitializer.AcceptLogger()
+	accessLogInitializer.AcceptLogger(e)
 
 	// JWT auth
 	r := e.Group("/users")
@@ -70,9 +72,12 @@ func main() {
 	}
 	r.Use(middleware.JWTWithConfig(jwtConfig))
 
+	// DB
+	dbClient := orm.NewGormDbClient(conf.DbConfig, dbLogInitializer.BuildGormLogger())
+
 	// controller initialization
-	pokeCon := di.InitPokemonController(conf.DbConfig)
-	userCon := di.InitUserController(conf.DbConfig)
+	pokeCon := di.InitPokemonController(dbClient)
+	userCon := di.InitUserController(dbClient)
 	pokeRestHandler := handler.NewPokeRestHandler(pokeCon, userCon)
 	server.RegisterHandlers(e, pokeRestHandler)
 

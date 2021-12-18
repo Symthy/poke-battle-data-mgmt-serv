@@ -1,5 +1,5 @@
 package orm
 
-type DbClientProvider struct {
+type DbClientFactory struct {
 	dbClient *IDbClient
 }

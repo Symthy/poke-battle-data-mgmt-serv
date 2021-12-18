@@ -7,7 +7,7 @@ import (
 )
 
 func RunAutoMigration(dbConfig config.DbConfig) {
-	db := orm.NewGormDbClient(dbConfig).Db()
+	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
 
 	db.AutoMigrate(
 		&schema.Ability{},
@@ -26,7 +26,7 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 }
 
 func RunDropTables(dbConfig config.DbConfig) {
-	db := orm.NewGormDbClient(dbConfig).Db()
+	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
 	db.Migrator().DropTable(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},

@@ -16,17 +16,13 @@ type GormDbClient struct {
 	db *gorm.DB
 }
 
-func NewGormDbClient(dbConfig config.DbConfig) *GormDbClient {
+func NewGormDbClient(dbConfig config.DbConfig, logger logger.Interface) *GormDbClient {
 	dc := &GormDbClient{}
-	dc.initialize(dbConfig)
+	dc.initialize(dbConfig, logger)
 	return dc
 }
 
-func NewGormDbClientForTesting(db *gorm.DB) *GormDbClient {
-	return &GormDbClient{db: db}
-}
-
-func (dc *GormDbClient) initialize(dbConfig config.DbConfig) {
+func NewGormDbClientForStdOut(dbConfig config.DbConfig) *GormDbClient {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
@@ -36,16 +32,28 @@ func (dc *GormDbClient) initialize(dbConfig config.DbConfig) {
 			Colorful:                  false,       // Disable color
 		},
 	)
+	dc := &GormDbClient{}
+	dc.db = openDb(dbConfig, newLogger)
+	return dc
+}
 
-	//	db, err := gorm.Open(postgres.Open(resolveDsn()), &gorm.Config{})
+func NewGormDbClientForTesting(db *gorm.DB) *GormDbClient {
+	return &GormDbClient{db: db}
+}
+
+func (dc *GormDbClient) initialize(dbConfig config.DbConfig, logger logger.Interface) {
+	dc.db = openDb(dbConfig, logger)
+}
+
+func openDb(dbConfig config.DbConfig, logger logger.Interface) *gorm.DB {
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  resolveDsn(dbConfig),
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
-	}), &gorm.Config{Logger: newLogger})
+	}), &gorm.Config{Logger: logger})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	dc.db = db
+	return db
 }
 
 func (dc GormDbClient) Db() *gorm.DB {

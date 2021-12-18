@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 var (
 	errMapping = map[ErrorCode]ApiErrKey{
-		"9999": ApiErrUnexpected,
+		C9999: ApiErrUnexpected,
 	}
 )
 
@@ -63,7 +64,8 @@ func (e AppError) buildErrorResponseMsg(errCode ErrorCode, message string) strin
 	return fmt.Sprintf("[%s] %s", errCode, message)
 }
 
-func (e AppError) WriteServerError(logger echo.Logger) {
+func (e AppError) WriteServerError() {
+	logger := zap.L()
 	serverErr, ok := AsServerError(e.serverError)
 	if !ok {
 		// unexpected error
