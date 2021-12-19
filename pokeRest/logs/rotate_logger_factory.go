@@ -16,13 +16,13 @@ func NewLoggerFactories(conf config.LogsConfig) (IServerLoggerFactory, IAccessLo
 
 type RotateServerLoggerFactory struct {
 	dirPath string
-	conf    config.ErrorLogConfig
+	conf    config.ServerLogConfig
 }
 
 func NewRotateServerLoggerFactory(conf config.LogsConfig) IServerLoggerFactory {
 	return RotateServerLoggerFactory{
 		dirPath: conf.DirPath,
-		conf:    conf.ErrorLogConfig,
+		conf:    conf.ServerLogConfig,
 	}
 }
 

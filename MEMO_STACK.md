@@ -259,12 +259,15 @@ type MyError struct {
 [zap]
 を使うのがよさそう。gorm でも使える ref: [Frequently Asked Questions](https://github.com/uber-go/zap/blob/master/FAQ.md)
 - zap + gorm: [github.com/moul/zapgorm](https://github.com/moul/zapgorm2) 
-
 - zap + echo: [github.com/brpaz/echozap](https://github.com/brpaz/echozap)
+
+ref:
+- [logging zap: レベル毎ファイル出力](https://qiita.com/junk616/items/bd642a9712ff8b728978)
+- [golangの高速な構造化ログライブラリ「zap」の使い方](https://qiita.com/emonuh/items/28dbee9bf2fe51d28153)
+- [Golangの高速なロガーzapとlumberjackでログを出力してrotateさせる](https://www.sambaiz.net/article/104/)
 
 ## echo
 ### JWT認証
-
 
 - [【Go】EchoによるJWT認証の実装](https://log.include.co.jp/2021/02/03/golang_5/)
 - [Go言語でEchoを用いて認証付きWebアプリの作成](https://qiita.com/x-color/items/24ff2491751f55e866cf)
@@ -334,7 +337,7 @@ e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 https://github.com/labstack/echo/pull/1555
 
 
-#### echoでログローテション
+#### echo loggerでログローテション
 
 標準では搭載してないため追加が必要。lumberjackがメジャー？
 

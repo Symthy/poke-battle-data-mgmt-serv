@@ -1,7 +1,5 @@
 package logs
 
-import "go.uber.org/zap"
-
 type IServerLoggerInitializer interface {
 	AcceptLogger()
 }
@@ -17,5 +15,5 @@ func NewServerGlobalLoggerInitializer(factory IServerLoggerFactory) IServerLogge
 func (i ServerGlobalLoggerInitializer) AcceptLogger() {
 	rotateLogger := i.factory.BuildRotateServerLogger()
 	zapLogger := buildZapLogger(rotateLogger)
-	zap.ReplaceGlobals(zapLogger)
+	InitGlobalServerLogger(zapLogger)
 }

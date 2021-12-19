@@ -22,11 +22,11 @@ type (
 
 	LogsConfig struct {
 		DirPath         string          `json:"dirPath" yaml:"dirPath"`
-		ErrorLogConfig  ErrorLogConfig  `json:"error" yaml:"error"`
+		ServerLogConfig ServerLogConfig `json:"server" yaml:"server"`
 		AccessLogConfig AccessLogConfig `json:"access" yaml:"access"`
 		DbLogConfig     DbLogConfig     `json:"db" yaml:"db"`
 	}
-	ErrorLogConfig struct {
+	ServerLogConfig struct {
 		Filename         string `json:"filename" yaml:"filename"`
 		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
 		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`

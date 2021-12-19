@@ -3,8 +3,8 @@ package errs
 import (
 	"fmt"
 
+	"github.com/Symthy/PokeRest/pokeRest/logs"
 	"github.com/labstack/echo/v4"
-	"go.uber.org/zap"
 )
 
 var (
@@ -65,7 +65,7 @@ func (e AppError) buildErrorResponseMsg(errCode ErrorCode, message string) strin
 }
 
 func (e AppError) WriteServerError() {
-	logger := zap.L()
+	logger := logs.GetGlobalServerLogger()
 	serverErr, ok := AsServerError(e.serverError)
 	if !ok {
 		// unexpected error
