@@ -32,11 +32,11 @@ func (f RotateServerLoggerFactory) BuildRotateServerLogger() io.Writer {
 		fileName = "server.log"
 	}
 	rotateLogger := buildRotateLogger(
-		f.dirPath+fileName,      // default: /var/log/pokeRest/error.log
-		f.conf.MaxFileSizeMB,    // default: 200MB
-		f.conf.MaxBackupNum,     // default: 5 file
-		f.conf.MaxRetentionDays, // default: 30 days
-		true,                    // disabled by default
+		resolveDirPath(f.dirPath)+fileName, // default: /var/log/pokeRest/error.log
+		f.conf.MaxFileSizeMB,               // default: 200MB
+		f.conf.MaxBackupNum,                // default: 5 file
+		f.conf.MaxRetentionDays,            // default: 30 days
+		true,                               // disabled by default
 	)
 	return rotateLogger
 }
@@ -59,7 +59,7 @@ func (f RotateAccessLoggerFactory) BuildRotateAccessLogger() io.Writer {
 		fileName = ""
 	}
 	rotateLogger := buildRotateLogger(
-		f.dirPath+fileName,
+		resolveDirPath(f.dirPath)+fileName,
 		f.conf.MaxFileSizeMB,    // default: 200MB
 		f.conf.MaxBackupNum,     // default: 5 file
 		f.conf.MaxRetentionDays, // default: 30 days
@@ -86,7 +86,7 @@ func (f RotateDbLoggerFactory) BuildRotateDbLogger() io.Writer {
 		fileName = "db.log" // default
 	}
 	rotateLogger := buildRotateLogger(
-		f.dirPath+fileName,
+		resolveDirPath(f.dirPath)+fileName,
 		f.conf.MaxFileSizeMB,    // default: 200MB
 		f.conf.MaxBackupNum,     // default: 5 file
 		f.conf.MaxRetentionDays, // default: 30 days

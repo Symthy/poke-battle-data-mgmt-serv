@@ -53,7 +53,7 @@ func main() {
 	serverLoggerFactory, accessLoggerFactory, dbLoggerFactory := logs.NewLoggerFactories(conf.LogsConfig)
 	serverLogInitializer := logs.NewServerGlobalLoggerInitializer(serverLoggerFactory)
 	accessLogInitializer := logs.NewAccessLoggerMiddlewareInitializer(accessLoggerFactory)
-	dbLogInitializer := logs.NewDbLoggerInitializer(dbLoggerFactory)
+
 	// if l, ok := e.Logger.(*_labstacklog.Logger); ok {
 	// 	l.SetHeader("${time_rfc3339} ${level}")
 	// 	l.SetOutput(logs.BuildRotateErrorLogger(conf.LogsConfig))
@@ -64,6 +64,10 @@ func main() {
 	serverLogInitializer.AcceptLogger()
 	accessLogInitializer.AcceptLogger(e)
 
+	// DB
+	dbClientInitializer := orm.NewDbClientInitializer(conf.DbConfig, dbLoggerFactory)
+	dbClient := dbClientInitializer.InitializeDbClient()
+
 	// JWT auth
 	r := e.Group("/users")
 	var jwtConfig = middleware.JWTConfig{
@@ -71,9 +75,6 @@ func main() {
 		SigningKey: conf.AuthConfig.SecretKey,
 	}
 	r.Use(middleware.JWTWithConfig(jwtConfig))
-
-	// DB
-	dbClient := orm.NewGormDbClient(conf.DbConfig, dbLogInitializer.BuildGormLogger())
 
 	// controller initialization
 	pokeCon := di.InitPokemonController(dbClient)
