@@ -1,9 +1,9 @@
 db:
-  host:
-  user:
-  password:
-  dbname:
-  port:
+  host: localhost
+  user: postgres
+  password: postgres
+  dbname: pokedb
+  port: 5432
 auth:
   secretKey:
 logs:

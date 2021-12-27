@@ -52,8 +52,13 @@ type (
 	}
 )
 
+// Todo: check existing directory and file
 func LoadConfigYaml() (*ConfigYaml, error) {
-	f, err := os.Open("./conf/config.yml")
+	return LoadConfig("./conf/config.yml")
+}
+
+func LoadConfig(confPath string) (*ConfigYaml, error) {
+	f, err := os.Open(confPath)
 	if err != nil {
 		//log.Fatal("load Yaml os.Open err:", err)
 		log.Print("load Yaml os.Open err:", err)

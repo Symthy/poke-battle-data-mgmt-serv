@@ -8,25 +8,32 @@ import (
 )
 
 func NewLoggerFactories(conf config.LogsConfig) (IServerLoggerFactory, IAccessLoggerFactory, IDbLoggerFactory) {
-	serverLoggerFactory := NewRotateServerLoggerFactory(conf)
-	accessLoggerFactory := NewRotateAccessLoggerFactory(conf)
-	dbLoggerFactory := NewRotateDbLoggerFactory(conf)
+	serverLoggerFactory := NewServerLoggerFactory(conf)
+	accessLoggerFactory := NewAccessLoggerFactory(conf)
+	dbLoggerFactory := NewDbLoggerFactory(conf)
 	return serverLoggerFactory, accessLoggerFactory, dbLoggerFactory
 }
 
-type RotateServerLoggerFactory struct {
+type ServerLoggerFactory struct {
 	dirPath string
 	conf    config.ServerLogConfig
 }
 
-func NewRotateServerLoggerFactory(conf config.LogsConfig) IServerLoggerFactory {
-	return RotateServerLoggerFactory{
+// public for testing
+func NewServerLoggerFactory(conf config.LogsConfig) ServerLoggerFactory {
+	return ServerLoggerFactory{
 		dirPath: conf.DirPath,
 		conf:    conf.ServerLogConfig,
 	}
 }
 
-func (f RotateServerLoggerFactory) BuildRotateServerLogger() io.Writer {
+func (f ServerLoggerFactory) BuildBaseServerLogger() io.Writer {
+	rotateLogger := f.BuildRotateServerLogger()
+	return &rotateLogger
+}
+
+// public for testing
+func (f ServerLoggerFactory) BuildRotateServerLogger() lumberjack.Logger {
 	var fileName = f.conf.Filename
 	if fileName == "" {
 		fileName = "server.log"
@@ -41,19 +48,26 @@ func (f RotateServerLoggerFactory) BuildRotateServerLogger() io.Writer {
 	return rotateLogger
 }
 
-type RotateAccessLoggerFactory struct {
+type AccessLoggerFactory struct {
 	dirPath string
 	conf    config.AccessLogConfig
 }
 
-func NewRotateAccessLoggerFactory(conf config.LogsConfig) IAccessLoggerFactory {
-	return RotateAccessLoggerFactory{
+// public for testing
+func NewAccessLoggerFactory(conf config.LogsConfig) AccessLoggerFactory {
+	return AccessLoggerFactory{
 		dirPath: conf.DirPath,
 		conf:    conf.AccessLogConfig,
 	}
 }
 
-func (f RotateAccessLoggerFactory) BuildRotateAccessLogger() io.Writer {
+func (f AccessLoggerFactory) BuildBaseAccessLogger() io.Writer {
+	rotateLogger := f.BuildRotateAccessLogger()
+	return &rotateLogger
+}
+
+// public for testing
+func (f AccessLoggerFactory) BuildRotateAccessLogger() lumberjack.Logger {
 	var fileName = f.conf.Filename
 	if fileName == "" {
 		fileName = ""
@@ -68,19 +82,26 @@ func (f RotateAccessLoggerFactory) BuildRotateAccessLogger() io.Writer {
 	return rotateLogger
 }
 
-type RotateDbLoggerFactory struct {
+type DbLoggerFactory struct {
 	dirPath string
 	conf    config.DbLogConfig
 }
 
-func NewRotateDbLoggerFactory(conf config.LogsConfig) IDbLoggerFactory {
-	return RotateDbLoggerFactory{
+// public for testing
+func NewDbLoggerFactory(conf config.LogsConfig) DbLoggerFactory {
+	return DbLoggerFactory{
 		dirPath: conf.DirPath,
 		conf:    conf.DbLogConfig,
 	}
 }
 
-func (f RotateDbLoggerFactory) BuildRotateDbLogger() io.Writer {
+func (f DbLoggerFactory) BuildBaseDbLogger() io.Writer {
+	rotateLogger := f.BuildRotateDbLogger()
+	return &rotateLogger
+}
+
+// public for testing
+func (f DbLoggerFactory) BuildRotateDbLogger() lumberjack.Logger {
 	var fileName = f.conf.Filename
 	if fileName == "" {
 		fileName = "db.log" // default
@@ -108,7 +129,7 @@ const (
 	defaultMaxRetentionDays int = 30
 )
 
-func buildRotateLogger(filePath string, maxFileSizeMB int, maxBackupFileNum int, maxRetentionDays int, isCompress bool) io.Writer {
+func buildRotateLogger(filePath string, maxFileSizeMB int, maxBackupFileNum int, maxRetentionDays int, isCompress bool) lumberjack.Logger {
 	var fileSizeMB = defaultMaxFileSizeMB
 	var backupFileNum = defaultMaxBackupFileNum
 	var retentionDays = defaultMaxRetentionDays
@@ -121,7 +142,7 @@ func buildRotateLogger(filePath string, maxFileSizeMB int, maxBackupFileNum int,
 	if maxRetentionDays > 0 {
 		retentionDays = maxRetentionDays
 	}
-	return &lumberjack.Logger{
+	return lumberjack.Logger{
 		Filename:   filePath,
 		MaxSize:    fileSizeMB,
 		MaxBackups: backupFileNum,

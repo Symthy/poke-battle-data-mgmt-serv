@@ -5,15 +5,15 @@ import (
 )
 
 type IAccessLoggerFactory interface {
-	BuildRotateAccessLogger() io.Writer
+	BuildBaseAccessLogger() io.Writer
 }
 
 type IServerLoggerFactory interface {
-	BuildRotateServerLogger() io.Writer
+	BuildBaseServerLogger() io.Writer
 }
 
 type IDbLoggerFactory interface {
-	BuildRotateDbLogger() io.Writer
+	BuildBaseDbLogger() io.Writer
 }
 
 type IGlobalServerLogger interface {

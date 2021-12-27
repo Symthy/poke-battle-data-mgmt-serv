@@ -13,7 +13,7 @@ func NewServerGlobalLoggerInitializer(factory IServerLoggerFactory) IServerLogge
 }
 
 func (i ServerGlobalLoggerInitializer) AcceptLogger() {
-	rotateLogger := i.factory.BuildRotateServerLogger()
+	rotateLogger := i.factory.BuildBaseServerLogger()
 	zapLogger := buildZapLogger(rotateLogger)
 	InitGlobalServerLogger(zapLogger)
 }

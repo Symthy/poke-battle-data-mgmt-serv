@@ -9,6 +9,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func GetAbsolutePath() string {
+	absPath, _ := filepath.Abs("./")
+	strArray := strings.Split(absPath, "\\")
+	var path string = ""
+	for _, s := range strArray {
+		if s == "test" {
+			break
+		}
+		path = path + s + "/"
+	}
+	return path
+}
+
 type TestConfig struct {
 	isStandardOutput bool
 }
@@ -19,15 +32,7 @@ func InitTestConfig() TestConfig {
 }
 
 func loadConfigEnv() TestConfig {
-	absPath, _ := filepath.Abs("./")
-	strArray := strings.Split(absPath, "\\")
-	var path string = ""
-	for _, s := range strArray {
-		if s == "test" {
-			break
-		}
-		path = path + s + "/"
-	}
+	path := GetAbsolutePath()
 	err := godotenv.Load(path + "test/test_config.env")
 	if err != nil {
 		fmt.Printf("Error loading test_config.env:\n%v\n", err)
