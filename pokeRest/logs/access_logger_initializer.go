@@ -20,11 +20,11 @@ func NewAccessLoggerMiddlewareInitializer(factory IAccessLoggerFactory) IAccessL
 
 func (i AccessLoggerMiddlewareInitializer) AcceptLogger(e *echo.Echo) {
 	rotateLogger := i.factory.BuildBaseAccessLogger()
-	zapLoggerEchoMiddleware := buildLoggerMiddleware(rotateLogger)
+	zapLoggerEchoMiddleware := i.buildLoggerMiddleware(rotateLogger)
 	e.Use(zapLoggerEchoMiddleware)
 }
 
-func buildLoggerMiddleware(writer io.Writer) echo.MiddlewareFunc {
-	zapLoggerEchoMiddleware := zapEchoLogger(buildZapLogger(writer))
+func (i AccessLoggerMiddlewareInitializer) buildLoggerMiddleware(writer io.Writer) echo.MiddlewareFunc {
+	zapLoggerEchoMiddleware := zapEchoLogger(BuildZapLogger(writer, i.factory.ResolveLogLevel()))
 	return zapLoggerEchoMiddleware
 }

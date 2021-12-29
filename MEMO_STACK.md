@@ -240,6 +240,8 @@ type MyError struct {
 
 ## ロギング
 
+[Goのロギングライブラリ 2021年冬](https://zenn.dev/moriyoshi/articles/1af0659e29d727#go%E3%81%AE%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA) 
+
 [Goでのログ出力に標準logとcologを使う](https://qiita.com/kmtr/items/406073651d7a12aab9c6)
 - 標準以外のログライブラリを使うと以下の問題がある
   - 標準logを含め、利用するログライブラリが混在しないように気を使う
@@ -265,6 +267,11 @@ ref:
 - [logging zap: レベル毎ファイル出力](https://qiita.com/junk616/items/bd642a9712ff8b728978)
 - [golangの高速な構造化ログライブラリ「zap」の使い方](https://qiita.com/emonuh/items/28dbee9bf2fe51d28153)
 - [Golangの高速なロガーzapとlumberjackでログを出力してrotateさせる](https://www.sambaiz.net/article/104/)
+- [GoのロギングライブラリzapのTips](https://christina04.hatenablog.com/entry/golang-zap-tips)
+  - 書き込み先をio.Writerで自由に設定したい
+  - テストで時刻を固定値にしたい
+  - ログレベルによって標準出力、標準エラー出力を分けたい
+  - GCP Cloud Loggingのフォーマットでログ出力したい
 
 ## echo
 ### JWT認証
@@ -372,6 +379,8 @@ echo の logger にも SetOutput があるので、以下でlumberjackを差し�
 ## テスト（Testify)
 
 [Testify の assert を使ってテストを書く](https://qiita.com/egawata/items/7c18bbc54dc353034f5f)
+
+[DMMにおけるユーザーレビュー基盤の変革（Goのテスト技法編）](https://inside.dmm.com/entry/2019/03/28/review-go-test)
 
 ## その他
 

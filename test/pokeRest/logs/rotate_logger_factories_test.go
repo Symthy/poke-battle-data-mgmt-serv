@@ -18,7 +18,7 @@ type LoggerFactoriesTestSuite struct {
 // Before
 func (suite *LoggerFactoriesTestSuite) SetupTest() {
 	suite.logsConf = config.LogsConfig{
-		DirPath: "test/path",
+		DirPath: "test/path/",
 		ServerLogConfig: config.ServerLogConfig{
 			Filename:         "server.log.test",
 			MaxFileSizeMB:    1,
@@ -47,7 +47,7 @@ func TestLoggerFactoriesTestSuite(t *testing.T) {
 func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	suite.Run("new logger factories", func() {
 		absPath := test.GetAbsolutePath()
-		configYamlModelPath := absPath + "config/config.yml.model"
+		configYamlModelPath := absPath + "conf/config.yml.model"
 		config, err := config.LoadConfig(configYamlModelPath)
 		if err != nil {
 			assert.Fail(suite.T(), "load failure config.yml.model.", err.Error())
@@ -63,7 +63,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	suite.Run("new server logger", func() {
 		factory := logs.NewServerLoggerFactory(suite.logsConf)
 		rotateLogger := factory.BuildRotateServerLogger()
-		assert.Equal(suite.T(), "server.log.test", rotateLogger.Filename)
+		assert.Equal(suite.T(), "test/path/server.log.test", rotateLogger.Filename)
 		assert.Equal(suite.T(), 1, rotateLogger.MaxSize)
 		assert.Equal(suite.T(), 2, rotateLogger.MaxBackups)
 		assert.Equal(suite.T(), 3, rotateLogger.MaxAge)
@@ -72,7 +72,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	suite.Run("new access logger", func() {
 		factory := logs.NewAccessLoggerFactory(suite.logsConf)
 		rotateLogger := factory.BuildRotateAccessLogger()
-		assert.Equal(suite.T(), "access.log.test", rotateLogger.Filename)
+		assert.Equal(suite.T(), "test/path/access.log.test", rotateLogger.Filename)
 		assert.Equal(suite.T(), 4, rotateLogger.MaxSize)
 		assert.Equal(suite.T(), 5, rotateLogger.MaxBackups)
 		assert.Equal(suite.T(), 6, rotateLogger.MaxAge)
@@ -81,7 +81,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	suite.Run("new db logger", func() {
 		factory := logs.NewDbLoggerFactory(suite.logsConf)
 		rotateLogger := factory.BuildRotateDbLogger()
-		assert.Equal(suite.T(), "db.log.test", rotateLogger.Filename)
+		assert.Equal(suite.T(), "test/path/db.log.test", rotateLogger.Filename)
 		assert.Equal(suite.T(), 7, rotateLogger.MaxSize)
 		assert.Equal(suite.T(), 8, rotateLogger.MaxBackups)
 		assert.Equal(suite.T(), 9, rotateLogger.MaxAge)

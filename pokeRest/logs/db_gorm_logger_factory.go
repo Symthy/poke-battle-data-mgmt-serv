@@ -14,7 +14,7 @@ func NewDbGormLoggerFactory(factory IDbLoggerFactory) DbGormLoggerFactory {
 }
 
 func (i DbGormLoggerFactory) BuildGormLogger() logger.Interface {
-	zapLogger := buildZapLogger(i.factory.BuildBaseDbLogger())
+	zapLogger := BuildZapLogger(i.factory.BuildBaseDbLogger(), i.factory.ResolveLogLevel())
 	zapGormLogger := zapgorm2.New(zapLogger)
 	zapGormLogger.SetAsDefault()
 	return zapGormLogger

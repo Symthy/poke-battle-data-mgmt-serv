@@ -3,6 +3,7 @@ package logs
 import (
 	"io"
 
+	"github.com/Symthy/PokeRest/pokeRest/common"
 	"github.com/Symthy/PokeRest/pokeRest/config"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -15,8 +16,9 @@ func NewLoggerFactories(conf config.LogsConfig) (IServerLoggerFactory, IAccessLo
 }
 
 type ServerLoggerFactory struct {
-	dirPath string
-	conf    config.ServerLogConfig
+	dirPath  string
+	logLevel common.Level
+	conf     config.ServerLogConfig
 }
 
 // public for testing
@@ -25,6 +27,10 @@ func NewServerLoggerFactory(conf config.LogsConfig) ServerLoggerFactory {
 		dirPath: conf.DirPath,
 		conf:    conf.ServerLogConfig,
 	}
+}
+
+func (f ServerLoggerFactory) ResolveLogLevel() common.Level {
+	return f.logLevel
 }
 
 func (f ServerLoggerFactory) BuildBaseServerLogger() io.Writer {
@@ -39,7 +45,7 @@ func (f ServerLoggerFactory) BuildRotateServerLogger() lumberjack.Logger {
 		fileName = "server.log"
 	}
 	rotateLogger := buildRotateLogger(
-		resolveDirPath(f.dirPath)+fileName, // default: /var/log/pokeRest/error.log
+		resolveDirPath(f.dirPath)+fileName, // default: /var/log/pokeRest/server.log
 		f.conf.MaxFileSizeMB,               // default: 200MB
 		f.conf.MaxBackupNum,                // default: 5 file
 		f.conf.MaxRetentionDays,            // default: 30 days
@@ -49,8 +55,9 @@ func (f ServerLoggerFactory) BuildRotateServerLogger() lumberjack.Logger {
 }
 
 type AccessLoggerFactory struct {
-	dirPath string
-	conf    config.AccessLogConfig
+	dirPath  string
+	logLevel common.Level
+	conf     config.AccessLogConfig
 }
 
 // public for testing
@@ -59,6 +66,10 @@ func NewAccessLoggerFactory(conf config.LogsConfig) AccessLoggerFactory {
 		dirPath: conf.DirPath,
 		conf:    conf.AccessLogConfig,
 	}
+}
+
+func (f AccessLoggerFactory) ResolveLogLevel() common.Level {
+	return f.logLevel
 }
 
 func (f AccessLoggerFactory) BuildBaseAccessLogger() io.Writer {
@@ -83,8 +94,9 @@ func (f AccessLoggerFactory) BuildRotateAccessLogger() lumberjack.Logger {
 }
 
 type DbLoggerFactory struct {
-	dirPath string
-	conf    config.DbLogConfig
+	dirPath  string
+	logLevel common.Level
+	conf     config.DbLogConfig
 }
 
 // public for testing
@@ -93,6 +105,10 @@ func NewDbLoggerFactory(conf config.LogsConfig) DbLoggerFactory {
 		dirPath: conf.DirPath,
 		conf:    conf.DbLogConfig,
 	}
+}
+
+func (f DbLoggerFactory) ResolveLogLevel() common.Level {
+	return f.logLevel
 }
 
 func (f DbLoggerFactory) BuildBaseDbLogger() io.Writer {

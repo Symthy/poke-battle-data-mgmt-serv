@@ -18,39 +18,40 @@ func (f LogField) GetValue() string {
 	return f.value
 }
 
-type GlobalServerZapLogger struct {
+type ServerGlobalLogger struct {
 	logger *zap.Logger
 }
 
+// public for testing
 func InitGlobalServerLogger(logger *zap.Logger) {
 	zap.ReplaceGlobals(logger)
 }
 
-func GetGlobalServerLogger() IGlobalServerLogger {
-	return GlobalServerZapLogger{logger: zap.L()}
+func GetGlobalServerLogger() IServerGlobalLogger {
+	return ServerGlobalLogger{logger: zap.L()}
 }
 
-func (l GlobalServerZapLogger) Debug(msg string, fields ...ILogField) {
+func (l ServerGlobalLogger) Debug(msg string, fields ...ILogField) {
 	zapField := convertZapField(fields...)
 	l.logger.Debug(msg, zapField...)
 }
 
-func (l GlobalServerZapLogger) Info(msg string, fields ...ILogField) {
+func (l ServerGlobalLogger) Info(msg string, fields ...ILogField) {
 	zapField := convertZapField(fields...)
 	l.logger.Info(msg, zapField...)
 }
 
-func (l GlobalServerZapLogger) Warn(msg string, fields ...ILogField) {
+func (l ServerGlobalLogger) Warn(msg string, fields ...ILogField) {
 	zapField := convertZapField(fields...)
 	l.logger.Warn(msg, zapField...)
 }
 
-func (l GlobalServerZapLogger) Error(msg string, fields ...ILogField) {
+func (l ServerGlobalLogger) Error(msg string, fields ...ILogField) {
 	zapField := convertZapField(fields...)
 	l.logger.Error(msg, zapField...)
 }
 
-func (l GlobalServerZapLogger) Fatal(msg string, fields ...ILogField) {
+func (l ServerGlobalLogger) Fatal(msg string, fields ...ILogField) {
 	zapField := convertZapField(fields...)
 	l.logger.Fatal(msg, zapField...)
 }

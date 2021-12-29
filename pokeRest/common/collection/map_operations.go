@@ -1,4 +1,4 @@
-package common
+package collection
 
 func Mapkeys(m map[string]struct{}) []string {
 	keys := []string{}

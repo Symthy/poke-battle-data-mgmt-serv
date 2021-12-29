@@ -53,7 +53,6 @@ func main() {
 	serverLoggerFactory, accessLoggerFactory, dbLoggerFactory := logs.NewLoggerFactories(conf.LogsConfig)
 	serverLogInitializer := logs.NewServerGlobalLoggerInitializer(serverLoggerFactory)
 	accessLogInitializer := logs.NewAccessLoggerMiddlewareInitializer(accessLoggerFactory)
-
 	// if l, ok := e.Logger.(*_labstacklog.Logger); ok {
 	// 	l.SetHeader("${time_rfc3339} ${level}")
 	// 	l.SetOutput(logs.BuildRotateErrorLogger(conf.LogsConfig))

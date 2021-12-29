@@ -3,18 +3,20 @@ package logs
 import (
 	"io"
 
+	"github.com/Symthy/PokeRest/pokeRest/common"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-func buildZapLogger(writer io.Writer) *zap.Logger {
+// public for testing
+func BuildZapLogger(writer io.Writer, level common.Level, options ...zap.Option) *zap.Logger {
 	encoderConfig := buildZapCommonEncoderConfig()
 	accessLogCore := zapcore.NewCore(
 		zapcore.NewConsoleEncoder(encoderConfig), // フォーマット指定
 		zapcore.AddSync(writer),
-		zapcore.WarnLevel, // 出力対象
+		convertLevel(level), // 出力エラーレベル
 	)
-	return zap.New(accessLogCore)
+	return zap.New(accessLogCore, options...)
 }
 
 func buildZapCommonEncoderConfig() zapcore.EncoderConfig {
@@ -27,8 +29,25 @@ func buildZapCommonEncoderConfig() zapcore.EncoderConfig {
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
 		EncodeLevel:    zapcore.CapitalLevelEncoder,                                      // 大文字表示
-		EncodeTime:     zapcore.TimeEncoderOfLayout("2021/12/19 15:04:05.000(UTCZ0700)"), // 時刻フォーマット
+		EncodeTime:     zapcore.TimeEncoderOfLayout("2006/01/02 15:04:05.000(UTCZ0700)"), // 時刻フォーマット
 		EncodeDuration: zapcore.StringDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder, // 出力元ソース出力形式
+	}
+}
+
+func convertLevel(level common.Level) zapcore.Level {
+	switch level {
+	case common.Fatal:
+		return zapcore.FatalLevel
+	case common.Error:
+		return zapcore.ErrorLevel
+	case common.Warn:
+		return zapcore.WarnLevel
+	case common.Info:
+		return zapcore.InfoLevel
+	case common.Debug:
+		return zapcore.DebugLevel
+	default:
+		return zapcore.WarnLevel
 	}
 }

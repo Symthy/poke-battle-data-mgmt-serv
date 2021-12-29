@@ -3,15 +3,16 @@ package errs
 import (
 	"fmt"
 
+	"github.com/Symthy/PokeRest/pokeRest/common"
 	pkgerrors "github.com/pkg/errors"
 )
 
 type ServerError struct {
 	wrappedErr    error
-	level         Level     // required
-	errCode       ErrorCode // required
-	message       string    // required
-	fields        string    // optional
+	level         common.Level // required
+	errCode       ErrorCode    // required
+	message       string       // required
+	fields        string       // optional
 	fieldToValues *string
 	stackTrace    *string
 }
@@ -78,7 +79,7 @@ func (e ServerError) GetErrorCode() ErrorCode {
 	return e.errCode
 }
 
-func (e ServerError) GetLogLevel() Level {
+func (e ServerError) GetLogLevel() common.Level {
 	return e.level
 }
 
@@ -87,7 +88,7 @@ func (e ServerError) HasStackTrace() bool {
 }
 
 func (e ServerError) IsSaveOwnStackTrace() bool {
-	if e.level == Error || e.level == Fatal {
+	if e.level == common.Error || e.level == common.Fatal {
 		return true
 	}
 	return false
@@ -103,7 +104,7 @@ type IServerError interface {
 	GetStackTrace() string
 	GetMessageAndStackTrace() string
 	GetErrorCode() ErrorCode
-	GetLogLevel() Level
+	GetLogLevel() common.Level
 	HasStackTrace() bool
 	IsSaveOwnStackTrace() bool
 	IsNextError() bool

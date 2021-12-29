@@ -1,6 +1,6 @@
 package command
 
-import "github.com/Symthy/PokeRest/pokeRest/common"
+import common "github.com/Symthy/PokeRest/pokeRest/common/collection"
 
 const (
 	displayNameField = "displayName"
