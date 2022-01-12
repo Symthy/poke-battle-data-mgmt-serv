@@ -11,12 +11,12 @@ import (
 // public for testing
 func BuildZapLogger(writer io.Writer, level common.Level, options ...zap.Option) *zap.Logger {
 	encoderConfig := buildZapCommonEncoderConfig()
-	accessLogCore := zapcore.NewCore(
-		zapcore.NewConsoleEncoder(encoderConfig), // フォーマット指定
+	logCore := zapcore.NewCore(
+		zapcore.NewConsoleEncoder(encoderConfig),
 		zapcore.AddSync(writer),
 		convertLevel(level), // 出力エラーレベル
 	)
-	return zap.New(accessLogCore, options...)
+	return zap.New(logCore, options...)
 }
 
 func buildZapCommonEncoderConfig() zapcore.EncoderConfig {
