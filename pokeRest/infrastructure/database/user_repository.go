@@ -2,7 +2,6 @@ package database
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"gorm.io/gorm"
@@ -37,7 +36,7 @@ func (rep UserRepository) FindByName(targetName string, filterFields ...string) 
 }
 
 func (rep UserRepository) Create(user model.User) (model.User, error) {
-	schemaUser := gormio.ConvertUserToSchema(user)
+	schemaUser := orm.ConvertUserToSchema(user)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaUser)
 	created := schemaUser.ConvertToDomain()

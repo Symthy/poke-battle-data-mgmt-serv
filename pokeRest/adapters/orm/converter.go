@@ -1,4 +1,4 @@
-package gormio
+package orm
 
 import (
 	"database/sql"
@@ -9,7 +9,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
 
-func ConvertPokemonToSchema(p model.Pokemon) schema.Pokemon {
+func ToSchemaPokemon(p model.Pokemon) *schema.Pokemon {
 	pokemon := schema.Pokemon{
 		ID:               p.Id(),
 		PokedexNo:        p.PokedexNo(),
@@ -20,12 +20,12 @@ func ConvertPokemonToSchema(p model.Pokemon) schema.Pokemon {
 		Generation:       p.Generation(),
 		Type1:            enum.PokemonType(p.TypePrimary().EnglishName()),
 		Type2:            enum.PokemonType(p.TypeSecondary().EnglishName()),
-		AbilityId1:       convertOptionalIdToNullInt16(p.AbilityIdPrimary()),
-		AbilityId2:       convertOptionalIdToNullInt16(p.AbilityIdSecondary()),
-		HiddenAbilityId:  convertOptionalIdToNullInt16(p.HiddenAbilityId()),
+		AbilityId1:       ConvertOptionalIdToNullInt16(p.AbilityIdPrimary()),
+		AbilityId2:       ConvertOptionalIdToNullInt16(p.AbilityIdSecondary()),
+		HiddenAbilityId:  ConvertOptionalIdToNullInt16(p.HiddenAbilityId()),
 		IsFinalEvolution: p.IsFinalEvolution(),
 	}
-	return pokemon
+	return &pokemon
 }
 
 func ConvertUserToSchema(u model.User) schema.User {
@@ -41,7 +41,7 @@ func ConvertUserToSchema(u model.User) schema.User {
 	return user
 }
 
-func convertOptionalIdToNullInt16(id optional.OptionalId) sql.NullInt16 {
+func ConvertOptionalIdToNullInt16(id optional.OptionalId) sql.NullInt16 {
 	value, _ := id.Get()
 	nullInt := sql.NullInt16{}
 	if value == nil {

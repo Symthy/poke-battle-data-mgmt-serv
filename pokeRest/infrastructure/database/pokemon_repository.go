@@ -2,7 +2,6 @@ package database
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/thoas/go-funk"
@@ -42,7 +41,7 @@ func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
 }
 
 func (rep PokemonRepository) Create(pokemon *model.Pokemon) (model.Pokemon, error) {
-	schemaPokemon := gormio.ConvertPokemonToSchema(*pokemon)
+	schemaPokemon := orm.ToSchemaPokemon(*pokemon)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaPokemon)
 	created := schemaPokemon.ConvertToDomain()
@@ -60,9 +59,9 @@ func (rep PokemonRepository) Update(pokemon model.Pokemon) (model.Pokemon, error
 	return pokemon, nil
 }
 
-func (rep PokemonRepository) Delete(id uint) model.Pokemon {
+func (rep PokemonRepository) Delete(id uint) (model.Pokemon, error) {
 	db := rep.dbClient.Db()
-	var pokemon = model.Pokemon{}
-	db.Delete(&pokemon, id)
-	return pokemon
+	var pokemon = schema.Pokemon{}
+	tx := db.Delete(&pokemon, id)
+	return pokemon.ConvertToDomain(), tx.Error
 }

@@ -15,3 +15,11 @@ type Repository interface {
 	Update(dto interface{}) interface{}
 	Delete(id uint) interface{}
 }
+
+type ISchema[T IDomain] interface {
+	ConvertToDomain() *T
+}
+
+type IDomain interface {
+	Id() uint
+}
