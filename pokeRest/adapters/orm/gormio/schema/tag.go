@@ -1,6 +1,9 @@
 package schema
 
-import "gorm.io/gorm"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"gorm.io/gorm"
+)
 
 type Tag struct {
 	gorm.Model
@@ -12,4 +15,13 @@ type Tag struct {
 
 func (Tag) TableName() string {
 	return "tags"
+}
+
+func (t Tag) ConvertToDomain() *model.Tag {
+	return &model.Tag{
+		id:              t.Id,
+		name:            t.Name,
+		isGenerationTag: t.IsGeneration,
+		isSeasonTag:     t.IsSeason,
+	}
 }

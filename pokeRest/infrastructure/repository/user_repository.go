@@ -1,9 +1,10 @@
-package database
+package repository
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/field"
 	"gorm.io/gorm"
 )
 
@@ -26,7 +27,7 @@ func (rep UserRepository) FindByName(targetName string, filterFields ...string) 
 	db := rep.dbClient.Db()
 	var user = schema.User{}
 	var tx *gorm.DB
-	selectedDbFields := ConvertToDbField(filterFields...)
+	selectedDbFields := field.ConvertToDbField(filterFields...)
 	if len(selectedDbFields) > 0 {
 		tx = db.Select(selectedDbFields).Find(&user, "name = ?", targetName)
 	} else {
