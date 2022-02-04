@@ -2,15 +2,15 @@ package controller
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/application/service"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/presentation"
 )
 
 type PokemonController struct {
-	service service.PokemonReadService
+	service pokemons.PokemonReadService
 }
 
-func NewPokemonController(service service.PokemonReadService) *PokemonController {
+func NewPokemonController(service pokemons.PokemonReadService) *PokemonController {
 	return &PokemonController{service: service}
 }
 

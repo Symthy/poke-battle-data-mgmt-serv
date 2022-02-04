@@ -20,7 +20,8 @@ func (rep BaseRepository[TS, TD]) FindById(id uint) (*TD, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	return schema.ConvertToDomain(), tx.Error
+	s := schema.ConvertToDomain()
+	return &s, tx.Error
 }
 
 func (rep BaseRepository[TS, TD]) FindByField(targetField string, value string, filterFields ...string) (*TD, error) {
@@ -38,7 +39,8 @@ func (rep BaseRepository[TS, TD]) FindByField(targetField string, value string, 
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	return schema.ConvertToDomain(), nil
+	s := schema.ConvertToDomain()
+	return &s, nil
 }
 
 func (rep BaseRepository[TS, TD]) Create(model TD) (*TD, error) {
@@ -48,7 +50,8 @@ func (rep BaseRepository[TS, TD]) Create(model TD) (*TD, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	return schema.ConvertToDomain(), nil
+	s := schema.ConvertToDomain()
+	return &s, nil
 }
 
 func (rep BaseRepository[TS, TD]) Update(model TD) (*TD, error) {
@@ -62,7 +65,8 @@ func (rep BaseRepository[TS, TD]) Update(model TD) (*TD, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	return schema.ConvertToDomain(), nil
+	s := schema.ConvertToDomain()
+	return &s, nil
 }
 
 func (rep BaseRepository[TS, TD]) Delete(id uint) (*TD, error) {
@@ -72,5 +76,6 @@ func (rep BaseRepository[TS, TD]) Delete(id uint) (*TD, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	return schema.ConvertToDomain(), nil
+	s := schema.ConvertToDomain()
+	return &s, nil
 }

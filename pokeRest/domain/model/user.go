@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/application/command"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"golang.org/x/crypto/bcrypt"
 )

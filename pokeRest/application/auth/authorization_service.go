@@ -3,8 +3,8 @@ package auth
 import (
 	"net/http"
 
-	"github.com/Symthy/PokeRest/pokeRest/application/command"
-	"github.com/Symthy/PokeRest/pokeRest/application/service"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
 	"github.com/Symthy/PokeRest/pokeRest/config"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
@@ -14,11 +14,11 @@ import (
 )
 
 type AuthorizationService struct {
-	service    service.UserReadService
+	service    users.UserReadService
 	authConfig config.AuthConfig
 }
 
-func NewAuthorizationService(service service.UserReadService, authConfig config.AuthConfig) AuthorizationService {
+func NewAuthorizationService(service users.UserReadService, authConfig config.AuthConfig) AuthorizationService {
 	return AuthorizationService{
 		service:    service,
 		authConfig: authConfig,

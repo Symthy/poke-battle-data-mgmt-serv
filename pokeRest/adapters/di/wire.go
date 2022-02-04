@@ -5,9 +5,10 @@ package di
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
-	"github.com/Symthy/PokeRest/pokeRest/application/service"
-	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/database"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
+	i_repository "github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
 	"github.com/Symthy/PokeRest/test/mock"
 	"github.com/google/wire"
@@ -17,9 +18,9 @@ import (
 func InitUserController(dbClient orm.IDbClient) *controller.UserController {
 	wire.Build(
 		controller.NewUserController,
-		service.NewUserReadService,
-		database.NewUserRepository,
-		wire.Bind(new(repository.IUserRepository), new(*database.UserRepository)),
+		users.NewUserReadService,
+		repository.NewUserRepository,
+		wire.Bind(new(i_repository.IUserRepository), new(*repository.UserRepository)),
 	)
 	return nil
 }
@@ -27,9 +28,9 @@ func InitUserController(dbClient orm.IDbClient) *controller.UserController {
 func InitUserControllerByRepoMock() *controller.UserController {
 	wire.Build(
 		controller.NewUserController,
-		service.NewUserReadService,
+		users.NewUserReadService,
 		mock.NewUserRepositoryMock,
-		wire.Bind(new(repository.IUserRepository), new(*mock.UserRepositoryMock)),
+		wire.Bind(new(i_repository.IUserRepository), new(*mock.UserRepositoryMock)),
 	)
 	return nil
 }
@@ -38,9 +39,9 @@ func InitUserControllerByRepoMock() *controller.UserController {
 func InitPokemonController(dbClient orm.IDbClient) *controller.PokemonController {
 	wire.Build(
 		controller.NewPokemonController,
-		service.NewPokemonReadService,
-		database.NewPokemonRepository,
-		wire.Bind(new(repository.IPokemonRepository), new(*database.PokemonRepository)),
+		pokemons.NewPokemonReadService,
+		repository.NewPokemonRepository,
+		wire.Bind(new(i_repository.IPokemonRepository), new(*repository.PokemonRepository)),
 	)
 	return nil
 }
@@ -48,9 +49,9 @@ func InitPokemonController(dbClient orm.IDbClient) *controller.PokemonController
 func InitPokemonControllerByRepoMock() *controller.PokemonController {
 	wire.Build(
 		controller.NewPokemonController,
-		service.NewPokemonReadService,
+		pokemons.NewPokemonReadService,
 		mock.NewPokemonRepositoryMock,
-		wire.Bind(new(repository.IPokemonRepository), new(*mock.PokemonRepositoryMock)),
+		wire.Bind(new(i_repository.IPokemonRepository), new(*mock.PokemonRepositoryMock)),
 	)
 	return nil
 }

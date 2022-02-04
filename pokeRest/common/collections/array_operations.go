@@ -1,6 +1,10 @@
-package collection
+package collections
 
-import "reflect"
+import (
+	"reflect"
+
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
+)
 
 func ListContains(list interface{}, elem interface{}) bool {
 	listV := reflect.ValueOf(list)
@@ -21,4 +25,12 @@ func ListContains(list interface{}, elem interface{}) bool {
 		}
 	}
 	return false
+}
+
+func ListMap[TS infrastructure.ISchema[TD], TD infrastructure.IDomain](schemas []TS) []TD {
+	domains := make([]TD, len(schemas), len(schemas))
+	for i, s := range schemas {
+		domains[i] = s.ConvertToDomain()
+	}
+	return domains
 }

@@ -3,8 +3,8 @@ package repository
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
+	"github.com/Symthy/PokeRest/pokeRest/common/collections"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
-	"github.com/thoas/go-funk"
 )
 
 type PokemonRepository struct {
@@ -15,11 +15,15 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 	return &PokemonRepository{dbClient: dbClient}
 }
 
-func (rep PokemonRepository) FindById(id uint) (model.Pokemon, error) {
+func (rep PokemonRepository) FindById(id uint) (*model.Pokemon, error) {
 	db := rep.dbClient.Db()
 	var pokemon = schema.Pokemon{}
 	tx := db.First(&pokemon, id)
-	return pokemon.ConvertToDomain(), tx.Error
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	p := pokemon.ConvertToDomain()
+	return &p, tx.Error
 }
 
 // Todo: args is condition
@@ -33,9 +37,7 @@ func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
 	if tx.Error != nil {
 		return model.PokemonList{}, tx.Error
 	}
-	pokemonDomains := funk.Map(pokemons, func(p schema.Pokemon) model.Pokemon {
-		return p.ConvertToDomain()
-	}).([]model.Pokemon)
+	pokemonDomains := collections.ListMap[schema.Pokemon, model.Pokemon](pokemons)
 	pokemonList := model.NewPokemonList(pokemonDomains)
 	return pokemonList, nil
 }
@@ -48,20 +50,29 @@ func (rep PokemonRepository) Create(pokemon *model.Pokemon) (model.Pokemon, erro
 	return created, tx.Error
 }
 
-func (rep PokemonRepository) Update(pokemon model.Pokemon) (model.Pokemon, error) {
+func (rep PokemonRepository) Update(pokemon model.Pokemon) (*model.Pokemon, error) {
 	// Todo: args change
 	db := rep.dbClient.Db()
 	target, err := rep.FindById(pokemon.Id())
 	if err != nil {
-		return pokemon, err
+		return nil, err
 	}
-	db.Model(&target).Updates(pokemon)
-	return pokemon, nil
+	schemaPokemon := schema.Pokemon{}
+	tx := db.Model(&target).Updates(&schemaPokemon)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	p := schemaPokemon.ConvertToDomain()
+	return &p, nil
 }
 
-func (rep PokemonRepository) Delete(id uint) (model.Pokemon, error) {
+func (rep PokemonRepository) Delete(id uint) (*model.Pokemon, error) {
 	db := rep.dbClient.Db()
 	var pokemon = schema.Pokemon{}
 	tx := db.Delete(&pokemon, id)
-	return pokemon.ConvertToDomain(), tx.Error
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	s := pokemon.ConvertToDomain()
+	return &s, nil
 }

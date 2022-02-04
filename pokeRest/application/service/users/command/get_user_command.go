@@ -1,6 +1,6 @@
 package command
 
-import common "github.com/Symthy/PokeRest/pokeRest/common/collection"
+import common "github.com/Symthy/PokeRest/pokeRest/common/collections"
 
 const (
 	displayNameField = "displayName"
@@ -10,9 +10,9 @@ const (
 
 func requiredFields() map[string]struct{} {
 	return map[string]struct{}{
-		"id":   struct{}{},
-		"name": struct{}{},
-		"role": struct{}{},
+		"id":   {},
+		"name": {},
+		"role": {},
 	}
 }
 

@@ -17,11 +17,11 @@ func (Tag) TableName() string {
 	return "tags"
 }
 
-func (t Tag) ConvertToDomain() *model.Tag {
-	return &model.Tag{
-		id:              t.Id,
-		name:            t.Name,
-		isGenerationTag: t.IsGeneration,
-		isSeasonTag:     t.IsSeason,
-	}
+func (t Tag) ConvertToDomain() model.Tag {
+	return model.NewTag(
+		t.ID,
+		t.Name,
+		*t.IsGenerationTag,
+		*t.IsSeasonTag,
+	)
 }

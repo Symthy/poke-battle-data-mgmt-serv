@@ -17,7 +17,7 @@ type Repository interface {
 }
 
 type ISchema[T IDomain] interface {
-	ConvertToDomain() *T
+	ConvertToDomain() T
 }
 
 type IDomain interface {

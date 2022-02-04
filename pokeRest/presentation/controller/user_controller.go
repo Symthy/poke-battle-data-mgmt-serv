@@ -2,16 +2,16 @@ package controller
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/application/command"
-	"github.com/Symthy/PokeRest/pokeRest/application/service"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
 	"github.com/Symthy/PokeRest/pokeRest/presentation"
 )
 
 type UserController struct {
-	service service.UserReadService
+	service users.UserReadService
 }
 
-func NewUserController(service service.UserReadService) *UserController {
+func NewUserController(service users.UserReadService) *UserController {
 	return &UserController{service: service}
 }
 

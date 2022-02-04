@@ -1,4 +1,4 @@
-package database
+package repository
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/database"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
 	"github.com/stretchr/testify/suite"
@@ -19,7 +19,7 @@ import (
 type UserRepositoryTestSuite struct {
 	suite.Suite
 	dbClient   *orm.GormDbClient
-	repository database.UserRepository
+	repository repository.UserRepository
 	mock       sqlmock.Sqlmock
 }
 
@@ -28,7 +28,7 @@ func (suite *UserRepositoryTestSuite) SetupTest() {
 	db, mock, _ := mock.GetGormDBMock()
 	suite.mock = mock
 	suite.dbClient = orm.NewGormDbClientForTesting(db)
-	userRepository := database.NewUserRepository(suite.dbClient)
+	userRepository := repository.NewUserRepository(suite.dbClient)
 	suite.repository = *userRepository
 }
 
@@ -55,10 +55,10 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, actual) {
+		if !reflect.DeepEqual(expected, *actual) {
 			suite.Fail("expected and actual is unmatched")
 			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", actual)
+			fmt.Printf("actual:  \n%#v\n", *actual)
 		}
 	})
 

@@ -1,4 +1,4 @@
-package collection
+package collections
 
 func Mapkeys(m map[string]struct{}) []string {
 	keys := []string{}

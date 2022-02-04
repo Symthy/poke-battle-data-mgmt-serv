@@ -1,7 +1,7 @@
-package service
+package users
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/application/command"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
