@@ -42,12 +42,15 @@ func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
 	return pokemonList, nil
 }
 
-func (rep PokemonRepository) Create(pokemon *model.Pokemon) (model.Pokemon, error) {
+func (rep PokemonRepository) Create(pokemon *model.Pokemon) (*model.Pokemon, error) {
 	schemaPokemon := orm.ToSchemaPokemon(*pokemon)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaPokemon)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
 	created := schemaPokemon.ConvertToDomain()
-	return created, tx.Error
+	return &created, tx.Error
 }
 
 func (rep PokemonRepository) Update(pokemon model.Pokemon) (*model.Pokemon, error) {

@@ -14,22 +14,24 @@ func NewUserRepositoryMock() *UserRepositoryMock {
 	return &UserRepositoryMock{}
 }
 
-func (mock UserRepositoryMock) FindById(id uint) (model.User, error) {
+func (mock UserRepositoryMock) FindById(id uint) (*model.User, error) {
 	dummyUser := data.DummyUser1()
 	if dummyUser.ID != id {
-		return model.User{}, nil
+		return &model.User{}, nil
 	}
-	return dummyUser.ConvertToDomain(), nil
+	u := dummyUser.ConvertToDomain()
+	return &u, nil
 }
 
-func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...string) (model.User, error) {
+func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...string) (*model.User, error) {
 	dummyUser := data.DummyUser1(filterFields...)
 	if dummyUser.Name != targetName {
-		return model.User{}, gorm.ErrRecordNotFound
+		return nil, gorm.ErrRecordNotFound
 	}
-	return dummyUser.ConvertToDomain(), nil
+	u := dummyUser.ConvertToDomain()
+	return &u, nil
 }
 
-func (mock UserRepositoryMock) Create(user model.User) (model.User, error) {
-	return model.User{}, nil
+func (mock UserRepositoryMock) Create(user model.User) (*model.User, error) {
+	return &model.User{}, nil
 }

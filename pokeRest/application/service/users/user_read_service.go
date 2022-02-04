@@ -16,10 +16,10 @@ func NewUserReadService(repository repository.IUserRepository) UserReadService {
 
 func (s UserReadService) GetUserById(id uint) (model.User, error) {
 	user, err := s.repository.FindById(id)
-	return user, err
+	return *user, err
 }
 
 func (s UserReadService) GetUser(command command.GetUserCommand) (model.User, error) {
 	user, err := s.repository.FindByName(command.TargetName(), command.FilterFields()...)
-	return user, err
+	return *user, err
 }

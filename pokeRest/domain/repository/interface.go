@@ -8,9 +8,9 @@ type IBasicRepository interface {
 }
 
 type IPokemonRepository interface {
-	FindById(id uint) (model.Pokemon, error)
+	FindById(id uint) (*model.Pokemon, error)
 	FindAll() (model.PokemonList, error)
-	Create(pokemon *model.Pokemon) (model.Pokemon, error)
+	Create(pokemon *model.Pokemon) (*model.Pokemon, error)
 }
 
 type IAbilityRepository interface {
@@ -30,7 +30,7 @@ type IItemRepository interface {
 }
 
 type IUserRepository interface {
-	FindById(id uint) (model.User, error)
-	FindByName(targetName string, filterFields ...string) (model.User, error)
-	Create(user model.User) (model.User, error)
+	FindById(id uint) (*model.User, error)
+	FindByName(targetName string, filterFields ...string) (*model.User, error)
+	Create(user model.User) (*model.User, error)
 }

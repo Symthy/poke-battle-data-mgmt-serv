@@ -74,10 +74,10 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, actual) {
+		if !reflect.DeepEqual(expected, *actual) {
 			suite.Fail("expected and actual is unmatched")
 			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", actual)
+			fmt.Printf("actual:  \n%#v\n", *actual)
 		}
 	})
 
@@ -94,10 +94,10 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, actual) {
+		if !reflect.DeepEqual(expected, *actual) {
 			suite.Fail("expected and actual is unmatched")
 			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", actual)
+			fmt.Printf("actual:  \n%#v\n", *actual)
 		}
 	})
 }

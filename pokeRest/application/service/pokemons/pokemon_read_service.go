@@ -16,8 +16,10 @@ func NewPokemonReadService(repository repository.IPokemonRepository) PokemonRead
 // UC: 単体詳細取得
 func (s PokemonReadService) GetPokemon(id uint) (model.Pokemon, error) {
 	pokemon, err := s.pokemonRepository.FindById(id)
-	return pokemon, err
+	return *pokemon, err
 }
 
 // UC: 一覧取得
-func (s PokemonReadService) GetPokemons()
+func (s PokemonReadService) GetPokemons() {
+	return
+}

@@ -19,5 +19,5 @@ func (s UserReadService) CreateUser(command command.CreateUserCommand) (model.Us
 	user := model.NewUserFromCommand(command)
 	createdUser, err := s.repository.Create(user)
 	createdUser.ResetPassword()
-	return createdUser, err
+	return *createdUser, err
 }
