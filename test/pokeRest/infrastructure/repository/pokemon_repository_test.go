@@ -81,7 +81,8 @@ func (suite *PokemonRepositoryTestSuite) TestCreate() {
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(id))
 	suite.mock.ExpectCommit()
 
-	pokemon := dummyPokemon.ConvertToDomainNonId()
+	dummyPokemon.ID = 0 // non id
+	pokemon := dummyPokemon.ConvertToDomain()
 	created, err := suite.repository.Create(&pokemon)
 
 	if err != nil {

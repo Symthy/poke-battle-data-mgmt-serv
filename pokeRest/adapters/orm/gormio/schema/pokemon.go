@@ -5,7 +5,7 @@ import (
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/sqltype"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 )
 
 type Pokemon struct {
@@ -51,32 +51,9 @@ func (Pokemon) TableName() string {
 	return "pokemons"
 }
 
-func (p Pokemon) ConvertToDomain() model.Pokemon {
-	return model.NewPokemon(
+func (p Pokemon) ConvertToDomain() pokemons.Pokemon {
+	return pokemons.NewPokemon(
 		p.ID,
-		p.PokedexNo,
-		p.FormNo,
-		p.FormName,
-		p.Name,
-		p.EnglishName,
-		p.Generation,
-		p.Type1.String(),
-		p.Type2.String(),
-		sqltype.ResolveNullInt16(p.AbilityId1),
-		sqltype.ResolveNullInt16(p.AbilityId2),
-		sqltype.ResolveNullInt16(p.HiddenAbilityId),
-		p.BaseStatsH,
-		p.BaseStatsA,
-		p.BaseStatsB,
-		p.BaseStatsC,
-		p.BaseStatsD,
-		p.BaseStatsS,
-		p.IsFinalEvolution,
-	)
-}
-
-func (p Pokemon) ConvertToDomainNonId() model.Pokemon {
-	return model.NewPokemonNonId(
 		p.PokedexNo,
 		p.FormNo,
 		p.FormName,

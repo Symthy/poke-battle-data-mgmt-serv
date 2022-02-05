@@ -6,10 +6,12 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
 
-func ToSchemaPokemon(p model.Pokemon) *schema.Pokemon {
+func ToSchemaPokemon(p pokemons.Pokemon) *schema.Pokemon {
 	pokemon := schema.Pokemon{
 		ID:               p.Id(),
 		PokedexNo:        p.PokedexNo(),
@@ -39,6 +41,16 @@ func ConvertUserToSchema(u model.User) schema.User {
 	}
 	user.ID = u.Id()
 	return user
+}
+
+func ToSchemaTag(t tags.Tag) schema.Tag {
+	isGeneration := t.IsGenerationTag()
+	isSeason := t.IsSeasonTag()
+	return schema.Tag{
+		Name:            t.Name(),
+		IsGenerationTag: &isGeneration,
+		IsSeasonTag:     &isSeason,
+	}
 }
 
 func ConvertOptionalIdToNullInt16(id optional.OptionalId) sql.NullInt16 {

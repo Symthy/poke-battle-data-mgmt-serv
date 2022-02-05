@@ -1,4 +1,4 @@
-package model
+package pokemons
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"

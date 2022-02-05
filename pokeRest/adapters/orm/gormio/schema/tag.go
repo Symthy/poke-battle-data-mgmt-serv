@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
 	"gorm.io/gorm"
 )
 
@@ -17,8 +17,8 @@ func (Tag) TableName() string {
 	return "tags"
 }
 
-func (t Tag) ConvertToDomain() model.Tag {
-	return model.NewTag(
+func (t Tag) ConvertToDomain() tags.Tag {
+	return tags.NewTag(
 		t.ID,
 		t.Name,
 		*t.IsGenerationTag,

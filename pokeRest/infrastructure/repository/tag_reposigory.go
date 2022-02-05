@@ -4,24 +4,34 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/common/collections"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
 )
 
 type TagRepository struct {
-	BaseRepository[schema.Tag, model.Tag]
+	BaseRepository[schema.Tag, tags.Tag]
 	dbClient orm.IDbClient
 }
 
-func (rep TagRepository) FindAll() ([]model.Tag, error) {
-	db := rep.dbClient.Db()
+func NewTagRepository(dbClient orm.IDbClient) TagRepository {
+	return TagRepository{
+		BaseRepository: BaseRepository[schema.Tag, tags.Tag]{
+			dbClient:           dbClient,
+			emptySchemaBuilder: func() schema.Tag { return schema.Tag{} },
+			schemaConverter:    orm.ToSchemaTag,
+		},
+		dbClient: dbClient,
+	}
+}
+
+func (rep TagRepository) FindAll(page int, pageSize int) ([]tags.Tag, error) {
 	var schemaTags = []schema.Tag{}
 
-	paginate := rep.dbClient.Paginate(1, 100)
-	tx := db.Scopes(paginate).Find(&schemaTags)
+	paginate := rep.dbClient.Paginate(page, pageSize)
+	tx := rep.dbClient.Db().Scopes(paginate).Find(&schemaTags)
 
 	if tx.Error != nil {
-		return []model.Tag{}, tx.Error
+		return []tags.Tag{}, tx.Error
 	}
-	tags := collections.ListMap[schema.Tag, model.Tag](schemaTags)
+	tags := collections.ListMap[schema.Tag, tags.Tag](schemaTags)
 	return tags, nil
 }

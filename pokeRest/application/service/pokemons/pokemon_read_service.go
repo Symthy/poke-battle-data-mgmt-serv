@@ -1,7 +1,7 @@
 package pokemons
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 
@@ -14,12 +14,14 @@ func NewPokemonReadService(repository repository.IPokemonRepository) PokemonRead
 }
 
 // UC: 単体詳細取得
-func (s PokemonReadService) GetPokemon(id uint) (model.Pokemon, error) {
+func (s PokemonReadService) GetPokemon(id uint) (pokemons.Pokemon, error) {
 	pokemon, err := s.pokemonRepository.FindById(id)
 	return *pokemon, err
 }
 
-// UC: 一覧取得
-func (s PokemonReadService) GetPokemons() {
+// UC: 一覧取得 StatsOfPokemonFinder
+
+// UC: 検索
+func (s PokemonReadService) SearchPokemons() {
 	return
 }

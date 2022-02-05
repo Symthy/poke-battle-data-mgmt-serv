@@ -1,4 +1,4 @@
-package service
+package items
 
 import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 

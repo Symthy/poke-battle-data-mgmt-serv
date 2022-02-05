@@ -3,9 +3,10 @@ package presentation
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 )
 
-func ConvertPokemonToResponse(domain model.Pokemon) server.Pokemon {
+func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 	ability1, _ := domain.AbilityIdPrimary().Get()
 	var ability2 *float32 = nil
 	if a2, _ := domain.AbilityIdSecondary().Get(); a2 != nil {

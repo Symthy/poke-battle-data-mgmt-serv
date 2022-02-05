@@ -23,3 +23,7 @@ type ISchema[T IDomain] interface {
 type IDomain interface {
 	Id() uint
 }
+
+type IDomains[T IDomain] interface {
+	Items() []T
+}

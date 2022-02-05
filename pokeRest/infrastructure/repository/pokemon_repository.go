@@ -4,7 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/common/collections"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 )
 
 type PokemonRepository struct {
@@ -15,7 +15,7 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 	return &PokemonRepository{dbClient: dbClient}
 }
 
-func (rep PokemonRepository) FindById(id uint) (*model.Pokemon, error) {
+func (rep PokemonRepository) FindById(id uint) (*pokemons.Pokemon, error) {
 	db := rep.dbClient.Db()
 	var pokemon = schema.Pokemon{}
 	tx := db.First(&pokemon, id)
@@ -27,22 +27,22 @@ func (rep PokemonRepository) FindById(id uint) (*model.Pokemon, error) {
 }
 
 // Todo: args is condition
-func (rep PokemonRepository) FindAll() (model.PokemonList, error) {
+func (rep PokemonRepository) FindAll() (pokemons.PokemonList, error) {
 	db := rep.dbClient.Db()
-	var pokemons = []schema.Pokemon{}
+	var schemas = []schema.Pokemon{}
 
 	paginate := rep.dbClient.Paginate(1, 100)
-	tx := db.Scopes(paginate).Find(&pokemons)
+	tx := db.Scopes(paginate).Find(&schemas)
 
 	if tx.Error != nil {
-		return model.PokemonList{}, tx.Error
+		return pokemons.PokemonList{}, tx.Error
 	}
-	pokemonDomains := collections.ListMap[schema.Pokemon, model.Pokemon](pokemons)
-	pokemonList := model.NewPokemonList(pokemonDomains)
+	pokemonDomains := collections.ListMap[schema.Pokemon, pokemons.Pokemon](schemas)
+	pokemonList := pokemons.NewPokemonList(pokemonDomains)
 	return pokemonList, nil
 }
 
-func (rep PokemonRepository) Create(pokemon *model.Pokemon) (*model.Pokemon, error) {
+func (rep PokemonRepository) Create(pokemon *pokemons.Pokemon) (*pokemons.Pokemon, error) {
 	schemaPokemon := orm.ToSchemaPokemon(*pokemon)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaPokemon)
@@ -53,7 +53,7 @@ func (rep PokemonRepository) Create(pokemon *model.Pokemon) (*model.Pokemon, err
 	return &created, tx.Error
 }
 
-func (rep PokemonRepository) Update(pokemon model.Pokemon) (*model.Pokemon, error) {
+func (rep PokemonRepository) Update(pokemon pokemons.Pokemon) (*pokemons.Pokemon, error) {
 	// Todo: args change
 	db := rep.dbClient.Db()
 	target, err := rep.FindById(pokemon.Id())
@@ -69,7 +69,7 @@ func (rep PokemonRepository) Update(pokemon model.Pokemon) (*model.Pokemon, erro
 	return &p, nil
 }
 
-func (rep PokemonRepository) Delete(id uint) (*model.Pokemon, error) {
+func (rep PokemonRepository) Delete(id uint) (*pokemons.Pokemon, error) {
 	db := rep.dbClient.Db()
 	var pokemon = schema.Pokemon{}
 	tx := db.Delete(&pokemon, id)
