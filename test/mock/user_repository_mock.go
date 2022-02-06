@@ -2,11 +2,13 @@ package mock
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/test/data"
 	"gorm.io/gorm"
 )
 
-// implements IUserRepository
+var _ repository.IUserRepository = (*UserRepositoryMock)(nil)
+
 type UserRepositoryMock struct {
 }
 
@@ -32,6 +34,6 @@ func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...str
 	return &u, nil
 }
 
-func (mock UserRepositoryMock) Create(user model.User) (*model.User, error) {
+func (mock UserRepositoryMock) Save(user model.User) (*model.User, error) {
 	return &model.User{}, nil
 }

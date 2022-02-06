@@ -4,7 +4,7 @@ import "github.com/thoas/go-funk"
 
 type PokemonType struct {
 	name        TypeJapaneseName
-	englishName TypeEnglishName
+	englishName TypeName
 }
 
 func (t PokemonType) EnglishName() string {
@@ -23,25 +23,25 @@ func NewPokemonType(typeName string) PokemonType {
 
 func listPokemonTypes() []PokemonType {
 	return []PokemonType{
-		{name: Normal, englishName: NormalEN},
-		{name: Fighting, englishName: FightingEN},
-		{name: Flying, englishName: FlyingEN},
-		{name: Poison, englishName: PoisonEN},
-		{name: Ground, englishName: GroundEN},
-		{name: Rock, englishName: RockEN},
-		{name: Bug, englishName: BugEN},
-		{name: Ghost, englishName: GhostEN},
-		{name: Steel, englishName: SteelEN},
-		{name: Fire, englishName: FireEN},
-		{name: Water, englishName: WaterEN},
-		{name: Grass, englishName: GrassEN},
-		{name: Electric, englishName: ElectricEN},
-		{name: Psychic, englishName: PsychicEN},
-		{name: Ice, englishName: IceEN},
-		{name: Dragon, englishName: DragonEN},
-		{name: Dark, englishName: DarkEN},
-		{name: Fairy, englishName: FairyEN},
-		{name: None, englishName: NoneEN},
+		{name: NormalJP, englishName: Normal},
+		{name: FightingJP, englishName: Fighting},
+		{name: FlyingJP, englishName: Flying},
+		{name: PoisonJP, englishName: Poison},
+		{name: GroundJP, englishName: Ground},
+		{name: RockJP, englishName: Rock},
+		{name: BugJP, englishName: Bug},
+		{name: GhostJP, englishName: Ghost},
+		{name: SteelJP, englishName: Steel},
+		{name: FireJP, englishName: Fire},
+		{name: WaterJP, englishName: Water},
+		{name: GrassJP, englishName: Grass},
+		{name: ElectricJP, englishName: Electric},
+		{name: PsychicJP, englishName: Psychic},
+		{name: IceJP, englishName: Ice},
+		{name: DragonJP, englishName: Dragon},
+		{name: DarkJP, englishName: Dark},
+		{name: FairyJP, englishName: Fairy},
+		{name: NoneJP, englishName: None},
 	}
 }
 
@@ -51,50 +51,50 @@ func (v TypeJapaneseName) String() string {
 	return string(v)
 }
 
-type TypeEnglishName string
+type TypeName string
 
-func (v TypeEnglishName) String() string {
+func (v TypeName) String() string {
 	return string(v)
 }
 
 const (
-	Normal   TypeJapaneseName = "ノーマル"
-	Fighting TypeJapaneseName = "かくとう"
-	Flying   TypeJapaneseName = "ひこう"
-	Poison   TypeJapaneseName = "どく"
-	Ground   TypeJapaneseName = "じめん"
-	Rock     TypeJapaneseName = "いわ"
-	Bug      TypeJapaneseName = "むし"
-	Ghost    TypeJapaneseName = "ゴースト"
-	Steel    TypeJapaneseName = "はがね"
-	Fire     TypeJapaneseName = "ほのお"
-	Water    TypeJapaneseName = "みず"
-	Grass    TypeJapaneseName = "くさ"
-	Electric TypeJapaneseName = "でんき"
-	Psychic  TypeJapaneseName = "エスパー"
-	Ice      TypeJapaneseName = "こおり"
-	Dragon   TypeJapaneseName = "ドラゴン"
-	Dark     TypeJapaneseName = "あく"
-	Fairy    TypeJapaneseName = "フェアリー"
-	None     TypeJapaneseName = "-"
+	NormalJP   TypeJapaneseName = "ノーマル"
+	FightingJP TypeJapaneseName = "かくとう"
+	FlyingJP   TypeJapaneseName = "ひこう"
+	PoisonJP   TypeJapaneseName = "どく"
+	GroundJP   TypeJapaneseName = "じめん"
+	RockJP     TypeJapaneseName = "いわ"
+	BugJP      TypeJapaneseName = "むし"
+	GhostJP    TypeJapaneseName = "ゴースト"
+	SteelJP    TypeJapaneseName = "はがね"
+	FireJP     TypeJapaneseName = "ほのお"
+	WaterJP    TypeJapaneseName = "みず"
+	GrassJP    TypeJapaneseName = "くさ"
+	ElectricJP TypeJapaneseName = "でんき"
+	PsychicJP  TypeJapaneseName = "エスパー"
+	IceJP      TypeJapaneseName = "こおり"
+	DragonJP   TypeJapaneseName = "ドラゴン"
+	DarkJP     TypeJapaneseName = "あく"
+	FairyJP    TypeJapaneseName = "フェアリー"
+	NoneJP     TypeJapaneseName = "-"
 
-	NormalEN   TypeEnglishName = "Normal"
-	FightingEN TypeEnglishName = "Fighting"
-	FlyingEN   TypeEnglishName = "Flying"
-	PoisonEN   TypeEnglishName = "Poison"
-	GroundEN   TypeEnglishName = "Ground"
-	RockEN     TypeEnglishName = "Rock"
-	BugEN      TypeEnglishName = "Bug"
-	GhostEN    TypeEnglishName = "Ghost"
-	SteelEN    TypeEnglishName = "Steel"
-	FireEN     TypeEnglishName = "Fire"
-	WaterEN    TypeEnglishName = "Water"
-	GrassEN    TypeEnglishName = "Grass"
-	ElectricEN TypeEnglishName = "Electric"
-	PsychicEN  TypeEnglishName = "Psychic"
-	IceEN      TypeEnglishName = "Ice"
-	DragonEN   TypeEnglishName = "Dragon"
-	DarkEN     TypeEnglishName = "Dark"
-	FairyEN    TypeEnglishName = "Fairy"
-	NoneEN     TypeEnglishName = "-"
+	Normal   TypeName = "Normal"
+	Fighting TypeName = "Fighting"
+	Flying   TypeName = "Flying"
+	Poison   TypeName = "Poison"
+	Ground   TypeName = "Ground"
+	Rock     TypeName = "Rock"
+	Bug      TypeName = "Bug"
+	Ghost    TypeName = "Ghost"
+	Steel    TypeName = "Steel"
+	Fire     TypeName = "Fire"
+	Water    TypeName = "Water"
+	Grass    TypeName = "Grass"
+	Electric TypeName = "Electric"
+	Psychic  TypeName = "Psychic"
+	Ice      TypeName = "Ice"
+	Dragon   TypeName = "Dragon"
+	Dark     TypeName = "Dark"
+	Fairy    TypeName = "Fairy"
+	None     TypeName = "-"
 )

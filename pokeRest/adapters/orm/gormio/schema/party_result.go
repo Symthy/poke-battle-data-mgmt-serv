@@ -1,6 +1,6 @@
 package schema
 
-type PartyResult struct {
+type PartySeasonResult struct {
 	ID         uint `gorm:"primaryKey;autoIncrement:true"` // has many
 	PartyId    uint
 	Generation int
@@ -12,6 +12,6 @@ type PartyResult struct {
 	LoseCount  int
 }
 
-func (PartyResult) TableName() string {
-	return "party_result"
+func (PartySeasonResult) TableName() string {
+	return "party_season_result"
 }

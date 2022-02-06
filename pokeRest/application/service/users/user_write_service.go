@@ -14,10 +14,9 @@ func NewUserWriteService(repository repository.IUserRepository) UserWriteService
 	return UserWriteService{repository: repository}
 }
 
-// Todo: input command
-func (s UserReadService) CreateUser(command command.CreateUserCommand) (model.User, error) {
+func (s UserReadService) SaveUser(command command.CreateUserCommand) (model.User, error) {
 	user := model.NewUserFromCommand(command)
-	createdUser, err := s.repository.Create(user)
-	createdUser.ResetPassword()
+	createdUser, err := s.repository.Save(user)
+	createdUser.MaskPassword()
 	return *createdUser, err
 }

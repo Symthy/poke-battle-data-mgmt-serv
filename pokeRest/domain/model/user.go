@@ -78,6 +78,6 @@ func (u User) Role() value.Role {
 	return u.role
 }
 
-func (u *User) ResetPassword() {
+func (u *User) MaskPassword() {
 	u.password = nil
 }

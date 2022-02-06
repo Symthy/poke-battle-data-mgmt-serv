@@ -5,7 +5,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/common/collections"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
+
+var _ repository.IPokemonRepository = (*PokemonRepository)(nil)
 
 type PokemonRepository struct {
 	dbClient orm.IDbClient
@@ -27,19 +30,19 @@ func (rep PokemonRepository) FindById(id uint) (*pokemons.Pokemon, error) {
 }
 
 // Todo: args is condition
-func (rep PokemonRepository) FindAll() (pokemons.PokemonList, error) {
+func (rep PokemonRepository) FindAll(page int, pageSize int) (*pokemons.Pokemons, error) {
 	db := rep.dbClient.Db()
 	var schemas = []schema.Pokemon{}
 
-	paginate := rep.dbClient.Paginate(1, 100)
+	paginate := rep.dbClient.Paginate(page, pageSize)
 	tx := db.Scopes(paginate).Find(&schemas)
 
 	if tx.Error != nil {
-		return pokemons.PokemonList{}, tx.Error
+		return nil, tx.Error
 	}
 	pokemonDomains := collections.ListMap[schema.Pokemon, pokemons.Pokemon](schemas)
-	pokemonList := pokemons.NewPokemonList(pokemonDomains)
-	return pokemonList, nil
+	pokemonList := pokemons.NewPokemons(pokemonDomains)
+	return &pokemonList, nil
 }
 
 func (rep PokemonRepository) Create(pokemon *pokemons.Pokemon) (*pokemons.Pokemon, error) {

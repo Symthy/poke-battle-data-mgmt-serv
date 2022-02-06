@@ -5,7 +5,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/common/collections"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
+	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
+
+var _ repository.ITagRepository = (*TagRepository)(nil)
 
 type TagRepository struct {
 	BaseRepository[schema.Tag, tags.Tag]
@@ -23,15 +26,15 @@ func NewTagRepository(dbClient orm.IDbClient) TagRepository {
 	}
 }
 
-func (rep TagRepository) FindAll(page int, pageSize int) ([]tags.Tag, error) {
+func (rep TagRepository) FindAll(page int, pageSize int) (*tags.Tags, error) {
 	var schemaTags = []schema.Tag{}
 
 	paginate := rep.dbClient.Paginate(page, pageSize)
 	tx := rep.dbClient.Db().Scopes(paginate).Find(&schemaTags)
 
 	if tx.Error != nil {
-		return []tags.Tag{}, tx.Error
+		return nil, tx.Error
 	}
-	tags := collections.ListMap[schema.Tag, tags.Tag](schemaTags)
-	return tags, nil
+	ts := tags.NewTags(collections.ListMap[schema.Tag, tags.Tag](schemaTags))
+	return &ts, nil
 }

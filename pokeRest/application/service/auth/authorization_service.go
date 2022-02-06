@@ -66,7 +66,7 @@ func (a AuthorizationService) CreateSignUpUser(name string, password string) (*m
 		password,
 		value.User,
 	)
-	user, err := a.service.CreateUser(createCommand)
+	user, err := a.service.SaveUser(createCommand)
 	if err != nil {
 		return nil, err
 	}

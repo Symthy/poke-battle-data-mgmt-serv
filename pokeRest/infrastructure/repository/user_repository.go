@@ -4,9 +4,12 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/field"
 	"gorm.io/gorm"
 )
+
+var _ repository.IUserRepository = (*UserRepository)(nil)
 
 type UserRepository struct {
 	dbClient orm.IDbClient
@@ -44,7 +47,7 @@ func (rep UserRepository) FindByName(targetName string, filterFields ...string) 
 	return &u, tx.Error
 }
 
-func (rep UserRepository) Create(user model.User) (*model.User, error) {
+func (rep UserRepository) Save(user model.User) (*model.User, error) {
 	schemaUser := orm.ConvertUserToSchema(user)
 	db := rep.dbClient.Db()
 	tx := db.Create(&schemaUser)

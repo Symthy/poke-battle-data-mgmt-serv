@@ -1,13 +1,17 @@
-package datastore
+package query
 
 type IPokemonQueryService interface {
-	QueryPokemon()
+	QueryPokemonDetails()
 }
 
-type IAbilityQueryService interface {
-	QueryAbility()
+type ITrainedPokemonQueryService interface {
+	QueryTrainedPokemons(userId uint)
 }
 
-type IMoveQueryService interface {
-	QueryMove()
+type IPartyQueryService interface {
+	QueryParties(userId uint)
+}
+
+type IBattleRecordQueryService interface {
+	QueryBattleRecords(partyId uint)
 }

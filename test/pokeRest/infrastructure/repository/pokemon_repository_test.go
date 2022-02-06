@@ -40,7 +40,7 @@ func TestPokemonRepositoryTestSuite(t *testing.T) {
 	suite.Run(t, new(PokemonRepositoryTestSuite))
 }
 
-func (suite *PokemonRepositoryTestSuite) TestFind() {
+func (suite *PokemonRepositoryTestSuite) TestFindById() {
 	suite.Run("find by id", func() {
 		var id uint = 3
 		dummyPokemon := data.DummyPokemon3()

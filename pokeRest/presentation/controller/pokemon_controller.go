@@ -7,16 +7,16 @@ import (
 )
 
 type PokemonController struct {
-	service pokemons.PokemonReadService
+	service pokemons.PokemonSummaryReadService
 }
 
-func NewPokemonController(service pokemons.PokemonReadService) *PokemonController {
+func NewPokemonController(service pokemons.PokemonSummaryReadService) *PokemonController {
 	return &PokemonController{service: service}
 }
 
 func (c PokemonController) GetPokemon(id float32) (server.Pokemon, error) {
 	ret := server.Pokemon{}
-	pokemon, err := c.service.GetPokemon(uint(id))
+	pokemon, err := c.service.FindPokemon(uint(id))
 	if err == nil {
 		ret = presentation.ConvertPokemonToResponse(pokemon)
 	}
