@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
 	"gorm.io/gorm"
 )
 
@@ -17,4 +18,8 @@ type Party struct {
 
 func (Party) TableName() string {
 	return "party"
+}
+
+func (p Party) ConvertToDomain() parties.Party {
+	return parties.NewParty(p.ID)
 }

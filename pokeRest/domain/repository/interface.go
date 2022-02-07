@@ -3,13 +3,16 @@ package repository
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/items"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
 )
 
+// common
 type IBasicRepository interface {
 	FindById(id uint)
 }
@@ -22,6 +25,13 @@ type IValueOfPokemonRepository[L model.IDomains[T], T model.IDomain] interface {
 	FindOfPokemon(pokemonId uint) (*L, error)
 }
 
+type IWritableRepository[TD model.IDomain] interface {
+	Create(TD) (*TD, error)
+	Update(TD) (*TD, error)
+	Delete(TD) (*TD, error)
+}
+
+// special
 type IPokemonRepository interface {
 	IEntityAllRepository[pokemons.Pokemons, pokemons.Pokemon]
 	FindById(id uint) (*pokemons.Pokemon, error)
@@ -51,39 +61,27 @@ type ITagRepository interface {
 }
 
 type IPartyRepository interface {
-	Save()
-	Update()
-	Delete()
+	IWritableRepository[parties.Party]
 }
 
 type IPartySeasonResultRepository interface {
-	Save()
-	Update()
-	Delete()
+	IWritableRepository[parties.PartySeasonResult]
 }
 
 type IBattleRecordRepository interface {
-	Save()
-	Update()
-	Delete()
+	IWritableRepository[battles.BattleRecord]
 }
-
 type IBattleOpponentPartyRepository interface {
-	Save()
-	Update()
-	Delete()
+	IWritableRepository[battles.BattleOpponentParty]
 }
 
 type ITrainedPokemonRepository interface {
-	Save()
-	Update()
-	Delete()
+	IWritableRepository[pokemons.TrainedPokemon]
 }
 
 type ITrainedPokemonBaseRepository interface {
 	Find()
-	Save()
-	Delete()
+	IWritableRepository[pokemons.TrainedPokemonBase]
 }
 
 type IUserRepository interface {

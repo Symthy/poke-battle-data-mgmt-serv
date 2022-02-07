@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 
@@ -11,11 +12,19 @@ type TrainedPokemonBaseRepository struct {
 	dbClient orm.IDbClient
 }
 
-func (rep TrainedPokemonBaseRepository) Find() {
+// Todo: args
+func (rep TrainedPokemonBaseRepository) Find() (*pokemons.TrainedPokemonBase, error) {
+	return nil, nil
 }
 
-func (rep TrainedPokemonBaseRepository) Save() {
+func (rep TrainedPokemonBaseRepository) Create(model pokemons.TrainedPokemonBase) (*pokemons.TrainedPokemonBase, error) {
+	return nil, nil
 }
 
-func (rep TrainedPokemonBaseRepository) Delete() {
+func (rep TrainedPokemonBaseRepository) Update(model pokemons.TrainedPokemonBase) (*pokemons.TrainedPokemonBase, error) {
+	return nil, nil
+}
+
+func (rep TrainedPokemonBaseRepository) Delete(model pokemons.TrainedPokemonBase) (*pokemons.TrainedPokemonBase, error) {
+	return nil, nil
 }

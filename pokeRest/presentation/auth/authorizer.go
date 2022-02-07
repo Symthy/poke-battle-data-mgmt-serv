@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/application/auth"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/auth"
 	"github.com/Symthy/PokeRest/pokeRest/presentation"
 	"github.com/labstack/echo/v4"
 )

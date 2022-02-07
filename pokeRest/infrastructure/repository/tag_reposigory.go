@@ -11,13 +11,13 @@ import (
 var _ repository.ITagRepository = (*TagRepository)(nil)
 
 type TagRepository struct {
-	BaseRepository[schema.Tag, tags.Tag]
+	BaseReadRepository[schema.Tag, tags.Tag]
 	dbClient orm.IDbClient
 }
 
 func NewTagRepository(dbClient orm.IDbClient) TagRepository {
 	return TagRepository{
-		BaseRepository: BaseRepository[schema.Tag, tags.Tag]{
+		BaseReadRepository: BaseReadRepository[schema.Tag, tags.Tag]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: func() schema.Tag { return schema.Tag{} },
 			schemaConverter:    orm.ToSchemaTag,
