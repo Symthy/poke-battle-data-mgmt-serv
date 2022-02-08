@@ -113,7 +113,7 @@ func (suite *UserRepositoryTestSuite) TestCreate() {
 	suite.mock.ExpectCommit()
 
 	user := dummyUser.ConvertToDomainNonId()
-	actual, err := suite.repository.Save(user)
+	actual, err := suite.repository.Create(user)
 	if err != nil {
 		suite.Fail(err.Error())
 	}

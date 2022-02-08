@@ -29,6 +29,14 @@ func (mock PokemonRepositoryMock) FindAll(page int, pageSize int) (*pokemons.Pok
 	return &pokemons.Pokemons{}, nil
 }
 
-func (mock PokemonRepositoryMock) Create(pokemon *pokemons.Pokemon) (*pokemons.Pokemon, error) {
+func (mock PokemonRepositoryMock) Create(pokemon pokemons.Pokemon) (*pokemons.Pokemon, error) {
+	return &pokemons.Pokemon{}, nil
+}
+
+func (mock PokemonRepositoryMock) Update(pokemon pokemons.Pokemon) (*pokemons.Pokemon, error) {
+	return &pokemons.Pokemon{}, nil
+}
+
+func (mock PokemonRepositoryMock) Delete(pokemon pokemons.Pokemon) (*pokemons.Pokemon, error) {
 	return &pokemons.Pokemon{}, nil
 }

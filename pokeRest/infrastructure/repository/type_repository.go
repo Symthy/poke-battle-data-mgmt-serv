@@ -12,6 +12,10 @@ type TypeRepository struct {
 	dbClient orm.IDbClient
 }
 
+func NewTypeRepository(dbClient orm.IDbClient) *TypeRepository {
+	return &TypeRepository{dbClient: dbClient}
+}
+
 func (repo TypeRepository) BuildTypeCompatibility() (*types.TypeCompatibility, error) {
 	return nil, nil
 }

@@ -1,6 +1,9 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
+)
 
 type Ability struct {
 	ID              uint   `gorm:"primaryKey;autoIncrement:true"`
@@ -17,4 +20,8 @@ type Ability struct {
 
 func (Ability) TableName() string {
 	return "abilities"
+}
+
+func (a Ability) ConvertToDomain() abilities.Ability {
+	return abilities.NewAbility(a.ID)
 }

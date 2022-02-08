@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"gorm.io/gorm"
 )
 
@@ -26,4 +27,8 @@ type TrainedPokemon struct {
 
 func (TrainedPokemon) TableName() string {
 	return "trained_pokemons"
+}
+
+func (t TrainedPokemon) ConvertToDomain() pokemons.TrainedPokemon {
+	return pokemons.NewTrainedPokemon(t.ID)
 }

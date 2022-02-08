@@ -2,24 +2,28 @@ package repository
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
 )
 
 var _ repository.ITrainedPokemonRepository = (*TrainedPokemonRepository)(nil)
 
+var emptyTrainedPokemonSchemaBuilder = func() schema.TrainedPokemon { return schema.TrainedPokemon{} }
+
 type TrainedPokemonRepository struct {
+	BaseWriteRepository[schema.TrainedPokemon, pokemons.TrainedPokemon]
 	dbClient orm.IDbClient
 }
 
-func (s TrainedPokemonRepository) Create(model pokemons.TrainedPokemon) (*pokemons.TrainedPokemon, error) {
-	return nil, nil
-}
-
-func (s TrainedPokemonRepository) Update(model pokemons.TrainedPokemon) (*pokemons.TrainedPokemon, error) {
-	return nil, nil
-}
-
-func (s TrainedPokemonRepository) Delete(model pokemons.TrainedPokemon) (*pokemons.TrainedPokemon, error) {
-	return nil, nil
+func NewTrainedPokemonRepository(dbClient orm.IDbClient) *TrainedPokemonRepository {
+	return &TrainedPokemonRepository{
+		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemon, pokemons.TrainedPokemon]{
+			dbClient:           dbClient,
+			emptySchemaBuilder: emptyTrainedPokemonSchemaBuilder,
+			schemaConverter:    infrastructure.ToSchemaTrainedPokemon,
+		},
+		dbClient: dbClient,
+	}
 }

@@ -1,6 +1,9 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+)
 
 type TrainedPokemonDeffenceTarget struct {
 	ID                          uint `gorm:"primaryKey;autoIncrement:true"`
@@ -13,4 +16,8 @@ type TrainedPokemonDeffenceTarget struct {
 	OpponentPokemonNature       enum.Nature
 	OpponentPokemonEffortValueA int
 	OpponentPokemonEffortValueC int
+}
+
+func (t TrainedPokemonDeffenceTarget) ConvertToDomain() pokemons.TrainedPokemonDeffenceTarget {
+	return pokemons.NewTrainedPokemonDeffenceTarget(t.ID)
 }

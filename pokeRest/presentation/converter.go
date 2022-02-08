@@ -2,8 +2,8 @@ package presentation
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 )
 
 func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
@@ -39,7 +39,7 @@ func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 	}
 }
 
-func ConvertUserToResponse(domain model.User) server.User {
+func ConvertUserToResponse(domain users.User) server.User {
 	id := float32(domain.Id())
 	name := domain.Name().Value()
 	email := domain.Email().Value()

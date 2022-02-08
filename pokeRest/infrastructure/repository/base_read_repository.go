@@ -13,10 +13,12 @@ type BaseReadRepository[TS infrastructure.ISchema[TD], TD infrastructure.IDomain
 	schemaConverter    func(model TD) TS
 }
 
+// Todo: error handling
+
 func (rep BaseReadRepository[TS, TD]) FindById(id uint) (*TD, error) {
 	db := rep.dbClient.Db()
 	schema := rep.emptySchemaBuilder()
-	tx := db.Limit(1).Find(&schema, id)
+	tx := db.First(&schema, id)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -25,11 +27,13 @@ func (rep BaseReadRepository[TS, TD]) FindById(id uint) (*TD, error) {
 }
 
 // required: wrap when used
+// Todo: return array?
 func (rep BaseReadRepository[TS, TD]) FindByField(targetField string, value string, filterFields ...string) (*TD, error) {
 	db := rep.dbClient.Db()
 	schema := rep.emptySchemaBuilder()
 	selectedDbFields := field.ConvertToDbField(filterFields...)
 
+	// Todo: refactor
 	var tx *gorm.DB
 	if len(selectedDbFields) > 0 {
 		tx = db.Select(selectedDbFields).Find(&schema, targetField+" = ?", value)

@@ -2,7 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"gorm.io/gorm"
 )
@@ -26,7 +26,7 @@ func (User) TableName() string {
 }
 
 // Todo: error
-func (u User) ConvertToDomain() model.User {
+func (u User) ConvertToDomain() users.User {
 	name, _ := value.NewUserName(u.Name)
 
 	var email *value.Email = nil
@@ -34,7 +34,7 @@ func (u User) ConvertToDomain() model.User {
 		email, _ = value.NewEmail(*u.Email)
 	}
 	role := value.Role(u.Role.String())
-	return model.NewUser(
+	return users.NewUser(
 		u.ID,
 		*name,
 		u.DisplayName,
@@ -45,11 +45,11 @@ func (u User) ConvertToDomain() model.User {
 }
 
 // Todo: error log output
-func (u User) ConvertToDomainNonId() model.User {
+func (u User) ConvertToDomainNonId() users.User {
 	name, _ := value.NewUserName(u.Name)
 	email, _ := value.NewEmail(*u.Email)
 	role := value.Role(u.Role.String())
-	return model.NewUser(
+	return users.NewUser(
 		0,
 		*name,
 		u.DisplayName,

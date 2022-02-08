@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
 	"github.com/Symthy/PokeRest/pokeRest/config"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
+	m_users "github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/errs"
 	"github.com/dgrijalva/jwt-go"
@@ -47,7 +47,7 @@ func (as *AuthorizationService) GenerateToken(name string, password string) (*st
 	return &t, err
 }
 
-func (a AuthorizationService) CreateSignUpUser(name string, password string) (*model.User, error) {
+func (a AuthorizationService) CreateSignUpUser(name string, password string) (*m_users.User, error) {
 	getCommand := command.NewGetUserCommand(name).SetFilterRequiredFields()
 	u, err := a.service.GetUser(*getCommand)
 	// Todo: error process

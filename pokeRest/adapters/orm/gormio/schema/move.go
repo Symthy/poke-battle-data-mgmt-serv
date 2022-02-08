@@ -1,6 +1,9 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
+)
 
 type Move struct {
 	ID          uint `gorm:"primaryKey;autoIncrement:true"`
@@ -28,4 +31,8 @@ type Move struct {
 
 func (Move) TableName() string {
 	return "moves"
+}
+
+func (m Move) ConvertToDomain() moves.Move {
+	return moves.NewMove(m.ID)
 }

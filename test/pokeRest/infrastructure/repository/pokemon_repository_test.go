@@ -83,7 +83,7 @@ func (suite *PokemonRepositoryTestSuite) TestCreate() {
 
 	dummyPokemon.ID = 0 // non id
 	pokemon := dummyPokemon.ConvertToDomain()
-	created, err := suite.repository.Create(&pokemon)
+	created, err := suite.repository.Create(pokemon)
 
 	if err != nil {
 		suite.Fail(err.Error())

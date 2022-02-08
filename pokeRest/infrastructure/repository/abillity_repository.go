@@ -12,6 +12,10 @@ type AbilityRepository struct {
 	dbClient orm.IDbClient
 }
 
+func NewAbilityRepository(dbClient orm.IDbClient) *AbilityRepository {
+	return &AbilityRepository{dbClient: dbClient}
+}
+
 func (r AbilityRepository) FindOfPokemon(pokemonId uint) (*abilities.Abilities, error) {
 	return nil, nil
 }

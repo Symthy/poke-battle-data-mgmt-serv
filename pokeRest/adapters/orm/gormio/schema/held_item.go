@@ -1,6 +1,9 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/items"
+)
 
 type HeldItem struct {
 	ID                uint `gorm:"primaryKey;autoIncrement:true"`
@@ -15,4 +18,8 @@ type HeldItem struct {
 
 func (HeldItem) TableName() string {
 	return "held_items"
+}
+
+func (i HeldItem) ConvertToDomain() items.HeldItem {
+	return items.NewHeldItem(i.ID)
 }

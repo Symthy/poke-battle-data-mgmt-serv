@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/battles"
 	"gorm.io/gorm"
 )
 
@@ -32,4 +33,8 @@ type BattleRecord struct {
 
 func (BattleRecord) TableName() string {
 	return "battle_records"
+}
+
+func (b BattleRecord) ConvertToDomain() battles.BattleRecord {
+	return battles.NewBattleRecord(b.ID)
 }

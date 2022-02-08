@@ -10,6 +10,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 )
 
 // common
@@ -33,9 +34,9 @@ type IWritableRepository[TD model.IDomain] interface {
 
 // special
 type IPokemonRepository interface {
-	IEntityAllRepository[pokemons.Pokemons, pokemons.Pokemon]
 	FindById(id uint) (*pokemons.Pokemon, error)
-	Create(pokemon *pokemons.Pokemon) (*pokemons.Pokemon, error)
+	IEntityAllRepository[pokemons.Pokemons, pokemons.Pokemon]
+	IWritableRepository[pokemons.Pokemon]
 }
 
 type IAbilityRepository interface {
@@ -58,6 +59,7 @@ type ITypeRepository interface {
 
 type ITagRepository interface {
 	IEntityAllRepository[tags.Tags, tags.Tag]
+	IWritableRepository[tags.Tag]
 }
 
 type IPartyRepository interface {
@@ -80,12 +82,20 @@ type ITrainedPokemonRepository interface {
 }
 
 type ITrainedPokemonBaseRepository interface {
-	Find()
+	Find() (*pokemons.TrainedPokemonBase, error)
 	IWritableRepository[pokemons.TrainedPokemonBase]
 }
 
+type ITrainedPokemonAttackRepository interface {
+	IWritableRepository[pokemons.TrainedPokemonAttackTarget]
+}
+
+type ITrainedPokemonDeffenceRepository interface {
+	IWritableRepository[pokemons.TrainedPokemonDeffenceTarget]
+}
+
 type IUserRepository interface {
-	FindById(id uint) (*model.User, error)
-	FindByName(targetName string, filterFields ...string) (*model.User, error)
-	Save(user model.User) (*model.User, error)
+	FindById(id uint) (*users.User, error)
+	FindByName(targetName string, filterFields ...string) (*users.User, error)
+	IWritableRepository[users.User]
 }

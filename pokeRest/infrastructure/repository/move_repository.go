@@ -12,6 +12,10 @@ type MoveRepository struct {
 	dbClient orm.IDbClient
 }
 
+func NewMoveRepository(dbClient orm.IDbClient) *MoveRepository {
+	return &MoveRepository{dbClient: dbClient}
+}
+
 func (r MoveRepository) FindOfPokemon(pokemonId uint) (*moves.Moves, error) {
 	return nil, nil
 }
