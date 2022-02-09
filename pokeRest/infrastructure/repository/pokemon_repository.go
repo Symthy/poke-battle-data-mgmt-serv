@@ -50,7 +50,7 @@ func (rep PokemonRepository) FindAll(page int, pageSize int) (*pokemons.Pokemons
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	pokemonDomains := infrastructure.ConvertSchemasToDomains[schema.Pokemon, pokemons.Pokemon](schemas)
+	pokemonDomains := infrastructure.ConvertToDomains[schema.Pokemon, pokemons.Pokemon](schemas)
 	pokemonList := pokemons.NewPokemons(pokemonDomains)
 	return &pokemonList, nil
 }

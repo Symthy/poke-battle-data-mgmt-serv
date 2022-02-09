@@ -8,16 +8,17 @@ import (
 
 type Party struct {
 	gorm.Model
-	CreateUserId uint // has many
-	Name         string
-	BattleFormat enum.BattleFormat
-	PartyResult  []PartySeasonResult `gorm:"foreignKey:PartyId;references:id;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // 1:M -> PartyResult
-	Tags         []Tag               `gorm:"many2many:party_tags;constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`           // M:M
+	CreateUserId   uint // has many
+	Name           string
+	BattleFormat   enum.BattleFormat
+	PartyResult    []PartyBattleResult `gorm:"foreignKey:PartyId;references:id;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`  // 1:M -> PartyResult
+	Tag            []Tag               `gorm:"many2many:party_tags;constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`            // M:M
+	TrainedPokemon []*TrainedPokemon   `gorm:"many2many:trained_pokemon_parties;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // M:M
 
 }
 
 func (Party) TableName() string {
-	return "party"
+	return "parties"
 }
 
 func (p Party) ConvertToDomain() parties.Party {

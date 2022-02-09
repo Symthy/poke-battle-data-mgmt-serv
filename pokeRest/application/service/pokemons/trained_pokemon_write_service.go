@@ -4,7 +4,7 @@ import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type TrainedPokemonWriteService struct {
 	tr  repository.ITrainedPokemonRepository
-	tbr repository.ITrainedPokemonBaseRepository
+	tbr repository.ITrainedPokemonMoveSetRepository
 }
 
 // 育成済み個体登録

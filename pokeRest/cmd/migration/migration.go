@@ -16,10 +16,10 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 		&schema.HeldItem{},
 		&schema.Move{},
 		&schema.Party{},
-		&schema.PartySeasonResult{},
+		&schema.PartyBattleResult{},
 		&schema.Pokemon{},
 		&schema.Tag{},
-		&schema.TrainedPokemonBase{},
+		&schema.TrainedPokemonMoveSet{},
 		&schema.TrainedPokemon{},
 		&schema.BattleRecord{},
 	)
@@ -35,10 +35,10 @@ func RunDropTables(dbConfig config.DbConfig) {
 		&schema.HeldItem{},
 		&schema.Move{},
 		&schema.Party{},
-		&schema.PartySeasonResult{},
+		&schema.PartyBattleResult{},
 		&schema.Pokemon{},
 		&schema.Tag{},
-		&schema.TrainedPokemonBase{},
+		&schema.TrainedPokemonMoveSet{},
 		&schema.TrainedPokemon{},
 	)
 }

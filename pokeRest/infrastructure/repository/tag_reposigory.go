@@ -43,6 +43,6 @@ func (rep TagRepository) FindAll(page int, pageSize int) (*tags.Tags, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	ts := tags.NewTags(infrastructure.ConvertSchemasToDomains[schema.Tag, tags.Tag](schemaTags))
+	ts := tags.NewTags(infrastructure.ConvertToDomains[schema.Tag, tags.Tag](schemaTags))
 	return &ts, nil
 }

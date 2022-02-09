@@ -66,8 +66,8 @@ type IPartyRepository interface {
 	IWritableRepository[parties.Party]
 }
 
-type IPartySeasonResultRepository interface {
-	IWritableRepository[parties.PartySeasonResult]
+type IPartyBattleResultRepository interface {
+	IWritableRepository[parties.PartyBattleResult]
 }
 
 type IBattleRecordRepository interface {
@@ -81,9 +81,9 @@ type ITrainedPokemonRepository interface {
 	IWritableRepository[pokemons.TrainedPokemon]
 }
 
-type ITrainedPokemonBaseRepository interface {
-	Find() (*pokemons.TrainedPokemonBase, error)
-	IWritableRepository[pokemons.TrainedPokemonBase]
+type ITrainedPokemonMoveSetRepository interface {
+	Find() (*pokemons.TrainedPokemonMoveSet, error)
+	IWritableRepository[pokemons.TrainedPokemonMoveSet]
 }
 
 type ITrainedPokemonAttackRepository interface {

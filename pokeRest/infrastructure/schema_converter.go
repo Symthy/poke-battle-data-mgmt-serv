@@ -16,7 +16,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
 
-func ConvertSchemasToDomains[TS ISchema[TD], TD IDomain](schemas []TS) []TD {
+func ConvertToDomains[TS ISchema[TD], TD IDomain](schemas []TS) []TD {
 	domains := make([]TD, len(schemas), len(schemas))
 	for i, s := range schemas {
 		domains[i] = s.ConvertToDomain()
@@ -88,8 +88,8 @@ func ToSchemaTrainedPokemon(t pokemons.TrainedPokemon) schema.TrainedPokemon {
 	return schema
 }
 
-func ToSchemaTrainedPokemonBase(t pokemons.TrainedPokemonBase) schema.TrainedPokemonBase {
-	schema := schema.TrainedPokemonBase{}
+func ToSchemaTrainedPokemonMoveSet(t pokemons.TrainedPokemonMoveSet) schema.TrainedPokemonMoveSet {
+	schema := schema.TrainedPokemonMoveSet{}
 	return schema
 }
 
@@ -108,8 +108,8 @@ func ToSchemaParty(p parties.Party) schema.Party {
 	return schema
 }
 
-func ToSchemaPartySeasonResult(p parties.PartySeasonResult) schema.PartySeasonResult {
-	schema := schema.PartySeasonResult{}
+func ToSchemaPartyBattleResult(p parties.PartyBattleResult) schema.PartyBattleResult {
+	schema := schema.PartyBattleResult{}
 	return schema
 }
 
