@@ -2,7 +2,7 @@ package users
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 

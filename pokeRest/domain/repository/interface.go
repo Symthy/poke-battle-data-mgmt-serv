@@ -1,16 +1,16 @@
 package repository
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/model"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/battles"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/items"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/trainings"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 )
 
 // common
@@ -18,15 +18,15 @@ type IBasicRepository interface {
 	FindById(id uint)
 }
 
-type IEntityAllRepository[L model.IDomains[T], T model.IDomain] interface {
+type IEntityAllRepository[L entity.IDomains[T], T entity.IDomain] interface {
 	FindAll(page int, pageSize int) (*L, error)
 }
 
-type IPokemonStatsRepository[L model.IDomains[T], T model.IDomain] interface {
+type IPokemonStatsRepository[L entity.IDomains[T], T entity.IDomain] interface {
 	FindOfPokemon(pokemonId uint) (*L, error)
 }
 
-type IWritableRepository[TD model.IDomain] interface {
+type IWritableRepository[TD entity.IDomain] interface {
 	Create(TD) (*TD, error)
 	Update(TD) (*TD, error)
 	Delete(TD) (*TD, error)

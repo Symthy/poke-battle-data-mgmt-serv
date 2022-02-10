@@ -2,7 +2,7 @@ package abilities
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 

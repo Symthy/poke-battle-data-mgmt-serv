@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 

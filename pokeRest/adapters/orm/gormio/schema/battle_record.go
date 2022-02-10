@@ -2,7 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"gorm.io/gorm"
 )
 

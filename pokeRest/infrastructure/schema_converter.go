@@ -5,14 +5,14 @@ import (
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/battles"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/items"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/trainings"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
 

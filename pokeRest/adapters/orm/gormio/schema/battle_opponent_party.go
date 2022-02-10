@@ -1,6 +1,6 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/model/battles"
+import "github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 
 type BattleOpponentParty struct {
 	ID                 uint `gorm:"primaryKey;autoIncrement:true"`

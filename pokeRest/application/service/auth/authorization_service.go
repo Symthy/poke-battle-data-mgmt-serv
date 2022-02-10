@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
 	"github.com/Symthy/PokeRest/pokeRest/config"
-	m_users "github.com/Symthy/PokeRest/pokeRest/domain/model/users"
+	m_users "github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/errs"
 	"github.com/dgrijalva/jwt-go"

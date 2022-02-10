@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
 )
 
 type TypeReadService struct {

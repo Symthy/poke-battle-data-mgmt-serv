@@ -2,7 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/trainings"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 )
 
 type TrainedPokemonAttackTarget struct {

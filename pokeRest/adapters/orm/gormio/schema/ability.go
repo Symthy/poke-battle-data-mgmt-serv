@@ -2,7 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 )
 
 type Ability struct {

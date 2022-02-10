@@ -1,4 +1,4 @@
-package model
+package entity
 
 type IDomains[T IDomain] interface {
 	Items() []T

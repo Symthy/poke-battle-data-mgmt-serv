@@ -1,8 +1,8 @@
 package parties
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/model"
+import "github.com/Symthy/PokeRest/pokeRest/domain/entity"
 
-var _ model.IDomain = (*Party)(nil)
+var _ entity.IDomain = (*Party)(nil)
 
 type Party struct {
 	id              uint

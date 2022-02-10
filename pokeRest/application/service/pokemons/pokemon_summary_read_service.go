@@ -2,7 +2,7 @@ package pokemons
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 

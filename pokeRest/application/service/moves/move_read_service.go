@@ -2,7 +2,7 @@ package moves
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 

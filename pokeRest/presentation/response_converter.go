@@ -2,9 +2,9 @@ package presentation
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 )
 
 func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {

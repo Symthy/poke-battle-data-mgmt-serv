@@ -3,7 +3,7 @@ package pokemons
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/query"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons/command"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 )
 
 type PokemonMultiSearchService struct {

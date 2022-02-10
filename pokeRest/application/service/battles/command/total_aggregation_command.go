@@ -1,4 +1,4 @@
 package command
 
-type BattleRecordTotalAggregateCommand struct {
+type BattleRecordAggregationCommand struct {
 }
