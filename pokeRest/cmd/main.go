@@ -76,9 +76,10 @@ func main() {
 	r.Use(middleware.JWTWithConfig(jwtConfig))
 
 	// controller initialization
-	pokeCon := di.InitPokemonController(dbClient)
-	userCon := di.InitUserController(dbClient)
-	pokeRestHandler := handler.NewPokeRestHandler(pokeCon, userCon)
+	pokeRestHandler := handler.NewPokeRestHandler(
+		di.InitPokemonController(dbClient),
+		di.InitUserController(dbClient),
+		di.InitTypeController())
 	server.RegisterHandlers(e, pokeRestHandler)
 
 	// custom http error handler

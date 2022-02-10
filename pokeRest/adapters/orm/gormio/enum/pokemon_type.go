@@ -28,7 +28,7 @@ const (
 	Dragon   PokemonType = "Dragon"
 	Dark     PokemonType = "Dark"
 	Fairy    PokemonType = "Fairy"
-	None     PokemonType = "None"
+	None     PokemonType = ""
 )
 
 func (ty *PokemonType) Scan(value interface{}) error {

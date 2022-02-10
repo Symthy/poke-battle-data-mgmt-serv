@@ -3,6 +3,7 @@ package presentation
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 )
 
@@ -49,5 +50,12 @@ func ConvertUserToResponse(domain users.User) server.User {
 		DisplayName: domain.DisplayName(),
 		Email:       &email,
 		Profile:     domain.Profile(),
+	}
+}
+
+func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.TypeCompatibility {
+	return server.TypeCompatibility{
+		CompatibilityTable: domain.GenerateTypeCompatibilityTable(),
+		TypeOrder:          domain.GenerateTypeNames(lang),
 	}
 }

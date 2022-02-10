@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"sync"
 
+	"golang.org/x/text/language"
+
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
 	"github.com/labstack/echo/v4"
@@ -13,15 +15,18 @@ type PokeRestHandler struct {
 	Lock              sync.Mutex
 	pokemonController *controller.PokemonController
 	userController    *controller.UserController
+	typeController    *controller.TypeController
 }
 
 func NewPokeRestHandler(
 	pokeCon *controller.PokemonController,
 	userCon *controller.UserController,
+	typeCon *controller.TypeController,
 ) *PokeRestHandler {
 	return &PokeRestHandler{
 		pokemonController: pokeCon,
 		userController:    userCon,
+		typeController:    typeCon,
 	}
 }
 
@@ -120,15 +125,29 @@ func (h *PokeRestHandler) PostSignup(ctx echo.Context) error {
 	return nil
 }
 
+func resolveLanguage(header http.Header) string {
+	lang := header.Get("Accept-Language")
+	if lang != language.Japanese.String() {
+		lang = language.English.String()
+	}
+	return lang
+}
+
 // get types
 // (GET /types)
 func (h *PokeRestHandler) GetTypes(ctx echo.Context, params server.GetTypesParams) error {
+	lang := resolveLanguage(ctx.Request().Header)
+	types := h.typeController.GetTypes(lang)
+	ctx.JSON(http.StatusOK, types)
 	return nil
 }
 
 // get type compability
 // (GET /types/compability)
 func (h *PokeRestHandler) GetTypesCompability(ctx echo.Context) error {
+	lang := resolveLanguage(ctx.Request().Header)
+	types := h.typeController.GetTypeCompatibility(lang)
+	ctx.JSON(http.StatusOK, types)
 	return nil
 }
 

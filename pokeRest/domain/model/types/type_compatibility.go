@@ -2,19 +2,45 @@ package types
 
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
+type typeTable = map[value.PokemonType]map[value.PokemonType]float32
+
 type TypeCompatibility struct {
-	compatibilityTable map[value.PokemonType]map[value.PokemonType]float32
-	typesOrder         []value.PokemonType
+	compatibilityTable typeTable
+	types              PokemonTypes
 }
 
 func NewTypeCompatibility() TypeCompatibility {
 	return TypeCompatibility{
 		compatibilityTable: buildCompatibilityTable(),
-		typesOrder:         value.GetPokemonTypes(),
+		types:              NewPokemonTypes(),
 	}
 }
 
-func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float32 {
+// func (t TypeCompatibility) CompatibilityTable() typeTable {
+// 	return t.compatibilityTable
+// }
+
+func (t TypeCompatibility) GenerateTypeCompatibilityTable() [][]float32 {
+	typeTable := [][]float32{}
+	for _, attackType := range t.types.Items() {
+		typeRecord := make([]float32, t.typeNum())
+		for j, blockType := range t.types.Items() {
+			typeRecord[j] = t.compatibilityTable[attackType][blockType]
+		}
+		typeTable = append(typeTable, typeRecord)
+	}
+	return typeTable
+}
+
+func (t TypeCompatibility) GenerateTypeNames(lang string) []string {
+	return t.types.GenerateTypeNames(lang)
+}
+
+func (t TypeCompatibility) typeNum() int {
+	return t.types.Size()
+}
+
+func buildCompatibilityTable() typeTable {
 	table := map[value.PokemonType]map[value.PokemonType]float32{
 		value.PokemonTypeNormal: {
 			value.PokemonTypeNormal:   1,
@@ -90,7 +116,7 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypePsychic:  1,
 			value.PokemonTypeBug:      1,
 			value.PokemonTypeRock:     1,
-			value.PokemonTypeGhost:    0,
+			value.PokemonTypeGhost:    1,
 			value.PokemonTypeDragon:   0.5,
 			value.PokemonTypeDark:     1,
 			value.PokemonTypeSteel:    1,
@@ -122,7 +148,7 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypeWater:    0.5,
 			value.PokemonTypeElectric: 1,
 			value.PokemonTypeGrass:    2,
-			value.PokemonTypeIce:      1,
+			value.PokemonTypeIce:      0.5,
 			value.PokemonTypeFighting: 1,
 			value.PokemonTypePoison:   1,
 			value.PokemonTypeGround:   2,
@@ -132,26 +158,6 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypeRock:     1,
 			value.PokemonTypeGhost:    1,
 			value.PokemonTypeDragon:   2,
-			value.PokemonTypeDark:     1,
-			value.PokemonTypeSteel:    0.5,
-			value.PokemonTypeFairy:    1,
-		},
-		value.PokemonTypeNormal: {
-			value.PokemonTypeNormal:   1,
-			value.PokemonTypeFire:     1,
-			value.PokemonTypeWater:    1,
-			value.PokemonTypeElectric: 1,
-			value.PokemonTypeGrass:    1,
-			value.PokemonTypeIce:      1,
-			value.PokemonTypeFighting: 1,
-			value.PokemonTypePoison:   1,
-			value.PokemonTypeGround:   1,
-			value.PokemonTypeFlying:   1,
-			value.PokemonTypePsychic:  1,
-			value.PokemonTypeBug:      1,
-			value.PokemonTypeRock:     0.5,
-			value.PokemonTypeGhost:    0,
-			value.PokemonTypeDragon:   1,
 			value.PokemonTypeDark:     1,
 			value.PokemonTypeSteel:    0.5,
 			value.PokemonTypeFairy:    1,
@@ -201,7 +207,7 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypeFire:     2,
 			value.PokemonTypeWater:    1,
 			value.PokemonTypeElectric: 2,
-			value.PokemonTypeGrass:    1,
+			value.PokemonTypeGrass:    0.5,
 			value.PokemonTypeIce:      1,
 			value.PokemonTypeFighting: 1,
 			value.PokemonTypePoison:   2,
@@ -223,14 +229,14 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypeElectric: 0.5,
 			value.PokemonTypeGrass:    2,
 			value.PokemonTypeIce:      1,
-			value.PokemonTypeFighting: 1,
+			value.PokemonTypeFighting: 2,
 			value.PokemonTypePoison:   1,
 			value.PokemonTypeGround:   1,
 			value.PokemonTypeFlying:   1,
 			value.PokemonTypePsychic:  1,
 			value.PokemonTypeBug:      2,
 			value.PokemonTypeRock:     0.5,
-			value.PokemonTypeGhost:    0,
+			value.PokemonTypeGhost:    1,
 			value.PokemonTypeDragon:   1,
 			value.PokemonTypeDark:     1,
 			value.PokemonTypeSteel:    0.5,
@@ -252,7 +258,7 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypeRock:     1,
 			value.PokemonTypeGhost:    1,
 			value.PokemonTypeDragon:   1,
-			value.PokemonTypeDark:     1,
+			value.PokemonTypeDark:     0,
 			value.PokemonTypeSteel:    0.5,
 			value.PokemonTypeFairy:    1,
 		},
@@ -307,7 +313,7 @@ func buildCompatibilityTable() map[value.PokemonType]map[value.PokemonType]float
 			value.PokemonTypePoison:   1,
 			value.PokemonTypeGround:   1,
 			value.PokemonTypeFlying:   1,
-			value.PokemonTypePsychic:  1,
+			value.PokemonTypePsychic:  2,
 			value.PokemonTypeBug:      1,
 			value.PokemonTypeRock:     1,
 			value.PokemonTypeGhost:    2,

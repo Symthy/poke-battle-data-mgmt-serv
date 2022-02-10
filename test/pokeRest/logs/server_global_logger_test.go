@@ -54,6 +54,7 @@ func (suite ServerGlobalLoggerTestSuite) TestServerGlobalLogger() {
 			{logger.Info, "2021/12/29 17:05:22.000(UTCZ)	INFO	test message"},
 			{logger.Warn, "2021/12/29 17:05:22.000(UTCZ)	WARN	test message"},
 			{logger.Error, "2021/12/29 17:05:22.000(UTCZ)	ERROR	test message"},
+			// time zone could not check
 			// Fatal is no check. because process abort.
 		}
 

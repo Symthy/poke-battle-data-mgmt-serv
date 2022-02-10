@@ -1,7 +1,5 @@
 package value
 
-import "github.com/thoas/go-funk"
-
 var (
 	PokemonTypeNormal   = PokemonType{japaneseName: NormalJP, englishName: Normal}
 	PokemonTypeFighting = PokemonType{japaneseName: FightingJP, englishName: Fighting}
@@ -38,9 +36,12 @@ func (t PokemonType) NameJP() string {
 }
 
 func NewPokemonType(typeName string) PokemonType {
-	return funk.Filter(GetPokemonTypes(), func(t PokemonType) bool {
-		return t.NameEN() == typeName
-	}).([]PokemonType)[0]
+	for _, t := range GetPokemonTypes() {
+		if t.NameEN() == typeName {
+			return t
+		}
+	}
+	return PokemonTypeUnknown
 }
 
 func GetPokemonTypes() []PokemonType {
@@ -56,14 +57,13 @@ func GetPokemonTypes() []PokemonType {
 		PokemonTypeGround,
 		PokemonTypeFlying,
 		PokemonTypePsychic,
-		PokemonTypeGhost,
+		PokemonTypeBug,
 		PokemonTypeRock,
 		PokemonTypeGhost,
 		PokemonTypeDragon,
 		PokemonTypeDark,
 		PokemonTypeSteel,
 		PokemonTypeFairy,
-		PokemonTypeUnknown,
 	}
 }
 
@@ -81,42 +81,42 @@ func (v typeNameEN) String() string {
 
 const (
 	NormalJP   typeNameJP = "ノーマル"
-	FightingJP typeNameJP = "かくとう"
-	FlyingJP   typeNameJP = "ひこう"
-	PoisonJP   typeNameJP = "どく"
-	GroundJP   typeNameJP = "じめん"
-	RockJP     typeNameJP = "いわ"
-	BugJP      typeNameJP = "むし"
-	GhostJP    typeNameJP = "ゴースト"
-	SteelJP    typeNameJP = "はがね"
 	FireJP     typeNameJP = "ほのお"
 	WaterJP    typeNameJP = "みず"
-	GrassJP    typeNameJP = "くさ"
 	ElectricJP typeNameJP = "でんき"
-	PsychicJP  typeNameJP = "エスパー"
+	GrassJP    typeNameJP = "くさ"
 	IceJP      typeNameJP = "こおり"
+	FightingJP typeNameJP = "かくとう"
+	PoisonJP   typeNameJP = "どく"
+	GroundJP   typeNameJP = "じめん"
+	FlyingJP   typeNameJP = "ひこう"
+	PsychicJP  typeNameJP = "エスパー"
+	BugJP      typeNameJP = "むし"
+	RockJP     typeNameJP = "いわ"
+	GhostJP    typeNameJP = "ゴースト"
 	DragonJP   typeNameJP = "ドラゴン"
 	DarkJP     typeNameJP = "あく"
+	SteelJP    typeNameJP = "はがね"
 	FairyJP    typeNameJP = "フェアリー"
-	NoneJP     typeNameJP = "-"
+	NoneJP     typeNameJP = ""
 
 	Normal   typeNameEN = "Normal"
-	Fighting typeNameEN = "Fighting"
-	Flying   typeNameEN = "Flying"
-	Poison   typeNameEN = "Poison"
-	Ground   typeNameEN = "Ground"
-	Rock     typeNameEN = "Rock"
-	Bug      typeNameEN = "Bug"
-	Ghost    typeNameEN = "Ghost"
-	Steel    typeNameEN = "Steel"
 	Fire     typeNameEN = "Fire"
 	Water    typeNameEN = "Water"
-	Grass    typeNameEN = "Grass"
 	Electric typeNameEN = "Electric"
-	Psychic  typeNameEN = "Psychic"
 	Ice      typeNameEN = "Ice"
+	Grass    typeNameEN = "Grass"
+	Fighting typeNameEN = "Fighting"
+	Poison   typeNameEN = "Poison"
+	Ground   typeNameEN = "Ground"
+	Flying   typeNameEN = "Flying"
+	Psychic  typeNameEN = "Psychic"
+	Bug      typeNameEN = "Bug"
+	Rock     typeNameEN = "Rock"
+	Ghost    typeNameEN = "Ghost"
 	Dragon   typeNameEN = "Dragon"
 	Dark     typeNameEN = "Dark"
+	Steel    typeNameEN = "Steel"
 	Fairy    typeNameEN = "Fairy"
-	None     typeNameEN = "-"
+	None     typeNameEN = ""
 )

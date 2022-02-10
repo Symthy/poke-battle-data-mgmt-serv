@@ -1,7 +1,6 @@
 package pokemons
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/application/service"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
@@ -12,12 +11,12 @@ type p = pokemons.Pokemon
 
 type PokemonSummaryReadService struct {
 	repo repository.IPokemonRepository
-	service.EntityAllFinder[ps, p]
+	// service.EntityAllFinder[ps, p]
 }
 
-func NewPokemonReadService(repo repository.IPokemonRepository) PokemonSummaryReadService {
+func NewPokemonSummaryReadService(repo repository.IPokemonRepository) PokemonSummaryReadService {
 	serv := PokemonSummaryReadService{repo: repo}
-	serv.EntityAllFinder = service.NewEntityAllFinder[ps, p](repo)
+	// serv.EntityAllFinder = service.NewEntityAllFinder[ps, p](repo)
 	return serv
 }
 
