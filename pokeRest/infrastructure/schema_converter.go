@@ -11,7 +11,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 )
@@ -48,8 +48,8 @@ func ToSchemaPokemon(p pokemons.Pokemon) schema.Pokemon {
 		Name:             p.Name(),
 		EnglishName:      p.EnglishName(),
 		Generation:       p.Generation(),
-		Type1:            enum.PokemonType(p.TypePrimary().EnglishName()),
-		Type2:            enum.PokemonType(p.TypeSecondary().EnglishName()),
+		Type1:            enum.PokemonType(p.TypePrimary().NameEN()),
+		Type2:            enum.PokemonType(p.TypeSecondary().NameEN()),
 		AbilityId1:       ConvertOptionalIdToNullInt16(p.AbilityIdPrimary()),
 		AbilityId2:       ConvertOptionalIdToNullInt16(p.AbilityIdSecondary()),
 		HiddenAbilityId:  ConvertOptionalIdToNullInt16(p.HiddenAbilityId()),
@@ -73,32 +73,27 @@ func ToSchemaHeldItem(a items.HeldItem) schema.HeldItem {
 	return schema
 }
 
-func ToSchemaTag(t tags.Tag) schema.Tag {
+func ToSchemaPartyTag(t parties.PartyTag) schema.PartyTag {
 	isGeneration := t.IsGenerationTag()
 	isSeason := t.IsSeasonTag()
-	return schema.Tag{
+	return schema.PartyTag{
 		Name:            t.Name(),
 		IsGenerationTag: &isGeneration,
 		IsSeasonTag:     &isSeason,
 	}
 }
 
-func ToSchemaTrainedPokemon(t pokemons.TrainedPokemon) schema.TrainedPokemon {
+func ToSchemaTrainedPokemon(t trainings.TrainedPokemon) schema.TrainedPokemon {
 	schema := schema.TrainedPokemon{}
 	return schema
 }
 
-func ToSchemaTrainedPokemonMoveSet(t pokemons.TrainedPokemonMoveSet) schema.TrainedPokemonMoveSet {
-	schema := schema.TrainedPokemonMoveSet{}
-	return schema
-}
-
-func ToSchemaTrainedPokemonAttackTarget(t pokemons.TrainedPokemonAttackTarget) schema.TrainedPokemonAttackTarget {
+func ToSchemaTrainedPokemonAttackTarget(t trainings.TrainedPokemonAttackTarget) schema.TrainedPokemonAttackTarget {
 	schema := schema.TrainedPokemonAttackTarget{}
 	return schema
 }
 
-func ToSchemaTrainedPokemonDeffenceTarget(t pokemons.TrainedPokemonDeffenceTarget) schema.TrainedPokemonDeffenceTarget {
+func ToSchemaTrainedPokemonDeffenceTarget(t trainings.TrainedPokemonDeffenceTarget) schema.TrainedPokemonDeffenceTarget {
 	schema := schema.TrainedPokemonDeffenceTarget{}
 	return schema
 }

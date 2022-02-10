@@ -1,11 +1,11 @@
 package schema
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
 	"gorm.io/gorm"
 )
 
-type Tag struct {
+type PartyTag struct {
 	gorm.Model
 	Name            string
 	IsGenerationTag *bool   `gorm:"default:false"`
@@ -13,12 +13,12 @@ type Tag struct {
 	Party           []Party `gorm:"many2many:party_tags;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // M:M
 }
 
-func (Tag) TableName() string {
-	return "tags"
+func (PartyTag) TableName() string {
+	return "party_tags"
 }
 
-func (t Tag) ConvertToDomain() tags.Tag {
-	return tags.NewTag(
+func (t PartyTag) ConvertToDomain() parties.PartyTag {
+	return parties.NewPartyTag(
 		t.ID,
 		t.Name,
 		*t.IsGenerationTag,

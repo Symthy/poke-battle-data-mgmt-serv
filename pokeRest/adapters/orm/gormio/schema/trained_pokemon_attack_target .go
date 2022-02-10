@@ -2,7 +2,7 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/trainings"
 )
 
 type TrainedPokemonAttackTarget struct {
@@ -12,15 +12,15 @@ type TrainedPokemonAttackTarget struct {
 	MoveId                      uint           // M:1 <- Move
 	OpponentPokemonId           uint
 	OpponentPokemonNature       enum.Nature
-	OpponentPokemonEffortValueH int
-	OpponentPokemonEffortValueB int
-	OpponentPokemonEffortValueD int
+	OpponentPokemonEffortValueH int `gorm:"default:0"`
+	OpponentPokemonEffortValueB int `gorm:"default:0"`
+	OpponentPokemonEffortValueD int `gorm:"default:0"`
 }
 
 func (TrainedPokemonAttackTarget) TableName() string {
 	return "trained_pokemon_attack_targets"
 }
 
-func (t TrainedPokemonAttackTarget) ConvertToDomain() pokemons.TrainedPokemonAttackTarget {
-	return pokemons.NewTrainedPokemonAttackTarget(t.ID)
+func (t TrainedPokemonAttackTarget) ConvertToDomain() trainings.TrainedPokemonAttackTarget {
+	return trainings.NewTrainedPokemonAttackTarget(t.ID)
 }

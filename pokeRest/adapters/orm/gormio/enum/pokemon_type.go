@@ -49,5 +49,5 @@ func (ty PokemonType) ConvertToDomain() value.PokemonType {
 }
 
 func Convert(t value.PokemonType) PokemonType {
-	return PokemonType(t.EnglishName())
+	return PokemonType(t.NameEN())
 }

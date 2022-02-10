@@ -8,7 +8,6 @@ import (
 
 func RunAutoMigration(dbConfig config.DbConfig) {
 	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
-
 	db.AutoMigrate(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},
@@ -18,8 +17,7 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 		&schema.Party{},
 		&schema.PartyBattleResult{},
 		&schema.Pokemon{},
-		&schema.Tag{},
-		&schema.TrainedPokemonMoveSet{},
+		&schema.PartyTag{},
 		&schema.TrainedPokemon{},
 		&schema.BattleRecord{},
 	)
@@ -37,8 +35,7 @@ func RunDropTables(dbConfig config.DbConfig) {
 		&schema.Party{},
 		&schema.PartyBattleResult{},
 		&schema.Pokemon{},
-		&schema.Tag{},
-		&schema.TrainedPokemonMoveSet{},
+		&schema.PartyTag{},
 		&schema.TrainedPokemon{},
 	)
 }

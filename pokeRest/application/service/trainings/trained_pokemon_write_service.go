@@ -1,10 +1,9 @@
-package pokemons
+package trainings
 
 import "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 
 type TrainedPokemonWriteService struct {
-	tr  repository.ITrainedPokemonRepository
-	tbr repository.ITrainedPokemonMoveSetRepository
+	tr repository.ITrainedPokemonRepository
 }
 
 // 育成済み個体登録

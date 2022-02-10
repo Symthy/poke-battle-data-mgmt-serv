@@ -55,40 +55,6 @@ func (rep PokemonRepository) FindAll(page int, pageSize int) (*pokemons.Pokemons
 	return &pokemonList, nil
 }
 
-// func (rep PokemonRepository) Create(pokemon *pokemons.Pokemon) (*pokemons.Pokemon, error) {
-// 	schemaPokemon := infrastructure.ToSchemaPokemon(*pokemon)
-// 	db := rep.dbClient.Db()
-// 	tx := db.Create(&schemaPokemon)
-// 	if tx.Error != nil {
-// 		return nil, tx.Error
-// 	}
-// 	created := schemaPokemon.ConvertToDomain()
-// 	return &created, tx.Error
-// }
-
-// func (rep PokemonRepository) Update(pokemon pokemons.Pokemon) (*pokemons.Pokemon, error) {
-// 	// Todo: args change
-// 	db := rep.dbClient.Db()
-// 	target, err := rep.FindById(pokemon.Id())
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	schemaPokemon := schema.Pokemon{}
-// 	tx := db.Model(&target).Updates(&schemaPokemon)
-// 	if tx.Error != nil {
-// 		return nil, tx.Error
-// 	}
-// 	p := schemaPokemon.ConvertToDomain()
-// 	return &p, nil
-// }
-
-// func (rep PokemonRepository) Delete(id uint) (*pokemons.Pokemon, error) {
-// 	db := rep.dbClient.Db()
-// 	var pokemon = schema.Pokemon{}
-// 	tx := db.Delete(&pokemon, id)
-// 	if tx.Error != nil {
-// 		return nil, tx.Error
-// 	}
-// 	s := pokemon.ConvertToDomain()
-// 	return &s, nil
-// }
+func (rep PokemonRepository) FindByMove(moveId uint) (*pokemons.Pokemons, error) {
+	return nil, nil
+}

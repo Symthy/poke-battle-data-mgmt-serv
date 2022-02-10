@@ -1,4 +1,4 @@
-package pokemons
+package trainings
 
 type TrainedPokemonAdjustmentService struct {
 }

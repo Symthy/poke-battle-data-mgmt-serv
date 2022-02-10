@@ -18,11 +18,8 @@ type Move struct {
 	// relation
 	// M:M
 	Pokemon []*Pokemon `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	// 1:M -> TrainedPokemonBase
-	TrainedPokemonBase1 []TrainedPokemonMoveSet `gorm:"foreignKey:MoveId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	TrainedPokemonBase2 []TrainedPokemonMoveSet `gorm:"foreignKey:MoveId2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	TrainedPokemonBase3 []TrainedPokemonMoveSet `gorm:"foreignKey:MoveId3;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	TrainedPokemonBase4 []TrainedPokemonMoveSet `gorm:"foreignKey:MoveId4;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	// 1:M -> TrainedPokemon
+	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	// 1:M -> TrainedPokemonAttackTarget
 	TrainedPokemonAttackTarget TrainedPokemonAttackTarget `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	// 1:M -> TrainedPokemonDeffenceTarget

@@ -1,4 +1,4 @@
-package pokemons
+package trainings
 
 type TrainedPokemonAttackTarget struct {
 	id uint

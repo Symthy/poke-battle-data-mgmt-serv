@@ -8,7 +8,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/moves"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/model/tags"
+	"github.com/Symthy/PokeRest/pokeRest/domain/model/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/types"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/users"
 )
@@ -57,9 +57,9 @@ type ITypeRepository interface {
 	BuildTypeCompatibility() (*types.TypeCompatibility, error)
 }
 
-type ITagRepository interface {
-	IEntityAllRepository[tags.Tags, tags.Tag]
-	IWritableRepository[tags.Tag]
+type IPartyTagRepository interface {
+	IEntityAllRepository[parties.PartyTags, parties.PartyTag]
+	IWritableRepository[parties.PartyTag]
 }
 
 type IPartyRepository interface {
@@ -78,20 +78,15 @@ type IBattleOpponentPartyRepository interface {
 }
 
 type ITrainedPokemonRepository interface {
-	IWritableRepository[pokemons.TrainedPokemon]
-}
-
-type ITrainedPokemonMoveSetRepository interface {
-	Find() (*pokemons.TrainedPokemonMoveSet, error)
-	IWritableRepository[pokemons.TrainedPokemonMoveSet]
+	IWritableRepository[trainings.TrainedPokemon]
 }
 
 type ITrainedPokemonAttackRepository interface {
-	IWritableRepository[pokemons.TrainedPokemonAttackTarget]
+	IWritableRepository[trainings.TrainedPokemonAttackTarget]
 }
 
 type ITrainedPokemonDeffenceRepository interface {
-	IWritableRepository[pokemons.TrainedPokemonDeffenceTarget]
+	IWritableRepository[trainings.TrainedPokemonDeffenceTarget]
 }
 
 type IUserRepository interface {

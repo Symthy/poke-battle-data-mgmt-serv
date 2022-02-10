@@ -16,7 +16,7 @@ func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 	if a3, _ := domain.AbilityIdSecondary().Get(); a3 != nil {
 		*ability3 = float32(*a3)
 	}
-	type2 := domain.TypeSecondary().EnglishName()
+	type2 := domain.TypeSecondary().NameEN()
 	return server.Pokemon{
 		Ability1:         float32(*ability1),
 		Ability2:         ability2,
@@ -34,7 +34,7 @@ func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 		IsFinalEvolution: domain.IsFinalEvolution(),
 		Name:             domain.Name(),
 		PokedexNo:        float32(domain.PokedexNo()),
-		Type1:            domain.TypePrimary().EnglishName(),
+		Type1:            domain.TypePrimary().NameEN(),
 		Type2:            &type2,
 	}
 }

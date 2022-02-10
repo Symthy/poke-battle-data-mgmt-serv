@@ -1,4 +1,4 @@
-package pokemons
+package trainings
 
 import "github.com/Symthy/PokeRest/pokeRest/application/query"
 

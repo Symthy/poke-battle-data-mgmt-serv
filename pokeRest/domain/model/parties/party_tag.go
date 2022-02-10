@@ -1,14 +1,14 @@
-package tags
+package parties
 
-type Tag struct {
+type PartyTag struct {
 	id              uint
 	name            string
 	isGenerationTag bool
 	isSeasonTag     bool
 }
 
-func NewTag(id uint, name string, isGenerationTag, isSeasonTag bool) Tag {
-	return Tag{
+func NewPartyTag(id uint, name string, isGenerationTag, isSeasonTag bool) PartyTag {
+	return PartyTag{
 		id:              id,
 		name:            name,
 		isGenerationTag: isGenerationTag,
@@ -16,18 +16,18 @@ func NewTag(id uint, name string, isGenerationTag, isSeasonTag bool) Tag {
 	}
 }
 
-func (t Tag) Id() uint {
+func (t PartyTag) Id() uint {
 	return t.id
 }
 
-func (t Tag) Name() string {
+func (t PartyTag) Name() string {
 	return t.name
 }
 
-func (t Tag) IsGenerationTag() bool {
+func (t PartyTag) IsGenerationTag() bool {
 	return t.isGenerationTag
 }
 
-func (t Tag) IsSeasonTag() bool {
+func (t PartyTag) IsSeasonTag() bool {
 	return t.isSeasonTag
 }

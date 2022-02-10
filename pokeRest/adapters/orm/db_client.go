@@ -12,6 +12,8 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+var _ IDbClient = (*GormDbClient)(nil)
+
 type GormDbClient struct {
 	db *gorm.DB
 }
@@ -51,6 +53,7 @@ func openDb(dbConfig config.DbConfig, logger logger.Interface) *gorm.DB {
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
 	}), &gorm.Config{Logger: logger})
 	if err != nil {
+		// Todo: error handling
 		panic("failed to connect database")
 	}
 	return db

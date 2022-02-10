@@ -16,9 +16,8 @@ type User struct {
 	Role        enum.Role
 
 	// relation
-	TrainedPokemon     []TrainedPokemon        `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
-	TrainedPokemonBase []TrainedPokemonMoveSet `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
-	Party              []Party                 `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
+	TrainedPokemon []TrainedPokemon `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
+	Party          []Party          `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
 }
 
 func (User) TableName() string {
