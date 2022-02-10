@@ -6,17 +6,17 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 
-type StatsOfPokemonFinder[L model.IDomains[T], T model.IDomain] struct {
-	repo repository.IValueOfPokemonRepository[L, T]
+type PokemonStatsFinder[L model.IDomains[T], T model.IDomain] struct {
+	repo repository.IPokemonStatsRepository[L, T]
 }
 
-func NewStatsOfPokemonFinder[L model.IDomains[T], T model.IDomain](repo repository.IValueOfPokemonRepository[L, T]) StatsOfPokemonFinder[L, T] {
-	return StatsOfPokemonFinder[L, T]{
+func NewPokemonStatsFinder[L model.IDomains[T], T model.IDomain](repo repository.IPokemonStatsRepository[L, T]) PokemonStatsFinder[L, T] {
+	return PokemonStatsFinder[L, T]{
 		repo: repo,
 	}
 }
 
-func (f StatsOfPokemonFinder[L, T]) FindOfPokemon(pokemonId uint) (*L, error) {
+func (f PokemonStatsFinder[L, T]) FindOfPokemon(pokemonId uint) (*L, error) {
 	// Todo: error when empty
 	// Todo: error wrap
 	return f.repo.FindOfPokemon(pokemonId)

@@ -1,7 +1,7 @@
 package pokemons
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons/command"
+	"github.com/Symthy/PokeRest/pokeRest/application/service"
 	"github.com/Symthy/PokeRest/pokeRest/domain/model/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
@@ -11,12 +11,12 @@ type p = pokemons.Pokemon
 
 type PokemonSummaryReadService struct {
 	repo repository.IPokemonRepository
-	// service.EntityAllFinder[ps, p]
+	service.EntityAllFinder[ps, p]
 }
 
 func NewPokemonSummaryReadService(repo repository.IPokemonRepository) PokemonSummaryReadService {
 	serv := PokemonSummaryReadService{repo: repo}
-	// serv.EntityAllFinder = service.NewEntityAllFinder[ps, p](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[ps, p](repo)
 	return serv
 }
 
@@ -28,7 +28,12 @@ func (s PokemonSummaryReadService) FindPokemon(id uint) (pokemons.Pokemon, error
 
 // UC: 一覧取得 EntityAllFinder
 
-// UC: 検索
-func (s PokemonSummaryReadService) SearchPokemons(cmd command.SearchPokemonCommand) {
-	return
+// UC:技による検索
+func (s PokemonSummaryReadService) FindByMove(moveId uint) (*pokemons.Pokemons, error) {
+	return nil, nil
+}
+
+// UC:特性による検索
+func (s PokemonSummaryReadService) FindByAbility(abilityId uint) (*pokemons.Pokemons, error) {
+	return nil, nil
 }

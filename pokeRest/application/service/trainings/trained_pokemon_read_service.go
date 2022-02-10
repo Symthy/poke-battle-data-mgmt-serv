@@ -14,10 +14,6 @@ func (s TrainedPokemonReadService) FindTrainedPokemonsByUser(userId uint) {
 func (s TrainedPokemonReadService) FindTrainedPokemonById(id uint) {
 }
 
-// UC: 育成済み個体検索
-func (s TrainedPokemonReadService) SearchTrainedPokemons() {
-}
-
 // UC: パーティの育成済み個体取得
 func (s TrainedPokemonReadService) FindTrainedPokemonsByParty(partyId uint) {
 }

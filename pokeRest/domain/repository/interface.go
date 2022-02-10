@@ -22,7 +22,7 @@ type IEntityAllRepository[L model.IDomains[T], T model.IDomain] interface {
 	FindAll(page int, pageSize int) (*L, error)
 }
 
-type IValueOfPokemonRepository[L model.IDomains[T], T model.IDomain] interface {
+type IPokemonStatsRepository[L model.IDomains[T], T model.IDomain] interface {
 	FindOfPokemon(pokemonId uint) (*L, error)
 }
 
@@ -41,12 +41,12 @@ type IPokemonRepository interface {
 
 type IAbilityRepository interface {
 	IEntityAllRepository[abilities.Abilities, abilities.Ability]
-	IValueOfPokemonRepository[abilities.Abilities, abilities.Ability]
+	IPokemonStatsRepository[abilities.Abilities, abilities.Ability]
 }
 
 type IMoveRepository interface {
 	IEntityAllRepository[moves.Moves, moves.Move]
-	IValueOfPokemonRepository[moves.Moves, moves.Move]
+	IPokemonStatsRepository[moves.Moves, moves.Move]
 }
 
 type IItemRepository interface {
