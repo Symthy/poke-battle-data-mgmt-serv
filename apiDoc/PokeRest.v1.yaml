@@ -55,8 +55,86 @@ paths:
         - schema:
             type: string
           in: query
-          name: pokedexNo
-          description: 図鑑No検索
+          name: ablity
+          description: 特性検索
+        - schema:
+            type: string
+          in: query
+          name: baseStatsFilter
+          description: 種族値フィルター
+        - schema:
+            type: string
+          in: query
+          name: maxActualFilter
+          description: 最大実数値フィルター
+  '/pokemons/{pokedexNo}/{formNo}/details':
+    parameters:
+      - schema:
+          type: number
+        name: pokedexNo
+        in: path
+        required: true
+        description: 図鑑No
+      - schema:
+          type: number
+        name: formNo
+        in: path
+        description: フォルムNo
+        required: true
+    get:
+      summary: get pokemon by No and Form
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonDetail'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-pokemon-details-by-pokedexNo-and-formNo
+      description: 指定ポケモンDetail情報取得
+  '/pokemons/{pokedexNo}/details':
+    parameters:
+      - schema:
+          type: number
+        name: pokedexNo
+        in: path
+        required: true
+        description: 図鑑No
+    get:
+      summary: get pokemon by No
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonDetails'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-pokemon-details-by-pokedexNo
+      description: 指定ポケモンDetail情報取得
   /pokemons/details:
     parameters: []
     get:
@@ -81,7 +159,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemons-details
-      description: 'all '
+      description: all ※detail複数取得は見送り
       parameters:
         - schema:
             type: string
@@ -101,66 +179,9 @@ paths:
         - schema:
             type: string
           in: query
-          name: pokedexNo
-          description: 図鑑No検索
-  '/pokemons/{id}':
-    parameters:
-      - schema:
-          type: number
-        name: id
-        in: path
-        required: true
-    get:
-      summary: get pokemon by Id
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pokemon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-pokemon-by-id
-      description: 指定ポケモン情報取得
-  '/pokemons/details/{id}':
-    parameters:
-      - schema:
-          type: number
-        name: id
-        in: path
-        required: true
-    get:
-      summary: get pokemon by Id
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pokemon'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-pokemon-detail-by-id
-      description: 指定ポケモン情報取得
+          name: ablitiy
+          description: 特性検索
+      x-internal: true
   '/pokemons/{pokedexNo}/{formNo}':
     parameters:
       - schema:
@@ -197,9 +218,10 @@ paths:
           $ref: '#/components/responses/500'
       operationId: get-pokemon-by-pokedexNo-and-formNo
       description: 指定ポケモン情報取得
+      x-internal: true
   '/pokemons/abilities/{abilityId}':
     get:
-      summary: get pokemons of specify ability
+      summary: get pokemons by specified ability
       tags:
         - Pokemon Base Data
       responses:
@@ -219,8 +241,9 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-pokemons-of-specified-ability
+      operationId: get-pokemons-by-specified-ability
       description: 指定特性のポケモン一覧取得
+      x-internal: false
     parameters:
       - schema:
           type: number
@@ -229,7 +252,7 @@ paths:
         required: true
   '/pokemons/moves/{moveId}':
     get:
-      summary: get pokemons with specified move
+      summary: get pokemons by specified move
       tags:
         - Pokemon Base Data
       responses:
@@ -249,8 +272,10 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-pokemons-with-specified-move
+      operationId: get-pokemons-by-specified-move
       description: 指定技を覚えるポケモン一覧取得
+      parameters: []
+      x-internal: false
     parameters:
       - schema:
           type: number
@@ -324,43 +349,6 @@ paths:
           $ref: '#/components/responses/500'
       operationId: get-move-by-Id
       description: 技取得
-  '/moves/pokemons/{pokedexNo}/{formNo}':
-    parameters:
-      - schema:
-          type: number
-        name: pokedexNo
-        in: path
-        required: true
-        description: 図鑑No
-      - schema:
-          type: number
-        name: formNo
-        in: path
-        description: フォルムNo
-        required: true
-    get:
-      summary: get move with specified pokemon
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Moves'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-moves-with-specified-pokemon
-      description: 指定ポケモンの技一覧取得
   /abilities:
     parameters: []
     get:
@@ -387,6 +375,17 @@ paths:
       description: 特性取得
       tags:
         - Pokemon Base Data
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+          description: 特性名検索
+        - schema:
+            type: string
+          in: query
+          description: 分類指定(All/Attack/Deffence)
+          name: specifies
   '/abilities/{avilityId}':
     parameters:
       - schema:
@@ -454,12 +453,7 @@ paths:
           $ref: '#/components/responses/500'
       operationId: get-types
       description: タイプ一覧取得
-      parameters:
-        - schema:
-            type: number
-          in: query
-          name: effect
-          description: '効果倍率指定(0,0.5,1,2)'
+      parameters: []
   /types/compability:
     get:
       summary: get type compability
@@ -471,7 +465,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/typeCompatibility'
+                $ref: '#/components/schemas/TypeCompatibilityTable'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -483,7 +477,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-types-compability
-      description: タイプ相性表取得
+      description: タイプ相性取得
     parameters: []
   '/types/compability/attack/{type}':
     parameters:
@@ -503,7 +497,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/typeCompatibility'
+                $ref: '#/components/schemas/TypeCompatibility'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -534,7 +528,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/typeCompatibility'
+                $ref: '#/components/schemas/TypeCompatibility'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -547,17 +541,18 @@ paths:
           $ref: '#/components/responses/500'
       operationId: get-type-compability-of-defense-side
       description: タイプ相性（防御側）取得
-  /items:
+  /helditems:
     get:
-      summary: get items
-      tags: []
+      summary: get held items
+      tags:
+        - Pokemon Base Data
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Items'
+                $ref: '#/components/schemas/HeldItems'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -568,7 +563,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-items
+      operationId: get-held-items
       parameters:
         - schema:
             type: string
@@ -580,16 +575,425 @@ paths:
           in: query
           name: specifies
           description: 分類指定(All/Attack/Deffence)
-  '/users/{id}':
+    parameters: []
+  /trainedpokemons:
+    get:
+      summary: GET trained pokemons
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemons'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-trained-pokemons
+      description: ''
+    put:
+      summary: PUT trained pokemon
+      operationId: put-trained-pokemons
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      description: 育成済み個体作成
+  '/trainedpokemons/{id}':
     parameters:
       - schema:
-          type: number
+          type: string
         name: id
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: GET trained pokemon
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-trained-pokemons-id
+      tags:
+        - User Transaction Data
+    post:
+      summary: POST trained pokemon
+      operationId: post-trained-pokemons-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      description: 育成済み個体更新
+    delete:
+      summary: DELETE trained pokemon
+      operationId: delete-trained-pokemons-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      description: ''
+  '/trainedpokemons/{id}/attacks':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: GET trained pokemon attack adjustments
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-trained-pokemons-id-attacks
+    put:
+      summary: PUT trained pokemon attack adjustments
+      operationId: put-trained-pokemons-id-attacks
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  '/trainedpokemons/{trainedPokemonId}/attacks/{attackId}':
+    parameters:
+      - schema:
+          type: string
+        name: trainedPokemonId
+        in: path
+        required: true
+        description: trained pokemon id
+      - schema:
+          type: string
+        name: attackId
+        in: path
+        required: true
+        description: attack adjustment id
+    get:
+      summary: GET trained pokemon attack adjustment
       tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonAttack'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-trained-pokemons-id-attacks-id
+    post:
+      summary: POST trained pokemon attack adjustment
+      operationId: post-trained-pokemons-id-attacks-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      summary: DELETE trained pokemon attack adjustment
+      operationId: delete-trained-pokemons-id-attacks-Id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+        - User Transaction Data
+  '/trainedpokemons/{id}/deffences':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: trained pokemon id
+    get:
+      summary: ''
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonDeffences'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-trained-pokemons-id-deffences
+    put:
+      summary: PUT trained pokemon deffence adjustments
+      operationId: put-trained-pokemons-id-deffences
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  '/trainedpokemons/{trainedPokemonId}/deffences/{deffenceId}':
+    parameters:
+      - schema:
+          type: string
+        name: trainedPokemonId
+        in: path
+        required: true
+        description: trained pokemon id
+      - schema:
+          type: string
+        name: deffenceId
+        in: path
+        required: true
+        description: deffence adjustment id
+    get:
+      summary: GET trained pokemon deffence adjustment
+      tags:
+        - User Transaction Data
+      responses: {}
+      operationId: get-trained-pokemons-id-deffences-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainedPokemonDeffence'
+    post:
+      summary: POST trained pokemon deffence adjustment
+      operationId: post-trained-pokemons-id-deffences-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      summary: DELETE trained pokemon deffence adjustment
+      operationId: delete-trained-pokemons-id-deffences-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  /parties:
+    get:
+      summary: GET Parties
+      tags:
+        - User Transaction Data
+      responses: {}
+      operationId: get-parties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Parties'
+    parameters: []
+    put:
+      summary: PUT Parties
+      operationId: put-parties
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  '/parties/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: GET Party
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-parties-id
+    post:
+      summary: POST party
+      operationId: post-parties-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      summary: DELETE party
+      operationId: delete-parties-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  '/users/{name}':
+    parameters:
+      - schema:
+          type: number
+        name: name
+        in: path
+        required: true
+    get:
+      summary: GET User
+      tags:
+        - User Transaction Data
       responses:
         '200':
           description: OK
@@ -608,6 +1012,132 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id
+  '/users/{name}/trainedpokemons':
+    get:
+      summary: GET user trained pokemons
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemons'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id-trained-pokemons
+    parameters:
+      - schema:
+          type: string
+        name: name
+        in: path
+        required: true
+  '/users/{name}/parties':
+    parameters:
+      - schema:
+          type: string
+        name: name
+        in: path
+        required: true
+    get:
+      summary: GET user parties
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parties'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id-parties
+  /parties/tags:
+    get:
+      summary: GET party tags
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartyTags'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-parties-tags
+    put:
+      summary: PUT party tags
+      operationId: put-parties-tags
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  '/parties/tags/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    delete:
+      summary: DELETE party tag
+      operationId: delete-parties-tags-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+  /damages:
+    post:
+      summary: damage calculation
+      operationId: post-damages
+      responses:
+        '200':
+          description: OK
   /signin:
     post:
       summary: SignIn
@@ -664,14 +1194,14 @@ paths:
 components:
   schemas:
     Pokemon:
-      description: ''
+      description: Pokemon Summary
       type: object
       properties:
         id:
           type: number
         pokedexNo:
           type: number
-        formId:
+        formNo:
           type: number
         formName:
           type: string
@@ -703,12 +1233,10 @@ components:
           type: number
         hiddenAbility:
           type: number
-        isFinalEvolution:
-          type: boolean
       required:
         - id
         - pokedexNo
-        - formId
+        - formNo
         - formName
         - name
         - englishName
@@ -720,21 +1248,23 @@ components:
         - baseStatsS
         - type1
         - ability1
-        - isFinalEvolution
+      title: Pokemon
     PokemonDetail:
-      description: ''
+      description: Pokemon Detail
       type: object
       properties:
         id:
           type: number
         pokedexNo:
           type: number
-        form:
-          $ref: '#/components/schemas/Form'
-        name:
+        formNo:
+          type: number
+        FormName:
+          type: string
+        englishName:
           type: string
           minLength: 1
-        englishName:
+        name:
           type: string
           minLength: 1
         baseStatsH:
@@ -759,14 +1289,14 @@ components:
           $ref: '#/components/schemas/Ability'
         hiddenAbility:
           $ref: '#/components/schemas/Ability'
-        isFinalEvolution:
-          type: boolean
+        moves:
+          $ref: '#/components/schemas/Moves'
       required:
         - id
         - pokedexNo
-        - form
-        - name
+        - formNo
         - englishName
+        - name
         - baseStatsH
         - baseStatsA
         - baseStatsB
@@ -775,10 +1305,12 @@ components:
         - baseStatsS
         - type1
         - ability1
-        - isFinalEvolution
+        - moves
+      title: PokemonDetail
     Pokemons:
-      description: pokemon data list
+      description: pokemon summary data list
       type: object
+      title: Pokemons
       properties:
         pokemons:
           type: array
@@ -786,12 +1318,16 @@ components:
             $ref: '#/components/schemas/Pokemon'
         count:
           type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
       required:
         - pokemons
         - count
-      title: Pokemons
+        - hasNext
     PokemonDetails:
-      description: pokemon data list
+      description: pokemon detail data list
       type: object
       title: Pokemons
       properties:
@@ -801,12 +1337,18 @@ components:
             $ref: '#/components/schemas/PokemonDetail'
         count:
           type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
       required:
         - pokemons
         - count
+        - hasNext
     Move:
-      description: ''
+      description: 技
       type: object
+      title: Move
       properties:
         id:
           type: string
@@ -847,8 +1389,9 @@ components:
         - isContactMove
         - isCanGuard
     Moves:
-      description: ''
+      description: 技一覧
       type: object
+      title: Moves
       properties:
         moves:
           type: array
@@ -856,11 +1399,16 @@ components:
             $ref: '#/components/schemas/Move'
         count:
           type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
       required:
         - moves
         - count
+        - hasNext
     Ability:
-      description: ''
+      description: 特性
       type: object
       properties:
         id:
@@ -875,9 +1423,11 @@ components:
         - id
         - name
         - description
+      title: Ability
     Abilities:
       description: 特性一覧
       type: object
+      title: Abilities
       properties:
         abilities:
           type: array
@@ -885,12 +1435,16 @@ components:
             $ref: '#/components/schemas/Ability'
         count:
           type: number
+        hasNext:
+          type: number
+        next:
+          type: number
       required:
         - abilities
         - count
-      title: Abilities
-    Items:
-      title: Items
+        - hasNext
+    HeldItem:
+      title: HeldItem
       type: object
       properties:
         id:
@@ -901,8 +1455,28 @@ components:
           type: string
         correctionValues:
           $ref: '#/components/schemas/CorrectionData'
+      description: 持ち物
+    HeldItems:
+      title: HeldItems
+      type: object
+      description: 持ち物一覧
+      properties:
+        heldItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/HeldItem'
+        count:
+          type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
+      required:
+        - heldItems
+        - count
+        - hasNext
     CorrectionData:
-      description: ''
+      description: 各種補正値
       type: object
       properties:
         physicalMovePowerCorrectionValue:
@@ -944,8 +1518,8 @@ components:
         weightCorrectionValue:
           type: number
           description: 重さ補正値
-    typeCompatibility:
-      description: ''
+    TypeCompatibilityTable:
+      description: タイプ相性表
       type: object
       x-examples:
         example-1:
@@ -968,6 +1542,33 @@ components:
             type: string
       required:
         - compatibilityTable
+        - typeOrder
+      title: TypeCompatibilityTable
+    TypeCompatibility:
+      description: 1タイプに対するタイプ相性リスト
+      type: object
+      x-examples:
+        example-1:
+          compatibilityTable:
+            - '0':
+                - {}
+          typeOrder:
+            - {}
+      title: TypeCompatibility
+      properties:
+        targetType:
+          type: string
+        compatibilities:
+          type: array
+          items:
+            type: number
+        typeOrder:
+          type: array
+          description: テーブル行列のタイプ順序
+          items:
+            type: string
+      required:
+        - compatibilities
         - typeOrder
     Form:
       title: Form
@@ -1023,6 +1624,301 @@ components:
       properties:
         token:
           type: string
+    TrainedPokemon:
+      title: TrainedPokemon
+      type: object
+      description: trained pokemon summary
+      properties:
+        id:
+          type: number
+        pokemonNo:
+          type: number
+        FormNo:
+          type: number
+        PokemonName:
+          type: number
+        nickname:
+          type: string
+        gender:
+          type: string
+        nature:
+          type: string
+        ability:
+          type: string
+        heldItem:
+          type: string
+        effortValueH:
+          type: number
+        effortValueA:
+          type: number
+        effortValueB:
+          type: number
+        effortValueC:
+          type: number
+        effortValueD:
+          type: number
+        effortValueS:
+          type: number
+        isPrivate:
+          type: boolean
+        moveName1:
+          type: string
+        moveName2:
+          type: string
+        moveName3:
+          type: string
+        moveName4:
+          type: string
+        attackAdjustmentIds:
+          type: array
+          items:
+            type: number
+        deffenceAdjustmentIds:
+          type: array
+          items:
+            type: number
+      required:
+        - id
+        - pokemonNo
+        - FormNo
+        - PokemonName
+        - effortValueH
+        - effortValueA
+        - effortValueB
+        - effortValueC
+        - effortValueD
+        - effortValueS
+        - isPrivate
+    TrainedPokemonNo:
+      title: TrainedPokemonNo
+      type: object
+      description: trained pokemon numbers
+      properties:
+        id:
+          type: number
+        pokemonNo:
+          type: number
+        formNo:
+          type: number
+      required:
+        - id
+    TrainedPokemonDetail:
+      title: TrainedPokemonDetail
+      type: object
+      description: trained pokemon detail
+      properties:
+        id:
+          type: number
+        pokemon:
+          $ref: '#/components/schemas/Pokemon'
+        nickname:
+          type: string
+        gender:
+          type: string
+        nature:
+          type: string
+        ability:
+          $ref: '#/components/schemas/Ability'
+        heldItem:
+          $ref: '#/components/schemas/HeldItem'
+        effortValueH:
+          type: number
+        effortValueA:
+          type: number
+        effortValueB:
+          type: number
+        effortValueC:
+          type: number
+        effortValueD:
+          type: number
+        effortValueS:
+          type: number
+        move1:
+          $ref: '#/components/schemas/Move'
+        move2:
+          $ref: '#/components/schemas/Move'
+        move3:
+          $ref: '#/components/schemas/Move'
+        move4:
+          $ref: '#/components/schemas/Move'
+        attackAdjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainedPokemonAttack'
+        deffenceAdjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainedPokemonDeffence'
+        isPrivate:
+          type: boolean
+        createdUserId:
+          type: number
+      required:
+        - id
+        - pokemon
+        - effortValueH
+        - effortValueA
+        - effortValueB
+        - effortValueC
+        - effortValueD
+        - effortValueS
+        - isPrivate
+    TrainedPokemons:
+      title: TrainedPokemons
+      type: object
+      description: ''
+      properties:
+        trainedPokemons:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainedPokemon'
+        count:
+          type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
+      required:
+        - trainedPokemons
+        - count
+        - hasNext
+    TrainedPokemonAttack:
+      title: TrainedPokemonAttack
+      type: object
+      properties:
+        move:
+          $ref: '#/components/schemas/Move'
+        opponentPokemon:
+          type: object
+          required:
+            - pokemon
+          properties:
+            pokemon:
+              $ref: '#/components/schemas/Pokemon'
+            nature:
+              type: string
+            effortValueH:
+              type: number
+            effortValueB:
+              type: number
+            effortValueD:
+              type: number
+      required:
+        - move
+        - opponentPokemon
+    TrainedPokemonAttacks:
+      title: TrainedPokemonAttacks
+      type: object
+      properties:
+        attackAdjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainedPokemonAttack'
+        count:
+          type: number
+    TrainedPokemonDeffence:
+      title: TrainedPokemonDeffence
+      type: object
+      properties:
+        move:
+          $ref: '#/components/schemas/Move'
+        opponentPokemon:
+          type: object
+          required:
+            - pokemon
+          properties:
+            pokemon:
+              $ref: '#/components/schemas/Pokemon'
+            nature:
+              type: string
+            effortValueA:
+              type: number
+            effortValueC:
+              type: number
+      required:
+        - move
+        - opponentPokemon
+    TrainedPokemonDeffences:
+      title: TrainedPokemonDeffences
+      type: object
+      properties:
+        deffenceAdjustments:
+          $ref: '#/components/schemas/TrainedPokemonDeffence'
+        count:
+          type: number
+    Party:
+      title: Party
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        battleFormat:
+          type: string
+        partyTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartyTag'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainedPokemonNo'
+        createdUserId:
+          type: number
+        createdUserDisplayName:
+          type: string
+      description: ''
+    PartyTag:
+      title: PartyTag
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        isGeneration:
+          type: boolean
+        isSeason:
+          type: boolean
+    PartyTags:
+      title: PartyTags
+      type: object
+      description: ''
+      properties:
+        partytags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartyTag'
+        count:
+          type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
+      required:
+        - partytags
+        - count
+        - hasNext
+    Parties:
+      title: Parties
+      type: object
+      description: パーティ一覧
+      properties:
+        parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Party'
+        count:
+          type: number
+        hasNext:
+          type: boolean
+        next:
+          type: number
+      required:
+        - parties
+        - count
+        - hasNext
   responses:
     '400':
       description: Bad Request

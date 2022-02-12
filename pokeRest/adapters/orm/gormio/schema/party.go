@@ -9,7 +9,7 @@ import (
 type Party struct {
 	gorm.Model
 	CreateUserId   uint // has many
-	Name           string
+	Name           *string
 	BattleFormat   enum.BattleFormat
 	IsPrivate      bool                 `gorm:"default:false"`
 	PartyResult    []*PartyBattleResult `gorm:"foreignKey:PartyId;references:id;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`  // 1:M -> PartyResult

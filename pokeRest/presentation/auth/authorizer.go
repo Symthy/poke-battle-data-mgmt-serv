@@ -5,7 +5,7 @@ import (
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/auth"
-	"github.com/Symthy/PokeRest/pokeRest/presentation"
+	"github.com/Symthy/PokeRest/pokeRest/presentation/response"
 	"github.com/labstack/echo/v4"
 )
 
@@ -42,6 +42,7 @@ func (a Authorizer) SignUp(c echo.Context) error {
 		return err
 	}
 
+	// Todo: error process
 	if *signupUser.Name == "" || *signupUser.Password == "" {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
@@ -54,7 +55,7 @@ func (a Authorizer) SignUp(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, presentation.ConvertUserToResponse(*user))
+	return c.JSON(http.StatusOK, response.ConvertUserToResponse(*user))
 }
 
 // Todo

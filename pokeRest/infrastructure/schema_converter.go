@@ -77,9 +77,9 @@ func ToSchemaPartyTag(t parties.PartyTag) schema.PartyTag {
 	isGeneration := t.IsGenerationTag()
 	isSeason := t.IsSeasonTag()
 	return schema.PartyTag{
-		Name:            t.Name(),
-		IsGenerationTag: &isGeneration,
-		IsSeasonTag:     &isSeason,
+		Name:         t.Name(),
+		IsGeneration: &isGeneration,
+		IsSeason:     &isSeason,
 	}
 }
 

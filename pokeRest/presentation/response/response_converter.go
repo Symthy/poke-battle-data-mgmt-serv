@@ -20,24 +20,23 @@ func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 	}
 	type2 := domain.TypeSecondary().NameEN()
 	return server.Pokemon{
-		Ability1:         float32(*ability1),
-		Ability2:         ability2,
-		BaseStatsH:       float32(domain.BaseStatsH()),
-		BaseStatsA:       float32(domain.BaseStatsA()),
-		BaseStatsB:       float32(domain.BaseStatsB()),
-		BaseStatsC:       float32(domain.BaseStatsC()),
-		BaseStatsD:       float32(domain.BaseStatsD()),
-		BaseStatsS:       float32(domain.BaseStatsS()),
-		EnglishName:      domain.EnglishName(),
-		FormId:           float32(domain.FormNo()),
-		FormName:         domain.FormName(),
-		HiddenAbility:    ability3,
-		Id:               float32(domain.Id()),
-		IsFinalEvolution: domain.IsFinalEvolution(),
-		Name:             domain.Name(),
-		PokedexNo:        float32(domain.PokedexNo()),
-		Type1:            domain.TypePrimary().NameEN(),
-		Type2:            &type2,
+		Ability1:      float32(*ability1),
+		Ability2:      ability2,
+		BaseStatsH:    float32(domain.BaseStatsH()),
+		BaseStatsA:    float32(domain.BaseStatsA()),
+		BaseStatsB:    float32(domain.BaseStatsB()),
+		BaseStatsC:    float32(domain.BaseStatsC()),
+		BaseStatsD:    float32(domain.BaseStatsD()),
+		BaseStatsS:    float32(domain.BaseStatsS()),
+		EnglishName:   domain.EnglishName(),
+		FormNo:        float32(domain.FormNo()),
+		FormName:      domain.FormName(),
+		HiddenAbility: ability3,
+		Id:            float32(domain.Id()),
+		Name:          domain.Name(),
+		PokedexNo:     float32(domain.PokedexNo()),
+		Type1:         domain.TypePrimary().NameEN(),
+		Type2:         &type2,
 	}
 }
 
@@ -62,8 +61,8 @@ func ConvertUserToResponse(domain users.User) server.User {
 	}
 }
 
-func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.TypeCompatibility {
-	return server.TypeCompatibility{
+func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.TypeCompatibilityTable {
+	return server.TypeCompatibilityTable{
 		CompatibilityTable: domain.GenerateTypeCompatibilityTable(),
 		TypeOrder:          domain.GenerateTypeNames(lang),
 	}

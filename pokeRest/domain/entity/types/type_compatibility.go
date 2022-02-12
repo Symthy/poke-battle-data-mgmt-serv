@@ -19,7 +19,7 @@ func NewTypeCompatibility() TypeCompatibility {
 func (t TypeCompatibility) GenerateTypeCompatibilityTable() [][]float32 {
 	typeTable := [][]float32{}
 	for _, attackType := range t.types.Items() {
-		typeRecord := make([]float32, t.typeNum())
+		typeRecord := make([]float32, t.types.Size())
 		for j, blockType := range t.types.Items() {
 			typeRecord[j] = t.compatibilityTable[attackType][blockType]
 		}
@@ -32,8 +32,12 @@ func (t TypeCompatibility) GenerateTypeNames(lang string) []string {
 	return t.types.GenerateTypeNames(lang)
 }
 
-func (t TypeCompatibility) typeNum() int {
-	return t.types.Size()
+func (t TypeCompatibility) ResolveAttackTypeCompatibility(attackType value.PokemonType) {
+	//t.compatibilityTable[attackType]
+}
+
+func (t TypeCompatibility) ResolveDeffenceTypeCompatibility(deffenceType value.PokemonType) {
+
 }
 
 func buildCompatibilityTable() typeTable {

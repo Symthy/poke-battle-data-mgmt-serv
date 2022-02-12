@@ -15,7 +15,7 @@ type AbilityReadService struct {
 	repo repository.IAbilityRepository
 }
 
-func (s AbilityReadService) NewAbilityReadService(repo repository.IAbilityRepository) AbilityReadService {
+func NewAbilityReadService(repo repository.IAbilityRepository) AbilityReadService {
 	serv := AbilityReadService{repo: repo}
 	serv.PokemonStatsFinder = service.NewPokemonStatsFinder[as, a](repo)
 	serv.EntityAllFinder = service.NewEntityAllFinder[as, a](repo)

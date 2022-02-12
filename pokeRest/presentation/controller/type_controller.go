@@ -31,3 +31,11 @@ func (c TypeController) GetTypes(ctx echo.Context) error {
 	ctx.JSON(http.StatusOK, types)
 	return nil
 }
+
+func (c TypeController) GetAttackTypeCompability(ctx echo.Context, attackType string) error {
+	return nil
+}
+
+func (c TypeController) GetDeffenceTypeCompability(ctx echo.Context, attackType string) error {
+	return nil
+}
