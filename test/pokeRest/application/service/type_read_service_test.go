@@ -47,7 +47,7 @@ func (suite TypeServiceTestSuite) TestGetTypeCompatibility() {
 
 	for _, tt := range tests {
 		types := suite.serv.GetTypeCompatibility()
-		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeCompatibilityTable())
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRateTable())
 		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
 	}
 

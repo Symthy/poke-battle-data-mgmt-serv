@@ -9,7 +9,6 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 )
 
@@ -51,10 +50,6 @@ type IMoveRepository interface {
 
 type IItemRepository interface {
 	IEntityAllRepository[items.HeldItems, items.HeldItem]
-}
-
-type ITypeRepository interface {
-	BuildTypeCompatibility() (*types.TypeCompatibility, error)
 }
 
 type IPartyTagRepository interface {

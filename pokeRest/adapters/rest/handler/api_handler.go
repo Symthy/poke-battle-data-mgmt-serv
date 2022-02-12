@@ -172,13 +172,13 @@ func (h *PokeRestHandler) GetTypesCompability(ctx echo.Context) error {
 // get type compability of attack side
 // (GET /types/compability/attack/{type})
 func (h *PokeRestHandler) GetTypeCompabilityOfAttackSide(ctx echo.Context, pType string) error {
-	return nil
+	return h.typeController.GetAttackTypeCompatibility(ctx, pType)
 }
 
 // get type compability of defense side
 // (GET /types/compability/defense/{type})
 func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pType string) error {
-	return nil
+	return h.typeController.GetDeffenceTypeCompatibility(ctx, pType)
 }
 
 /* transaction data */

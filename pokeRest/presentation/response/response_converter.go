@@ -61,9 +61,18 @@ func ConvertUserToResponse(domain users.User) server.User {
 	}
 }
 
-func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.TypeCompatibilityTable {
+func ConvertTypeTableToResponse(domain types.TypeCompatibilityTable, lang string) server.TypeCompatibilityTable {
 	return server.TypeCompatibilityTable{
-		CompatibilityTable: domain.GenerateTypeCompatibilityTable(),
+		CompatibilityTable: domain.GenerateTypeDamageRateTable(),
 		TypeOrder:          domain.GenerateTypeNames(lang),
+	}
+}
+
+func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.TypeCompatibility {
+	pType := domain.ResolveTargetType(lang)
+	return server.TypeCompatibility{
+		TargetType:      &pType,
+		Compatibilities: domain.GenerateTypeDamageRates(),
+		TypeOrder:       domain.GenerateTypeNames(lang),
 	}
 }

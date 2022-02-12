@@ -27,11 +27,7 @@ func (t PokemonTypes) Size() int {
 func (t PokemonTypes) GenerateTypeNames(lang string) []string {
 	typeOrder := make([]string, t.Size())
 	for i, t := range t.Items() {
-		if lang == "ja-JP" {
-			typeOrder[i] = t.NameJP()
-			continue
-		}
-		typeOrder[i] = t.NameEN()
+		typeOrder[i] = t.ResolveTypeName(lang)
 	}
 	return typeOrder
 }

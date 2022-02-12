@@ -27,6 +27,13 @@ type PokemonType struct {
 	japaneseName typeNameJP
 }
 
+func (t PokemonType) ResolveTypeName(lang string) string {
+	if lang == "ja-JP" {
+		return t.NameJP()
+	}
+	return t.NameEN()
+}
+
 func (t PokemonType) NameEN() string {
 	return t.englishName.String()
 }
@@ -37,7 +44,7 @@ func (t PokemonType) NameJP() string {
 
 func NewPokemonType(typeName string) PokemonType {
 	for _, t := range GetPokemonTypes() {
-		if t.NameEN() == typeName {
+		if t.NameEN() == typeName || t.NameJP() == typeName {
 			return t
 		}
 	}
