@@ -22,6 +22,6 @@ func (s AbilityReadService) NewAbilityReadService(repo repository.IAbilityReposi
 	return serv
 }
 
-// UC: 特性保持者取得 StatsOfPokemonFinder
+// UC: 特性保持者取得 PokemonStatsFinder
 
 // UC: 特性一覧取得 EntityAllFinder

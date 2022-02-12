@@ -1,9 +1,9 @@
 package schema
 
 type Form struct {
-	ID                uint   `gorm:"primaryKey;autoIncrement:true"`
-	Name              string `gorm:"unique"`
-	IsRegionalVariant bool   `gorm:"default:false"`
+	ID                uint `gorm:"primaryKey;autoIncrement:true"`
+	Name              string
+	IsRegionalVariant bool `gorm:"default:false"`
 	RegionName        string
 
 	Pokemon Pokemon `gorm:"foreignKey:FormNo;references:id;foreignKey:FormName;references:name"` // has one

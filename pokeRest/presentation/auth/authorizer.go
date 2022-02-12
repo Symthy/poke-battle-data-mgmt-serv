@@ -27,7 +27,7 @@ func (a Authorizer) SignIn(c echo.Context) error {
 
 	// Todo: error process
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return err
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{

@@ -1,53 +1,54 @@
-package controller
+package service
 
 import (
 	"testing"
 
-	"github.com/Symthy/PokeRest/pokeRest/adapters/di"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
-	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
-type TypeControllerTestSuite struct {
+type TypeServiceTestSuite struct {
 	suite.Suite
-	ctl controller.TypeController
+	serv types.TypeReadService
 }
 
 // Before
-func (suite *TypeControllerTestSuite) SetupTest() {
-	suite.ctl = *di.InitTypeController()
+func (suite *TypeServiceTestSuite) SetupTest() {
+	suite.serv = types.NewTypeReadService()
 }
 
 // After
-func (suite *TypeControllerTestSuite) TearDownTest() {
+func (suite *TypeServiceTestSuite) TearDownTest() {
 }
 
 func TestTypeControllerTestSuite(t *testing.T) {
-	suite.Run(t, new(TypeControllerTestSuite))
+	suite.Run(t, new(TypeServiceTestSuite))
 }
 
-func (suite TypeControllerTestSuite) TestGetTypeCompatibility() {
+func (suite TypeServiceTestSuite) TestGetTypeCompatibility() {
 
 	tests := []struct {
-		expected server.TypeCompatibility
-		lang     string
+		expectedCompatibility [][]float32
+		expectedTypeOrder     []string
+		lang                  string
 	}{
 		{
-			expected: server.TypeCompatibility{
-				CompatibilityTable: typeTable,
-				TypeOrder:          jpTypeNames,
-			}, lang: "ja-JP"},
+			expectedCompatibility: typeTable,
+			expectedTypeOrder:     jpTypeNames,
+			lang:                  "ja-JP",
+		},
 		{
-			expected: server.TypeCompatibility{
-				CompatibilityTable: typeTable,
-				TypeOrder:          enTypeNames,
-			}, lang: "en-US"},
+			expectedCompatibility: typeTable,
+			expectedTypeOrder:     enTypeNames,
+			lang:                  "en-US",
+		},
 	}
 
 	for _, tt := range tests {
-		assert.EqualValues(suite.T(), tt.expected, suite.ctl.GetTypeCompatibility(tt.lang))
+		types := suite.serv.GetTypeCompatibility()
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeCompatibilityTable())
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
 	}
 
 }

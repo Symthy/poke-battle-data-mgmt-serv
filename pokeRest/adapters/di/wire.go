@@ -5,6 +5,7 @@ package di
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/types"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
@@ -55,6 +56,17 @@ func InitPokemonControllerByRepoMock() *controller.PokemonController {
 		pokemons.NewPokemonSummaryReadService,
 		mock.NewPokemonRepositoryMock,
 		wire.Bind(new(i_repository.IPokemonRepository), new(*mock.PokemonRepositoryMock)),
+	)
+	return nil
+}
+
+/* Ability */
+func InitAbilityController() *controller.AbilityController {
+	wire.Build(
+		controller.NewAbilityController,
+		abilities.NewAbilityReadService,
+		repository.NewAbilityRepository,
+		wire.Bind(new(i_repository.IAbilityRepository), new(*repository.AbilityRepository)),
 	)
 	return nil
 }

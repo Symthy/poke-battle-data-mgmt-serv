@@ -6,6 +6,24 @@ Poke REST API
 
 apiDoc/PokeRest.v1.yaml
 
+### Search
+
+ひとまず以下のような検索用の独自QLは設けない
+
+https://github.com/cbrand/go-filterparams
+
+全文検索かける程でもなく検索項目も少ない、項目間はAND条件のみため。
+ただし、一部項目にOR/AND条件指定が必要なため。一部パラメータでは以下により指定
+
+|条件|指定記号|例(encode無し)|
+|:--|:--|:--|
+|AND|`&`|xxx='aaa&bbb&ccc'|
+|OR|`|`|xxx='aaa|bbb|ccc'|
+
+※恐らく無いが、高度な全文検索が必要になるならElasticsearchの併用も検討
+
+https://github.com/elastic/go-elasticsearch
+
 ## Code Auto Generate
 
 ```

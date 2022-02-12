@@ -78,8 +78,9 @@ func main() {
 	// controller initialization
 	pokeRestHandler := handler.NewPokeRestHandler(
 		di.InitPokemonController(dbClient),
-		di.InitUserController(dbClient),
-		di.InitTypeController())
+		di.InitAbilityController(dbClient),
+		di.InitTypeController(),
+		di.InitUserController(dbClient))
 	server.RegisterHandlers(e, pokeRestHandler)
 
 	// custom http error handler

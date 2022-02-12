@@ -16,10 +16,6 @@ func NewTypeCompatibility() TypeCompatibility {
 	}
 }
 
-// func (t TypeCompatibility) CompatibilityTable() typeTable {
-// 	return t.compatibilityTable
-// }
-
 func (t TypeCompatibility) GenerateTypeCompatibilityTable() [][]float32 {
 	typeTable := [][]float32{}
 	for _, attackType := range t.types.Items() {

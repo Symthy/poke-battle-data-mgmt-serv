@@ -4,24 +4,30 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
-	"github.com/Symthy/PokeRest/pokeRest/presentation"
+	d_users "github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
+	"github.com/Symthy/PokeRest/pokeRest/presentation/response"
+	"github.com/labstack/echo/v4"
 )
 
 type UserController struct {
-	service users.UserReadService
+	service          users.UserReadService
+	responseResolver response.ResponseResolver[d_users.User, server.User]
 }
 
 func NewUserController(service users.UserReadService) *UserController {
-	return &UserController{service: service}
+	return &UserController{
+		service:          service,
+		responseResolver: response.NewResponseResolver(response.ConvertUserToResponse),
+	}
 }
 
-func (uc UserController) GetUserById(id float32) (server.User, error) {
+func (uc UserController) GetUserById(ctx echo.Context, id float32) error {
 	user, err := uc.service.GetUserById(uint(id))
-	return presentation.ConvertUserToResponse(user), err
+	return uc.responseResolver.Resolve(ctx, user, err)
 }
 
-func (uc UserController) GetUser(name string) (server.User, error) {
-	command := command.NewGetUserCommand(name).SetFilterRequiredFields()
-	user, err := uc.service.GetUser(*command)
-	return presentation.ConvertUserToResponse(user), err
+func (uc UserController) GetUser(ctx echo.Context, name string) error {
+	cmd := command.NewGetUserCommand(name).SetFilterRequiredFields()
+	user, err := uc.service.GetUser(*cmd)
+	return uc.responseResolver.Resolve(ctx, user, err)
 }

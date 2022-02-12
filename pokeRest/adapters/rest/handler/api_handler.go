@@ -1,32 +1,35 @@
 package handler
 
 import (
-	"net/http"
 	"sync"
-
-	"golang.org/x/text/language"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
 	"github.com/labstack/echo/v4"
 )
 
+// Todo: autogen
+// required: delegate to controller
+
 type PokeRestHandler struct {
 	Lock              sync.Mutex
 	pokemonController *controller.PokemonController
 	userController    *controller.UserController
 	typeController    *controller.TypeController
+	abilityController *controller.AbilityController
 }
 
 func NewPokeRestHandler(
-	pokeCon *controller.PokemonController,
-	userCon *controller.UserController,
-	typeCon *controller.TypeController,
+	pokemonCtrl *controller.PokemonController,
+	abilityCtrl *controller.AbilityController,
+	typeCtrl *controller.TypeController,
+	userCtrl *controller.UserController,
 ) *PokeRestHandler {
 	return &PokeRestHandler{
-		pokemonController: pokeCon,
-		userController:    userCon,
-		typeController:    typeCon,
+		pokemonController: pokemonCtrl,
+		abilityController: abilityCtrl,
+		typeController:    typeCtrl,
+		userController:    userCtrl,
 	}
 }
 
@@ -69,12 +72,7 @@ func (h *PokeRestHandler) GetMoveById(ctx echo.Context, moveId float32) error {
 // get pokemon by Id
 // (GET /pokemons/{id})
 func (h *PokeRestHandler) GetPokemonById(ctx echo.Context, id float32) error {
-	user, err := h.pokemonController.GetPokemon(id)
-	if err != nil {
-		ctx.JSON(http.StatusOK, user)
-		return nil
-	}
-	return err
+	return h.pokemonController.GetPokemon(ctx, id)
 }
 
 // get pokemons
@@ -125,30 +123,16 @@ func (h *PokeRestHandler) PostSignup(ctx echo.Context) error {
 	return nil
 }
 
-func resolveLanguage(header http.Header) string {
-	lang := header.Get("Accept-Language")
-	if lang != language.Japanese.String() {
-		lang = language.English.String()
-	}
-	return lang
-}
-
 // get types
 // (GET /types)
 func (h *PokeRestHandler) GetTypes(ctx echo.Context, params server.GetTypesParams) error {
-	lang := resolveLanguage(ctx.Request().Header)
-	types := h.typeController.GetTypes(lang)
-	ctx.JSON(http.StatusOK, types)
-	return nil
+	return h.typeController.GetTypes(ctx)
 }
 
 // get type compability
 // (GET /types/compability)
 func (h *PokeRestHandler) GetTypesCompability(ctx echo.Context) error {
-	lang := resolveLanguage(ctx.Request().Header)
-	types := h.typeController.GetTypeCompatibility(lang)
-	ctx.JSON(http.StatusOK, types)
-	return nil
+	return h.typeController.GetTypeCompatibility(ctx)
 }
 
 // get type compability of attack side
@@ -166,10 +150,5 @@ func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pTyp
 // Your GET endpoint
 // (GET /users/{id})
 func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id float32) error {
-	user, err := h.userController.GetUserById(id)
-	if err != nil {
-		ctx.JSON(http.StatusOK, user)
-		return nil
-	}
-	return err
+	return h.userController.GetUserById(ctx, id)
 }

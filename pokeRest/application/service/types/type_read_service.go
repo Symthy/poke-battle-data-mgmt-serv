@@ -14,7 +14,6 @@ func NewTypeReadService() TypeReadService {
 // UC: タイプ相性表取得
 func (s TypeReadService) GetTypeCompatibility() types.TypeCompatibility {
 	t := types.NewTypeCompatibility()
-	print(t.GenerateTypeCompatibilityTable())
 	return t
 }
 

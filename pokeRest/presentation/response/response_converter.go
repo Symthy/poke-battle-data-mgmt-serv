@@ -1,7 +1,8 @@
-package presentation
+package response
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
@@ -38,6 +39,14 @@ func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 		Type1:            domain.TypePrimary().NameEN(),
 		Type2:            &type2,
 	}
+}
+
+func ConvertAbilitiesToResponse(domain abilities.Abilities) server.Abilities {
+	return server.Abilities{}
+}
+
+func ConvertAbilityToResponse(domain abilities.Abilities) server.Ability {
+	return server.Ability{}
 }
 
 func ConvertUserToResponse(domain users.User) server.User {

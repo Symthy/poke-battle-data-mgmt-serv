@@ -21,9 +21,9 @@ func NewPokemonSummaryReadService(repo repository.IPokemonRepository) PokemonSum
 }
 
 // UC: 単体取得 (need?)
-func (s PokemonSummaryReadService) FindPokemon(id uint) (pokemons.Pokemon, error) {
+func (s PokemonSummaryReadService) FindPokemon(id uint) (*pokemons.Pokemon, error) {
 	pokemon, err := s.repo.FindById(id)
-	return *pokemon, err
+	return pokemon, err
 }
 
 // UC: 一覧取得 EntityAllFinder

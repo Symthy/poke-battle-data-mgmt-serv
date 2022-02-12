@@ -32,8 +32,8 @@ func NewEntityAllFinder[L entity.IDomains[T], T entity.IDomain](repo repository.
 	}
 }
 
-func (f EntityAllFinder[L, T]) FindAll(cmd command.GetAllEntityCommand) (*L, error) {
+func (f EntityAllFinder[L, T]) FindAll(cmd command.PagenationCommand) (*L, error) {
 	// Todo: error when empty
 	// Todo: error wrap
-	return f.repo.FindAll(cmd.Page(), cmd.PageSize())
+	return f.repo.FindAll(cmd.Next(), cmd.PageSize())
 }

@@ -24,6 +24,6 @@ func NewMoveReadService(repo repository.IMoveRepository) MoveReadService {
 	return serv
 }
 
-// UC: 技取得者取得 StatsOfPokemonFinder
+// UC: 技取得者取得 PokemonStatsFinder
 
 // UC: 技一覧取得 EntityAllFinder
