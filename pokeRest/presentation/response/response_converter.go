@@ -94,6 +94,14 @@ func ConvertPartyTagToResponse(domain parties.PartyTag) server.PartyTag {
 	return server.PartyTag{}
 }
 
+func ConvertPartyToResponse(domain parties.Party) server.Party {
+	// Todo: implementation
+	id := float32(domain.Id())
+	return server.Party{
+		Id: &id,
+	}
+}
+
 func ConvertUserToResponse(domain users.User) server.User {
 	id := float32(domain.Id())
 	name := domain.Name().Value()

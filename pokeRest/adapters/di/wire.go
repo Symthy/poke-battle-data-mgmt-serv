@@ -6,6 +6,8 @@ package di
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/moves"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/parties"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/types"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
@@ -106,10 +108,21 @@ func InitTypeController() *controller.TypeController {
 func InitItemController() *controller.ItemController {
 	wire.Build(
 		controller.NewPartyTagController,
-		moves.NewPartyTagReadService,
-		moves.NewPartyTagWriteService,
+		parties.NewPartyTagReadService,
+		parties.NewPartyTagWriteService,
 		repository.NewPartyTagRepository,
 		wire.Bind(new(i_repository.IPartyTagRepository), new(*repository.PartyTagRepository)),
+	)
+	return nil
+}
+
+/* Party */
+func InitPartyController() *controller.PartyController {
+	wire.Build(
+		controller.NewPartyController,
+		parties.NewPartyWriteService,
+		repository.NewPartyRepository,
+		wire.Bind(new(i_repository.IPartyRepository), new(*repository.PartyRepository)),
 	)
 	return nil
 }

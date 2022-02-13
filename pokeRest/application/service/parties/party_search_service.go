@@ -10,5 +10,5 @@ type PartySearchService struct {
 }
 
 // UC: パーティ検索
-func SearchParties(cmd command.PartySearchCommand) {
+func SearchParties(cmd command.SearchPartyCommand) {
 }

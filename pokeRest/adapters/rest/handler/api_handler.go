@@ -21,6 +21,7 @@ type PokeRestHandler struct {
 	itemController     *controller.ItemController
 	typeController     *controller.TypeController
 	partyTagController *controller.PartyTagController
+	partyController    *controller.PartyController
 	userController     *controller.UserController
 }
 
@@ -31,6 +32,7 @@ func NewPokeRestHandler(
 	itemCtrl *controller.ItemController,
 	typeCtrl *controller.TypeController,
 	partyTagCtrl *controller.PartyTagController,
+	partyCtrl *controller.PartyController,
 	userCtrl *controller.UserController,
 ) *PokeRestHandler {
 	return &PokeRestHandler{
@@ -40,6 +42,7 @@ func NewPokeRestHandler(
 		itemController:     itemCtrl,
 		typeController:     typeCtrl,
 		partyTagController: partyTagCtrl,
+		partyController:    partyCtrl,
 		userController:     userCtrl,
 	}
 }
@@ -169,7 +172,7 @@ func (h *PokeRestHandler) GetParties(ctx echo.Context, params server.GetPartiesP
 // PUT Parties
 // (PUT /parties)
 func (h *PokeRestHandler) PutParties(ctx echo.Context) error {
-	return nil
+	return h.partyController.SaveParty(ctx)
 }
 
 // GET Party
@@ -181,13 +184,13 @@ func (h *PokeRestHandler) GetPartiesId(ctx echo.Context, id int) error {
 // POST party
 // (POST /parties/{id})
 func (h *PokeRestHandler) PostPartiesId(ctx echo.Context, id int) error {
-	return nil
+	return h.partyController.UpdateParty(ctx, id)
 }
 
 // DELETE party
 // (DELETE /parties/{id})
 func (h *PokeRestHandler) DeletePartiesId(ctx echo.Context, id int) error {
-	return nil
+	return h.partyController.DeleteParty(ctx, id)
 }
 
 // GET party tags
