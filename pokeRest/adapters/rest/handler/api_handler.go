@@ -18,6 +18,7 @@ type PokeRestHandler struct {
 	pokemonController *controller.PokemonController
 	abilityController *controller.AbilityController
 	moveController    *controller.MoveController
+	itemController    *controller.ItemController
 	userController    *controller.UserController
 	typeController    *controller.TypeController
 }
@@ -26,6 +27,7 @@ func NewPokeRestHandler(
 	pokemonCtrl *controller.PokemonController,
 	abilityCtrl *controller.AbilityController,
 	moveCtrl *controller.MoveController,
+	itemCtrl *controller.ItemController,
 	typeCtrl *controller.TypeController,
 	userCtrl *controller.UserController,
 ) *PokeRestHandler {
@@ -33,6 +35,7 @@ func NewPokeRestHandler(
 		pokemonController: pokemonCtrl,
 		abilityController: abilityCtrl,
 		moveController:    moveCtrl,
+		itemController:    itemCtrl,
 		typeController:    typeCtrl,
 		userController:    userCtrl,
 	}
@@ -121,13 +124,13 @@ func (h *PokeRestHandler) GetMovesBySpecifiedPokemonId(ctx echo.Context, pokemon
 // get items
 // (GET /items)
 func (h *PokeRestHandler) GetHeldItems(ctx echo.Context, params server.GetHeldItemsParams) error {
-	return nil
+	return h.itemController.GetHeldItems(ctx, *params.Next, 0)
 }
 
 // get held items by id
 // (GET /helditems/{id})
 func (h *PokeRestHandler) GetHeldItemsId(ctx echo.Context, id int) error {
-	return nil
+	return h.itemController.GetHeldItemById(ctx, id)
 }
 
 // get types

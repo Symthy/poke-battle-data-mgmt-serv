@@ -10,14 +10,20 @@ type is = items.HeldItems
 type i = items.HeldItem
 
 type ItemReadService struct {
-	repo repository.IItemRepository
+	repo repository.IHeldItemRepository
 	service.EntityAllFinder[is, i]
 }
 
-func NewItemReadService(repo repository.IItemRepository) ItemReadService {
+func NewItemReadService(repo repository.IHeldItemRepository) ItemReadService {
 	serv := ItemReadService{repo: repo}
 	serv.EntityAllFinder = service.NewEntityAllFinder[is, i](repo)
 	return serv
 }
 
-// UC: 持ち物一覧取得 EntityAllFinder
+// UC: 持ち物取得
+func (s ItemReadService) FindHeldItem(itemId uint) (*items.HeldItem, error) {
+	return s.repo.FindById(itemId)
+}
+
+// UC: 持ち物一覧取得
+// FindAll <- EntityAllFinder

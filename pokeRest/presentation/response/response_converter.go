@@ -3,6 +3,7 @@ package response
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
@@ -59,6 +60,16 @@ func ConvertMovesToResponse(domains moves.Moves) server.Moves {
 func ConvertMoveToResponse(domains moves.Move) server.Move {
 	// Todo: implementation
 	return server.Move{}
+}
+
+func ConvertHeldItemsToResponse(domains items.HeldItems) server.HeldItems {
+	// Todo: implementation
+	return server.HeldItems{}
+}
+
+func ConvertHeldItemToResponse(domains items.HeldItem) server.HeldItem {
+	// Todo: implementation
+	return server.HeldItem{}
 }
 
 func ConvertUserToResponse(domain users.User) server.User {

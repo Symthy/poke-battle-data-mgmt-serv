@@ -23,15 +23,15 @@ func NewMoveController(service moves.MoveReadService) *MoveController {
 	}
 }
 
+func (c MoveController) GetMoveById(ctx echo.Context, id int) error {
+	domain, err := c.service.FindMove(uint(id))
+	return c.singleDataResolver.Resolve(ctx, domain, err)
+}
+
 func (c MoveController) GetMoves(ctx echo.Context, next int, pageSize int) error {
 	cmd := command.NewPaginationCommand(next, pageSize)
 	domains, err := c.service.FindAll(cmd)
 	return c.multiDataResolver.Resolve(ctx, domains, err)
-}
-
-func (c MoveController) GetMoveById(ctx echo.Context, id int) error {
-	domain, err := c.service.FindMove(uint(id))
-	return c.singleDataResolver.Resolve(ctx, domain, err)
 }
 
 func (c MoveController) GetMoveByPokemonId(ctx echo.Context, pokemonId int) error {

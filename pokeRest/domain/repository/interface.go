@@ -50,7 +50,8 @@ type IMoveRepository interface {
 	IPokemonStatsRepository[moves.Moves, moves.Move]
 }
 
-type IItemRepository interface {
+type IHeldItemRepository interface {
+	ISingleRecordFinder[items.HeldItem]
 	IAllRecordRepository[items.HeldItems, items.HeldItem]
 }
 

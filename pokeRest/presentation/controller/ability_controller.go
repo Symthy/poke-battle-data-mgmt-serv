@@ -23,15 +23,15 @@ func NewAbilityController(service abilities.AbilityReadService) *AbilityControll
 	}
 }
 
+func (c AbilityController) GetAbilityById(ctx echo.Context, id int) error {
+	domain, err := c.service.FindAbility(uint(id))
+	return c.singleDataResolver.Resolve(ctx, domain, err)
+}
+
 func (c AbilityController) GetAbilities(ctx echo.Context, next int, pageSize int) error {
 	cmd := command.NewPaginationCommand(next, pageSize)
 	domains, err := c.service.FindAll(cmd)
 	return c.multiDataResolver.Resolve(ctx, domains, err)
-}
-
-func (c AbilityController) GetAbilityById(ctx echo.Context, id int) error {
-	domain, err := c.service.FindAbility(uint(id))
-	return c.singleDataResolver.Resolve(ctx, domain, err)
 }
 
 func (c AbilityController) GetAbilityByPokemonId(ctx echo.Context, pokemonId int) error {
