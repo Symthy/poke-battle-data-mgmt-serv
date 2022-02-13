@@ -44,7 +44,7 @@ func ConvertAbilitiesToResponse(domain abilities.Abilities) server.Abilities {
 	return server.Abilities{}
 }
 
-func ConvertAbilityToResponse(domain abilities.Abilities) server.Ability {
+func ConvertAbilityToResponse(domain abilities.Ability) server.Ability {
 	return server.Ability{}
 }
 

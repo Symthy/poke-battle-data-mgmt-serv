@@ -13,11 +13,11 @@ import (
 )
 
 // common
-type IBasicRepository interface {
-	FindById(id uint)
+type ISingleRecordFinder[T entity.IDomain] interface {
+	FindById(id uint) (*T, error)
 }
 
-type IEntityAllRepository[L entity.IDomains[T], T entity.IDomain] interface {
+type IAllRecordRepository[L entity.IDomains[T], T entity.IDomain] interface {
 	FindAll(page int, pageSize int) (*L, error)
 }
 
@@ -33,27 +33,29 @@ type IWritableRepository[TD entity.IDomain] interface {
 
 // special
 type IPokemonRepository interface {
-	FindById(id uint) (*pokemons.Pokemon, error)
-	IEntityAllRepository[pokemons.Pokemons, pokemons.Pokemon]
+	ISingleRecordFinder[pokemons.Pokemon]
+	IAllRecordRepository[pokemons.Pokemons, pokemons.Pokemon]
 	IWritableRepository[pokemons.Pokemon]
 }
 
 type IAbilityRepository interface {
-	IEntityAllRepository[abilities.Abilities, abilities.Ability]
+	ISingleRecordFinder[abilities.Ability]
+	IAllRecordRepository[abilities.Abilities, abilities.Ability]
 	IPokemonStatsRepository[abilities.Abilities, abilities.Ability]
 }
 
 type IMoveRepository interface {
-	IEntityAllRepository[moves.Moves, moves.Move]
+	ISingleRecordFinder[moves.Move]
+	IAllRecordRepository[moves.Moves, moves.Move]
 	IPokemonStatsRepository[moves.Moves, moves.Move]
 }
 
 type IItemRepository interface {
-	IEntityAllRepository[items.HeldItems, items.HeldItem]
+	IAllRecordRepository[items.HeldItems, items.HeldItem]
 }
 
 type IPartyTagRepository interface {
-	IEntityAllRepository[parties.PartyTags, parties.PartyTag]
+	IAllRecordRepository[parties.PartyTags, parties.PartyTag]
 	IWritableRepository[parties.PartyTag]
 }
 

@@ -10,19 +10,26 @@ import (
 )
 
 type AbilityController struct {
-	service          abilities.AbilityReadService
-	responseResolver response.ResponseResolver[d_abilities.Abilities, server.Abilities]
+	service            abilities.AbilityReadService
+	singleDataResolver response.ResponseResolver[d_abilities.Ability, server.Ability]
+	multiDataResolver  response.ResponseResolver[d_abilities.Abilities, server.Abilities]
 }
 
 func NewAbilityController(service abilities.AbilityReadService) *AbilityController {
 	return &AbilityController{
-		service:          service,
-		responseResolver: response.NewResponseResolver(response.ConvertAbilitiesToResponse),
+		service:            service,
+		singleDataResolver: response.NewResponseResolver(response.ConvertAbilityToResponse),
+		multiDataResolver:  response.NewResponseResolver(response.ConvertAbilitiesToResponse),
 	}
 }
 
 func (c AbilityController) GetAbilities(ctx echo.Context, next int, pageSize int) error {
 	cmd := command.NewPaginationCommand(next, pageSize)
-	domain, err := c.service.FindAll(cmd)
-	return c.responseResolver.Resolve(ctx, domain, err)
+	domains, err := c.service.FindAll(cmd)
+	return c.multiDataResolver.Resolve(ctx, domains, err)
+}
+
+func (c AbilityController) GetAbilityById(ctx echo.Context, id float32) error {
+	domain, err := c.service.FindAbility(uint(id))
+	return c.singleDataResolver.Resolve(ctx, domain, err)
 }

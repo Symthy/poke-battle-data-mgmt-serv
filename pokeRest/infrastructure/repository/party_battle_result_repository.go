@@ -5,7 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
 var _ repository.IPartyBattleResultRepository = (*PartyBattleResultRepository)(nil)
@@ -22,7 +22,7 @@ func NewPartyBattleResultRepository(dbClient orm.IDbClient) *PartyBattleResultRe
 		BaseWriteRepository: BaseWriteRepository[schema.PartyBattleResult, parties.PartyBattleResult]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartySeasonResultSchemaBuilder,
-			schemaConverter:    infrastructure.ToSchemaPartyBattleResult,
+			schemaConverter:    dto.ToSchemaPartyBattleResult,
 		},
 		dbClient: dbClient,
 	}

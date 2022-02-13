@@ -23,10 +23,10 @@ func (f PokemonStatsFinder[L, T]) FindOfPokemon(pokemonId uint) (*L, error) {
 }
 
 type EntityAllFinder[L entity.IDomains[T], T entity.IDomain] struct {
-	repo repository.IEntityAllRepository[L, T]
+	repo repository.IAllRecordRepository[L, T]
 }
 
-func NewEntityAllFinder[L entity.IDomains[T], T entity.IDomain](repo repository.IEntityAllRepository[L, T]) EntityAllFinder[L, T] {
+func NewEntityAllFinder[L entity.IDomains[T], T entity.IDomain](repo repository.IAllRecordRepository[L, T]) EntityAllFinder[L, T] {
 	return EntityAllFinder[L, T]{
 		repo: repo,
 	}

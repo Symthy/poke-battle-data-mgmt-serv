@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/application/service/types"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -26,8 +27,7 @@ func TestTypeControllerTestSuite(t *testing.T) {
 	suite.Run(t, new(TypeServiceTestSuite))
 }
 
-func (suite TypeServiceTestSuite) TestGetTypeCompatibility() {
-
+func (suite TypeServiceTestSuite) TestGetTypeCompatibilityTable() {
 	tests := []struct {
 		expectedCompatibility [][]float32
 		expectedTypeOrder     []string
@@ -50,7 +50,62 @@ func (suite TypeServiceTestSuite) TestGetTypeCompatibility() {
 		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRateTable())
 		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
 	}
+}
 
+func (suite TypeServiceTestSuite) TestResolveAttackTypeCompatibility() {
+	tests := []struct {
+		expectedCompatibility []float32
+		expectedTypeOrder     []string
+		attackType            value.PokemonType
+		lang                  string
+	}{
+		{
+			expectedCompatibility: []float32{1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.0, 2.0},
+			expectedTypeOrder:     jpTypeNames,
+			attackType:            value.PokemonTypePoison,
+			lang:                  "ja-JP",
+		},
+		{
+			expectedCompatibility: []float32{1.0, 0.5, 0.5, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 0.5, 1.0, 2.0, 1.0},
+			expectedTypeOrder:     enTypeNames,
+			attackType:            value.PokemonTypeFire,
+			lang:                  "en-US",
+		},
+	}
+
+	for _, tt := range tests {
+		types := suite.serv.GetTypeCompatibility().ResolveAttackTypeCompatibility(tt.attackType)
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRates())
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
+	}
+}
+
+func (suite TypeServiceTestSuite) TestResolveDeffenceTypeCompatibility() {
+	tests := []struct {
+		expectedCompatibility []float32
+		expectedTypeOrder     []string
+		deffenceType          value.PokemonType
+		lang                  string
+	}{
+		{
+			expectedCompatibility: []float32{1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 0.5, 1.0, 0.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0},
+			expectedTypeOrder:     jpTypeNames,
+			deffenceType:          value.PokemonTypeFlying,
+			lang:                  "ja-JP",
+		},
+		{
+			expectedCompatibility: []float32{1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0},
+			expectedTypeOrder:     enTypeNames,
+			deffenceType:          value.PokemonTypeElectric,
+			lang:                  "en-US",
+		},
+	}
+
+	for _, tt := range tests {
+		types := suite.serv.GetTypeCompatibility().ResolveDeffenceTypeCompatibility(tt.deffenceType)
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRates())
+		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
+	}
 }
 
 var (

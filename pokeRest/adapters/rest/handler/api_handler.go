@@ -35,22 +35,60 @@ func NewPokeRestHandler(
 	}
 }
 
+// get pokemons
+// (GET /pokemons)
+func (h *PokeRestHandler) GetPokemons(ctx echo.Context, params server.GetPokemonsParams) error {
+	return nil
+}
+
+// get pokemon details by Pokedex No
+// (GET /pokemons/{pokedexNo}/details)
+func (h *PokeRestHandler) GetPokemonDetailsByPokedexNo(ctx echo.Context, pokedexNo float32) error {
+	return nil
+}
+
+// get pokemon details by Pokedex No and Form No
+// (GET /pokemons/{pokedexNo}/{formNo}/details)
+func (h *PokeRestHandler) GetPokemonDetailsByPokedexNoAndFormNo(ctx echo.Context, pokedexNo float32, formNo float32) error {
+	return nil
+}
+
+// get pokemons of specify ability
+// (GET /pokemons/abilities/{abilityId})
+func (h *PokeRestHandler) GetPokemonsBySpecifiedAbility(ctx echo.Context, abilityId float32) error {
+	return nil
+}
+
+// get pokemons with specified move
+// (GET /pokemons/moves/{moveId})
+func (h *PokeRestHandler) GetPokemonsBySpecifiedMove(ctx echo.Context, moveId float32) error {
+	return nil
+}
+
+// get pokemon by No
+// (GET /pokemons/{pokedexNo}/{formNo})
+func (h *PokeRestHandler) GetPokemonByPokedexNoAndFormNo(ctx echo.Context, pokedexNo float32, formNo float32) error {
+	// Todo: unsupported?
+	return nil
+}
+
+// get pokemons details
+// (GET /pokemons/details)
+func (h *PokeRestHandler) GetPokemonsDetails(ctx echo.Context, params server.GetPokemonsDetailsParams) error {
+	// Todo: unsupported?
+	return nil
+}
+
 // get abilities
 // (GET /abilities)
 func (h *PokeRestHandler) GetAbilities(ctx echo.Context, params server.GetAbilitiesParams) error {
-	return nil
+	return h.abilityController.GetAbilities(ctx, int(*params.Next), 0)
 }
 
 // get ability by id
 // (GET /abilities/{avilityId})
 func (h *PokeRestHandler) GetAbilityById(ctx echo.Context, avilityId float32) error {
-	return nil
-}
-
-// get items
-// (GET /items)
-func (h *PokeRestHandler) GetHeldItems(ctx echo.Context, params server.GetHeldItemsParams) error {
-	return nil
+	return h.abilityController.GetAbilityById(ctx, avilityId)
 }
 
 // get moves
@@ -65,9 +103,45 @@ func (h *PokeRestHandler) GetMoveById(ctx echo.Context, moveId float32) error {
 	return nil
 }
 
+// get items
+// (GET /items)
+func (h *PokeRestHandler) GetHeldItems(ctx echo.Context, params server.GetHeldItemsParams) error {
+	return nil
+}
+
+// get held items by id
+// (GET /helditems/{id})
+func (h *PokeRestHandler) GetHeldItemsId(ctx echo.Context, id string) error {
+	return nil
+}
+
+// get types
+// (GET /types)
+func (h *PokeRestHandler) GetTypes(ctx echo.Context) error {
+	return h.typeController.GetTypes(ctx)
+}
+
+// get type compability
+// (GET /types/compability)
+func (h *PokeRestHandler) GetTypesCompability(ctx echo.Context) error {
+	return h.typeController.GetTypeCompatibility(ctx)
+}
+
+// get type compability of attack side
+// (GET /types/compability/attack/{type})
+func (h *PokeRestHandler) GetTypeCompabilityOfAttackSide(ctx echo.Context, pType string) error {
+	return h.typeController.GetAttackTypeCompatibility(ctx, pType)
+}
+
+// get type compability of defense side
+// (GET /types/compability/defense/{type})
+func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pType string) error {
+	return h.typeController.GetDeffenceTypeCompatibility(ctx, pType)
+}
+
 // GET Parties
 // (GET /parties)
-func (h *PokeRestHandler) GetParties(ctx echo.Context) error {
+func (h *PokeRestHandler) GetParties(ctx echo.Context, params server.GetPartiesParams) error {
 	return nil
 }
 
@@ -113,78 +187,10 @@ func (h *PokeRestHandler) DeletePartiesTagsId(ctx echo.Context, id string) error
 	return nil
 }
 
-// get pokemons
-// (GET /pokemons)
-func (h *PokeRestHandler) GetPokemons(ctx echo.Context, params server.GetPokemonsParams) error {
-	return nil
-}
-
-// get pokemon details by Pokedex No
-// (GET /pokemons/{pokedexNo}/details)
-func (h *PokeRestHandler) GetPokemonDetailsByPokedexNo(ctx echo.Context, pokedexNo float32) error {
-	return nil
-}
-
-// get pokemon details by Pokedex No and Form No
-// (GET /pokemons/{pokedexNo}/{formNo}/details)
-func (h *PokeRestHandler) GetPokemonDetailsByPokedexNoAndFormNo(ctx echo.Context, pokedexNo float32, formNo float32) error {
-	return nil
-}
-
-// get pokemons of specify ability
-// (GET /pokemons/abilities/{abilityId})
-func (h *PokeRestHandler) GetPokemonsBySpecifiedAbility(ctx echo.Context, abilityId float32) error {
-	return nil
-}
-
-// get pokemons with specified move
-// (GET /pokemons/moves/{moveId})
-func (h *PokeRestHandler) GetPokemonsBySpecifiedMove(ctx echo.Context, moveId float32) error {
-	return nil
-}
-
-// get pokemon by No
-// (GET /pokemons/{pokedexNo}/{formNo})
-func (h *PokeRestHandler) GetPokemonByPokedexNoAndFormNo(ctx echo.Context, pokedexNo float32, formNo float32) error {
-	// Todo: unsupported?
-	return nil
-}
-
-// get pokemons details
-// (GET /pokemons/details)
-func (h *PokeRestHandler) GetPokemonsDetails(ctx echo.Context, params server.GetPokemonsDetailsParams) error {
-	// Todo: unsupported?
-	return nil
-}
-
-// get types
-// (GET /types)
-func (h *PokeRestHandler) GetTypes(ctx echo.Context) error {
-	return h.typeController.GetTypes(ctx)
-}
-
-// get type compability
-// (GET /types/compability)
-func (h *PokeRestHandler) GetTypesCompability(ctx echo.Context) error {
-	return h.typeController.GetTypeCompatibility(ctx)
-}
-
-// get type compability of attack side
-// (GET /types/compability/attack/{type})
-func (h *PokeRestHandler) GetTypeCompabilityOfAttackSide(ctx echo.Context, pType string) error {
-	return h.typeController.GetAttackTypeCompatibility(ctx, pType)
-}
-
-// get type compability of defense side
-// (GET /types/compability/defense/{type})
-func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pType string) error {
-	return h.typeController.GetDeffenceTypeCompatibility(ctx, pType)
-}
-
 /* transaction data */
 // GET trained pokemons
 // (GET /trainedpokemons)
-func (h *PokeRestHandler) GetTrainedPokemons(ctx echo.Context) error {
+func (h *PokeRestHandler) GetTrainedPokemons(ctx echo.Context, params server.GetTrainedPokemonsParams) error {
 	return nil
 }
 

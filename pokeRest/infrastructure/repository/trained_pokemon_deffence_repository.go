@@ -5,7 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
 var _ repository.ITrainedPokemonDeffenceRepository = (*TrainedPokemonDeffenceRepository)(nil)
@@ -24,7 +24,7 @@ func NewTrainedPokemonDeffenceRepository(dbClient orm.IDbClient) *TrainedPokemon
 		BaseWriteRepository: BaseWriteRepository[schemaTpd, trainings.TrainedPokemonDeffenceTarget]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyTrainedPokemonDeffenceSchemaBuilder,
-			schemaConverter:    infrastructure.ToSchemaTrainedPokemonDeffenceTarget,
+			schemaConverter:    dto.ToSchemaTrainedPokemonDeffenceTarget,
 		},
 		dbClient: dbClient,
 	}

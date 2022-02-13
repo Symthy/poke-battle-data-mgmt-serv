@@ -22,6 +22,10 @@ func NewAbilityReadService(repo repository.IAbilityRepository) AbilityReadServic
 	return serv
 }
 
+func (s AbilityReadService) FindAbility(id uint) (*abilities.Ability, error) {
+	return s.repo.FindById(id)
+}
+
 // UC: 特性保持者取得 PokemonStatsFinder
 
 // UC: 特性一覧取得 EntityAllFinder

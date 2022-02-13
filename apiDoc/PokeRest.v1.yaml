@@ -67,6 +67,11 @@ paths:
           in: query
           name: maxActualFilter
           description: 最大実数値フィルター
+        - schema:
+            type: string
+          in: query
+          name: next
+          description: next id
   '/pokemons/{pokedexNo}/{formNo}/details':
     parameters:
       - schema:
@@ -317,6 +322,11 @@ paths:
           in: query
           name: type
           description: タイプ検索
+        - schema:
+            type: string
+          in: query
+          name: next
+          description: next id
     parameters: []
   '/moves/{moveId}':
     parameters:
@@ -386,6 +396,11 @@ paths:
           in: query
           description: 分類指定(All/Attack/Deffence)
           name: specifies
+        - schema:
+            type: number
+          in: query
+          name: next
+          description: next id
   '/abilities/{avilityId}':
     parameters:
       - schema:
@@ -575,7 +590,47 @@ paths:
           in: query
           name: specifies
           description: 分類指定(All/Attack/Deffence)
+        - schema:
+            type: string
+          in: query
+          name: next
+          description: next id
     parameters: []
+  '/helditems/{id}':
+    get:
+      summary: get held items by id
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeldItems'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeldItem'
+      operationId: get-held-items-id
+      parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
   /trainedpokemons:
     get:
       summary: GET trained pokemons
@@ -600,6 +655,37 @@ paths:
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons
       description: ''
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: pokemon
+          description: ポケモン名検索
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: タイプ検索
+        - schema:
+            type: string
+          in: query
+          name: ability
+          description: 特性検索
+        - schema:
+            type: string
+          in: query
+          name: nature
+          description: 性格検索
+        - schema:
+            type: string
+          in: query
+          name: helditem
+          description: 持ち物検索
+        - schema:
+            type: string
+          in: query
+          name: next
+          description: next id
     put:
       summary: PUT trained pokemon
       operationId: put-trained-pokemons
@@ -905,6 +991,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Parties'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: pokemon
+          description: ポケモン
+        - schema:
+            type: string
+          in: query
+          name: next
+          description: next id
     parameters: []
     put:
       summary: PUT Parties

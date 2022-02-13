@@ -1,4 +1,4 @@
-package infrastructure
+package dto
 
 import (
 	"database/sql"
@@ -14,9 +14,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
 )
 
-func ConvertToDomains[TS ISchema[TD], TD IDomain](schemas []TS) []TD {
+func ConvertToDomains[TS infrastructure.ISchema[TD], TD infrastructure.IDomain](schemas []TS) []TD {
 	domains := make([]TD, len(schemas), len(schemas))
 	for i, s := range schemas {
 		domains[i] = s.ConvertToDomain()
