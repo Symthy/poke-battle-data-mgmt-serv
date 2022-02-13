@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/types"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
@@ -72,19 +73,6 @@ func ConvertHeldItemToResponse(domains items.HeldItem) server.HeldItem {
 	return server.HeldItem{}
 }
 
-func ConvertUserToResponse(domain users.User) server.User {
-	id := float32(domain.Id())
-	name := domain.Name().Value()
-	email := domain.Email().Value()
-	return server.User{
-		Id:          &id,
-		Name:        &name,
-		DisplayName: domain.DisplayName(),
-		Email:       &email,
-		Profile:     domain.Profile(),
-	}
-}
-
 func ConvertTypeTableToResponse(domain types.TypeCompatibilityTable, lang string) server.TypeCompatibilityTable {
 	return server.TypeCompatibilityTable{
 		CompatibilityTable: domain.GenerateTypeDamageRateTable(),
@@ -98,5 +86,23 @@ func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.
 		TargetType:      &pType,
 		Compatibilities: domain.GenerateTypeDamageRates(),
 		TypeOrder:       domain.GenerateTypeNames(lang),
+	}
+}
+
+func ConvertPartyTagToResponse(domain parties.PartyTag) server.PartyTag {
+	// Todo: implementation
+	return server.PartyTag{}
+}
+
+func ConvertUserToResponse(domain users.User) server.User {
+	id := float32(domain.Id())
+	name := domain.Name().Value()
+	email := domain.Email().Value()
+	return server.User{
+		Id:          &id,
+		Name:        &name,
+		DisplayName: domain.DisplayName(),
+		Email:       &email,
+		Profile:     domain.Profile(),
 	}
 }

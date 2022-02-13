@@ -82,11 +82,34 @@ func InitMoveController() *controller.MoveController {
 	return nil
 }
 
+/* Item */
+func InitItemController() *controller.ItemController {
+	wire.Build(
+		controller.NewItemController,
+		moves.NewItemReadService,
+		repository.NewHeldItemRepository,
+		wire.Bind(new(i_repository.IHeldItemRepository), new(*repository.HeldItemRepository)),
+	)
+	return nil
+}
+
 /* Types */
 func InitTypeController() *controller.TypeController {
 	wire.Build(
 		controller.NewTypeController,
 		types.NewTypeReadService,
+	)
+	return nil
+}
+
+/* PartyTag */
+func InitItemController() *controller.ItemController {
+	wire.Build(
+		controller.NewPartyTagController,
+		moves.NewPartyTagReadService,
+		moves.NewPartyTagWriteService,
+		repository.NewPartyTagRepository,
+		wire.Bind(new(i_repository.IPartyTagRepository), new(*repository.PartyTagRepository)),
 	)
 	return nil
 }

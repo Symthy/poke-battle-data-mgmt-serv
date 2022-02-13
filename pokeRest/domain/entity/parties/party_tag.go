@@ -16,6 +16,14 @@ func NewPartyTag(id uint, name string, isGenerationTag, isSeasonTag bool) PartyT
 	}
 }
 
+func NewPartyTagOfUnregistered(name string) PartyTag {
+	return PartyTag{
+		name:            name,
+		isGenerationTag: false,
+		isSeasonTag:     false,
+	}
+}
+
 func (t PartyTag) Id() uint {
 	return t.id
 }

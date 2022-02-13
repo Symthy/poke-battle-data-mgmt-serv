@@ -28,7 +28,7 @@ type IPokemonStatsRepository[L entity.IDomains[T], T entity.IDomain] interface {
 type IWritableRepository[TD entity.IDomain] interface {
 	Create(TD) (*TD, error)
 	Update(TD) (*TD, error)
-	Delete(TD) (*TD, error)
+	Delete(id uint) (*TD, error)
 }
 
 // special
@@ -56,6 +56,7 @@ type IHeldItemRepository interface {
 }
 
 type IPartyTagRepository interface {
+	ISingleRecordFinder[parties.PartyTag]
 	IAllRecordRepository[parties.PartyTags, parties.PartyTag]
 	IWritableRepository[parties.PartyTag]
 }

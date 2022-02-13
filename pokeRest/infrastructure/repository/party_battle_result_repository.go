@@ -27,3 +27,7 @@ func NewPartyBattleResultRepository(dbClient orm.IDbClient) *PartyBattleResultRe
 		dbClient: dbClient,
 	}
 }
+
+// Create <- BaseWriteRepository
+// Update <- BaseWriteRepository
+// Delete <- BaseWriteRepository

@@ -29,3 +29,7 @@ func NewBattleOpponentParty(dbClient orm.IDbClient) *BattleOpponentPartyReposito
 		dbClient: dbClient,
 	}
 }
+
+// Create <- BaseWriteRepository
+// Update <- BaseWriteRepository
+// Delete <- BaseWriteRepository

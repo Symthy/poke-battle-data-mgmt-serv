@@ -39,13 +39,13 @@ func (rep BaseWriteRepository[TS, TD]) Update(model TD) (*TD, error) {
 	return &s, nil
 }
 
-func (rep BaseWriteRepository[TS, TD]) Delete(model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD]) Delete(id uint) (*TD, error) {
 	db := rep.dbClient.Db()
-	if tx := db.First(rep.emptySchemaBuilder(), model.Id()); tx.Error != nil {
+	if tx := db.First(rep.emptySchemaBuilder(), id); tx.Error != nil {
 		return nil, tx.Error
 	}
 	schema := rep.emptySchemaBuilder()
-	tx := db.Delete(&schema, model.Id())
+	tx := db.Delete(&schema, id)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

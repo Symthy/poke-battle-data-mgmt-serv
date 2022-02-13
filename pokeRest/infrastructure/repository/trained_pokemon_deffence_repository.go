@@ -29,3 +29,7 @@ func NewTrainedPokemonDeffenceRepository(dbClient orm.IDbClient) *TrainedPokemon
 		dbClient: dbClient,
 	}
 }
+
+// Create <- BaseWriteRepository
+// Update <- BaseWriteRepository
+// Delete <- BaseWriteRepository

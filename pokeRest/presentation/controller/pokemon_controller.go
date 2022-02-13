@@ -20,7 +20,7 @@ func NewPokemonController(service pokemons.PokemonSummaryReadService) *PokemonCo
 	}
 }
 
-func (c PokemonController) GetPokemon(ctx echo.Context, id float32) error {
+func (c PokemonController) GetPokemon(ctx echo.Context, id int) error {
 	domain, error := c.service.FindPokemon(uint(id))
 	return c.responseResolver.Resolve(ctx, domain, error)
 }

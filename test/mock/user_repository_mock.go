@@ -42,6 +42,6 @@ func (mock UserRepositoryMock) Update(user users.User) (*users.User, error) {
 	return &users.User{}, nil
 }
 
-func (mock UserRepositoryMock) Delete(user users.User) (*users.User, error) {
+func (mock UserRepositoryMock) Delete(id uint) (*users.User, error) {
 	return &users.User{}, nil
 }

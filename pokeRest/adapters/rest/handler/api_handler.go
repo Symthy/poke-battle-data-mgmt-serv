@@ -14,13 +14,14 @@ import (
 var _ server.ServerInterface = (*PokeRestHandler)(nil)
 
 type PokeRestHandler struct {
-	Lock              sync.Mutex
-	pokemonController *controller.PokemonController
-	abilityController *controller.AbilityController
-	moveController    *controller.MoveController
-	itemController    *controller.ItemController
-	userController    *controller.UserController
-	typeController    *controller.TypeController
+	Lock               sync.Mutex
+	pokemonController  *controller.PokemonController
+	abilityController  *controller.AbilityController
+	moveController     *controller.MoveController
+	itemController     *controller.ItemController
+	typeController     *controller.TypeController
+	partyTagController *controller.PartyTagController
+	userController     *controller.UserController
 }
 
 func NewPokeRestHandler(
@@ -29,15 +30,17 @@ func NewPokeRestHandler(
 	moveCtrl *controller.MoveController,
 	itemCtrl *controller.ItemController,
 	typeCtrl *controller.TypeController,
+	partyTagCtrl *controller.PartyTagController,
 	userCtrl *controller.UserController,
 ) *PokeRestHandler {
 	return &PokeRestHandler{
-		pokemonController: pokemonCtrl,
-		abilityController: abilityCtrl,
-		moveController:    moveCtrl,
-		itemController:    itemCtrl,
-		typeController:    typeCtrl,
-		userController:    userCtrl,
+		pokemonController:  pokemonCtrl,
+		abilityController:  abilityCtrl,
+		moveController:     moveCtrl,
+		itemController:     itemCtrl,
+		typeController:     typeCtrl,
+		partyTagController: partyTagCtrl,
+		userController:     userCtrl,
 	}
 }
 

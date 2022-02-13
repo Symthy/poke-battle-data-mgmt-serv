@@ -8,7 +8,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
-var _ repository.IItemRepository = (*HeldItemRepository)(nil)
+var _ repository.IHeldItemRepository = (*HeldItemRepository)(nil)
 
 var (
 	emptyHeldItemBuilder  = func() schema.HeldItem { return schema.HeldItem{} }

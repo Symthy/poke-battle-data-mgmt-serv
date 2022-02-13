@@ -37,6 +37,6 @@ func (mock PokemonRepositoryMock) Update(pokemon pokemons.Pokemon) (*pokemons.Po
 	return &pokemons.Pokemon{}, nil
 }
 
-func (mock PokemonRepositoryMock) Delete(pokemon pokemons.Pokemon) (*pokemons.Pokemon, error) {
+func (mock PokemonRepositoryMock) Delete(id uint) (*pokemons.Pokemon, error) {
 	return &pokemons.Pokemon{}, nil
 }

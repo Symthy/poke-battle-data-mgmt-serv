@@ -27,3 +27,7 @@ func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 		dbClient: dbClient,
 	}
 }
+
+// Create <- BaseWriteRepository
+// Update <- BaseWriteRepository
+// Delete <- BaseWriteRepository

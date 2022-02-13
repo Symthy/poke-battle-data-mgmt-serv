@@ -27,3 +27,7 @@ func NewPartyRepository(dbClient orm.IDbClient) *PartyRepository {
 		dbClient: dbClient,
 	}
 }
+
+// Create <- BaseWriteRepository
+// Update <- BaseWriteRepository
+// Delete <- BaseWriteRepository

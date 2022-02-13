@@ -39,15 +39,9 @@ func NewPartyTagRepository(dbClient orm.IDbClient) *PartyTagRepository {
 	}
 }
 
-func (rep PartyTagRepository) FindAll(page int, pageSize int) (*parties.PartyTags, error) {
-	var schemaTags = []schema.PartyTag{}
+// FindById <- BaseReadRepository
+// FindAll <- BaseReadRepository
 
-	paginate := rep.dbClient.Paginate(page, pageSize)
-	tx := rep.dbClient.Db().Scopes(paginate).Find(&schemaTags)
-
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	ts := parties.NewPartyTags(dto.ConvertToDomains[schema.PartyTag, parties.PartyTag](schemaTags))
-	return &ts, nil
-}
+// Create <- BaseWriteRepository
+// Update <- BaseWriteRepository
+// Delete <- BaseWriteRepository
