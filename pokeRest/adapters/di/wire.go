@@ -71,7 +71,18 @@ func InitAbilityController() *controller.AbilityController {
 	return nil
 }
 
-/* types */
+/* Move */
+func InitMoveController() *controller.MoveController {
+	wire.Build(
+		controller.NewMoveController,
+		moves.NewMoveReadService,
+		repository.NewMoveRepository,
+		wire.Bind(new(i_repository.IMoveRepository), new(*repository.MoveRepository)),
+	)
+	return nil
+}
+
+/* Types */
 func InitTypeController() *controller.TypeController {
 	wire.Build(
 		controller.NewTypeController,

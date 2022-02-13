@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"strconv"
+
 	"github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
@@ -21,8 +23,14 @@ func NewUserController(service users.UserReadService) *UserController {
 	}
 }
 
-func (uc UserController) GetUserById(ctx echo.Context, id float32) error {
-	user, err := uc.service.GetUserById(uint(id))
+func (uc UserController) GetUserById(ctx echo.Context, id string) error {
+	userId, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		// Todo: error wrap
+		return err
+	}
+	// Todo: change uint64
+	user, err := uc.service.GetUserById(uint(userId))
 	return uc.responseResolver.Resolve(ctx, user, err)
 }
 

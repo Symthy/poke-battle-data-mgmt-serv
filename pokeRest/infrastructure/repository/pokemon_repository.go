@@ -40,11 +40,11 @@ func (rep PokemonRepository) FindById(id uint) (*pokemons.Pokemon, error) {
 }
 
 // Todo: args is condition
-func (rep PokemonRepository) FindAll(page int, pageSize int) (*pokemons.Pokemons, error) {
+func (rep PokemonRepository) FindAll(next int, pageSize int) (*pokemons.Pokemons, error) {
 	db := rep.dbClient.Db()
 	var schemas = []schema.Pokemon{}
 
-	paginate := rep.dbClient.Paginate(page, pageSize)
+	paginate := rep.dbClient.Paginate(next, pageSize)
 	tx := db.Scopes(paginate).Find(&schemas)
 
 	if tx.Error != nil {

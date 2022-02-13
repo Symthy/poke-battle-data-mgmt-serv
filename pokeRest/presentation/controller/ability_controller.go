@@ -29,7 +29,12 @@ func (c AbilityController) GetAbilities(ctx echo.Context, next int, pageSize int
 	return c.multiDataResolver.Resolve(ctx, domains, err)
 }
 
-func (c AbilityController) GetAbilityById(ctx echo.Context, id float32) error {
+func (c AbilityController) GetAbilityById(ctx echo.Context, id int) error {
 	domain, err := c.service.FindAbility(uint(id))
 	return c.singleDataResolver.Resolve(ctx, domain, err)
+}
+
+func (c AbilityController) GetAbilityByPokemonId(ctx echo.Context, pokemonId int) error {
+	domains, err := c.service.FindOfPokemon(uint(pokemonId))
+	return c.multiDataResolver.Resolve(ctx, domains, err)
 }

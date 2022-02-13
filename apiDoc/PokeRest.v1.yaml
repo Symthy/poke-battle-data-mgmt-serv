@@ -68,20 +68,20 @@ paths:
           name: maxActualFilter
           description: 最大実数値フィルター
         - schema:
-            type: string
+            type: integer
           in: query
           name: next
           description: next id
   '/pokemons/{pokedexNo}/{formNo}/details':
     parameters:
       - schema:
-          type: number
+          type: integer
         name: pokedexNo
         in: path
         required: true
         description: 図鑑No
       - schema:
-          type: number
+          type: integer
         name: formNo
         in: path
         description: フォルムNo
@@ -112,7 +112,7 @@ paths:
   '/pokemons/{pokedexNo}/details':
     parameters:
       - schema:
-          type: number
+          type: integer
         name: pokedexNo
         in: path
         required: true
@@ -190,13 +190,13 @@ paths:
   '/pokemons/{pokedexNo}/{formNo}':
     parameters:
       - schema:
-          type: number
+          type: integer
         name: pokedexNo
         in: path
         required: true
         description: 図鑑No
       - schema:
-          type: number
+          type: integer
         name: formNo
         in: path
         description: フォルムNo
@@ -251,7 +251,7 @@ paths:
       x-internal: false
     parameters:
       - schema:
-          type: number
+          type: integer
         name: abilityId
         in: path
         required: true
@@ -283,82 +283,10 @@ paths:
       x-internal: false
     parameters:
       - schema:
-          type: number
+          type: integer
         name: moveId
         in: path
         required: true
-  /moves:
-    get:
-      summary: get moves
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Moves'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-moves
-      description: 技一覧取得
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: name
-          description: 技名検索
-        - schema:
-            type: string
-          in: query
-          name: type
-          description: タイプ検索
-        - schema:
-            type: string
-          in: query
-          name: next
-          description: next id
-    parameters: []
-  '/moves/{moveId}':
-    parameters:
-      - schema:
-          type: number
-        name: moveId
-        in: path
-        required: true
-        description: 技ID
-    get:
-      summary: get move by id
-      tags:
-        - Pokemon Base Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Move'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-move-by-Id
-      description: 技取得
   /abilities:
     parameters: []
     get:
@@ -397,14 +325,14 @@ paths:
           description: 分類指定(All/Attack/Deffence)
           name: specifies
         - schema:
-            type: number
+            type: integer
           in: query
           name: next
           description: next id
   '/abilities/{avilityId}':
     parameters:
       - schema:
-          type: number
+          type: integer
         name: avilityId
         in: path
         description: 特性ID
@@ -418,10 +346,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ability'
-          headers:
-            header-0:
-              schema:
-                type: string
+          headers: {}
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -436,6 +361,141 @@ paths:
       description: 特性取得
       tags:
         - Pokemon Base Data
+  '/abilities/pokemons/{pokemonId}':
+    parameters:
+      - schema:
+          type: integer
+        name: pokemonId
+        in: path
+        required: true
+    get:
+      summary: get abilities by specified pokemon id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Abilities'
+          headers: {}
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-abilities-by-specifed-pokemon-id
+      description: 指定ポケの特性一覧取得
+      tags:
+        - Pokemon Base Data
+      parameters: []
+  /moves:
+    get:
+      summary: get moves
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Moves'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-moves
+      description: 技一覧取得
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+          description: 技名検索
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: タイプ検索
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
+    parameters: []
+  '/moves/{moveId}':
+    parameters:
+      - schema:
+          type: integer
+        name: moveId
+        in: path
+        required: true
+        description: 技ID
+    get:
+      summary: get move by id
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Move'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-move-by-Id
+      description: 技取得
+  '/moves/pokemons/{pokemonId}':
+    get:
+      summary: get moves by specified pokemon id
+      tags:
+        - Pokemon Base Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Moves'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-moves-by-specified-pokemon-id
+      description: 指定ポケの技一覧取得
+      parameters: []
+    parameters:
+      - schema:
+          type: integer
+        name: pokemonId
+        in: path
+        required: true
   /types:
     get:
       summary: get types
@@ -591,7 +651,7 @@ paths:
           name: specifies
           description: 分類指定(All/Attack/Deffence)
         - schema:
-            type: string
+            type: integer
           in: query
           name: next
           description: next id
@@ -627,7 +687,7 @@ paths:
       parameters: []
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -682,7 +742,7 @@ paths:
           name: helditem
           description: 持ち物検索
         - schema:
-            type: string
+            type: integer
           in: query
           name: next
           description: next id
@@ -706,7 +766,7 @@ paths:
   '/trainedpokemons/{id}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -769,7 +829,7 @@ paths:
   '/trainedpokemons/{id}/attacks':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -810,13 +870,13 @@ paths:
   '/trainedpokemons/{trainedPokemonId}/attacks/{attackId}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: trainedPokemonId
         in: path
         required: true
         description: trained pokemon id
       - schema:
-          type: string
+          type: integer
         name: attackId
         in: path
         required: true
@@ -879,7 +939,7 @@ paths:
   '/trainedpokemons/{id}/deffences':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -925,13 +985,13 @@ paths:
   '/trainedpokemons/{trainedPokemonId}/deffences/{deffenceId}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: trainedPokemonId
         in: path
         required: true
         description: trained pokemon id
       - schema:
-          type: string
+          type: integer
         name: deffenceId
         in: path
         required: true
@@ -998,7 +1058,7 @@ paths:
           name: pokemon
           description: ポケモン
         - schema:
-            type: string
+            type: integer
           in: query
           name: next
           description: next id
@@ -1022,7 +1082,7 @@ paths:
   '/parties/{id}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -1080,11 +1140,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-  '/users/{name}':
+  '/users/{id}':
     parameters:
       - schema:
-          type: number
-        name: name
+          type: string
+        name: id
         in: path
         required: true
     get:
@@ -1109,7 +1169,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id
-  '/users/{name}/trainedpokemons':
+  '/users/{id}/trainedpokemons':
     get:
       summary: GET user trained pokemons
       tags:
@@ -1132,17 +1192,23 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id-trained-pokemons
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
     parameters:
       - schema:
           type: string
-        name: name
+        name: id
         in: path
         required: true
-  '/users/{name}/parties':
+  '/users/{id}/parties':
     parameters:
       - schema:
           type: string
-        name: name
+        name: id
         in: path
         required: true
     get:
@@ -1167,6 +1233,12 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id-parties
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
   /parties/tags:
     get:
       summary: GET party tags
@@ -1189,6 +1261,12 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-parties-tags
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
     put:
       summary: PUT party tags
       operationId: put-parties-tags
@@ -1208,7 +1286,7 @@ paths:
   '/parties/tags/{id}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true

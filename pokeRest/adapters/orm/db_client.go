@@ -68,21 +68,20 @@ func (dc GormDbClient) Close() {
 	sqldb.Close()
 }
 
-func (dc GormDbClient) Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.DB {
+func (dc GormDbClient) Paginate(next int, pageSize int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		if page == 0 {
-			page = 1
+		if next == 0 {
+			next = 1
 		}
 
 		switch {
 		case pageSize > 100:
 			pageSize = 100
 		case pageSize <= 0:
-			pageSize = 10
+			pageSize = 100
 		}
 
-		offset := (page - 1) * pageSize
-		return db.Offset(offset).Limit(pageSize)
+		return db.Offset(next).Limit(pageSize)
 	}
 }
 

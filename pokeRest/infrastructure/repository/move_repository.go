@@ -33,10 +33,15 @@ func NewMoveRepository(dbClient orm.IDbClient) *MoveRepository {
 	}
 }
 
+// FindById <- BaseReadRepository
+
+// FindAll <- BaseReadRepository
+
 func (r MoveRepository) FindOfPokemon(pokemonId uint) (*moves.Moves, error) {
-	return r.FindByField("PokemonId", string(rune(pokemonId)))
+	// Todo: implementation
+	return nil, nil
 }
 
-func (r MoveRepository) FindAll(page int, pageSize int) (*moves.Moves, error) {
-	return nil, nil
+func (r MoveRepository) FindByName(name string) (*moves.Moves, error) {
+	return r.FindByField("Name", name)
 }

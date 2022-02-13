@@ -24,6 +24,13 @@ func NewMoveReadService(repo repository.IMoveRepository) MoveReadService {
 	return serv
 }
 
-// UC: 技取得者取得 PokemonStatsFinder
+// UC: 技取得
+func (s MoveReadService) FindMove(moveId uint) (*moves.Move, error) {
+	return s.repo.FindById(moveId)
+}
 
-// UC: 技一覧取得 EntityAllFinder
+// UC: 技習得者取得
+// FindOfPokemon <- PokemonStatsFinder
+
+// UC: 技一覧取得
+// FindAll <- EntityAllFinder

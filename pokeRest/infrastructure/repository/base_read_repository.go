@@ -48,6 +48,24 @@ func (rep BaseReadRepository[TS, TD, TM]) FindByField(targetField string, value 
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
+	return rep.resolveReturnValues(schemas)
+}
+
+// Todo: args is condition
+func (rep BaseReadRepository[TS, TD, TM]) FindAll(next int, pageSize int) (*TM, error) {
+	db := rep.dbClient.Db()
+	schemas := rep.emptySchemasBuilder()
+
+	paginate := rep.dbClient.Paginate(next, pageSize)
+	tx := db.Scopes(paginate).Find(&schemas)
+
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return rep.resolveReturnValues(schemas)
+}
+
+func (rep BaseReadRepository[TS, TD, TM]) resolveReturnValues(schemas []TS) (*TM, error) {
 	domainArray := dto.ConvertToDomains[TS, TD](schemas)
 	domains := dto.BuildDomains(domainArray, rep.domainsConstructor)
 	if domains == nil {

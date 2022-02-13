@@ -76,11 +76,7 @@ func main() {
 	r.Use(middleware.JWTWithConfig(jwtConfig))
 
 	// controller initialization
-	pokeRestHandler := handler.NewPokeRestHandler(
-		di.InitPokemonController(dbClient),
-		di.InitAbilityController(dbClient),
-		di.InitTypeController(),
-		di.InitUserController(dbClient))
+	pokeRestHandler := initPokeRestHandler(dbClient)
 	server.RegisterHandlers(e, pokeRestHandler)
 
 	// custom http error handler
@@ -88,4 +84,13 @@ func main() {
 
 	// And we serve HTTP until the world ends.
 	e.Logger.Fatal(e.Start(fmt.Sprintf("0.0.0.0:%d", *port)))
+}
+
+func initPokeRestHandler(dbClient orm.IDbClient) *handler.PokeRestHandler {
+	return handler.NewPokeRestHandler(
+		di.InitPokemonController(dbClient),
+		di.InitAbilityController(dbClient),
+		di.InitMoveController(dbClient),
+		di.InitTypeController(),
+		di.InitUserController(dbClient))
 }

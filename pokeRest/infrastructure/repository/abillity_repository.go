@@ -33,12 +33,15 @@ func NewAbilityRepository(dbClient orm.IDbClient) *AbilityRepository {
 	}
 }
 
-// FindById
+// FindById <- BaseReadRepository
+
+// FindAll <- BaseReadRepository
 
 func (r AbilityRepository) FindOfPokemon(pokemonId uint) (*abilities.Abilities, error) {
-	return r.FindByField("PokemonId", string(rune(pokemonId)))
+	// Todo: implementation
+	return nil, nil
 }
 
-func (r AbilityRepository) FindAll(page int, pageSize int) (*abilities.Abilities, error) {
-	return nil, nil
+func (r AbilityRepository) FindByName(name string) (*abilities.Abilities, error) {
+	return r.FindByField("Name", name)
 }
