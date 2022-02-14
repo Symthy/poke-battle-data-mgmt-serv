@@ -28,7 +28,7 @@ func (rep BaseReadRepository[TS, TD, TM]) FindById(id uint) (*TD, error) {
 		return nil, tx.Error
 	}
 	s := schema.ConvertToDomain()
-	return &s, tx.Error
+	return &s, nil
 }
 
 // required: wrap when used

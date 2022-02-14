@@ -84,8 +84,13 @@ func ToSchemaPartyTag(t parties.PartyTag) schema.PartyTag {
 	}
 }
 
-func ToSchemaTrainedPokemon(t trainings.TrainedPokemon) schema.TrainedPokemon {
+func ToSchemaTrainedPokemon(t trainings.TrainedPokemonParam) schema.TrainedPokemon {
 	schema := schema.TrainedPokemon{}
+	return schema
+}
+
+func ToSchemaTrainedPokemonAdjustment(t trainings.TrainedPokemonAdjustment) schema.TrainedPokemonAdjustment {
+	schema := schema.TrainedPokemonAdjustment{}
 	return schema
 }
 

@@ -13,13 +13,13 @@ var _ repository.ITrainedPokemonRepository = (*TrainedPokemonRepository)(nil)
 var emptyTrainedPokemonSchemaBuilder = func() schema.TrainedPokemon { return schema.TrainedPokemon{} }
 
 type TrainedPokemonRepository struct {
-	BaseWriteRepository[schema.TrainedPokemon, trainings.TrainedPokemon]
+	BaseWriteRepository[schema.TrainedPokemon, trainings.TrainedPokemonParam]
 	dbClient orm.IDbClient
 }
 
 func NewTrainedPokemonRepository(dbClient orm.IDbClient) *TrainedPokemonRepository {
 	return &TrainedPokemonRepository{
-		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemon, trainings.TrainedPokemon]{
+		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemon, trainings.TrainedPokemonParam]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyTrainedPokemonSchemaBuilder,
 			schemaConverter:    dto.ToSchemaTrainedPokemon,

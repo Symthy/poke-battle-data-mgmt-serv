@@ -77,7 +77,12 @@ type IBattleOpponentPartyRepository interface {
 }
 
 type ITrainedPokemonRepository interface {
-	IWritableRepository[trainings.TrainedPokemon]
+	IWritableRepository[trainings.TrainedPokemonParam]
+}
+
+type ITrainedPokemonAdjustmentRepository interface {
+	Find(trainings.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error)
+	IWritableRepository[trainings.TrainedPokemonAdjustment]
 }
 
 type ITrainedPokemonAttackRepository interface {

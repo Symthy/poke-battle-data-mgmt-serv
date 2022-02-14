@@ -8,27 +8,13 @@ import (
 
 type TrainedPokemon struct {
 	gorm.Model
-	PokemonId    uint
-	Pokemon      Pokemon // belongs to
-	Nickname     *string
-	Gender       *enum.Gender `sql:"type:gender"`
-	Description  *string
-	Nature       enum.Nature
-	AbilityId    uint  // M:1 <- Ability
-	HeldItemId   *uint // M:1 <- HeldItem
-	EffortValueH int   `gorm:"default:0"`
-	EffortValueA int   `gorm:"default:0"`
-	EffortValueB int   `gorm:"default:0"`
-	EffortValueC int   `gorm:"default:0"`
-	EffortValueD int   `gorm:"default:0"`
-	EffortValueS int   `gorm:"default:0"`
-	MoveId1      *uint // M:1 <- Move
-	MoveId2      *uint // M:1 <- Move
-	MoveId3      *uint // M:1 <- Move
-	MoveId4      *uint // M:1 <- Move
-	IsPrivate    bool  `gorm:"default:false"`
-	// belong to
-	CreateUserId uint // M:1 from User
+	TrainedPokemonBaseId uint
+	TrainedPokemonBase   TrainedPokemonAdjustment `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
+	Nickname             *string
+	Gender               *enum.Gender `sql:"type:gender"`
+	Description          *string
+	IsPrivate            bool `gorm:"default:false"`
+	CreateUserId         uint // M:1 from User
 
 	// relation
 	BattleRecord1 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord
@@ -42,6 +28,6 @@ func (TrainedPokemon) TableName() string {
 	return "trained_pokemons"
 }
 
-func (t TrainedPokemon) ConvertToDomain() trainings.TrainedPokemon {
-	return trainings.NewTrainedPokemon(t.ID)
+func (t TrainedPokemon) ConvertToDomain() trainings.TrainedPokemonParam {
+	return trainings.NewTrainedPokemonParam(t.ID)
 }
