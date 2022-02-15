@@ -77,6 +77,7 @@ type IBattleOpponentPartyRepository interface {
 	IWritableRepository[battles.BattleOpponentParty]
 }
 
+// Todo: Don't want to depend gorm. wrap?
 type ITrainedPokemonRepository interface {
 	IWritableRepository[trainings.TrainedPokemonParam]
 	CreateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)

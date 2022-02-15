@@ -27,9 +27,12 @@ func NewTrainedPokemonWriteService(
 
 // UC: 育成済み個体登録
 func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
+	if err := s.trainedParamRepo.StartTransaction(); err != nil {
+		return nil, err
+	}
+	defer s.trainedParamRepo.PanicPostProcess()
+
 	trainedPokemonEntity := cmd.ToDomain()
-	// Todo: transaction
-	s.trainedParamRepo.StartTransaction()
 	adjustment, err := s.adjustmentRepo.Find(trainedPokemonEntity.TrainedPokemonAdjustment)
 	if err != nil {
 		return nil, err
@@ -45,18 +48,25 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrained
 	}
 	createdParam, err := s.trainedParamRepo.Create(param)
 	if err != nil {
-		// rollback
+		s.trainedParamRepo.CancelTransaction()
 		return nil, err
 	}
 	trainedPoke := trainings.NewTrainedPokemon(*createdParam, *adjustment)
+
+	if err := s.trainedParamRepo.FinishTransaction(); err != nil {
+		return nil, err
+	}
 	return &trainedPoke, nil
 }
 
 // UC: 育成済み個体更新
 func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
-	trainedPokemonEntity := cmd.ToDomain()
-	// Todo: refactor: find Adjustment id base
+	if err := s.trainedParamRepo.StartTransaction(); err != nil {
+		return nil, err
+	}
+	defer s.trainedParamRepo.PanicPostProcess()
 
+	trainedPokemonEntity := cmd.ToDomain()
 	adjustment, err := s.adjustmentRepo.Find(trainedPokemonEntity.TrainedPokemonAdjustment)
 	if err != nil {
 		return nil, err
@@ -70,12 +80,16 @@ func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrain
 		param = param.ApplyAdjustmentId(createdAdjustment.Id())
 		adjustment = createdAdjustment
 	}
-	updatedParam, err := s.trainedParamRepo.Update(param)
+	createdParam, err := s.trainedParamRepo.Create(param)
 	if err != nil {
-		// rollback
+		s.trainedParamRepo.CancelTransaction()
 		return nil, err
 	}
-	trainedPoke := trainings.NewTrainedPokemon(*updatedParam, *adjustment)
+	trainedPoke := trainings.NewTrainedPokemon(*createdParam, *adjustment)
+
+	if err := s.trainedParamRepo.FinishTransaction(); err != nil {
+		return nil, err
+	}
 	return &trainedPoke, nil
 }
 
