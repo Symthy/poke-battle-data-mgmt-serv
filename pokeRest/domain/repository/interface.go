@@ -10,6 +10,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
+	"gorm.io/gorm"
 )
 
 // common
@@ -78,6 +79,9 @@ type IBattleOpponentPartyRepository interface {
 
 type ITrainedPokemonRepository interface {
 	IWritableRepository[trainings.TrainedPokemonParam]
+	CreateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
+	UpdateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
+	DeleteRecord(*gorm.DB, uint) (*trainings.TrainedPokemonParam, error)
 }
 
 type ITrainedPokemonAdjustmentRepository interface {

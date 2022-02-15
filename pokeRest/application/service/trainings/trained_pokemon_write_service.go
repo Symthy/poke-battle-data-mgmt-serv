@@ -1,21 +1,25 @@
 package trainings
 
 import (
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/trainings/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/transaction"
 )
 
 type TrainedPokemonWriteService struct {
-	trainedParamRepo repository.ITrainedPokemonRepository
+	trainedParamRepo transaction.TrainedPokemonRepositoryWrapper
 	adjustmentRepo   repository.ITrainedPokemonAdjustmentRepository
 }
 
 func NewTrainedPokemonWriteService(
 	trainedParamRepo repository.ITrainedPokemonRepository,
-	adjustmentRepo repository.ITrainedPokemonAdjustmentRepository) TrainedPokemonWriteService {
+	adjustmentRepo repository.ITrainedPokemonAdjustmentRepository,
+	dbClient orm.IDbClient) TrainedPokemonWriteService {
+
 	serv := TrainedPokemonWriteService{
-		trainedParamRepo: trainedParamRepo,
+		trainedParamRepo: transaction.NewTrainedPokemonRepositoryWrapper(trainedParamRepo, dbClient),
 		adjustmentRepo:   adjustmentRepo,
 	}
 	return serv
@@ -25,6 +29,7 @@ func NewTrainedPokemonWriteService(
 func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
 	trainedPokemonEntity := cmd.ToDomain()
 	// Todo: transaction
+	s.trainedParamRepo.StartTransaction()
 	adjustment, err := s.adjustmentRepo.Find(trainedPokemonEntity.TrainedPokemonAdjustment)
 	if err != nil {
 		return nil, err
@@ -40,6 +45,7 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrained
 	}
 	createdParam, err := s.trainedParamRepo.Create(param)
 	if err != nil {
+		// rollback
 		return nil, err
 	}
 	trainedPoke := trainings.NewTrainedPokemon(*createdParam, *adjustment)
@@ -49,8 +55,8 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrained
 // UC: 育成済み個体更新
 func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
 	trainedPokemonEntity := cmd.ToDomain()
-	// Todo: transaction
 	// Todo: refactor: find Adjustment id base
+
 	adjustment, err := s.adjustmentRepo.Find(trainedPokemonEntity.TrainedPokemonAdjustment)
 	if err != nil {
 		return nil, err
@@ -64,8 +70,9 @@ func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrain
 		param = param.ApplyAdjustmentId(createdAdjustment.Id())
 		adjustment = createdAdjustment
 	}
-	updatedParam, err := s.trainedParamRepo.Create(param)
+	updatedParam, err := s.trainedParamRepo.Update(param)
 	if err != nil {
+		// rollback
 		return nil, err
 	}
 	trainedPoke := trainings.NewTrainedPokemon(*updatedParam, *adjustment)
