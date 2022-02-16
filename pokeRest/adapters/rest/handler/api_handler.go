@@ -14,15 +14,16 @@ import (
 var _ server.ServerInterface = (*PokeRestHandler)(nil)
 
 type PokeRestHandler struct {
-	Lock               sync.Mutex
-	pokemonController  *controller.PokemonController
-	abilityController  *controller.AbilityController
-	moveController     *controller.MoveController
-	itemController     *controller.ItemController
-	typeController     *controller.TypeController
-	partyTagController *controller.PartyTagController
-	partyController    *controller.PartyController
-	userController     *controller.UserController
+	Lock                     sync.Mutex
+	pokemonController        *controller.PokemonController
+	abilityController        *controller.AbilityController
+	moveController           *controller.MoveController
+	itemController           *controller.ItemController
+	typeController           *controller.TypeController
+	partyTagController       *controller.PartyTagController
+	partyController          *controller.PartyController
+	trainedPokemonController *controller.TrainedPokemonController
+	userController           *controller.UserController
 }
 
 func NewPokeRestHandler(
@@ -33,17 +34,19 @@ func NewPokeRestHandler(
 	typeCtrl *controller.TypeController,
 	partyTagCtrl *controller.PartyTagController,
 	partyCtrl *controller.PartyController,
+	trainedPokeCtrl *controller.TrainedPokemonController,
 	userCtrl *controller.UserController,
 ) *PokeRestHandler {
 	return &PokeRestHandler{
-		pokemonController:  pokemonCtrl,
-		abilityController:  abilityCtrl,
-		moveController:     moveCtrl,
-		itemController:     itemCtrl,
-		typeController:     typeCtrl,
-		partyTagController: partyTagCtrl,
-		partyController:    partyCtrl,
-		userController:     userCtrl,
+		pokemonController:        pokemonCtrl,
+		abilityController:        abilityCtrl,
+		moveController:           moveCtrl,
+		itemController:           itemCtrl,
+		typeController:           typeCtrl,
+		partyTagController:       partyTagCtrl,
+		partyController:          partyCtrl,
+		trainedPokemonController: trainedPokeCtrl,
+		userController:           userCtrl,
 	}
 }
 
@@ -221,7 +224,7 @@ func (h *PokeRestHandler) GetTrainedPokemons(ctx echo.Context, params server.Get
 // PUT trained pokemon
 // (PUT /trainedpokemons)
 func (h *PokeRestHandler) PutTrainedPokemons(ctx echo.Context) error {
-	return nil
+	return h.trainedPokemonController.SaveTrainedPokemon(ctx)
 }
 
 // GET trained pokemon
@@ -233,13 +236,13 @@ func (h *PokeRestHandler) GetTrainedPokemonsId(ctx echo.Context, id int) error {
 // POST trained pokemon
 // (POST /trainedpokemons/{id})
 func (h *PokeRestHandler) PostTrainedPokemonsId(ctx echo.Context, id int) error {
-	return nil
+	return h.trainedPokemonController.UpdateTrainedPokemon(ctx)
 }
 
 // DELETE trained pokemon
 // (DELETE /trainedpokemons/{id})
 func (h *PokeRestHandler) DeleteTrainedPokemonsId(ctx echo.Context, id int) error {
-	return nil
+	return h.trainedPokemonController.DeleteTrainedPokemon(ctx, uint(id))
 }
 
 // GET trained pokemon attack adjustments

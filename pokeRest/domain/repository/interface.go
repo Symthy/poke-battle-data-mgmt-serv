@@ -32,6 +32,13 @@ type IWritableRepository[TD entity.IDomain] interface {
 	Delete(id uint) (*TD, error)
 }
 
+type ITransactionalRepository interface {
+	StartTransaction() error
+	CancelTransaction() error
+	FinishTransaction() error
+	PanicPostProcess()
+}
+
 // special
 type IPokemonRepository interface {
 	ISingleRecordFinder[pokemons.Pokemon]
@@ -84,9 +91,14 @@ type ITrainedPokemonRepository interface {
 	UpdateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
 	DeleteRecord(*gorm.DB, uint) (*trainings.TrainedPokemonParam, error)
 }
+type ITrainedPokemonTransactionalRepository interface {
+	ITrainedPokemonRepository
+	ITransactionalRepository
+}
 
 type ITrainedPokemonAdjustmentRepository interface {
 	Find(trainings.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error)
+	IAllRecordRepository[trainings.TrainedPokemonAdjustments, trainings.TrainedPokemonAdjustment]
 	IWritableRepository[trainings.TrainedPokemonAdjustment]
 }
 

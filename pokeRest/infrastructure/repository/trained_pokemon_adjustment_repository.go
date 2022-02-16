@@ -16,12 +16,18 @@ var emptyAdjustmentSchemaBuilder = func() schema.TrainedPokemonAdjustment { retu
 type adjustmentDomain = trainings.TrainedPokemonAdjustment
 
 type TrainedPokemonAdjustmentRepository struct {
+	BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments]
 	BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain]
 	dbClient orm.IDbClient
 }
 
 func NewTrainedPokemonAdjustmentRepository(dbClient orm.IDbClient) *TrainedPokemonAdjustmentRepository {
 	return &TrainedPokemonAdjustmentRepository{
+		BaseReadRepository: BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments]{
+			dbClient:           dbClient,
+			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
+			schemaConverter:    dto.ToSchemaTrainedPokemonAdjustment,
+		},
 		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
@@ -44,6 +50,8 @@ func (repo TrainedPokemonAdjustmentRepository) Find(adjustment adjustmentDomain)
 	s := schema.ConvertToDomain()
 	return &s, nil
 }
+
+// FindAll <- BaseReadRepository
 
 // Create <- BaseWriteRepository
 // Update <- BaseWriteRepository

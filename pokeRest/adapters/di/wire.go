@@ -126,3 +126,5 @@ func InitPartyController() *controller.PartyController {
 	)
 	return nil
 }
+
+/* TrainedPokemon */

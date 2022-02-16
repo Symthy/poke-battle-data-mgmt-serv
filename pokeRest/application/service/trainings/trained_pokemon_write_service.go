@@ -1,25 +1,22 @@
 package trainings
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/trainings/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/transaction"
 )
 
 type TrainedPokemonWriteService struct {
-	trainedParamRepo transaction.TrainedPokemonRepositoryWrapper
+	trainedParamRepo repository.ITrainedPokemonTransactionalRepository
 	adjustmentRepo   repository.ITrainedPokemonAdjustmentRepository
 }
 
 func NewTrainedPokemonWriteService(
-	trainedParamRepo repository.ITrainedPokemonRepository,
-	adjustmentRepo repository.ITrainedPokemonAdjustmentRepository,
-	dbClient orm.IDbClient) TrainedPokemonWriteService {
+	trainedParamRepo repository.ITrainedPokemonTransactionalRepository,
+	adjustmentRepo repository.ITrainedPokemonAdjustmentRepository) TrainedPokemonWriteService {
 
 	serv := TrainedPokemonWriteService{
-		trainedParamRepo: transaction.NewTrainedPokemonRepositoryWrapper(trainedParamRepo, dbClient),
+		trainedParamRepo: trainedParamRepo,
 		adjustmentRepo:   adjustmentRepo,
 	}
 	return serv
@@ -94,7 +91,7 @@ func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrain
 }
 
 // UC: 育成済み個体削除
-func (s TrainedPokemonWriteService) DeleteTrainedPokemon(id uint) (*trainings.TrainedPokemonParam, error) {
+func (s TrainedPokemonWriteService) DeleteTrainedPokemon(id uint) (*trainings.TrainedPokemon, error) {
 	param, err := s.trainedParamRepo.Delete(id)
 	// Todo:
 	// delete used trained pokemon adjustment if ref num is zero
@@ -105,5 +102,6 @@ func (s TrainedPokemonWriteService) DeleteTrainedPokemon(id uint) (*trainings.Tr
 			return nil, err
 		}
 	}
-	return param, err
+	trainedPoke := trainings.NewTrainedPokemon(*param, trainings.TrainedPokemonAdjustment{})
+	return &trainedPoke, err
 }

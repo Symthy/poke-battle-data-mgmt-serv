@@ -5,15 +5,15 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 )
 
-type TrainedPokemonRepositoryWrapper struct {
+type TrainedPokemonTransactionalRepository struct {
 	TransactionRepositoryWrapper[trainings.TrainedPokemonParam]
 }
 
-func NewTrainedPokemonRepositoryWrapper(
+func NewTrainedPokemonTransactionalRepository(
 	repo InnerWriteRepository[trainings.TrainedPokemonParam],
 	dbClient orm.IDbClient,
-) TrainedPokemonRepositoryWrapper {
-	return TrainedPokemonRepositoryWrapper{
-		TransactionRepositoryWrapper: NewTransactionRepositoryWrapper(repo, dbClient),
+) *TrainedPokemonTransactionalRepository {
+	return &TrainedPokemonTransactionalRepository{
+		TransactionRepositoryWrapper: NewTransactionalRepositoryWrapper(repo, dbClient),
 	}
 }

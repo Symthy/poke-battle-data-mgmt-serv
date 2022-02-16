@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var _ IWritableRepository[infrastructure.IDomain] = (*TransactionRepositoryWrapper[infrastructure.IDomain])(nil)
+var _ IWritableRepository[infrastructure.IDomain] = (*TransactionalRepositoryWrapper[infrastructure.IDomain])(nil)
 
 type InnerWriteRepository[TD infrastructure.IDomain] interface {
 	CreateRecord(*gorm.DB, TD) (*TD, error)
@@ -22,21 +22,21 @@ type IWritableRepository[TD infrastructure.IDomain] interface {
 	Delete(uint) (*TD, error)
 }
 
-type TransactionRepositoryWrapper[TD infrastructure.IDomain] struct {
+type TransactionalRepositoryWrapper[TD infrastructure.IDomain] struct {
 	InnerWriteRepository[TD]
 	dbClient orm.IDbClient
 	tx       *gorm.DB
 }
 
-func NewTransactionRepositoryWrapper[TD infrastructure.IDomain](
-	repo InnerWriteRepository[TD], dbClient orm.IDbClient) TransactionRepositoryWrapper[TD] {
-	return TransactionRepositoryWrapper[TD]{
+func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain](
+	repo InnerWriteRepository[TD], dbClient orm.IDbClient) TransactionalRepositoryWrapper[TD] {
+	return TransactionalRepositoryWrapper[TD]{
 		InnerWriteRepository: repo,
 		dbClient:             dbClient,
 	}
 }
 
-func (trw TransactionRepositoryWrapper[TD]) StartTransaction() error {
+func (trw TransactionalRepositoryWrapper[TD]) StartTransaction() error {
 	db := trw.dbClient.Db()
 	tx := db.Begin()
 	if tx.Error != nil {
@@ -46,7 +46,7 @@ func (trw TransactionRepositoryWrapper[TD]) StartTransaction() error {
 	return nil
 }
 
-func (trw TransactionRepositoryWrapper[TD]) CancelTransaction() error {
+func (trw TransactionalRepositoryWrapper[TD]) CancelTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
 		return fmt.Errorf("rollback failure")
@@ -56,7 +56,7 @@ func (trw TransactionRepositoryWrapper[TD]) CancelTransaction() error {
 	return err
 }
 
-func (trw TransactionRepositoryWrapper[TD]) FinishTransaction() error {
+func (trw TransactionalRepositoryWrapper[TD]) FinishTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
 		return fmt.Errorf("commit failure")
@@ -64,28 +64,28 @@ func (trw TransactionRepositoryWrapper[TD]) FinishTransaction() error {
 	return trw.tx.Commit().Error
 }
 
-func (trw TransactionRepositoryWrapper[TD]) PanicPostProcess() {
+func (trw TransactionalRepositoryWrapper[TD]) PanicPostProcess() {
 	if r := recover(); r != nil {
 		trw.CancelTransaction()
 	}
 }
 
-func (trw TransactionRepositoryWrapper[TD]) Create(model TD) (*TD, error) {
+func (trw TransactionalRepositoryWrapper[TD]) Create(model TD) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.CreateRecord(trw.tx, model)
 }
 
-func (trw TransactionRepositoryWrapper[TD]) Update(model TD) (*TD, error) {
+func (trw TransactionalRepositoryWrapper[TD]) Update(model TD) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.UpdateRecord(trw.tx, model)
 }
 
-func (trw TransactionRepositoryWrapper[TD]) Delete(id uint) (*TD, error) {
+func (trw TransactionalRepositoryWrapper[TD]) Delete(id uint) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.DeleteRecord(trw.tx, id)
 }
 
-func (trw TransactionRepositoryWrapper[TD]) validateTransactioning() {
+func (trw TransactionalRepositoryWrapper[TD]) validateTransactioning() {
 	if trw.tx == nil {
 		panic("error: non transactioning")
 	}
