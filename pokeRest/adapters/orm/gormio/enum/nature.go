@@ -48,3 +48,7 @@ func (na *Nature) Scan(value interface{}) error {
 func (na Nature) Value() (driver.Value, error) {
 	return string(na), nil
 }
+
+func (na Nature) String() string {
+	return string(na)
+}

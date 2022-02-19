@@ -10,7 +10,7 @@ type PartyTag struct {
 	Name         string
 	IsGeneration *bool   `gorm:"default:false"`
 	IsSeason     *bool   `gorm:"default:false"`
-	Party        []Party `gorm:"many2many:party_partytags;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // M:M
+	Party        []Party `gorm:"many2many:parties_party_tags;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // M:M
 }
 
 func (PartyTag) TableName() string {

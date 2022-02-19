@@ -10,7 +10,7 @@ type Move struct {
 	Name        string
 	Species     enum.MoveSpecies `sql:"type:species"`
 	Power       int
-	Accuracy    int
+	Accuracy    float32
 	PP          int
 	IsContained *bool `gorm:"default:false"`
 	IsCanGuard  *bool `gorm:"default:true"`
@@ -31,5 +31,5 @@ func (Move) TableName() string {
 }
 
 func (m Move) ConvertToDomain() moves.Move {
-	return moves.NewMove(m.ID)
+	return moves.NewMove(m.ID, m.Name, m.Species.String(), m.Power, m.Accuracy, m.PP, *m.IsContained, *m.IsCanGuard)
 }

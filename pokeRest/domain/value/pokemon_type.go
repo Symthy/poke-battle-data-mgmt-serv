@@ -1,27 +1,5 @@
 package value
 
-var (
-	PokemonTypeNormal   = PokemonType{japaneseName: NormalJP, englishName: Normal}
-	PokemonTypeFighting = PokemonType{japaneseName: FightingJP, englishName: Fighting}
-	PokemonTypeFlying   = PokemonType{japaneseName: FlyingJP, englishName: Flying}
-	PokemonTypePoison   = PokemonType{japaneseName: PoisonJP, englishName: Poison}
-	PokemonTypeGround   = PokemonType{japaneseName: GroundJP, englishName: Ground}
-	PokemonTypeRock     = PokemonType{japaneseName: RockJP, englishName: Rock}
-	PokemonTypeBug      = PokemonType{japaneseName: BugJP, englishName: Bug}
-	PokemonTypeGhost    = PokemonType{japaneseName: GhostJP, englishName: Ghost}
-	PokemonTypeSteel    = PokemonType{japaneseName: SteelJP, englishName: Steel}
-	PokemonTypeFire     = PokemonType{japaneseName: FireJP, englishName: Fire}
-	PokemonTypeWater    = PokemonType{japaneseName: WaterJP, englishName: Water}
-	PokemonTypeGrass    = PokemonType{japaneseName: GrassJP, englishName: Grass}
-	PokemonTypeElectric = PokemonType{japaneseName: ElectricJP, englishName: Electric}
-	PokemonTypePsychic  = PokemonType{japaneseName: PsychicJP, englishName: Psychic}
-	PokemonTypeIce      = PokemonType{japaneseName: IceJP, englishName: Ice}
-	PokemonTypeDragon   = PokemonType{japaneseName: DragonJP, englishName: Dragon}
-	PokemonTypeDark     = PokemonType{japaneseName: DarkJP, englishName: Dark}
-	PokemonTypeFairy    = PokemonType{japaneseName: FairyJP, englishName: Fairy}
-	PokemonTypeUnknown  = PokemonType{japaneseName: NoneJP, englishName: None}
-)
-
 type PokemonType struct {
 	englishName  typeNameEN
 	japaneseName typeNameJP
@@ -43,36 +21,56 @@ func (t PokemonType) NameJP() string {
 }
 
 func NewPokemonType(typeName string) PokemonType {
-	for _, t := range GetPokemonTypes() {
+	for _, t := range PokemonTypeAll() {
 		if t.NameEN() == typeName || t.NameJP() == typeName {
 			return t
 		}
 	}
-	return PokemonTypeUnknown
+	return UnknownType()
 }
 
-func GetPokemonTypes() []PokemonType {
+func PokemonTypeAll() []PokemonType {
 	return []PokemonType{
-		PokemonTypeNormal,
-		PokemonTypeFire,
-		PokemonTypeWater,
-		PokemonTypeElectric,
-		PokemonTypeGrass,
-		PokemonTypeIce,
-		PokemonTypeFighting,
-		PokemonTypePoison,
-		PokemonTypeGround,
-		PokemonTypeFlying,
-		PokemonTypePsychic,
-		PokemonTypeBug,
-		PokemonTypeRock,
-		PokemonTypeGhost,
-		PokemonTypeDragon,
-		PokemonTypeDark,
-		PokemonTypeSteel,
-		PokemonTypeFairy,
+		Normal(),
+		Fire(),
+		Water(),
+		Electric(),
+		Grass(),
+		Ice(),
+		Fighting(),
+		Poison(),
+		Ground(),
+		Flying(),
+		Psychic(),
+		Bug(),
+		Rock(),
+		Ghost(),
+		Dragon(),
+		Dark(),
+		Steel(),
+		Fairy(),
 	}
 }
+
+func Normal() PokemonType      { return PokemonType{japaneseName: NormalJP, englishName: NormalEN} }
+func Fire() PokemonType        { return PokemonType{japaneseName: FireJP, englishName: FireEN} }
+func Water() PokemonType       { return PokemonType{japaneseName: WaterJP, englishName: WaterEN} }
+func Electric() PokemonType    { return PokemonType{japaneseName: ElectricJP, englishName: ElectricEN} }
+func Grass() PokemonType       { return PokemonType{japaneseName: GrassJP, englishName: GrassEN} }
+func Ice() PokemonType         { return PokemonType{japaneseName: IceJP, englishName: IceEN} }
+func Fighting() PokemonType    { return PokemonType{japaneseName: FightingJP, englishName: FightingEN} }
+func Poison() PokemonType      { return PokemonType{japaneseName: PoisonJP, englishName: PoisonEN} }
+func Ground() PokemonType      { return PokemonType{japaneseName: GroundJP, englishName: GroundEN} }
+func Flying() PokemonType      { return PokemonType{japaneseName: FlyingJP, englishName: FlyingEN} }
+func Psychic() PokemonType     { return PokemonType{japaneseName: PsychicJP, englishName: PsychicEN} }
+func Bug() PokemonType         { return PokemonType{japaneseName: BugJP, englishName: BugEN} }
+func Rock() PokemonType        { return PokemonType{japaneseName: RockJP, englishName: RockEN} }
+func Ghost() PokemonType       { return PokemonType{japaneseName: GhostJP, englishName: GhostEN} }
+func Dragon() PokemonType      { return PokemonType{japaneseName: DragonJP, englishName: DragonEN} }
+func Dark() PokemonType        { return PokemonType{japaneseName: DarkJP, englishName: DarkEN} }
+func Steel() PokemonType       { return PokemonType{japaneseName: SteelJP, englishName: SteelEN} }
+func Fairy() PokemonType       { return PokemonType{japaneseName: FairyJP, englishName: FairyEN} }
+func UnknownType() PokemonType { return PokemonType{japaneseName: NoneJP, englishName: NoneEN} }
 
 type typeNameJP string
 
@@ -107,23 +105,23 @@ const (
 	FairyJP    typeNameJP = "フェアリー"
 	NoneJP     typeNameJP = ""
 
-	Normal   typeNameEN = "Normal"
-	Fire     typeNameEN = "Fire"
-	Water    typeNameEN = "Water"
-	Electric typeNameEN = "Electric"
-	Ice      typeNameEN = "Ice"
-	Grass    typeNameEN = "Grass"
-	Fighting typeNameEN = "Fighting"
-	Poison   typeNameEN = "Poison"
-	Ground   typeNameEN = "Ground"
-	Flying   typeNameEN = "Flying"
-	Psychic  typeNameEN = "Psychic"
-	Bug      typeNameEN = "Bug"
-	Rock     typeNameEN = "Rock"
-	Ghost    typeNameEN = "Ghost"
-	Dragon   typeNameEN = "Dragon"
-	Dark     typeNameEN = "Dark"
-	Steel    typeNameEN = "Steel"
-	Fairy    typeNameEN = "Fairy"
-	None     typeNameEN = ""
+	NormalEN   typeNameEN = "Normal"
+	FireEN     typeNameEN = "Fire"
+	WaterEN    typeNameEN = "Water"
+	ElectricEN typeNameEN = "Electric"
+	IceEN      typeNameEN = "Ice"
+	GrassEN    typeNameEN = "Grass"
+	FightingEN typeNameEN = "Fighting"
+	PoisonEN   typeNameEN = "Poison"
+	GroundEN   typeNameEN = "Ground"
+	FlyingEN   typeNameEN = "Flying"
+	PsychicEN  typeNameEN = "Psychic"
+	BugEN      typeNameEN = "Bug"
+	RockEN     typeNameEN = "Rock"
+	GhostEN    typeNameEN = "Ghost"
+	DragonEN   typeNameEN = "Dragon"
+	DarkEN     typeNameEN = "Dark"
+	SteelEN    typeNameEN = "Steel"
+	FairyEN    typeNameEN = "Fairy"
+	NoneEN     typeNameEN = ""
 )

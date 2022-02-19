@@ -6,10 +6,10 @@ type UpdatePartyCommand struct {
 	parties.Party
 }
 
-func NewUpdatePartyCommand(id uint, name string, battleFormat string, partyTagIds []uint,
-	trainedPokemonIds []uint, isPrivate bool) UpdatePartyCommand {
+func NewUpdatePartyCommand(id uint, name string, battleFormat string, isPrivate bool,
+	partyResultIds []uint, partyTagIds []uint, trainedPokemonIds []uint) UpdatePartyCommand {
 	cmd := UpdatePartyCommand{
-		parties.NewPartyForUpdated(id, name, battleFormat, partyTagIds, trainedPokemonIds, isPrivate),
+		parties.NewPartyForUpdated(id, name, battleFormat, isPrivate, partyResultIds, partyTagIds, trainedPokemonIds),
 	}
 	return cmd
 }

@@ -4,7 +4,7 @@ import "github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 
 type BattleOpponentParty struct {
 	ID                 uint `gorm:"primaryKey;autoIncrement:true"`
-	OpponentPokemonId1 int  // M:1 <- Pokemon
+	OpponentPokemonId1 *int // M:1 <- Pokemon
 	OpponentPokemonId2 *int
 	OpponentPokemonId3 *int
 	OpponentPokemonId4 *int

@@ -95,5 +95,6 @@ func initPokeRestHandler(dbClient orm.IDbClient) *handler.PokeRestHandler {
 		di.InitTypeController(),
 		di.InitPartyTagController(dbClient),
 		di.InitPartyController(dbClient),
+		di.InitTrainedPokemonController(dbClient),
 		di.InitUserController(dbClient))
 }

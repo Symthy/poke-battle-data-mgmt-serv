@@ -19,3 +19,7 @@ func (mo *MoveSpecies) Scan(value interface{}) error {
 func (mo MoveSpecies) Value() (driver.Value, error) {
 	return string(mo), nil
 }
+
+func (mo MoveSpecies) String() string {
+	return string(mo)
+}

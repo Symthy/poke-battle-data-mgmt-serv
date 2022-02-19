@@ -18,3 +18,7 @@ func (ba *BattleFormat) Scan(value interface{}) error {
 func (ba BattleFormat) Value() (driver.Value, error) {
 	return string(ba), nil
 }
+
+func (ba BattleFormat) String() string {
+	return string(ba)
+}

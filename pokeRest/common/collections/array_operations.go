@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-func ListContains(list interface{}, elem interface{}) bool {
+func ContainsInList(list interface{}, elem interface{}) bool {
 	listV := reflect.ValueOf(list)
 
 	if listV.Kind() == reflect.Slice {
@@ -23,4 +23,12 @@ func ListContains(list interface{}, elem interface{}) bool {
 		}
 	}
 	return false
+}
+
+func MapForList[TI any, TO any](array []TI, mapFunc func(TI) TO) []TO {
+	rets := make([]TO, len(array))
+	for _, e := range array {
+		rets = append(rets, mapFunc(e))
+	}
+	return rets
 }

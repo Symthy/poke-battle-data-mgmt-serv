@@ -23,5 +23,6 @@ func (Ability) TableName() string {
 }
 
 func (a Ability) ConvertToDomain() abilities.Ability {
-	return abilities.NewAbility(a.ID)
+	// Todo: generate correction values
+	return abilities.NewAbility(a.ID, a.Name, a.Description, nil)
 }

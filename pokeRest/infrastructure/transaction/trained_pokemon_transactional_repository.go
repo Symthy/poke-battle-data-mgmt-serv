@@ -6,7 +6,7 @@ import (
 )
 
 type TrainedPokemonTransactionalRepository struct {
-	TransactionRepositoryWrapper[trainings.TrainedPokemonParam]
+	TransactionalRepositoryWrapper[trainings.TrainedPokemonParam]
 }
 
 func NewTrainedPokemonTransactionalRepository(
@@ -14,6 +14,6 @@ func NewTrainedPokemonTransactionalRepository(
 	dbClient orm.IDbClient,
 ) *TrainedPokemonTransactionalRepository {
 	return &TrainedPokemonTransactionalRepository{
-		TransactionRepositoryWrapper: NewTransactionalRepositoryWrapper(repo, dbClient),
+		TransactionalRepositoryWrapper: NewTransactionalRepositoryWrapper(repo, dbClient),
 	}
 }

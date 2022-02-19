@@ -1,5 +1,7 @@
 package trainings
 
+import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+
 type TrainedPokemon struct {
 	TrainedPokemonParam
 	TrainedPokemonAdjustment
@@ -28,15 +30,15 @@ func NewTrainedPokemonOfUnregistered(
 	}
 	entity.TrainedPokemonAdjustment = TrainedPokemonAdjustment{
 		pokemonId:    pokemonId,
-		nature:       resolveNature(nature),
+		nature:       value.NewPokemonNature(nature),
 		abilityId:    abilityId,
 		heldItemId:   heldItemId,
-		effortValueH: effortValueH,
-		effortValueA: effortValueA,
-		effortValueB: effortValueB,
-		effortValueC: effortValueC,
-		effortValueD: effortValueD,
-		effortValueS: effortValueS,
+		effortValueH: value.NewEffortValue(effortValueH),
+		effortValueA: value.NewEffortValue(effortValueA),
+		effortValueB: value.NewEffortValue(effortValueB),
+		effortValueC: value.NewEffortValue(effortValueC),
+		effortValueD: value.NewEffortValue(effortValueD),
+		effortValueS: value.NewEffortValue(effortValueS),
 		moveId1:      moveId1,
 		moveId2:      moveId2,
 		moveId3:      moveId3,

@@ -4,22 +4,22 @@ import "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 
 type CorrectionValue struct {
 	// 技威力
-	PhysicalMovePowerCorrectionValue int `gorm:"default:1"`
-	SpecialMovePowerCorrectionValue  int `gorm:"default:1"`
+	PhysicalMovePowerCorrectionValue float32 `gorm:"default:1"`
+	SpecialMovePowerCorrectionValue  float32 `gorm:"default:1"`
 	// 攻撃力
-	AttackCorrectionValue        int `gorm:"default:1"`
-	SpecialAttackCorrectionValue int `gorm:"default:1"`
+	AttackCorrectionValue        float32 `gorm:"default:1"`
+	SpecialAttackCorrectionValue float32 `gorm:"default:1"`
 	// 攻撃威力
-	AttackPowerCorrectionValue        int `gorm:"default:1"`
-	SpecialAttackPowerCorrectionValue int `gorm:"default:1"`
+	AttackPowerCorrectionValue        float32 `gorm:"default:1"`
+	SpecialAttackPowerCorrectionValue float32 `gorm:"default:1"`
 	// 防御力
-	DeffenseCorrectionValue        int `gorm:"default:1"`
-	SpecialDeffenseCorrectionValue int `gorm:"default:1"`
+	DeffenceCorrectionValue        float32 `gorm:"default:1"`
+	SpecialDeffenceCorrectionValue float32 `gorm:"default:1"`
 	// ダメージ
 	DamageCorrectionType1  enum.PokemonType `sql:"type:pokemon_type"`
-	DamageCorrectionValue1 int              `gorm:"default:1"`
+	DamageCorrectionValue1 float32          `gorm:"default:1"`
 	DamageCorrectionType2  enum.PokemonType `sql:"type:pokemon_type"`
-	DamageCorrectionValue2 int              `gorm:"default:1"`
+	DamageCorrectionValue2 float32          `gorm:"default:1"`
 	// 重さ
-	WeightCorrectionValue int `gorm:"default:1"`
+	WeightCorrectionValue float32 `gorm:"default:1"`
 }

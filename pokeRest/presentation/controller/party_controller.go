@@ -23,14 +23,14 @@ func NewPartyController(writeServ parties.PartyWriteService) *PartyController {
 
 func (c PartyController) SaveParty(ctx echo.Context) error {
 	// Todo: accept value
-	cmd := command.NewCreatePartyCommand("", "", []uint{}, []uint{}, false, 0)
+	cmd := command.NewCreatePartyCommand("", "", false, 0, []uint{}, []uint{})
 	domain, err := c.writeServ.SaveParty(cmd)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }
 
 func (c PartyController) UpdateParty(ctx echo.Context, id int) error {
 	// Todo: accept value
-	cmd := command.NewUpdatePartyCommand(uint(id), "", "", []uint{}, []uint{}, false)
+	cmd := command.NewUpdatePartyCommand(uint(id), "", "", false, []uint{}, []uint{}, []uint{})
 	domain, err := c.writeServ.UpdateParty(cmd)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }

@@ -107,7 +107,7 @@ type ITrainedPokemonAttackRepository interface {
 }
 
 type ITrainedPokemonDeffenceRepository interface {
-	IWritableRepository[trainings.TrainedPokemonDeffenceTarget]
+	IWritableRepository[trainings.TrainedPokemonDefenceTarget]
 }
 
 type IUserRepository interface {

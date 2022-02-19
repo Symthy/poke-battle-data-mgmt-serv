@@ -8,21 +8,21 @@ import (
 
 func DummyUser1(filterFields ...string) schema.User {
 	var id uint = 0
-	if len(filterFields) == 0 || collections.ListContains(filterFields, "id") {
+	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "id") {
 		id = 1
 	}
 	var displayName *string = nil
-	if len(filterFields) == 0 || collections.ListContains(filterFields, "displayName") {
+	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "displayName") {
 		displayName = new(string)
 		*displayName = "dummy dummy user"
 	}
 	var email *string = nil
-	if len(filterFields) == 0 || collections.ListContains(filterFields, "email") {
+	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "email") {
 		email = new(string)
 		*email = "test@test.com"
 	}
 	var profile *string = nil
-	if len(filterFields) == 0 || collections.ListContains(filterFields, "profile") {
+	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "profile") {
 		profile = new(string)
 		*profile = "detail\nprofile"
 	}

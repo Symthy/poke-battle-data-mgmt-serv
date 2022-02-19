@@ -11,44 +11,37 @@ type Party struct {
 	id                uint
 	name              string
 	battleFormat      BattleFormat
-	partyTagIds       []uint
-	trainedPokemonIds []uint
 	isPrivate         bool
+	partyResultIds    *[]uint
+	partyTagIds       *[]uint
+	trainedPokemonIds []uint
 	userId            *uint
 }
 
-func NewParty(id uint) Party {
-	return Party{
-		id: id,
-	}
-}
-
-func NewPartyOfUnregistered(name string, battleFormat string, partyTagIds []uint,
-	trainedPokemonIds []uint, isPrivate bool, userId uint) Party {
-	// Todo: validate
-	return Party{
-		id:                0,
-		name:              name,
-		battleFormat:      resolveBattleFormat(battleFormat),
-		partyTagIds:       partyTagIds,
-		trainedPokemonIds: trainedPokemonIds,
-		isPrivate:         isPrivate,
-		userId:            &userId,
-	}
-}
-
-func NewPartyForUpdated(id uint, name string, battleFormat string, partyTagIds []uint,
-	trainedPokemonIds []uint, isPrivate bool) Party {
-	// Todo: validate
+func NewParty(id uint, name string, battleFormat string, isPrivate bool, userId *uint,
+	partyResultIds *[]uint, partyTagIds *[]uint, trainedPokemonIds []uint) Party {
 	return Party{
 		id:                id,
 		name:              name,
 		battleFormat:      resolveBattleFormat(battleFormat),
+		partyResultIds:    partyResultIds,
 		partyTagIds:       partyTagIds,
 		trainedPokemonIds: trainedPokemonIds,
 		isPrivate:         isPrivate,
-		userId:            nil,
+		userId:            userId,
 	}
+}
+
+func NewPartyOfUnregistered(name string, battleFormat string, isPrivate bool, userId uint,
+	partyTagIds []uint, trainedPokemonIds []uint) Party {
+	// Todo: validate
+	return NewParty(0, name, battleFormat, isPrivate, &userId, nil, &partyTagIds, trainedPokemonIds)
+}
+
+func NewPartyForUpdated(id uint, name string, battleFormat string, isPrivate bool,
+	partyResultIds []uint, partyTagIds []uint, trainedPokemonIds []uint) Party {
+	// Todo: validate
+	return NewParty(0, name, battleFormat, isPrivate, nil, &partyResultIds, &partyTagIds, trainedPokemonIds)
 }
 
 func (p Party) Id() uint {
@@ -63,7 +56,11 @@ func (p Party) BattleFormat() BattleFormat {
 	return p.battleFormat
 }
 
-func (p Party) PartyTagIds() []uint {
+func (p Party) PartyResultIds() *[]uint {
+	return p.partyResultIds
+}
+
+func (p Party) PartyTagIds() *[]uint {
 	return p.partyTagIds
 }
 

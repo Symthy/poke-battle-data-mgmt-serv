@@ -99,7 +99,7 @@ func ToSchemaTrainedPokemonAttackTarget(t trainings.TrainedPokemonAttackTarget) 
 	return schema
 }
 
-func ToSchemaTrainedPokemonDeffenceTarget(t trainings.TrainedPokemonDeffenceTarget) schema.TrainedPokemonDeffenceTarget {
+func ToSchemaTrainedPokemonDeffenceTarget(t trainings.TrainedPokemonDefenceTarget) schema.TrainedPokemonDeffenceTarget {
 	schema := schema.TrainedPokemonDeffenceTarget{}
 	return schema
 }

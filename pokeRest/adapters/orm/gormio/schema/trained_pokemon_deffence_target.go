@@ -6,20 +6,22 @@ import (
 )
 
 type TrainedPokemonDeffenceTarget struct {
-	ID                          uint `gorm:"primaryKey;autoIncrement:true"`
-	TrainedPokemonId            uint
-	TrainedPokemon              TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
-	MoveId                      uint           // M:1 <- Move
-	OpponentPokemonId           uint
-	OpponentPokemonNature       enum.Nature
-	OpponentPokemonEffortValueA int `gorm:"default:0"`
-	OpponentPokemonEffortValueC int `gorm:"default:0"`
+	ID                        uint `gorm:"primaryKey;autoIncrement:true"`
+	TrainedPokemonId          uint
+	TrainedPokemon            TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
+	MoveId                    int            // M:1 <- Move
+	TargetPokemonId           int
+	TargetPokemonNature       enum.Nature
+	TargetPokemonEffortValueA int `gorm:"default:0"`
+	TargetPokemonEffortValueC int `gorm:"default:0"`
 }
 
 func (TrainedPokemonDeffenceTarget) TableName() string {
 	return "trained_pokemon_deffence_targets"
 }
 
-func (t TrainedPokemonDeffenceTarget) ConvertToDomain() trainings.TrainedPokemonDeffenceTarget {
-	return trainings.NewTrainedPokemonDeffenceTarget(t.ID)
+func (t TrainedPokemonDeffenceTarget) ConvertToDomain() trainings.TrainedPokemonDefenceTarget {
+	return trainings.NewTrainedPokemonDefenceTarget(
+		t.ID, t.TrainedPokemonId, t.MoveId, t.TargetPokemonId, t.TargetPokemonNature.String(),
+		t.TargetPokemonEffortValueA, t.TargetPokemonEffortValueC)
 }
