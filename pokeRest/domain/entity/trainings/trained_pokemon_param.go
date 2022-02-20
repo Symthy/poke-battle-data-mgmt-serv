@@ -1,18 +1,29 @@
 package trainings
 
+import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+
 type TrainedPokemonParam struct {
 	id           uint
-	adjustmentId *uint
+	gender       value.Gender
 	nickname     *string
-	gender       Gender
 	description  *string
+	adjustmentId *uint
 	isPrivate    bool
-	userId       uint
+	userId       *uint
 }
 
-func NewTrainedPokemonParam(id uint) TrainedPokemonParam {
+func NewTrainedPokemonParam(id uint, gender string, nickname, description *string,
+	adjustmentId *uint, isPrivate bool, userId *uint) TrainedPokemonParam {
 	// Todo: add and validate
-	return TrainedPokemonParam{id: id}
+	return TrainedPokemonParam{
+		id:           id,
+		gender:       value.Gender(gender),
+		adjustmentId: adjustmentId,
+		nickname:     nickname,
+		description:  description,
+		isPrivate:    isPrivate,
+		userId:       userId,
+	}
 }
 
 func (t TrainedPokemonParam) Id() uint {
@@ -27,7 +38,7 @@ func (t TrainedPokemonParam) Nickname() *string {
 	return t.nickname
 }
 
-func (t TrainedPokemonParam) Gender() Gender {
+func (t TrainedPokemonParam) Gender() value.Gender {
 	return t.gender
 }
 
@@ -39,7 +50,7 @@ func (t TrainedPokemonParam) IsPrivate() bool {
 	return t.isPrivate
 }
 
-func (t TrainedPokemonParam) UserId() uint {
+func (t TrainedPokemonParam) UserId() *uint {
 	return t.userId
 }
 
@@ -53,16 +64,4 @@ func (t TrainedPokemonParam) ApplyAdjustmentId(adjustmentId uint) TrainedPokemon
 		isPrivate:    t.isPrivate,
 		userId:       t.userId,
 	}
-}
-
-type Gender string
-
-const (
-	Male   Gender = "Male"
-	Female Gender = "Female"
-	None   Gender = "-"
-)
-
-func resolveGender(value string) Gender {
-	return Gender(value)
 }

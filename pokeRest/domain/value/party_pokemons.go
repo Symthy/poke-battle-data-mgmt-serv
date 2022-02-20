@@ -1,27 +1,27 @@
 package value
 
-type PartyPokemons struct {
+type PartyPokemonIds struct {
 	pokemonsIds []int
 	size        int
 }
 
-func NewPartyPokemons(pokemonIds []*int) PartyPokemons {
+func NewPartyPokemonIds(pokemonIds ...int) PartyPokemonIds {
 	ids := []int{}
 	for i, p := range pokemonIds {
-		if p != nil && i < 6 {
-			ids = append(ids, *p)
+		if i < 6 {
+			ids = append(ids, p)
 		}
 	}
-	return PartyPokemons{
+	return PartyPokemonIds{
 		pokemonsIds: ids,
 		size:        len(ids),
 	}
 }
 
-func (p PartyPokemons) PokemonsIds() []int {
+func (p PartyPokemonIds) PokemonsIds() []int {
 	return p.pokemonsIds
 }
 
-func (p PartyPokemons) Size() int {
+func (p PartyPokemonIds) Size() int {
 	return p.size
 }

@@ -8,3 +8,7 @@ const (
 	Lose BattleResult = "Lose"
 	Draw BattleResult = "Draw"
 )
+
+func (b BattleResult) String() string {
+	return string(b)
+}

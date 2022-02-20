@@ -24,7 +24,6 @@ func NewTrainedPokemonAttackTarget(
 		targetPokemonNature:  value.NewPokemonNature(targetPokemonNature),
 		targetPokemonEffortH: value.NewEffortValue(targetPokemonEffortH),
 		targetPokemonEffortB: value.NewEffortValue(targetPokemonEffortB),
-		targetPokemonEffortD: value.NewEffortValue(targetPokemonEffortD),
 	}
 }
 

@@ -31,5 +31,6 @@ func (Move) TableName() string {
 }
 
 func (m Move) ConvertToDomain() moves.Move {
-	return moves.NewMove(m.ID, m.Name, m.Species.String(), m.Power, m.Accuracy, m.PP, *m.IsContained, *m.IsCanGuard)
+	return moves.NewMove(m.ID, m.Name, m.Species.String(), m.Power, m.Accuracy, m.PP,
+		*m.IsContained, *m.IsCanGuard)
 }

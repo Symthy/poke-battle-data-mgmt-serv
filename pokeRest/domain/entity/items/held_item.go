@@ -14,9 +14,16 @@ type HeldItem struct {
 	correctionValues *[]value.CorrectionValue
 }
 
-func NewHeldItem(id uint) HeldItem {
+func NewHeldItem(id uint, name, description string, correctionValues []value.CorrectionValue) HeldItem {
+	var corrections *[]value.CorrectionValue = nil
+	if len(correctionValues) > 0 {
+		corrections = &correctionValues
+	}
 	return HeldItem{
-		id: id,
+		id:               id,
+		name:             name,
+		description:      description,
+		correctionValues: corrections,
 	}
 }
 

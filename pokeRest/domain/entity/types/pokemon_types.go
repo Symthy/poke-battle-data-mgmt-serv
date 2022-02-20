@@ -9,7 +9,7 @@ type PokemonTypes struct {
 func NewPokemonTypes(types ...value.PokemonType) PokemonTypes {
 	items := types
 	if len(types) == 0 {
-		items = value.GetPokemonTypes()
+		items = value.PokemonTypeAll()
 	}
 	return PokemonTypes{
 		items: items,

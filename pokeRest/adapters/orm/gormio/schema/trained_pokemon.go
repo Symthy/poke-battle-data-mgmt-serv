@@ -8,13 +8,13 @@ import (
 
 type TrainedPokemon struct {
 	gorm.Model
+	Gender                     enum.Gender `sql:"type:gender"`
+	Nickname                   *string
+	Description                *string
 	TrainedPokemonAdjustmentId uint
 	TrainedPokemonAdjustment   TrainedPokemonAdjustment `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
-	Nickname                   *string
-	Gender                     *enum.Gender `sql:"type:gender"`
-	Description                *string
-	IsPrivate                  bool `gorm:"default:false"`
-	CreateUserId               uint // M:1 from User
+	IsPrivate                  bool                     `gorm:"default:false"`
+	CreateUserId               *uint                    // M:1 from User
 
 	// relation
 	BattleRecord1 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord
@@ -29,5 +29,6 @@ func (TrainedPokemon) TableName() string {
 }
 
 func (t TrainedPokemon) ConvertToDomain() trainings.TrainedPokemonParam {
-	return trainings.NewTrainedPokemonParam(t.ID)
+	return trainings.NewTrainedPokemonParam(
+		t.ID, t.Gender.String(), t.Nickname, t.Description, &t.TrainedPokemonAdjustmentId, t.IsPrivate, t.CreateUserId)
 }

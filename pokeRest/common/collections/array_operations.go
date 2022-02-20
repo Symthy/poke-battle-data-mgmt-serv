@@ -32,3 +32,15 @@ func MapForList[TI any, TO any](array []TI, mapFunc func(TI) TO) []TO {
 	}
 	return rets
 }
+
+func AddsToList[T any](array *[]T, elems ...*T) {
+	for _, e := range elems {
+		addToList(array, e)
+	}
+}
+
+func addToList[T any](array *[]T, elem *T) {
+	if elem != nil {
+		*array = append(*array, *elem)
+	}
+}

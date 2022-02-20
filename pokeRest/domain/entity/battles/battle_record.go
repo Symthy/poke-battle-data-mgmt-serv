@@ -8,14 +8,25 @@ type BattleRecord struct {
 	season                   int
 	battleResult             BattleResult
 	battleOpponentPartyId    uint
-	selfElectionPokemons     ElectionPokemons
-	selfTrainedPokemons      ElectionPokemons
-	opponentElectionPokemons ElectionPokemons
+	selfElectionPokemons     ElectionPokemons[int]
+	selfTrainedPokemons      ElectionPokemons[uint]
+	opponentElectionPokemons ElectionPokemons[int]
 }
 
-func NewBattleRecord(id uint) BattleRecord {
+func NewBattleRecord(
+	id, partyId uint, generation, series, season int, battleResult string, battleOpponentPartyId uint,
+	selfElectionPokemons []int, selfTrainedPokemons []uint, opponentElectionPokemons []int) BattleRecord {
 	return BattleRecord{
-		id: id,
+		id:                       id,
+		partyId:                  partyId,
+		generation:               generation,
+		series:                   series,
+		season:                   season,
+		battleResult:             BattleResult(battleResult),
+		battleOpponentPartyId:    battleOpponentPartyId,
+		selfElectionPokemons:     NewElectionPokemons(selfElectionPokemons),
+		selfTrainedPokemons:      NewElectionPokemons(selfTrainedPokemons),
+		opponentElectionPokemons: NewElectionPokemons(opponentElectionPokemons),
 	}
 }
 
@@ -47,22 +58,22 @@ func (b BattleRecord) BattleOpponentPartyId() uint {
 	return b.battleOpponentPartyId
 }
 
-func (b BattleRecord) SelfElectionPokemons() ElectionPokemons {
+func (b BattleRecord) SelfElectionPokemons() ElectionPokemons[int] {
 	return b.selfElectionPokemons
 }
 
-func (b BattleRecord) SelfTrainedPokemons() ElectionPokemons {
+func (b BattleRecord) SelfTrainedPokemons() ElectionPokemons[uint] {
 	return b.selfTrainedPokemons
 }
 
-func (b BattleRecord) OpponentPokemons() ElectionPokemons {
+func (b BattleRecord) OpponentPokemons() ElectionPokemons[int] {
 	return b.opponentElectionPokemons
 }
 
-type BattleResult int
+type BattleResult string
 
 const (
-	WIN  BattleResult = 0
-	LOSE BattleResult = 1
-	DRAW BattleResult = 2
+	WIN  BattleResult = "Win"
+	LOSE BattleResult = "Lose"
+	DRAW BattleResult = "Draw"
 )

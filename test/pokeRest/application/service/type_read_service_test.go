@@ -62,13 +62,13 @@ func (suite TypeServiceTestSuite) TestResolveAttackTypeCompatibility() {
 		{
 			expectedCompatibility: []float32{1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.0, 2.0},
 			expectedTypeOrder:     jpTypeNames,
-			attackType:            value.PokemonTypePoison,
+			attackType:            value.Poison(),
 			lang:                  "ja-JP",
 		},
 		{
 			expectedCompatibility: []float32{1.0, 0.5, 0.5, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 0.5, 1.0, 2.0, 1.0},
 			expectedTypeOrder:     enTypeNames,
-			attackType:            value.PokemonTypeFire,
+			attackType:            value.Fire(),
 			lang:                  "en-US",
 		},
 	}
@@ -90,13 +90,13 @@ func (suite TypeServiceTestSuite) TestResolveDeffenceTypeCompatibility() {
 		{
 			expectedCompatibility: []float32{1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 0.5, 1.0, 0.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0},
 			expectedTypeOrder:     jpTypeNames,
-			deffenceType:          value.PokemonTypeFlying,
+			deffenceType:          value.Flying(),
 			lang:                  "ja-JP",
 		},
 		{
 			expectedCompatibility: []float32{1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0},
 			expectedTypeOrder:     enTypeNames,
-			deffenceType:          value.PokemonTypeElectric,
+			deffenceType:          value.Electric(),
 			lang:                  "en-US",
 		},
 	}

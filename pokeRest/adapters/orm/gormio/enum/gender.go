@@ -6,8 +6,9 @@ import "database/sql/driver"
 type Gender string
 
 const (
-	Male   Gender = "Male"
-	Female Gender = "Female"
+	Male       Gender = "Male"
+	Female     Gender = "Female"
+	NoneGender Gender = ""
 )
 
 func (ge *Gender) Scan(value interface{}) error {
@@ -17,4 +18,8 @@ func (ge *Gender) Scan(value interface{}) error {
 
 func (ge Gender) Value() (driver.Value, error) {
 	return string(ge), nil
+}
+
+func (ge Gender) String() string {
+	return string(ge)
 }

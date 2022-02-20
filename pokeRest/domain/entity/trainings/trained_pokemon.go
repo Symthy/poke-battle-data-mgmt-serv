@@ -16,14 +16,14 @@ func NewTrainedPokemon(param TrainedPokemonParam, adjustment TrainedPokemonAdjus
 
 // Todo: builder
 func NewTrainedPokemonOfUnregistered(
-	nickname *string, gender string, description *string, isPrivate bool, userId uint,
+	nickname *string, gender string, description *string, isPrivate bool, userId *uint,
 	pokemonId int, nature string, abilityId *int, heldItemId *int, effortValueH int, effortValueA int,
 	effortValueB int, effortValueC int, effortValueD int, effortValueS int,
 	moveId1 *int, moveId2 *int, moveId3 *int, moveId4 *int) TrainedPokemon {
 	entity := TrainedPokemon{}
 	entity.TrainedPokemonParam = TrainedPokemonParam{
 		nickname:    nickname,
-		gender:      resolveGender(gender),
+		gender:      value.Gender(gender),
 		description: description,
 		isPrivate:   isPrivate,
 		userId:      userId,
