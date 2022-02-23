@@ -3,14 +3,12 @@ package battles
 type BattleRecord struct {
 	id                       uint
 	partyId                  uint
-	generation               int
-	series                   int
-	season                   int
 	battleResult             BattleResult
 	battleOpponentPartyId    uint
 	selfElectionPokemons     ElectionPokemons[int]
 	selfTrainedPokemons      ElectionPokemons[uint]
 	opponentElectionPokemons ElectionPokemons[int]
+	Season
 }
 
 func NewBattleRecord(
@@ -19,14 +17,16 @@ func NewBattleRecord(
 	return BattleRecord{
 		id:                       id,
 		partyId:                  partyId,
-		generation:               generation,
-		series:                   series,
-		season:                   season,
 		battleResult:             BattleResult(battleResult),
 		battleOpponentPartyId:    battleOpponentPartyId,
 		selfElectionPokemons:     NewElectionPokemons(selfElectionPokemons),
 		selfTrainedPokemons:      NewElectionPokemons(selfTrainedPokemons),
 		opponentElectionPokemons: NewElectionPokemons(opponentElectionPokemons),
+		Season: Season{
+			generation: generation,
+			series:     series,
+			season:     season,
+		},
 	}
 }
 
@@ -38,36 +38,25 @@ func (b BattleRecord) PartyId() uint {
 	return b.partyId
 }
 
-func (b BattleRecord) Generation() int {
-	return b.generation
+func (b BattleRecord) Notify(note *IBattleRecordNotification) {
+	(*note).Id(b.id)
+	(*note).PartyId(b.partyId)
+	(*note).Generation(b.generation)
+	(*note).Series(b.series)
+	(*note).Season(b.season)
+	(*note).BattleResult(b.battleResult.String())
+	(*note).BattleOpponentPartyId(b.battleOpponentPartyId)
+	(*note).SelfElectionPokemons(b.selfElectionPokemons.Ids())
+	(*note).SelfTrainedPokemons(b.selfTrainedPokemons.Ids())
+	(*note).OpponentElectionPokemons(b.opponentElectionPokemons.Ids())
 }
 
-func (b BattleRecord) Series() int {
-	return b.series
+func (b BattleRecord) solvedSeason() bool {
+	return b.generation != 0 && b.series != 0 && b.season == 0
 }
 
-func (b BattleRecord) Season() int {
-	return b.season
-}
-
-func (b BattleRecord) BattleResult() BattleResult {
-	return b.battleResult
-}
-
-func (b BattleRecord) BattleOpponentPartyId() uint {
-	return b.battleOpponentPartyId
-}
-
-func (b BattleRecord) SelfElectionPokemons() ElectionPokemons[int] {
-	return b.selfElectionPokemons
-}
-
-func (b BattleRecord) SelfTrainedPokemons() ElectionPokemons[uint] {
-	return b.selfTrainedPokemons
-}
-
-func (b BattleRecord) OpponentPokemons() ElectionPokemons[int] {
-	return b.opponentElectionPokemons
+func (b BattleRecord) ApplyOpponentPartyId(opponentPartyId uint) {
+	b.battleOpponentPartyId = opponentPartyId
 }
 
 type BattleResult string
@@ -77,3 +66,7 @@ const (
 	LOSE BattleResult = "Lose"
 	DRAW BattleResult = "Draw"
 )
+
+func (b BattleResult) String() string {
+	return string(b)
+}

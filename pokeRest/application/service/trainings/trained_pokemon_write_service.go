@@ -58,6 +58,7 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrained
 
 // UC: 育成済み個体更新
 func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
+	// Todo: id find
 	if err := s.trainedParamRepo.StartTransaction(); err != nil {
 		return nil, err
 	}

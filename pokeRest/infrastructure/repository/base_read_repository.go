@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Todo: split
 type BaseReadRepository[TS infrastructure.ISchema[TD], TD infrastructure.IDomain, TM infrastructure.IDomains[TD]] struct {
 	dbClient            orm.IDbClient
 	emptySchemaBuilder  func() TS

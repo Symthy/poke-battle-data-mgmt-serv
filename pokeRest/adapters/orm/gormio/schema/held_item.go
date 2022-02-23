@@ -23,7 +23,7 @@ func (HeldItem) TableName() string {
 
 func (i HeldItem) ConvertToDomain() items.HeldItem {
 	correctionValues := []value.CorrectionValue{}
-	collections.AddsToList(&correctionValues,
+	collections.AddsToList(correctionValues,
 		value.PhysicalMoveCorrectionValue(nil, i.CorrectionValue.PhysicalMovePowerCorrectionValue),
 		value.SpecialMoveCorrectionValue(nil, i.CorrectionValue.SpecialMovePowerCorrectionValue),
 		value.AttackCorrectionValue(nil, i.CorrectionValue.AttackCorrectionValue),

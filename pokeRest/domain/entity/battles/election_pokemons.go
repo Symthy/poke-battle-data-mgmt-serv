@@ -12,7 +12,7 @@ func NewElectionPokemons[T int | uint](pokemonIds []T) ElectionPokemons[T] {
 	}
 }
 
-func (e ElectionPokemons[T]) PokemonIds() []T {
+func (e ElectionPokemons[T]) Ids() []T {
 	return e.pokemonIds
 }
 

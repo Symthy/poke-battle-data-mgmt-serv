@@ -25,7 +25,7 @@ type IWritableRepository[TD infrastructure.IDomain] interface {
 type TransactionalRepositoryWrapper[TD infrastructure.IDomain] struct {
 	InnerWriteRepository[TD]
 	dbClient orm.IDbClient
-	tx       *gorm.DB
+	tx       *gorm.DB // Todo: wrapして外に渡さないといけない
 }
 
 func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain](
@@ -49,7 +49,7 @@ func (trw TransactionalRepositoryWrapper[TD]) StartTransaction() error {
 func (trw TransactionalRepositoryWrapper[TD]) CancelTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
-		return fmt.Errorf("rollback failure")
+		return fmt.Errorf("could't rollback")
 	}
 	err := trw.tx.Rollback().Error
 	trw.tx = nil
@@ -59,7 +59,7 @@ func (trw TransactionalRepositoryWrapper[TD]) CancelTransaction() error {
 func (trw TransactionalRepositoryWrapper[TD]) FinishTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
-		return fmt.Errorf("commit failure")
+		return fmt.Errorf("could't commit")
 	}
 	return trw.tx.Commit().Error
 }

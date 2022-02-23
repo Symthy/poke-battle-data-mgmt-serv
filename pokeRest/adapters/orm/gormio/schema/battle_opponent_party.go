@@ -23,7 +23,7 @@ func (BattleOpponentParty) TableName() string {
 
 func (b BattleOpponentParty) ConvertToDomain() battles.BattleOpponentParty {
 	pokemonIds := []int{}
-	collections.AddsToList(&pokemonIds, b.OpponentPokemonId1, b.OpponentPokemonId2,
+	collections.AddsToList(pokemonIds, b.OpponentPokemonId1, b.OpponentPokemonId2,
 		b.OpponentPokemonId3, b.OpponentPokemonId4, b.OpponentPokemonId5, b.OpponentPokemonId6)
 	return battles.NewBattleOpponentParty(b.ID, pokemonIds...)
 }

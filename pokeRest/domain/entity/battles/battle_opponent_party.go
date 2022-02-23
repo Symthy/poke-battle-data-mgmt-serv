@@ -7,10 +7,14 @@ type BattleOpponentParty struct {
 	opponentPokemonIds value.PartyPokemonIds
 }
 
-func NewBattleOpponentParty(id uint, pokemonIds ...int) BattleOpponentParty {
+func NewBattleOpponentPartyOfUnregister(pokemonIds value.PartyPokemonIds) BattleOpponentParty {
+	return NewBattleOpponentParty(0, pokemonIds)
+}
+
+func NewBattleOpponentParty(id uint, pokemonIds value.PartyPokemonIds) BattleOpponentParty {
 	return BattleOpponentParty{
 		id:                 id,
-		opponentPokemonIds: value.NewPartyPokemonIds(pokemonIds...),
+		opponentPokemonIds: pokemonIds,
 	}
 }
 

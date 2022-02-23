@@ -38,15 +38,15 @@ func (BattleRecord) TableName() string {
 
 func (b BattleRecord) ConvertToDomain() battles.BattleRecord {
 	selfElectionPokemonIds := []int{}
-	collections.AddsToList(&selfElectionPokemonIds, b.SelfElectionPokemonId1, b.SelfElectionPokemonId2,
+	collections.AddsToList(selfElectionPokemonIds, b.SelfElectionPokemonId1, b.SelfElectionPokemonId2,
 		b.SelfElectionPokemonId3, b.SelfElectionPokemonId4)
 
 	selfTrainedPokemonIds := []uint{}
-	collections.AddsToList(&selfTrainedPokemonIds, b.SelfTrainedPokemonId1, b.SelfTrainedPokemonId2,
+	collections.AddsToList(selfTrainedPokemonIds, b.SelfTrainedPokemonId1, b.SelfTrainedPokemonId2,
 		b.SelfTrainedPokemonId3, b.SelfTrainedPokemonId4)
 
 	opponentElectionPokemonIds := []int{}
-	collections.AddsToList(&opponentElectionPokemonIds, b.OpponentElectionPokemonId1,
+	collections.AddsToList(opponentElectionPokemonIds, b.OpponentElectionPokemonId1,
 		b.OpponentElectionPokemonId2, b.OpponentElectionPokemonId3, b.OpponentElectionPokemonId4)
 
 	return battles.NewBattleRecord(

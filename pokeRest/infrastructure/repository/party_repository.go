@@ -13,12 +13,18 @@ var _ repository.IPartyRepository = (*PartyRepository)(nil)
 var emptyPartySchemaBuilder = func() schema.Party { return schema.Party{} }
 
 type PartyRepository struct {
+	BaseReadRepository[schema.Party, parties.Party, parties.Parties]
 	BaseWriteRepository[schema.Party, parties.Party]
 	dbClient orm.IDbClient
 }
 
 func NewPartyRepository(dbClient orm.IDbClient) *PartyRepository {
 	return &PartyRepository{
+		BaseReadRepository: BaseReadRepository[schema.Party, parties.Party, parties.Parties]{
+			dbClient:           dbClient,
+			emptySchemaBuilder: emptyPartySchemaBuilder,
+			schemaConverter:    dto.ToSchemaParty,
+		},
 		BaseWriteRepository: BaseWriteRepository[schema.Party, parties.Party]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartySchemaBuilder,
@@ -31,3 +37,5 @@ func NewPartyRepository(dbClient orm.IDbClient) *PartyRepository {
 // Create <- BaseWriteRepository
 // Update <- BaseWriteRepository
 // Delete <- BaseWriteRepository
+
+// FindById <- BaseReadRepository
