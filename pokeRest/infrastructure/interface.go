@@ -11,3 +11,7 @@ type IDomain interface {
 type IDomains[T IDomain] interface {
 	Items() []T
 }
+
+type ISingleRecordFinder[T IDomain] interface {
+	FindById(id uint) (*T, error)
+}

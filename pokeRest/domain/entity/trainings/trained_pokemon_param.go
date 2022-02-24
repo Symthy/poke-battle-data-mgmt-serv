@@ -54,14 +54,6 @@ func (t TrainedPokemonParam) UserId() *uint {
 	return t.userId
 }
 
-func (t TrainedPokemonParam) ApplyAdjustmentId(adjustmentId uint) TrainedPokemonParam {
-	return TrainedPokemonParam{
-		id:           t.id,
-		adjustmentId: &adjustmentId,
-		nickname:     t.nickname,
-		gender:       t.gender,
-		description:  t.description,
-		isPrivate:    t.isPrivate,
-		userId:       t.userId,
-	}
+func (t TrainedPokemonParam) ApplyAdjustmentId(adjustmentId uint) {
+	t.adjustmentId = &adjustmentId
 }

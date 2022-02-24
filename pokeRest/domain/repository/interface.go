@@ -79,6 +79,7 @@ type IPartyBattleResultRepository interface {
 	IWritableRepository[parties.PartyBattleResult]
 }
 
+// Todo: Don't want to depend gorm. wrap?
 type IBattleRecordRepository interface {
 	ISingleRecordFinder[battles.BattleRecord]
 	IWritableRepository[battles.BattleRecord]
@@ -111,6 +112,7 @@ type ITrainedPokemonRepository interface {
 	DeleteRecord(*gorm.DB, uint) (*trainings.TrainedPokemonParam, error)
 }
 type ITrainedPokemonTransactionalRepository interface {
+	ISingleRecordFinder[trainings.TrainedPokemonParam]
 	ITrainedPokemonRepository
 	ITransactionalRepository
 }

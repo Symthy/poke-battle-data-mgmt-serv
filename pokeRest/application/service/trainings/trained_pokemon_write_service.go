@@ -1,94 +1,101 @@
 package trainings
 
 import (
+	"fmt"
+
 	"github.com/Symthy/PokeRest/pokeRest/application/service/trainings/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/service"
 )
 
+type trainedPokemonTransactionalRepository = func(repository.ITrainedPokemonRepository) repository.ITrainedPokemonTransactionalRepository
+
 type TrainedPokemonWriteService struct {
-	trainedParamRepo repository.ITrainedPokemonTransactionalRepository
-	adjustmentRepo   repository.ITrainedPokemonAdjustmentRepository
+	trainedParamRepo               repository.ITrainedPokemonRepository
+	adjustmentRepo                 repository.ITrainedPokemonAdjustmentRepository
+	trainedPokemonResolver         service.TrainedPokemonResolver
+	transactionalRepositoryBuilder trainedPokemonTransactionalRepository
 }
 
 func NewTrainedPokemonWriteService(
-	trainedParamRepo repository.ITrainedPokemonTransactionalRepository,
-	adjustmentRepo repository.ITrainedPokemonAdjustmentRepository) TrainedPokemonWriteService {
+	trainedParamRepo repository.ITrainedPokemonRepository,
+	adjustmentRepo repository.ITrainedPokemonAdjustmentRepository,
+	transactionalRepositoryBuilder trainedPokemonTransactionalRepository) TrainedPokemonWriteService {
 
 	serv := TrainedPokemonWriteService{
-		trainedParamRepo: trainedParamRepo,
-		adjustmentRepo:   adjustmentRepo,
+		trainedParamRepo:               trainedParamRepo,
+		adjustmentRepo:                 adjustmentRepo,
+		trainedPokemonResolver:         service.NewTrainedPokemonResolver(adjustmentRepo),
+		transactionalRepositoryBuilder: transactionalRepositoryBuilder,
 	}
 	return serv
 }
 
 // UC: 育成済み個体登録
-func (s TrainedPokemonWriteService) SaveTrainedPokemon(cmd command.CreateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
-	if err := s.trainedParamRepo.StartTransaction(); err != nil {
-		return nil, err
-	}
-	defer s.trainedParamRepo.PanicPostProcess()
+func (s TrainedPokemonWriteService) SaveTrainedPokemon(
+	cmd command.CreateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
+	inputTrainedPokemon := cmd.ToDomain()
+	transactionalRepo := s.transactionalRepositoryBuilder(s.trainedParamRepo)
 
-	trainedPokemonEntity := cmd.ToDomain()
-	adjustment, err := s.adjustmentRepo.Find(trainedPokemonEntity.TrainedPokemonAdjustment)
-	if err != nil {
+	if err := transactionalRepo.StartTransaction(); err != nil {
 		return nil, err
 	}
-	param := trainedPokemonEntity.TrainedPokemonParam
-	if adjustment == nil {
-		createdAdjustment, err := s.adjustmentRepo.Create(trainedPokemonEntity.TrainedPokemonAdjustment)
-		if err != nil {
-			return nil, err
-		}
-		param = param.ApplyAdjustmentId(createdAdjustment.Id())
-		adjustment = createdAdjustment
-	}
-	createdParam, err := s.trainedParamRepo.Create(param)
-	if err != nil {
-		s.trainedParamRepo.CancelTransaction()
-		return nil, err
-	}
-	trainedPoke := trainings.NewTrainedPokemon(*createdParam, *adjustment)
+	defer transactionalRepo.PanicPostProcess()
 
-	if err := s.trainedParamRepo.FinishTransaction(); err != nil {
+	trainedPokemon, err := s.trainedPokemonResolver.Resolve(inputTrainedPokemon)
+	if err != nil {
+		transactionalRepo.CancelTransaction()
 		return nil, err
 	}
-	return &trainedPoke, nil
+	createdParam, err := transactionalRepo.Create(trainedPokemon.TrainedPokemonParam)
+	if err != nil {
+		transactionalRepo.CancelTransaction()
+		return nil, err
+	}
+	trainedPokemon.TrainedPokemonParam = *createdParam
+
+	if err := transactionalRepo.FinishTransaction(); err != nil {
+		return nil, err
+	}
+	return trainedPokemon, nil
 }
 
 // UC: 育成済み個体更新
 func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
-	// Todo: id find
-	if err := s.trainedParamRepo.StartTransaction(); err != nil {
+	inputTrainedPokemon := cmd.ToDomain()
+	transactionalRepo := s.transactionalRepositoryBuilder(s.trainedParamRepo)
+
+	if err := transactionalRepo.StartTransaction(); err != nil {
 		return nil, err
 	}
-	defer s.trainedParamRepo.PanicPostProcess()
+	defer transactionalRepo.PanicPostProcess()
 
-	trainedPokemonEntity := cmd.ToDomain()
-	adjustment, err := s.adjustmentRepo.Find(trainedPokemonEntity.TrainedPokemonAdjustment)
+	ret, err := transactionalRepo.FindById(inputTrainedPokemon.Id())
 	if err != nil {
 		return nil, err
 	}
-	param := trainedPokemonEntity.TrainedPokemonParam
-	if adjustment == nil {
-		createdAdjustment, err := s.adjustmentRepo.Create(trainedPokemonEntity.TrainedPokemonAdjustment)
-		if err != nil {
-			return nil, err
-		}
-		param = param.ApplyAdjustmentId(createdAdjustment.Id())
-		adjustment = createdAdjustment
+	if ret == nil {
+		// Todo: replace error
+		return nil, fmt.Errorf("trained pokemon not found")
 	}
-	createdParam, err := s.trainedParamRepo.Create(param)
-	if err != nil {
-		s.trainedParamRepo.CancelTransaction()
-		return nil, err
-	}
-	trainedPoke := trainings.NewTrainedPokemon(*createdParam, *adjustment)
 
-	if err := s.trainedParamRepo.FinishTransaction(); err != nil {
+	trainedPokemon, err := s.trainedPokemonResolver.Resolve(inputTrainedPokemon)
+	if err != nil {
+		transactionalRepo.CancelTransaction()
 		return nil, err
 	}
-	return &trainedPoke, nil
+	updatedParam, err := transactionalRepo.Update(trainedPokemon.TrainedPokemonParam)
+	if err != nil {
+		transactionalRepo.CancelTransaction()
+		return nil, err
+	}
+	trainedPokemon.TrainedPokemonParam = *updatedParam
+
+	if err := transactionalRepo.FinishTransaction(); err != nil {
+		return nil, err
+	}
+	return trainedPokemon, nil
 }
 
 // UC: 育成済み個体削除
