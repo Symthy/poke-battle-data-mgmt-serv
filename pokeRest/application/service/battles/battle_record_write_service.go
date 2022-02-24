@@ -4,60 +4,51 @@ import (
 	"fmt"
 
 	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/command"
-	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/spec"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	d_service "github.com/Symthy/PokeRest/pokeRest/domain/service"
 )
 
-type BattleRecordWriteServie struct {
+type BattleRecordWriteService struct {
 	// Todo: 個別に分けるかどうか
-	battleRecordRepo  repository.IBattleRecordTransactionalRepository
-	opponentPartyRepo repository.IBattleOpponentPartyRepository
-	selfPartyRepo     repository.IPartyRepository
-	seasonRepo        repository.IBattleSeasonRepository
-	battleRecordSpec  spec.BattleRecordSpecification
+	battleRecordRepo     repository.IBattleRecordTransactionalRepository
+	opponentPartyRepo    repository.IBattleOpponentPartyRepository
+	selfPartyRepo        repository.IPartyRepository
+	seasonRepo           repository.IBattleSeasonRepository
+	battleRecordResolver d_service.BattleRecordResolver
 }
 
-func NewBattleRecordWriteServie(
+func NewBattleRecordWriteService(
 	battleRecordRepo repository.IBattleRecordTransactionalRepository,
 	opponentPartyRepo repository.IBattleOpponentPartyRepository,
 	selfPartyRepo repository.IPartyRepository,
-	seasonRepo repository.IBattleSeasonRepository) BattleRecordWriteServie {
-	return BattleRecordWriteServie{
-		battleRecordRepo:  battleRecordRepo,
-		opponentPartyRepo: opponentPartyRepo,
-		selfPartyRepo:     selfPartyRepo,
-		seasonRepo:        seasonRepo,
-		battleRecordSpec:  spec.NewBattleSpecification(seasonRepo, selfPartyRepo, opponentPartyRepo),
+	seasonRepo repository.IBattleSeasonRepository) BattleRecordWriteService {
+	return BattleRecordWriteService{
+		battleRecordRepo:     battleRecordRepo,
+		opponentPartyRepo:    opponentPartyRepo,
+		selfPartyRepo:        selfPartyRepo,
+		seasonRepo:           seasonRepo,
+		battleRecordResolver: d_service.NewBattleRecordResolver(opponentPartyRepo, selfPartyRepo, seasonRepo),
 	}
 }
 
 // UC: 戦績登録 (パーティ戦績も更新)
-func (s BattleRecordWriteServie) AddBattleRecord(cmd command.AddBattleRecordCommand) (*battles.BattleRecord, error) {
-	// Todo: split domain service
-	battleRecord := cmd.ToDomain()
+func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCommand) (*battles.BattleRecord, error) {
+	inputBattleRecord := cmd.ToDomain()
+	opponentPartyMember := cmd.OpponentPartyMember()
 
 	if err := s.battleRecordRepo.StartTransaction(); err != nil {
 		return nil, err
 	}
 	defer s.battleRecordRepo.PanicPostProcess()
 
-	s.validateSelfParty(battleRecord)
-	currentSeason, err := s.battleRecordSpec.ResolveCurrentSeason()
+	battleRecord, err := s.battleRecordResolver.Resolve(inputBattleRecord, opponentPartyMember)
 	if err != nil {
 		s.battleRecordRepo.CancelTransaction()
 		return nil, err
 	}
-	battleRecord.ApplySeason(*currentSeason)
 
-	opponentParty, err := s.battleRecordSpec.ResolveOppositeParty(cmd.OpponentPartyMember())
-	if err != nil {
-		s.battleRecordRepo.CancelTransaction()
-		return nil, err
-	}
-	battleRecord.ApplyOpponentPartyId(opponentParty.Id())
-
-	createdBattleRecord, err := s.battleRecordRepo.Create(battleRecord)
+	createdBattleRecord, err := s.battleRecordRepo.Create(*battleRecord)
 	if err != nil {
 		s.battleRecordRepo.CancelTransaction()
 		return nil, err
@@ -70,23 +61,48 @@ func (s BattleRecordWriteServie) AddBattleRecord(cmd command.AddBattleRecordComm
 }
 
 // UC: 戦績編集 (パーティ戦績も更新)
-func (s BattleRecordWriteServie) EditBattleRecord() (*battles.BattleRecord, error) {
-	return nil, nil
+func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordCommand) (*battles.BattleRecord, error) {
+	inputBattleRecord := cmd.ToDomain()
+	opponentPartyMember := cmd.OpponentPartyMember()
+
+	if err := s.battleRecordRepo.StartTransaction(); err != nil {
+		return nil, err
+	}
+	defer s.battleRecordRepo.PanicPostProcess()
+
+	if err := s.validateBattleRecord(inputBattleRecord); err != nil {
+		return nil, err
+	}
+	battleRecord, err := s.battleRecordResolver.Resolve(inputBattleRecord, opponentPartyMember)
+	if err != nil {
+		s.battleRecordRepo.CancelTransaction()
+		return nil, err
+	}
+	updatedBattleRecord, err := s.battleRecordRepo.Update(*battleRecord)
+	if err != nil {
+		s.battleRecordRepo.CancelTransaction()
+		return nil, err
+	}
+
+	if err := s.battleRecordRepo.FinishTransaction(); err != nil {
+		return nil, err
+	}
+	return updatedBattleRecord, nil
 }
 
 // UC: 戦績削除 (パーティ戦績も更新)
-func (s BattleRecordWriteServie) DeleteBattleRecord() (*battles.BattleRecord, error) {
-	return nil, nil
+func (s BattleRecordWriteService) DeleteBattleRecord(id uint) (*battles.BattleRecord, error) {
+	return s.battleRecordRepo.Delete(id)
 }
 
-func (s BattleRecordWriteServie) validateSelfParty(battleRecord battles.BattleRecord) error {
-	isExistParty, err := s.battleRecordSpec.ExistSelfParty(battleRecord.PartyId())
+func (s BattleRecordWriteService) validateBattleRecord(battleRecord battles.BattleRecord) error {
+	retBattleRecord, err := s.battleRecordRepo.FindById(battleRecord.Id())
 	if err != nil {
 		return err
 	}
-	if !isExistParty {
+	if retBattleRecord == nil {
 		// Todo: replace error
-		return fmt.Errorf("self party not found")
+		return fmt.Errorf("target battle record not found")
 	}
 	return nil
 }

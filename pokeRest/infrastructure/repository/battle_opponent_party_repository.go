@@ -21,7 +21,7 @@ type BattleOpponentPartyRepository struct {
 	dbClient orm.IDbClient
 }
 
-func NewBattleOpponentParty(dbClient orm.IDbClient) *BattleOpponentPartyRepository {
+func NewBattleOpponentPartyRepository(dbClient orm.IDbClient) *BattleOpponentPartyRepository {
 	return &BattleOpponentPartyRepository{
 		BaseWriteRepository: BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty]{
 			dbClient:           dbClient,

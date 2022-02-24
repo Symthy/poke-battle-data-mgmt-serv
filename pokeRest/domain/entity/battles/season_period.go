@@ -15,7 +15,11 @@ func NewSeason(generation int, series int, season int) Season {
 	return Season{generation: generation, series: series, season: season}
 }
 
-func (s Season) ApplySeason(from Season) {
+func (s Season) solvedSeason() bool {
+	return s.generation != 0 && s.series != 0 && s.season == 0
+}
+
+func (s *Season) ApplySeason(from Season) {
 	if s.generation == 0 {
 		s.generation = from.generation
 	}

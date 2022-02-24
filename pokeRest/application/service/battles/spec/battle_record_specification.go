@@ -13,7 +13,7 @@ type BattleRecordSpecification struct {
 	opponentPartyRepo repository.IBattleOpponentPartyRepository
 }
 
-func NewBattleSpecification(
+func NewBattleRecordSpecification(
 	seasonRepo repository.IBattleSeasonRepository,
 	partyRepo repository.IPartyRepository,
 	opponentPartyRepo repository.IBattleOpponentPartyRepository,

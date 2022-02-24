@@ -13,12 +13,18 @@ var _ repository.IBattleRecordRepository = (*BattleRecordRepository)(nil)
 var emptyBattleRecordSchemaBuilder = func() schema.BattleRecord { return schema.BattleRecord{} }
 
 type BattleRecordRepository struct {
+	BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord]
 	BaseWriteRepository[schema.BattleRecord, battles.BattleRecord]
 	dbClient orm.IDbClient
 }
 
 func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 	return &BattleRecordRepository{
+		BaseSingleReadRepository: BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord]{
+			dbClient:           dbClient,
+			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
+			schemaConverter:    dto.ToSchemaBattleRecord,
+		},
 		BaseWriteRepository: BaseWriteRepository[schema.BattleRecord, battles.BattleRecord]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
@@ -27,6 +33,8 @@ func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 		dbClient: dbClient,
 	}
 }
+
+// FindById <- BaseSingleReadRepository
 
 // Create <- BaseWriteRepository
 // Update <- BaseWriteRepository

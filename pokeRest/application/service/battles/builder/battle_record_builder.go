@@ -14,3 +14,7 @@ type BattleRecordBuilder struct {
 	series                   int
 	season                   int
 }
+
+func NewBattleRecordBuilder(id uint, partyId uint) {
+	
+}

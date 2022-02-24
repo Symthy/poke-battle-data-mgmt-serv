@@ -80,6 +80,7 @@ type IPartyBattleResultRepository interface {
 }
 
 type IBattleRecordRepository interface {
+	ISingleRecordFinder[battles.BattleRecord]
 	IWritableRepository[battles.BattleRecord]
 	CreateRecord(*gorm.DB, battles.BattleRecord) (*battles.BattleRecord, error)
 	UpdateRecord(*gorm.DB, battles.BattleRecord) (*battles.BattleRecord, error)

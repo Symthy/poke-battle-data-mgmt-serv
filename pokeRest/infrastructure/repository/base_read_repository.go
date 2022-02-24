@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// Todo: split
 type BaseReadRepository[TS infrastructure.ISchema[TD], TD infrastructure.IDomain, TM infrastructure.IDomains[TD]] struct {
+	BaseSingleReadRepository[TS, TD]
 	dbClient            orm.IDbClient
 	emptySchemaBuilder  func() TS
 	emptySchemasBuilder func() []TS
@@ -20,17 +20,6 @@ type BaseReadRepository[TS infrastructure.ISchema[TD], TD infrastructure.IDomain
 }
 
 // Todo: error handling
-
-func (rep BaseReadRepository[TS, TD, TM]) FindById(id uint) (*TD, error) {
-	db := rep.dbClient.Db()
-	schema := rep.emptySchemaBuilder()
-	tx := db.First(&schema, id)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	s := schema.ConvertToDomain()
-	return &s, nil
-}
 
 // required: wrap when used
 func (rep BaseReadRepository[TS, TD, TM]) FindByField(targetField string, value string, filterFields ...string) (*TM, error) {

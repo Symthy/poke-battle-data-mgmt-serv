@@ -22,6 +22,7 @@ type PokeRestHandler struct {
 	typeController           *controller.TypeController
 	partyTagController       *controller.PartyTagController
 	partyController          *controller.PartyController
+	battleRecordController   *controller.BattleRecordController
 	trainedPokemonController *controller.TrainedPokemonController
 	userController           *controller.UserController
 }
@@ -34,6 +35,7 @@ func NewPokeRestHandler(
 	typeCtrl *controller.TypeController,
 	partyTagCtrl *controller.PartyTagController,
 	partyCtrl *controller.PartyController,
+	battleRecordCtrl *controller.BattleRecordController,
 	trainedPokeCtrl *controller.TrainedPokemonController,
 	userCtrl *controller.UserController,
 ) *PokeRestHandler {
@@ -45,6 +47,7 @@ func NewPokeRestHandler(
 		typeController:           typeCtrl,
 		partyTagController:       partyTagCtrl,
 		partyController:          partyCtrl,
+		battleRecordController:   battleRecordCtrl,
 		trainedPokemonController: trainedPokeCtrl,
 		userController:           userCtrl,
 	}
@@ -166,6 +169,7 @@ func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pTyp
 	return h.typeController.GetDeffenceTypeCompatibility(ctx, pType)
 }
 
+/* transaction data */
 // GET Parties
 // (GET /parties)
 func (h *PokeRestHandler) GetParties(ctx echo.Context, params server.GetPartiesParams) error {
@@ -214,7 +218,8 @@ func (h *PokeRestHandler) DeletePartiesTagsId(ctx echo.Context, id int) error {
 	return nil
 }
 
-/* transaction data */
+// Todo: add Battle Record API
+
 // GET trained pokemons
 // (GET /trainedpokemons)
 func (h *PokeRestHandler) GetTrainedPokemons(ctx echo.Context, params server.GetTrainedPokemonsParams) error {

@@ -3,6 +3,7 @@ package schema
 import (
 	"github.com/Symthy/PokeRest/pokeRest/common/collections"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
 type BattleOpponentParty struct {
@@ -25,5 +26,5 @@ func (b BattleOpponentParty) ConvertToDomain() battles.BattleOpponentParty {
 	pokemonIds := []int{}
 	collections.AddsToList(pokemonIds, b.OpponentPokemonId1, b.OpponentPokemonId2,
 		b.OpponentPokemonId3, b.OpponentPokemonId4, b.OpponentPokemonId5, b.OpponentPokemonId6)
-	return battles.NewBattleOpponentParty(b.ID, pokemonIds...)
+	return battles.NewBattleOpponentParty(b.ID, value.NewPartyPokemonIds(pokemonIds...))
 }

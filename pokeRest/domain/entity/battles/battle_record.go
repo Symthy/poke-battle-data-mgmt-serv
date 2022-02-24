@@ -51,11 +51,7 @@ func (b BattleRecord) Notify(note *IBattleRecordNotification) {
 	(*note).OpponentElectionPokemons(b.opponentElectionPokemons.Ids())
 }
 
-func (b BattleRecord) solvedSeason() bool {
-	return b.generation != 0 && b.series != 0 && b.season == 0
-}
-
-func (b BattleRecord) ApplyOpponentPartyId(opponentPartyId uint) {
+func (b *BattleRecord) ApplyOpponentPartyId(opponentPartyId uint) {
 	b.battleOpponentPartyId = opponentPartyId
 }
 
