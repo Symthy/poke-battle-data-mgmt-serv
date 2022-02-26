@@ -1,6 +1,9 @@
 package trainings
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
 
 type TrainedPokemon struct {
 	TrainedPokemonParam
@@ -14,12 +17,12 @@ func NewTrainedPokemon(param TrainedPokemonParam, adjustment TrainedPokemonAdjus
 	return entity
 }
 
-// Todo: builder
+// Todo: factory
 func NewTrainedPokemonOfUnregistered(
-	nickname *string, gender string, description *string, isPrivate bool, userId *uint,
-	pokemonId int, nature string, abilityId *int, heldItemId *int, effortValueH int, effortValueA int,
-	effortValueB int, effortValueC int, effortValueD int, effortValueS int,
-	moveId1 *int, moveId2 *int, moveId3 *int, moveId4 *int) TrainedPokemon {
+	nickname *string, gender string, description *string, isPrivate bool, userId identifier.UserId,
+	pokemonId identifier.PokemonId, nature string, abilityId identifier.AbilityId, heldItemId identifier.HeldItemId,
+	effortValueH, effortValueA, effortValueB, effortValueC, effortValueD, effortValueS int,
+	moveId1, moveId2, moveId3, moveId4 identifier.MoveId) TrainedPokemon {
 	entity := TrainedPokemon{}
 	entity.TrainedPokemonParam = TrainedPokemonParam{
 		nickname:    nickname,
@@ -49,5 +52,5 @@ func NewTrainedPokemonOfUnregistered(
 }
 
 func (t TrainedPokemon) Id() uint {
-	return t.TrainedPokemonParam.id
+	return t.TrainedPokemonParam.id.Value()
 }

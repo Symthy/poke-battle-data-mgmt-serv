@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type BaseReadRepository[TS infrastructure.ISchema[TD], TD infrastructure.IDomain, TM infrastructure.IDomains[TD]] struct {
-	BaseSingleReadRepository[TS, TD]
+type BaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], TM infrastructure.IDomains[TD, K], K infrastructure.IValueId] struct {
+	BaseSingleReadRepository[TS, TD, K]
 	dbClient            orm.IDbClient
 	emptySchemaBuilder  func() TS
 	emptySchemasBuilder func() []TS
@@ -22,7 +22,7 @@ type BaseReadRepository[TS infrastructure.ISchema[TD], TD infrastructure.IDomain
 // Todo: error handling
 
 // required: wrap when used
-func (rep BaseReadRepository[TS, TD, TM]) FindByField(targetField string, value string, filterFields ...string) (*TM, error) {
+func (rep BaseReadRepository[TS, TD, TM, K]) FindByField(targetField string, value string, filterFields ...string) (*TM, error) {
 	db := rep.dbClient.Db()
 	schemas := rep.emptySchemasBuilder()
 	selectedDbFields := field.ConvertToDbField(filterFields...)
@@ -42,7 +42,7 @@ func (rep BaseReadRepository[TS, TD, TM]) FindByField(targetField string, value 
 }
 
 // Todo: args is condition
-func (rep BaseReadRepository[TS, TD, TM]) FindAll(next int, pageSize int) (*TM, error) {
+func (rep BaseReadRepository[TS, TD, TM, K]) FindAll(next int, pageSize int) (*TM, error) {
 	db := rep.dbClient.Db()
 	schemas := rep.emptySchemasBuilder()
 
@@ -55,9 +55,9 @@ func (rep BaseReadRepository[TS, TD, TM]) FindAll(next int, pageSize int) (*TM, 
 	return rep.resolveReturnValues(schemas)
 }
 
-func (rep BaseReadRepository[TS, TD, TM]) resolveReturnValues(schemas []TS) (*TM, error) {
-	domainArray := dto.ConvertToDomains[TS, TD](schemas)
-	domains := dto.BuildDomains(domainArray, rep.domainsConstructor)
+func (rep BaseReadRepository[TS, TD, TM, K]) resolveReturnValues(schemas []TS) (*TM, error) {
+	domainArray := dto.ConvertToDomains[TS, TD, K](schemas)
+	domains := dto.BuildDomains[TD, TM, K](domainArray, rep.domainsConstructor)
 	if domains == nil {
 		// Todo: error
 		return nil, fmt.Errorf("Not found")

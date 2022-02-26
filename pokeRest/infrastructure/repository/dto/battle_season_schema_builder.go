@@ -7,28 +7,28 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 )
 
-var _ battles.IBattleSeasonNotification = (*BattleSeasonSchemaBuilder)(nil)
+var _ battles.IBattleSeasonPeriodNotification = (*BattleSeasonPeriodSchemaBuilder)(nil)
 
-type BattleSeasonSchemaBuilder struct {
+type BattleSeasonPeriodSchemaBuilder struct {
 	schema.BattleSeason
 }
 
-func (b BattleSeasonSchemaBuilder) Generation(value int) {
-	b.BattleSeason.Generation = value
+func (b BattleSeasonPeriodSchemaBuilder) SetGeneration(value int) {
+	b.Generation = value
 }
 
-func (b BattleSeasonSchemaBuilder) Series(value int) {
-	b.BattleSeason.Series = value
+func (b BattleSeasonPeriodSchemaBuilder) SetSeries(value int) {
+	b.Series = value
 }
 
-func (b BattleSeasonSchemaBuilder) Season(value int) {
-	b.BattleSeason.Season = value
+func (b BattleSeasonPeriodSchemaBuilder) SetSeason(value int) {
+	b.Season = value
 }
 
-func (b BattleSeasonSchemaBuilder) StartDateTime(value time.Time) {
-	b.BattleSeason.StartDateTime = value
+func (b BattleSeasonPeriodSchemaBuilder) SetStartDateTime(value time.Time) {
+	b.StartDateTime = value
 }
 
-func (b BattleSeasonSchemaBuilder) EndDateTime(value time.Time) {
-	b.BattleSeason.EndDateTime = value
+func (b BattleSeasonPeriodSchemaBuilder) SetEndDateTime(value time.Time) {
+	b.EndDateTime = value
 }

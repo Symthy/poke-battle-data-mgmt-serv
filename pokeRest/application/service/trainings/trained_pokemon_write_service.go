@@ -105,7 +105,7 @@ func (s TrainedPokemonWriteService) DeleteTrainedPokemon(id uint) (*trainings.Tr
 	// delete used trained pokemon adjustment if ref num is zero
 	isRefZero := false
 	if isRefZero {
-		_, err := s.adjustmentRepo.Delete(*param.AdjustmentId())
+		_, err := s.adjustmentRepo.Delete(param.AdjustmentId().Value())
 		if err != nil {
 			return nil, err
 		}

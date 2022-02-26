@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -13,19 +14,19 @@ var _ repository.IBattleRecordRepository = (*BattleRecordRepository)(nil)
 var emptyBattleRecordSchemaBuilder = func() schema.BattleRecord { return schema.BattleRecord{} }
 
 type BattleRecordRepository struct {
-	BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord]
-	BaseWriteRepository[schema.BattleRecord, battles.BattleRecord]
+	BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]
+	BaseWriteRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]
 	dbClient orm.IDbClient
 }
 
 func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 	return &BattleRecordRepository{
-		BaseSingleReadRepository: BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord]{
+		BaseSingleReadRepository: BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
 			schemaConverter:    dto.ToSchemaBattleRecord,
 		},
-		BaseWriteRepository: BaseWriteRepository[schema.BattleRecord, battles.BattleRecord]{
+		BaseWriteRepository: BaseWriteRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
 			schemaConverter:    dto.ToSchemaBattleRecord,

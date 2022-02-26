@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -17,13 +18,13 @@ var (
 
 type MoveRepository struct {
 	dbClient orm.IDbClient
-	BaseReadRepository[schema.Move, moves.Move, moves.Moves]
+	BaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId]
 }
 
 func NewMoveRepository(dbClient orm.IDbClient) *MoveRepository {
 	return &MoveRepository{
 		dbClient: dbClient,
-		BaseReadRepository: BaseReadRepository[schema.Move, moves.Move, moves.Moves]{
+		BaseReadRepository: BaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId]{
 			dbClient:            dbClient,
 			emptySchemaBuilder:  emptyMoveBuilder,
 			emptySchemasBuilder: emptyMovesBuilder,

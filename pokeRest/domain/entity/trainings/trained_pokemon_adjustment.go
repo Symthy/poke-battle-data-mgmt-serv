@@ -1,29 +1,37 @@
 package trainings
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.TrainedAdjustmentId] = (*TrainedPokemonAdjustment)(nil)
 
 type TrainedPokemonAdjustment struct {
-	id           uint
-	pokemonId    int
+	id           identifier.TrainedAdjustmentId
+	pokemonId    identifier.PokemonId
 	nature       value.PokemonNature
-	abilityId    *int
-	heldItemId   *int
+	abilityId    identifier.AbilityId
+	heldItemId   identifier.HeldItemId
 	effortValueH value.EffortValue
 	effortValueA value.EffortValue
 	effortValueB value.EffortValue
 	effortValueC value.EffortValue
 	effortValueD value.EffortValue
 	effortValueS value.EffortValue
-	moveId1      *int
-	moveId2      *int
-	moveId3      *int
-	moveId4      *int
+	moveId1      identifier.MoveId
+	moveId2      identifier.MoveId
+	moveId3      identifier.MoveId
+	moveId4      identifier.MoveId
 }
 
 func NewTrainedPokemonAdjustment(
-	id uint, pokemonId int, nature string, abilityId *int, heldItemId *int,
-	effortValueH int, effortValueA int, effortValueB int, effortValueC int, effortValueD int,
-	effortValueS int, moveId1 *int, moveId2 *int, moveId3 *int, moveId4 *int) TrainedPokemonAdjustment {
+	id identifier.TrainedAdjustmentId, pokemonId identifier.PokemonId, nature string,
+	abilityId identifier.AbilityId, heldItemId identifier.HeldItemId, effortValueH int,
+	effortValueA int, effortValueB int, effortValueC int, effortValueD int, effortValueS int,
+	moveId1 identifier.MoveId, moveId2 identifier.MoveId, moveId3 identifier.MoveId, moveId4 identifier.MoveId,
+) TrainedPokemonAdjustment {
 	// Todo: add and validate
 	return TrainedPokemonAdjustment{
 		id:           id,
@@ -44,19 +52,20 @@ func NewTrainedPokemonAdjustment(
 	}
 }
 
-func (t TrainedPokemonAdjustment) Id() uint {
+// Todo: refactor Notification
+func (t TrainedPokemonAdjustment) Id() identifier.TrainedAdjustmentId {
 	return t.id
 }
-func (t TrainedPokemonAdjustment) PokemonId() int {
+func (t TrainedPokemonAdjustment) PokemonId() identifier.PokemonId {
 	return t.pokemonId
 }
 func (t TrainedPokemonAdjustment) Nature() value.PokemonNature {
 	return t.nature
 }
-func (t TrainedPokemonAdjustment) AbilityId() *int {
+func (t TrainedPokemonAdjustment) AbilityId() identifier.AbilityId {
 	return t.abilityId
 }
-func (t TrainedPokemonAdjustment) HeldItemId() *int {
+func (t TrainedPokemonAdjustment) HeldItemId() identifier.HeldItemId {
 	return t.heldItemId
 }
 
@@ -79,15 +88,15 @@ func (t TrainedPokemonAdjustment) EffortValueS() value.EffortValue {
 	return t.effortValueS
 }
 
-func (t TrainedPokemonAdjustment) MoveIdFirst() *int {
+func (t TrainedPokemonAdjustment) MoveIdFirst() identifier.MoveId {
 	return t.moveId1
 }
-func (t TrainedPokemonAdjustment) MoveIdSecond() *int {
+func (t TrainedPokemonAdjustment) MoveIdSecond() identifier.MoveId {
 	return t.moveId2
 }
-func (t TrainedPokemonAdjustment) MoveIdThird() *int {
+func (t TrainedPokemonAdjustment) MoveIdThird() identifier.MoveId {
 	return t.moveId3
 }
-func (t TrainedPokemonAdjustment) MoveIdForth() *int {
+func (t TrainedPokemonAdjustment) MoveIdForth() identifier.MoveId {
 	return t.moveId4
 }

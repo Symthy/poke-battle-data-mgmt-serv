@@ -13,11 +13,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value/optional"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
 )
 
-func ConvertToDomains[TS infrastructure.ISchema[TD], TD infrastructure.IDomain](schemas []TS) []TD {
+func ConvertToDomains[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], K infrastructure.IValueId](schemas []TS) []TD {
 	domains := make([]TD, len(schemas), len(schemas))
 	for i, s := range schemas {
 		domains[i] = s.ConvertToDomain()
@@ -36,27 +35,14 @@ func ToSchemaUser(u users.User) schema.User {
 		Profile:     u.Profile(),
 		Role:        enum.Role(u.Role().String()),
 	}
-	user.ID = u.Id()
+	user.ID = u.Id().Value()
 	return user
 }
 
-func ToSchemaPokemon(p pokemons.Pokemon) schema.Pokemon {
-	pokemon := schema.Pokemon{
-		ID:               p.Id(),
-		PokedexNo:        p.PokedexNo(),
-		FormNo:           p.FormNo(),
-		FormName:         p.FormName(),
-		Name:             p.Name(),
-		EnglishName:      p.EnglishName(),
-		Generation:       p.Generation(),
-		Type1:            enum.PokemonType(p.TypePrimary().NameEN()),
-		Type2:            enum.PokemonType(p.TypeSecondary().NameEN()),
-		AbilityId1:       ConvertOptionalIdToNullInt16(p.AbilityIdPrimary()),
-		AbilityId2:       ConvertOptionalIdToNullInt16(p.AbilityIdSecondary()),
-		HiddenAbilityId:  ConvertOptionalIdToNullInt16(p.HiddenAbilityId()),
-		IsFinalEvolution: p.IsFinalEvolution(),
-	}
-	return pokemon
+func ToSchemaPokemon(domain pokemons.Pokemon) schema.Pokemon {
+	builder := PokemonSchemaBuilder{}
+	domain.Notify(&builder)
+	return builder.Build()
 }
 
 func ToSchemaAbility(a abilities.Ability) schema.Ability {
@@ -74,14 +60,10 @@ func ToSchemaHeldItem(a items.HeldItem) schema.HeldItem {
 	return schema
 }
 
-func ToSchemaPartyTag(t parties.PartyTag) schema.PartyTag {
-	isGeneration := t.IsGenerationTag()
-	isSeason := t.IsSeasonTag()
-	return schema.PartyTag{
-		Name:         t.Name(),
-		IsGeneration: &isGeneration,
-		IsSeason:     &isSeason,
-	}
+func ToSchemaPartyTag(domain parties.PartyTag) schema.PartyTag {
+	builder := PartyTagSchemaBuilder{}
+	domain.Notify(&builder)
+	return builder.Build()
 }
 
 func ToSchemaTrainedPokemon(t trainings.TrainedPokemonParam) schema.TrainedPokemon {
@@ -114,24 +96,25 @@ func ToSchemaPartyBattleResult(p parties.PartyBattleResult) schema.PartyBattleRe
 	return schema
 }
 
-func ToSchemaBattleRecord(b battles.BattleRecord) schema.BattleRecord {
-	schema := schema.BattleRecord{}
-	return schema
+func ToSchemaBattleRecord(domain battles.BattleRecord) schema.BattleRecord {
+	builder := NewBattleRecordBuilder()
+	domain.Notify(&builder)
+	return builder.Build()
 }
 
 func ToSchemaBattleOpponentParty(b battles.BattleOpponentParty) schema.BattleOpponentParty {
 	battleParty := schema.BattleOpponentParty{}
-	battleParty.ID = b.Id()
+	battleParty.ID = b.Id().Value()
 	return battleParty
 }
 
-func ConvertOptionalIdToNullInt16(id optional.OptionalId) sql.NullInt16 {
-	value, _ := id.Get()
+func convertIdToNullInt16(id infrastructure.IValueId) sql.NullInt16 {
+	value := id.Value()
 	nullInt := sql.NullInt16{}
-	if value == nil {
+	if value == 0 {
 		nullInt.Scan(nil)
 	} else {
-		nullInt.Scan(*value)
+		nullInt.Scan(value)
 	}
 	return nullInt
 }

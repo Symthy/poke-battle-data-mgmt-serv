@@ -5,8 +5,10 @@ import (
 
 	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	d_service "github.com/Symthy/PokeRest/pokeRest/domain/service"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
 type battleRecordtransactionalRepositoryBuilder = func(repository.IBattleRecordRepository) repository.IBattleRecordTransactionalRepository
@@ -40,8 +42,11 @@ func NewBattleRecordWriteService(
 
 // UC: 戦績登録 (パーティ戦績も更新)
 func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCommand) (*battles.BattleRecord, error) {
-	inputBattleRecord := cmd.ToDomain()
-	opponentPartyMember := cmd.OpponentPartyMember()
+	input, err := factory.NewBattleRecordFactory(cmd.InputBattleRecord).CreateDomain()
+	if err != nil {
+		return nil, err
+	}
+	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyMember())
 	transactionalRepo := s.transactionalRepositoryBuilder(s.battleRecordRepo)
 
 	if err := transactionalRepo.StartTransaction(); err != nil {
@@ -49,7 +54,7 @@ func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCom
 	}
 	defer transactionalRepo.PanicPostProcess()
 
-	battleRecord, err := s.battleRecordResolver.Resolve(inputBattleRecord, opponentPartyMember)
+	battleRecord, err := s.battleRecordResolver.Resolve(*input, opponentPartyMember)
 	if err != nil {
 		transactionalRepo.CancelTransaction()
 		return nil, err
@@ -69,8 +74,11 @@ func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCom
 
 // UC: 戦績編集 (パーティ戦績も更新)
 func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordCommand) (*battles.BattleRecord, error) {
-	inputBattleRecord := cmd.ToDomain()
-	opponentPartyMember := cmd.OpponentPartyMember()
+	input, err := factory.NewBattleRecordFactory(cmd.InputBattleRecord).CreateDomain()
+	if err != nil {
+		return nil, err
+	}
+	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyMember())
 	transactionalRepo := s.transactionalRepositoryBuilder(s.battleRecordRepo)
 
 	if err := transactionalRepo.StartTransaction(); err != nil {
@@ -78,10 +86,10 @@ func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordC
 	}
 	defer transactionalRepo.PanicPostProcess()
 
-	if err := s.validateBattleRecord(inputBattleRecord); err != nil {
+	if err := s.validateBattleRecord(*input); err != nil {
 		return nil, err
 	}
-	battleRecord, err := s.battleRecordResolver.Resolve(inputBattleRecord, opponentPartyMember)
+	battleRecord, err := s.battleRecordResolver.Resolve(*input, opponentPartyMember)
 	if err != nil {
 		transactionalRepo.CancelTransaction()
 		return nil, err
@@ -104,7 +112,7 @@ func (s BattleRecordWriteService) DeleteBattleRecord(id uint) (*battles.BattleRe
 }
 
 func (s BattleRecordWriteService) validateBattleRecord(battleRecord battles.BattleRecord) error {
-	retBattleRecord, err := s.battleRecordRepo.FindById(battleRecord.Id())
+	retBattleRecord, err := s.battleRecordRepo.FindById(battleRecord.Id().Value())
 	if err != nil {
 		return err
 	}

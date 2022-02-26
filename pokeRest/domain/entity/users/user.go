@@ -2,23 +2,28 @@ package users
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users/command"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"golang.org/x/crypto/bcrypt"
 )
 
+var _ entity.IDomain[identifier.UserId] = (*User)(nil)
+
 type User struct {
-	id          uint
+	id          identifier.UserId
 	name        value.UserName
 	displayName *string
-	password    *[]byte
+	password    []byte
 	email       *value.Email
 	profile     *string
 	role        value.Role
+	// Todo: have twitter info only
 }
 
-// Todo: builder
+// Todo: factory
 func NewUser(
-	id uint,
+	id identifier.UserId,
 	name value.UserName,
 	displayName *string,
 	email *value.Email,
@@ -37,7 +42,7 @@ func NewUser(
 func NewUserFromCommand(command command.CreateUserCommand) User {
 	name, _ := value.NewUserName(command.Name())
 	return NewUser(
-		0,
+		identifier.NewEmptyUserId(),
 		*name,
 		nil,
 		nil,
@@ -47,10 +52,11 @@ func NewUserFromCommand(command command.CreateUserCommand) User {
 }
 
 func (u User) ValidatePassword(password string) error {
-	return bcrypt.CompareHashAndPassword(*u.Password(), []byte(password))
+	return bcrypt.CompareHashAndPassword(u.Password(), []byte(password))
 }
 
-func (u User) Id() uint {
+// Todo: refactor Notification
+func (u User) Id() identifier.UserId {
 	return u.id
 }
 
@@ -62,7 +68,7 @@ func (u User) DisplayName() *string {
 	return u.displayName
 }
 
-func (u User) Password() *[]byte {
+func (u User) Password() []byte {
 	return u.password
 }
 

@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -16,21 +17,21 @@ var (
 )
 
 type PartyTagRepository struct {
-	BaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags]
-	BaseWriteRepository[schema.PartyTag, parties.PartyTag]
+	BaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags, identifier.PartyTagId]
+	BaseWriteRepository[schema.PartyTag, parties.PartyTag, identifier.PartyTagId]
 	dbClient orm.IDbClient
 }
 
 func NewPartyTagRepository(dbClient orm.IDbClient) *PartyTagRepository {
 	return &PartyTagRepository{
-		BaseReadRepository: BaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags]{
+		BaseReadRepository: BaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags, identifier.PartyTagId]{
 			dbClient:            dbClient,
 			emptySchemaBuilder:  emptyPartyTagBuilder,
 			emptySchemasBuilder: emptyPartyTagsBuilder,
 			domainsConstructor:  parties.NewPartyTags,
 			schemaConverter:     dto.ToSchemaPartyTag,
 		},
-		BaseWriteRepository: BaseWriteRepository[schema.PartyTag, parties.PartyTag]{
+		BaseWriteRepository: BaseWriteRepository[schema.PartyTag, parties.PartyTag, identifier.PartyTagId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartyTagBuilder,
 			schemaConverter:    dto.ToSchemaPartyTag,

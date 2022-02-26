@@ -1,9 +1,17 @@
 package moves
 
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.MoveId] = (*Move)(nil)
+
 type Move struct {
-	id           uint
+	id           identifier.MoveId
 	name         string
-	species      MoveSpecies
+	species      value.MoveSpecies
 	power        int     // 威力
 	accuracyRate float32 // 命中率
 	pp           int
@@ -11,12 +19,12 @@ type Move struct {
 	isCanGuard   bool
 }
 
-func NewMove(id uint, name string, species string, power int, accuracyRate float32, pp int,
-	isContained bool, isCanGuard bool) Move {
+func NewMove(id identifier.MoveId, name string, species string, power int, accuracyRate float32,
+	pp int, isContained bool, isCanGuard bool) Move {
 	return Move{
 		id:           id,
 		name:         name,
-		species:      MoveSpecies(species),
+		species:      value.MoveSpecies(species),
 		power:        power,
 		accuracyRate: accuracyRate,
 		pp:           pp,
@@ -25,42 +33,17 @@ func NewMove(id uint, name string, species string, power int, accuracyRate float
 	}
 }
 
-func (m Move) Id() uint {
+func (m Move) Id() identifier.MoveId {
 	return m.id
 }
 
-func (m Move) Name() string {
-	return m.name
+func (m Move) Notify(note IMoveNotification) {
+	note.SetId(m.id)
+	note.SetName(m.name)
+	note.SetSpecies(m.species)
+	note.SetPower(m.power)
+	note.SetAccuracyRate(m.accuracyRate)
+	note.SetPP(m.pp)
+	note.SetIsContained(m.isContained)
+	note.SetIsCanGuard(m.isCanGuard)
 }
-
-func (m Move) Species() MoveSpecies {
-	return m.species
-}
-
-func (m Move) Power() int {
-	return m.power
-}
-
-func (m Move) AccuracyRate() float32 {
-	return m.accuracyRate
-}
-
-func (m Move) PP() int {
-	return m.pp
-}
-
-func (m Move) IsContained() bool {
-	return m.isContained
-}
-
-func (m Move) IsCanGuard() bool {
-	return m.isCanGuard
-}
-
-type MoveSpecies string
-
-const (
-	Physical MoveSpecies = "Physical" // 物理
-	Special  MoveSpecies = "Special"  // 特殊
-	Status   MoveSpecies = "Status"   // 変化
-)

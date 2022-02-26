@@ -1,10 +1,14 @@
 package entity
 
-type IDomains[T IDomain] interface {
+type IDomains[T IDomain[K], K IValueId] interface {
 	Items() []T
 }
 
 // Todo: temporary
-type IDomain interface {
-	Id() uint
+type IDomain[K IValueId] interface {
+	Id() K
+}
+
+type IValueId interface {
+	Value() uint
 }

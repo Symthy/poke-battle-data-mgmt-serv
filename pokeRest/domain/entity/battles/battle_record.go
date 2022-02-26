@@ -1,68 +1,60 @@
 package battles
 
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.BattleRecordId] = (*BattleRecord)(nil)
+
 type BattleRecord struct {
-	id                       uint
-	partyId                  uint
-	battleResult             BattleResult
-	battleOpponentPartyId    uint
+	id                       identifier.BattleRecordId
+	partyId                  identifier.PartyId
+	battleResult             value.BattleResult
 	selfElectionPokemons     ElectionPokemons[int]
 	selfTrainedPokemons      ElectionPokemons[uint]
+	opponentPartyId          identifier.BattleOpponentPartyId
 	opponentElectionPokemons ElectionPokemons[int]
 	Season
 }
 
 func NewBattleRecord(
-	id, partyId uint, generation, series, season int, battleResult string, battleOpponentPartyId uint,
-	selfElectionPokemons []int, selfTrainedPokemons []uint, opponentElectionPokemons []int) BattleRecord {
+	id identifier.BattleRecordId, partyId identifier.PartyId, season Season, battleResult value.BattleResult,
+	selfElectionPokemons ElectionPokemons[int], selfTrainedPokemons ElectionPokemons[uint],
+	opponentPartyId identifier.BattleOpponentPartyId, opponentElectionPokemons ElectionPokemons[int],
+) BattleRecord {
 	return BattleRecord{
 		id:                       id,
 		partyId:                  partyId,
-		battleResult:             BattleResult(battleResult),
-		battleOpponentPartyId:    battleOpponentPartyId,
-		selfElectionPokemons:     NewElectionPokemons(selfElectionPokemons),
-		selfTrainedPokemons:      NewElectionPokemons(selfTrainedPokemons),
-		opponentElectionPokemons: NewElectionPokemons(opponentElectionPokemons),
-		Season: Season{
-			generation: generation,
-			series:     series,
-			season:     season,
-		},
+		battleResult:             battleResult,
+		selfElectionPokemons:     selfElectionPokemons,
+		selfTrainedPokemons:      selfTrainedPokemons,
+		opponentPartyId:          opponentPartyId,
+		opponentElectionPokemons: opponentElectionPokemons,
+		Season:                   season,
 	}
 }
 
-func (b BattleRecord) Id() uint {
+func (b BattleRecord) Id() identifier.BattleRecordId {
 	return b.id
 }
 
-func (b BattleRecord) PartyId() uint {
+func (b BattleRecord) PartyId() identifier.PartyId {
 	return b.partyId
 }
 
-func (b BattleRecord) Notify(note *IBattleRecordNotification) {
-	(*note).Id(b.id)
-	(*note).PartyId(b.partyId)
-	(*note).Generation(b.generation)
-	(*note).Series(b.series)
-	(*note).Season(b.season)
-	(*note).BattleResult(b.battleResult.String())
-	(*note).BattleOpponentPartyId(b.battleOpponentPartyId)
-	(*note).SelfElectionPokemons(b.selfElectionPokemons.Ids())
-	(*note).SelfTrainedPokemons(b.selfTrainedPokemons.Ids())
-	(*note).OpponentElectionPokemons(b.opponentElectionPokemons.Ids())
+func (b BattleRecord) Notify(note IBattleRecordNotification) {
+	note.SetId(b.id)
+	note.SetPartyId(b.partyId)
+	note.SetBattleResult(b.battleResult)
+	note.SetBattleOpponentPartyId(b.opponentPartyId)
+	note.SetSelfElectionPokemons(b.selfElectionPokemons)
+	note.SetSelfTrainedPokemons(b.selfTrainedPokemons)
+	note.SetOpponentElectionPokemons(b.opponentElectionPokemons)
+	b.Season.Notify(note)
 }
 
-func (b *BattleRecord) ApplyOpponentPartyId(opponentPartyId uint) {
-	b.battleOpponentPartyId = opponentPartyId
-}
-
-type BattleResult string
-
-const (
-	WIN  BattleResult = "Win"
-	LOSE BattleResult = "Lose"
-	DRAW BattleResult = "Draw"
-)
-
-func (b BattleResult) String() string {
-	return string(b)
+func (b *BattleRecord) ApplyOpponentPartyId(opponentPartyId identifier.BattleOpponentPartyId) {
+	b.opponentPartyId = opponentPartyId
 }

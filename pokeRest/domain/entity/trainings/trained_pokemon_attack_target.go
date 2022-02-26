@@ -1,20 +1,28 @@
 package trainings
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.TrainedAttackTargetId] = (*TrainedPokemonAttackTarget)(nil)
 
 type TrainedPokemonAttackTarget struct {
-	id                   uint
-	trainedPokemonId     uint
-	moveId               int
-	targetPokemonId      int
+	id                   identifier.TrainedAttackTargetId
+	trainedPokemonId     identifier.TrainedPokemonId
+	moveId               identifier.MoveId
+	targetPokemonId      identifier.PokemonId
 	targetPokemonNature  value.PokemonNature
 	targetPokemonEffortH value.EffortValue
 	targetPokemonEffortB value.EffortValue
 	targetPokemonEffortD value.EffortValue
 }
 
+// Todo: factory
 func NewTrainedPokemonAttackTarget(
-	id uint, trainedPokemonId uint, moveId int, targetPokemonId int, targetPokemonNature string,
+	id identifier.TrainedAttackTargetId, trainedPokemonId identifier.TrainedPokemonId,
+	moveId identifier.MoveId, targetPokemonId identifier.PokemonId, targetPokemonNature string,
 	targetPokemonEffortH int, targetPokemonEffortB int, targetPokemonEffortD int) TrainedPokemonAttackTarget {
 	return TrainedPokemonAttackTarget{
 		id:                   id,
@@ -27,19 +35,20 @@ func NewTrainedPokemonAttackTarget(
 	}
 }
 
-func (t TrainedPokemonAttackTarget) Id() uint {
+// Todo: refactor Notification
+func (t TrainedPokemonAttackTarget) Id() identifier.TrainedAttackTargetId {
 	return t.id
 }
 
-func (t TrainedPokemonAttackTarget) TrainedPokemonId() uint {
+func (t TrainedPokemonAttackTarget) TrainedPokemonId() identifier.TrainedPokemonId {
 	return t.trainedPokemonId
 }
 
-func (t TrainedPokemonAttackTarget) MoveId() int {
+func (t TrainedPokemonAttackTarget) MoveId() identifier.MoveId {
 	return t.moveId
 }
 
-func (t TrainedPokemonAttackTarget) TargetPokemonId() int {
+func (t TrainedPokemonAttackTarget) TargetPokemonId() identifier.PokemonId {
 	return t.targetPokemonId
 }
 

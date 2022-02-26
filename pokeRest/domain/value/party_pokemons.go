@@ -5,7 +5,7 @@ type PartyPokemonIds struct {
 	size        int
 }
 
-func NewPartyPokemonIds(pokemonIds ...int) PartyPokemonIds {
+func NewPartyPokemonIds(pokemonIds []int) PartyPokemonIds {
 	ids := make([]*int, 6, 6)
 	for i, p := range pokemonIds {
 		if i < 6 {

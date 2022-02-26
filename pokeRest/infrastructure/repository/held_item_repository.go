@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -17,13 +18,13 @@ var (
 
 type HeldItemRepository struct {
 	dbClient orm.IDbClient
-	BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems]
+	BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId]
 }
 
 func NewHeldItemRepository(dbClient orm.IDbClient) *HeldItemRepository {
 	return &HeldItemRepository{
 		dbClient: dbClient,
-		BaseReadRepository: BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems]{
+		BaseReadRepository: BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId]{
 			dbClient:            dbClient,
 			emptySchemaBuilder:  emptyHeldItemBuilder,
 			emptySchemasBuilder: emptyHeldItemsBuilder,

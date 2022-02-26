@@ -5,32 +5,6 @@ import (
 	"time"
 )
 
-type Season struct {
-	generation int
-	series     int
-	season     int
-}
-
-func NewSeason(generation int, series int, season int) Season {
-	return Season{generation: generation, series: series, season: season}
-}
-
-func (s Season) solvedSeason() bool {
-	return s.generation != 0 && s.series != 0 && s.season == 0
-}
-
-func (s *Season) ApplySeason(from Season) {
-	if s.generation == 0 {
-		s.generation = from.generation
-	}
-	if s.series == 0 {
-		s.series = from.series
-	}
-	if s.season == 0 {
-		s.season = from.season
-	}
-}
-
 type SeasonPeriod struct {
 	Season
 	startDateTime time.Time
@@ -47,8 +21,14 @@ func (s SeasonPeriod) Id() uint { return 0 }
 
 var datetimeLayout = "2006/01/02 15:04"
 
-func (b SeasonPeriod) BuildSeasonPeriod() string {
+func (b SeasonPeriod) BuildPeriodString() string {
 	start := b.startDateTime.Format(datetimeLayout)
 	end := b.endDateTime.Format(datetimeLayout)
 	return fmt.Sprintf("%s ~ %s", start, end)
+}
+
+func (s SeasonPeriod) Notify(note IBattleSeasonPeriodNotification) {
+	s.Season.Notify(note)
+	note.SetStartDateTime(s.startDateTime)
+	note.SetEndDateTime(s.endDateTime)
 }

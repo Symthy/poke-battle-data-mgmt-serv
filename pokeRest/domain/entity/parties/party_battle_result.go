@@ -1,31 +1,35 @@
 package parties
 
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.PartyBattleResultId] = (*PartyBattleResult)(nil)
+
 type PartyBattleResult struct {
-	id               uint
-	generation       int
-	series           int
-	season           int
+	id               identifier.PartyBattleResultId
 	maxRate          int
 	seasonRanking    int
 	maxSeasonRanking int
 	winCount         int
 	loseCount        int
+	battles.Season
 }
 
-func NewPartyBattleResult(id uint, generation int, series int, season int, maxRate int, seasonRanking int, maxSeasonRanking int, winCount int, loseCount int) PartyBattleResult {
+func NewPartyBattleResult(id identifier.PartyBattleResultId, generation int, series int, season int, maxRate int, seasonRanking int, maxSeasonRanking int, winCount int, loseCount int) PartyBattleResult {
 	return PartyBattleResult{
 		id:               id,
-		generation:       generation,
-		series:           series,
-		season:           season,
 		maxRate:          maxRate,
 		seasonRanking:    seasonRanking,
 		maxSeasonRanking: maxSeasonRanking,
 		winCount:         winCount,
 		loseCount:        loseCount,
+		Season:           battles.NewSeason(generation, series, season),
 	}
 }
 
-func (p PartyBattleResult) Id() uint {
+func (p PartyBattleResult) Id() identifier.PartyBattleResultId {
 	return p.id
 }

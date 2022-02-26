@@ -2,90 +2,70 @@ package parties
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain = (*Party)(nil)
+var _ entity.IDomain[identifier.PartyId] = (*Party)(nil)
 
 // Todo: field change to value model
 type Party struct {
-	id                uint
-	name              string
-	battleFormat      BattleFormat
-	isPrivate         bool
-	partyResultIds    *[]uint
-	partyTagIds       *[]uint
-	trainedPokemonIds []uint
-	userId            *uint
+	id              identifier.PartyId
+	name            string
+	battleFormat    value.BattleFormat
+	isPrivate       bool
+	partyResultIds  []identifier.PartyBattleResultId // Todo: do you need aggregation?
+	partyTagIds     []identifier.PartyTagId
+	trainedPokemons value.PartyPokemonIds
+	userId          identifier.UserId
 }
 
-func NewParty(id uint, name string, battleFormat string, isPrivate bool, userId *uint,
-	partyResultIds *[]uint, partyTagIds *[]uint, trainedPokemonIds []uint) Party {
+func NewParty(
+	id identifier.PartyId, name string, battleFormat string, isPrivate bool, userId identifier.UserId,
+	partyResultIds []identifier.PartyBattleResultId, partyTagIds []identifier.PartyTagId,
+	trainedPokemonIds value.PartyPokemonIds) Party {
 	return Party{
-		id:                id,
-		name:              name,
-		battleFormat:      resolveBattleFormat(battleFormat),
-		partyResultIds:    partyResultIds,
-		partyTagIds:       partyTagIds,
-		trainedPokemonIds: trainedPokemonIds,
-		isPrivate:         isPrivate,
-		userId:            userId,
+		id:              id,
+		name:            name,
+		battleFormat:    value.BattleFormat(battleFormat),
+		partyResultIds:  partyResultIds,
+		partyTagIds:     partyTagIds,
+		trainedPokemons: trainedPokemonIds,
+		isPrivate:       isPrivate,
+		userId:          userId,
 	}
 }
 
-func NewPartyOfUnregistered(name string, battleFormat string, isPrivate bool, userId uint,
-	partyTagIds []uint, trainedPokemonIds []uint) Party {
-	// Todo: validate
-	return NewParty(0, name, battleFormat, isPrivate, &userId, nil, &partyTagIds, trainedPokemonIds)
+func NewPartyOfUnregistered(
+	name string, battleFormat string, isPrivate bool, userId identifier.UserId,
+	partyTagIds []identifier.PartyTagId, trainedPokemonIds value.PartyPokemonIds) Party {
+	// Todo: factory
+	return NewParty(identifier.NewEmptyPartyId(), name, battleFormat, isPrivate, userId, nil, partyTagIds, trainedPokemonIds)
 }
 
-func NewPartyForUpdated(id uint, name string, battleFormat string, isPrivate bool,
-	partyResultIds []uint, partyTagIds []uint, trainedPokemonIds []uint) Party {
-	// Todo: validate
-	return NewParty(0, name, battleFormat, isPrivate, nil, &partyResultIds, &partyTagIds, trainedPokemonIds)
+func NewPartyForUpdated(
+	id uint, name string, battleFormat string, isPrivate bool, userId identifier.UserId,
+	partyResultIds []identifier.PartyBattleResultId, partyTagIds []identifier.PartyTagId,
+	trainedPokemonIds value.PartyPokemonIds) Party {
+	// Todo: factory
+	return NewParty(identifier.NewEmptyPartyId(), name, battleFormat, isPrivate, userId, partyResultIds, partyTagIds, trainedPokemonIds)
 }
 
-func (p Party) Id() uint {
+func (p Party) Id() identifier.PartyId {
 	return p.id
 }
 
-func (p Party) Name() string {
-	return p.name
-}
-
-func (p Party) BattleFormat() BattleFormat {
-	return p.battleFormat
-}
-
-func (p Party) PartyResultIds() *[]uint {
-	return p.partyResultIds
-}
-
-func (p Party) PartyTagIds() *[]uint {
-	return p.partyTagIds
-}
-
-func (p Party) TrainedPokemonIds() []uint {
-	return p.trainedPokemonIds
-}
-
-func (p Party) IsPrivate() bool {
-	return p.isPrivate
-}
-
-func (p Party) UserId() *uint {
+func (p Party) UserId() identifier.UserId {
 	return p.userId
 }
 
-type BattleFormat string
-
-const (
-	Single BattleFormat = "Single"
-	Double BattleFormat = "Double"
-)
-
-func resolveBattleFormat(value string) BattleFormat {
-	if value == "Double" {
-		return Double
-	}
-	return Single
+func (p Party) Notify(note IPartyNotification) {
+	note.SetId(p.id)
+	note.SetName(p.name)
+	note.SetBattleFormat(p.battleFormat)
+	note.SetPartyResultIds(p.partyResultIds)
+	note.SetPartyTagIds(p.partyTagIds)
+	note.SetTrainedPokemons(p.trainedPokemons)
+	note.SetIsPrivate(p.isPrivate)
+	note.SetUserId(p.userId)
 }

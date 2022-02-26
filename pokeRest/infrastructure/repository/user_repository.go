@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -16,21 +17,21 @@ var (
 )
 
 type UserRepository struct {
-	BaseReadRepository[schema.User, users.User, users.Users]
-	BaseWriteRepository[schema.User, users.User]
+	BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId]
+	BaseWriteRepository[schema.User, users.User, identifier.UserId]
 	dbClient orm.IDbClient
 }
 
 func NewUserRepository(dbClient orm.IDbClient) *UserRepository {
 	return &UserRepository{
-		BaseReadRepository: BaseReadRepository[schema.User, users.User, users.Users]{
+		BaseReadRepository: BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId]{
 			dbClient:            dbClient,
 			emptySchemaBuilder:  emptyUserBuilder,
 			emptySchemasBuilder: emptyUsersBuilder,
 			domainsConstructor:  users.NewUsers,
 			schemaConverter:     dto.ToSchemaUser,
 		},
-		BaseWriteRepository: BaseWriteRepository[schema.User, users.User]{
+		BaseWriteRepository: BaseWriteRepository[schema.User, users.User, identifier.UserId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyUserBuilder,
 			schemaConverter:    dto.ToSchemaUser,
@@ -42,6 +43,7 @@ func NewUserRepository(dbClient orm.IDbClient) *UserRepository {
 func (rep UserRepository) FindByName(targetName string, filterFields ...string) (*users.User, error) {
 	users, err := rep.FindByField("Name", targetName, filterFields...)
 	if err != nil {
+		// Todo: err wrap
 		return nil, err
 	}
 	user := users.First()

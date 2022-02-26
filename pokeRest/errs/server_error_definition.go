@@ -26,9 +26,10 @@ var (
 	serverErrorMap = map[ServerErrKey]ServerError{
 		ErrAuth:           initServerError(common.Error, C1, "invalid token"),
 		ErrAuthentication: initServerError(common.Error, A1, "Authentication error. Invalid Password"),
-		ErrUserNotFound:   initServerError(common.Warn, A2, "user not found"), ErrInvalidValue: initServerErrorWithFields(common.Warn, D1, "invalid value.", "class,field,value"),
-		ErrNoValue:    initServerErrorWithFields(common.Error, D2, "no value", "class,field"),
-		ErrUnexpected: initServerError(common.Error, C9999, "unexpected error"),
+		ErrUserNotFound:   initServerError(common.Warn, A2, "user not found"),
+		ErrInvalidValue:   initServerErrorWithFields(common.Warn, D1, "invalid value.", "class,field,value"),
+		ErrNoValue:        initServerErrorWithFields(common.Error, D2, "no value", "class,field"),
+		ErrUnexpected:     initServerError(common.Error, C9999, "unexpected error"),
 	}
 )
 

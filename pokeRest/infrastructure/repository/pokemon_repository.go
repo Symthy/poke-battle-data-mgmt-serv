@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -13,13 +14,13 @@ var _ repository.IPokemonRepository = (*PokemonRepository)(nil)
 var emptyPokemonBuilder = func() schema.Pokemon { return schema.Pokemon{} }
 
 type PokemonRepository struct {
-	BaseWriteRepository[schema.Pokemon, pokemons.Pokemon]
+	BaseWriteRepository[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId]
 	dbClient orm.IDbClient
 }
 
 func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 	return &PokemonRepository{
-		BaseWriteRepository: BaseWriteRepository[schema.Pokemon, pokemons.Pokemon]{
+		BaseWriteRepository: BaseWriteRepository[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPokemonBuilder,
 			schemaConverter:    dto.ToSchemaPokemon,
@@ -50,7 +51,7 @@ func (rep PokemonRepository) FindAll(next int, pageSize int) (*pokemons.Pokemons
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	pokemonDomains := dto.ConvertToDomains[schema.Pokemon, pokemons.Pokemon](schemas)
+	pokemonDomains := dto.ConvertToDomains[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId](schemas)
 	pokemonList := pokemons.NewPokemons(pokemonDomains)
 	return &pokemonList, nil
 }

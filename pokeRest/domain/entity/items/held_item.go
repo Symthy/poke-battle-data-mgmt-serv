@@ -3,21 +3,24 @@ package items
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain = (*HeldItem)(nil)
+var _ entity.IDomain[identifier.HeldItemId] = (*HeldItem)(nil)
 
 type HeldItem struct {
-	id               uint
+	id               identifier.HeldItemId
 	name             string
 	description      string
-	correctionValues *[]value.CorrectionValue
+	correctionValues []value.CorrectionValue
 }
 
-func NewHeldItem(id uint, name, description string, correctionValues []value.CorrectionValue) HeldItem {
-	var corrections *[]value.CorrectionValue = nil
+func NewHeldItem(
+	id identifier.HeldItemId, name, description string, correctionValues []value.CorrectionValue,
+) HeldItem {
+	var corrections []value.CorrectionValue = nil
 	if len(correctionValues) > 0 {
-		corrections = &correctionValues
+		corrections = correctionValues
 	}
 	return HeldItem{
 		id:               id,
@@ -27,18 +30,13 @@ func NewHeldItem(id uint, name, description string, correctionValues []value.Cor
 	}
 }
 
-func (i HeldItem) Id() uint {
+func (i HeldItem) Id() identifier.HeldItemId {
 	return i.id
 }
 
-func (a HeldItem) Name() string {
-	return a.name
-}
-
-func (a HeldItem) Description() string {
-	return a.description
-}
-
-func (a HeldItem) CorrectionValues() *[]value.CorrectionValue {
-	return a.correctionValues
+func (i HeldItem) Notify(note IHeldItemNotification) {
+	note.SetId(i.id)
+	note.SetName(i.name)
+	note.SetDescription(i.description)
+	note.SetCorrectionValues(i.correctionValues)
 }

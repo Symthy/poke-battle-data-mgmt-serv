@@ -6,6 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 	"gorm.io/gorm"
 )
@@ -17,13 +18,13 @@ var emptyBattleOpponentPartySchemaBuilder = func() schema.BattleOpponentParty {
 }
 
 type BattleOpponentPartyRepository struct {
-	BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty]
+	BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId]
 	dbClient orm.IDbClient
 }
 
 func NewBattleOpponentPartyRepository(dbClient orm.IDbClient) *BattleOpponentPartyRepository {
 	return &BattleOpponentPartyRepository{
-		BaseWriteRepository: BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty]{
+		BaseWriteRepository: BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleOpponentPartySchemaBuilder,
 			schemaConverter:    dto.ToSchemaBattleOpponentParty,

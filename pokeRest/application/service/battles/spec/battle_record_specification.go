@@ -4,6 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
 // Todo: rename & split
@@ -33,8 +34,8 @@ func (b BattleRecordSpecification) ResolveCurrentSeason() (*battles.Season, erro
 	return currentSeason, nil
 }
 
-func (b BattleRecordSpecification) ExistSelfParty(partyId uint) (bool, error) {
-	party, err := b.partyRepo.FindById(partyId)
+func (b BattleRecordSpecification) ExistSelfParty(partyId identifier.PartyId) (bool, error) {
+	party, err := b.partyRepo.FindById(partyId.Value())
 	if party == nil {
 		return false, err
 	}

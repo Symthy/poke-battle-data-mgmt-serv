@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 	"gorm.io/gorm"
 )
@@ -14,21 +15,22 @@ var _ repository.ITrainedPokemonAdjustmentRepository = (*TrainedPokemonAdjustmen
 var emptyAdjustmentSchemaBuilder = func() schema.TrainedPokemonAdjustment { return schema.TrainedPokemonAdjustment{} }
 
 type adjustmentDomain = trainings.TrainedPokemonAdjustment
+type adjustmentId = identifier.TrainedAdjustmentId
 
 type TrainedPokemonAdjustmentRepository struct {
-	BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments]
-	BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain]
+	BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, adjustmentId]
+	BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId]
 	dbClient orm.IDbClient
 }
 
 func NewTrainedPokemonAdjustmentRepository(dbClient orm.IDbClient) *TrainedPokemonAdjustmentRepository {
 	return &TrainedPokemonAdjustmentRepository{
-		BaseReadRepository: BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments]{
+		BaseReadRepository: BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, identifier.TrainedAdjustmentId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
 			schemaConverter:    dto.ToSchemaTrainedPokemonAdjustment,
 		},
-		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain]{
+		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
 			schemaConverter:    dto.ToSchemaTrainedPokemonAdjustment,

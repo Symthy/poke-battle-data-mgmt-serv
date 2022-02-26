@@ -1,27 +1,36 @@
 package battles
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.BattleOpponentPartyId] = (*BattleOpponentParty)(nil)
 
 type BattleOpponentParty struct {
-	id                 uint
+	id                 identifier.BattleOpponentPartyId
 	opponentPokemonIds value.PartyPokemonIds
 }
 
 func NewBattleOpponentPartyOfUnregister(pokemonIds value.PartyPokemonIds) BattleOpponentParty {
-	return NewBattleOpponentParty(0, pokemonIds)
+	return NewBattleOpponentParty(identifier.NewEmptyBattleOpponentPartyId(), pokemonIds)
 }
 
-func NewBattleOpponentParty(id uint, pokemonIds value.PartyPokemonIds) BattleOpponentParty {
+func NewBattleOpponentParty(
+	id identifier.BattleOpponentPartyId, pokemonIds value.PartyPokemonIds,
+) BattleOpponentParty {
 	return BattleOpponentParty{
 		id:                 id,
 		opponentPokemonIds: pokemonIds,
 	}
 }
 
-func (b BattleOpponentParty) Id() uint {
+func (b BattleOpponentParty) Id() identifier.BattleOpponentPartyId {
 	return b.id
 }
 
-func (b BattleOpponentParty) OpponentPokemonIds() value.PartyPokemonIds {
-	return b.opponentPokemonIds
+func (b BattleOpponentParty) Notify(note IBattleOpponentPartyNotification) {
+	note.SetId(b.id)
+	note.SetOpponentPokemonIds(b.opponentPokemonIds)
 }

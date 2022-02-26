@@ -1,17 +1,25 @@
 package abilities
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
+
+var _ entity.IDomain[identifier.AbilityId] = (*Ability)(nil)
 
 type Ability struct {
-	id               uint
+	id               identifier.AbilityId
 	name             string
 	description      string
-	correctionValues *[]value.CorrectionValue
+	correctionValues []value.CorrectionValue
 	// Todo
 	triggerCondition *interface{}
 }
 
-func NewAbility(id uint, name string, description string, correctionValues *[]value.CorrectionValue) Ability {
+func NewAbility(
+	id identifier.AbilityId, name string, description string, correctionValues []value.CorrectionValue,
+) Ability {
 	return Ability{
 		id:               id,
 		name:             name,
@@ -20,7 +28,8 @@ func NewAbility(id uint, name string, description string, correctionValues *[]va
 	}
 }
 
-func (a Ability) Id() uint {
+// Todo: refactor Notification
+func (a Ability) Id() identifier.AbilityId {
 	return a.id
 }
 
@@ -32,6 +41,6 @@ func (a Ability) Description() string {
 	return a.description
 }
 
-func (a Ability) CorrectionValues() *[]value.CorrectionValue {
+func (a Ability) CorrectionValues() []value.CorrectionValue {
 	return a.correctionValues
 }

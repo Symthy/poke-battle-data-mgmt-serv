@@ -1,39 +1,27 @@
 package command
 
-import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
-)
+import "github.com/Symthy/PokeRest/pokeRest/domain/factory/inputs"
 
 type AddBattleRecordCommand struct {
-	battleRecord        battles.BattleRecord
-	opponentPartyMember value.PartyPokemonIds
+	inputs.InputBattleRecord
 }
 
 func NewAddBattleRecordOfCurrentCommand(
-	partyId uint, battleFormat string, battleResult string, selfPokemonIds []int,
-	selfTrainedPokemonIds []uint, opponentPokemonIds []int, opponentElectionPokemonIds []int) AddBattleRecordCommand {
+	partyId uint, battleResult string, selfPokemonIds []int, selfTrainedPokemonIds []uint,
+	opponentPokemonIds []int, opponentPartyMember []int,
+) AddBattleRecordCommand {
 	return NewAddBattleRecordCommand(
-		partyId, battleFormat, battleResult, 0, 0, 0, selfPokemonIds, selfTrainedPokemonIds,
-		opponentPokemonIds, opponentElectionPokemonIds)
+		partyId, 0, 0, 0, battleResult, selfPokemonIds, selfTrainedPokemonIds,
+		opponentPokemonIds, opponentPartyMember)
 }
 
 func NewAddBattleRecordCommand(
-	partyId uint, battleFormat string, battleResult string, generation int, series int, season int,
-	selfPokemonIds []int, selfTrainedPokemonIds []uint,
-	opponentPokemonIds []int, opponentElectionPokemonIds []int) AddBattleRecordCommand {
+	partyId uint, generation int, series int, season int, battleResult string,
+	selfPokemonIds []int, selfTrainedPokemonIds []uint, opponentPokemonIds []int, opponentPartyMember []int,
+) AddBattleRecordCommand {
 	return AddBattleRecordCommand{
-		battleRecord: battles.NewBattleRecord(
-			0, partyId, generation, series, season, battleResult, 0,
-			selfPokemonIds, selfTrainedPokemonIds, opponentElectionPokemonIds),
-		opponentPartyMember: value.NewPartyPokemonIds(opponentPokemonIds...),
+		InputBattleRecord: inputs.NewInputBattleRecord(
+			0, partyId, generation, series, season, battleResult,
+			selfPokemonIds, selfTrainedPokemonIds, opponentPokemonIds, opponentPartyMember),
 	}
-}
-
-func (c AddBattleRecordCommand) ToDomain() battles.BattleRecord {
-	return c.battleRecord
-}
-
-func (c AddBattleRecordCommand) OpponentPartyMember() value.PartyPokemonIds {
-	return c.opponentPartyMember
 }

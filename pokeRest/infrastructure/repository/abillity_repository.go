@@ -5,6 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
@@ -17,13 +18,13 @@ var (
 
 type AbilityRepository struct {
 	dbClient orm.IDbClient
-	BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities]
+	BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId]
 }
 
 func NewAbilityRepository(dbClient orm.IDbClient) *AbilityRepository {
 	return &AbilityRepository{
 		dbClient: dbClient,
-		BaseReadRepository: BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities]{
+		BaseReadRepository: BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId]{
 			dbClient:            dbClient,
 			emptySchemaBuilder:  emptyAbilityBuilder,
 			emptySchemasBuilder: emptyAbilitiesBuilder,
