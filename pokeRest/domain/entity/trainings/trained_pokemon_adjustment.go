@@ -59,44 +59,21 @@ func (t TrainedPokemonAdjustment) Id() identifier.TrainedAdjustmentId {
 func (t TrainedPokemonAdjustment) PokemonId() identifier.PokemonId {
 	return t.pokemonId
 }
-func (t TrainedPokemonAdjustment) Nature() value.PokemonNature {
-	return t.nature
-}
-func (t TrainedPokemonAdjustment) AbilityId() identifier.AbilityId {
-	return t.abilityId
-}
-func (t TrainedPokemonAdjustment) HeldItemId() identifier.HeldItemId {
-	return t.heldItemId
-}
 
-func (t TrainedPokemonAdjustment) EffortValueH() value.EffortValue {
-	return t.effortValueH
-}
-func (t TrainedPokemonAdjustment) EffortValueA() value.EffortValue {
-	return t.effortValueA
-}
-func (t TrainedPokemonAdjustment) EffortValueB() value.EffortValue {
-	return t.effortValueB
-}
-func (t TrainedPokemonAdjustment) EffortValueC() value.EffortValue {
-	return t.effortValueC
-}
-func (t TrainedPokemonAdjustment) EffortValueD() value.EffortValue {
-	return t.effortValueD
-}
-func (t TrainedPokemonAdjustment) EffortValueS() value.EffortValue {
-	return t.effortValueS
-}
-
-func (t TrainedPokemonAdjustment) MoveIdFirst() identifier.MoveId {
-	return t.moveId1
-}
-func (t TrainedPokemonAdjustment) MoveIdSecond() identifier.MoveId {
-	return t.moveId2
-}
-func (t TrainedPokemonAdjustment) MoveIdThird() identifier.MoveId {
-	return t.moveId3
-}
-func (t TrainedPokemonAdjustment) MoveIdForth() identifier.MoveId {
-	return t.moveId4
+func (t TrainedPokemonAdjustment) Notify(note ITrainedPokemonAdjustNotification) {
+	note.SetId(t.id)
+	note.SetPokemonId(t.pokemonId)
+	note.SetNature(t.nature)
+	note.SetAbilityId(t.abilityId)
+	note.SetHeldItemId(t.heldItemId)
+	note.SetEffortValueH(t.effortValueH)
+	note.SetEffortValueA(t.effortValueA)
+	note.SetEffortValueB(t.effortValueB)
+	note.SetEffortValueC(t.effortValueC)
+	note.SetEffortValueD(t.effortValueD)
+	note.SetEffortValueS(t.effortValueS)
+	note.SetMoveId1(t.moveId1)
+	note.SetMoveId2(t.moveId2)
+	note.SetMoveId3(t.moveId3)
+	note.SetMoveId4(t.moveId4)
 }

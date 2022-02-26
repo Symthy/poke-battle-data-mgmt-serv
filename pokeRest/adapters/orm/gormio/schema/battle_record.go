@@ -4,6 +4,8 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/common/collections"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory/inputs"
 	"gorm.io/gorm"
 )
 
@@ -36,20 +38,19 @@ func (BattleRecord) TableName() string {
 	return "battle_records"
 }
 
-func (b BattleRecord) ConvertToDomain() battles.BattleRecord {
+func (b BattleRecord) ConvertToDomain() (*battles.BattleRecord, error) {
 	selfElectionPokemonIds := []int{}
 	collections.AddsToList(selfElectionPokemonIds, b.SelfElectionPokemonId1, b.SelfElectionPokemonId2,
 		b.SelfElectionPokemonId3, b.SelfElectionPokemonId4)
-
 	selfTrainedPokemonIds := []uint{}
 	collections.AddsToList(selfTrainedPokemonIds, b.SelfTrainedPokemonId1, b.SelfTrainedPokemonId2,
 		b.SelfTrainedPokemonId3, b.SelfTrainedPokemonId4)
-
 	opponentElectionPokemonIds := []int{}
 	collections.AddsToList(opponentElectionPokemonIds, b.OpponentElectionPokemonId1,
 		b.OpponentElectionPokemonId2, b.OpponentElectionPokemonId3, b.OpponentElectionPokemonId4)
+	input := inputs.NewInputBattleRecord(b.ID, b.PartyId, b.Generation, b.Series, b.Season,
+		b.Result.String(), selfElectionPokemonIds, selfTrainedPokemonIds, opponentElectionPokemonIds,
+		b.BattleOpponentPartyId, nil)
 
-	return battles.NewBattleRecord(
-		b.ID, b.PartyId, b.Generation, b.Series, b.Season, b.Result.String(),
-		b.BattleOpponentPartyId, selfElectionPokemonIds, selfTrainedPokemonIds, opponentElectionPokemonIds)
+	return factory.NewBattleRecordFactory(input).CreateDomain()
 }

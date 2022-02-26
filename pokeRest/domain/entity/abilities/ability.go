@@ -33,14 +33,9 @@ func (a Ability) Id() identifier.AbilityId {
 	return a.id
 }
 
-func (a Ability) Name() string {
-	return a.name
-}
-
-func (a Ability) Description() string {
-	return a.description
-}
-
-func (a Ability) CorrectionValues() []value.CorrectionValue {
-	return a.correctionValues
+func (a Ability) Notify(note IAbilityNotification) {
+	note.SetId(a.id)
+	note.SetName(a.name)
+	note.SetDescription(a.description)
+	note.SetCorrectionValues(a.correctionValues)
 }

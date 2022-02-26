@@ -42,26 +42,16 @@ func (t TrainedPokemonParam) AdjustmentId() identifier.TrainedAdjustmentId {
 	return t.adjustmentId
 }
 
-func (t TrainedPokemonParam) Nickname() *string {
-	return t.nickname
-}
-
-func (t TrainedPokemonParam) Gender() value.Gender {
-	return t.gender
-}
-
-func (t TrainedPokemonParam) Description() *string {
-	return t.description
-}
-
-func (t TrainedPokemonParam) IsPrivate() bool {
-	return t.isPrivate
-}
-
-func (t TrainedPokemonParam) UserId() identifier.UserId {
-	return t.userId
-}
-
 func (t TrainedPokemonParam) ApplyAdjustmentId(adjustmentId identifier.TrainedAdjustmentId) {
 	t.adjustmentId = adjustmentId
+}
+
+func (t TrainedPokemonParam) Notify(note ITrainedPokemonParamNotification) {
+	note.SetId(t.id)
+	note.SetGender(t.gender)
+	note.SetNickname(t.nickname)
+	note.SetDescription(t.description)
+	note.SetAdjustmentId(t.adjustmentId)
+	note.SetIsPrivate(t.isPrivate)
+	note.SetUserId(t.userId)
 }

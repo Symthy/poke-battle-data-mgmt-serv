@@ -10,12 +10,14 @@ type InputBattleRecord struct {
 	selfPokemonIds             []int
 	selfTrainedPokemonIds      []uint
 	opponentElectionPokemonIds []int
+	opponentPartyId            uint
 	opponentPartyMember        []int
 }
 
 func NewInputBattleRecord(
 	id, partyId uint, generation, series, season int, battleResult string, selfPokemonIds []int,
-	selfTrainedPokemonIds []uint, opponentElectionPokemonIds []int, opponentPartyMember []int,
+	selfTrainedPokemonIds []uint, opponentElectionPokemonIds []int,
+	opponentPartyId uint, opponentPartyMember []int,
 ) InputBattleRecord {
 	return InputBattleRecord{
 		id:                         id,
@@ -27,6 +29,7 @@ func NewInputBattleRecord(
 		selfPokemonIds:             selfPokemonIds,
 		selfTrainedPokemonIds:      selfTrainedPokemonIds,
 		opponentElectionPokemonIds: opponentElectionPokemonIds,
+		opponentPartyId:            opponentPartyId,
 		opponentPartyMember:        opponentPartyMember,
 	}
 }
@@ -57,6 +60,9 @@ func (i InputBattleRecord) SelfTrainedPokemonIds() []uint {
 }
 func (i InputBattleRecord) OpponentElectionPokemonIds() []int {
 	return i.opponentElectionPokemonIds
+}
+func (i InputBattleRecord) OpponentPartyId() uint {
+	return i.opponentPartyId
 }
 func (i InputBattleRecord) OpponentPartyMember() []int {
 	return i.opponentPartyMember

@@ -44,22 +44,13 @@ func (t TrainedPokemonAttackTarget) TrainedPokemonId() identifier.TrainedPokemon
 	return t.trainedPokemonId
 }
 
-func (t TrainedPokemonAttackTarget) MoveId() identifier.MoveId {
-	return t.moveId
-}
-
-func (t TrainedPokemonAttackTarget) TargetPokemonId() identifier.PokemonId {
-	return t.targetPokemonId
-}
-
-func (t TrainedPokemonAttackTarget) TargetPokemonEffortH() value.EffortValue {
-	return t.targetPokemonEffortH
-}
-
-func (t TrainedPokemonAttackTarget) TargetPokemonEffortB() value.EffortValue {
-	return t.targetPokemonEffortB
-}
-
-func (t TrainedPokemonAttackTarget) TargetPokemonEffortD() value.EffortValue {
-	return t.targetPokemonEffortD
+func (t TrainedPokemonAttackTarget) Notify(note ITrainedPokemonAttackNotification) {
+	note.SetId(t.id)
+	note.SetTargetPokemonId(t.targetPokemonId)
+	note.SetMoveId(t.moveId)
+	note.SetTargetPokemonNature(t.targetPokemonNature)
+	note.SetTargetPokemonId(t.targetPokemonId)
+	note.SetTargetPokemonEffortH(t.targetPokemonEffortH)
+	note.SetTargetPokemonEffortB(t.targetPokemonEffortB)
+	note.SetTargetPokemonEffortD(t.targetPokemonEffortD)
 }

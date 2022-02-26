@@ -24,7 +24,6 @@ type ITrainedPokemonAdjustNotification interface {
 }
 
 type ITrainedPokemonTarget interface {
-	SetId(identifier.TrainedAttackTargetId)
 	SetTrainedPokemonId(identifier.TrainedPokemonId)
 	SetMoveId(identifier.MoveId)
 	SetTargetPokemonId(identifier.PokemonId)
@@ -32,6 +31,7 @@ type ITrainedPokemonTarget interface {
 }
 
 type ITrainedPokemonAttackNotification interface {
+	SetId(identifier.TrainedAttackTargetId)
 	ITrainedPokemonTarget
 	SetTargetPokemonEffortH(value.EffortValue)
 	SetTargetPokemonEffortB(value.EffortValue)
@@ -39,6 +39,7 @@ type ITrainedPokemonAttackNotification interface {
 }
 
 type ITrainedPokemonDefenceNotification interface {
+	SetId(identifier.TrainedDefenceTargetId)
 	ITrainedPokemonTarget
 	SetTargetPokemonEffortA(value.EffortValue)
 	SetTargetPokemonEffortC(value.EffortValue)

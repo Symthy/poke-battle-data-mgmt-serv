@@ -4,6 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/factory/inputs"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
 type BattleRecordFactory struct {
@@ -15,11 +16,11 @@ func NewBattleRecordFactory(input inputs.InputBattleRecord) BattleRecordFactory 
 }
 
 func (f BattleRecordFactory) CreateDomain() (*battles.BattleRecord, error) {
-	id, err := value.NewBattleRecordId(f.input.Id())
+	id, err := identifier.NewBattleRecordId(f.input.Id())
 	if err != nil {
 		return nil, err
 	}
-	partyId, err := value.NewPartyId(f.input.PartyId())
+	partyId, err := identifier.NewPartyId(f.input.PartyId())
 	if err != nil {
 		return nil, err
 	}
@@ -28,8 +29,18 @@ func (f BattleRecordFactory) CreateDomain() (*battles.BattleRecord, error) {
 	selfPokemons := battles.NewElectionPokemons(f.input.SelfPokemonIds())
 	selfTrainedPokemons := battles.NewElectionPokemons(f.input.SelfTrainedPokemonIds())
 	opponentPokemons := battles.NewElectionPokemons(f.input.OpponentElectionPokemonIds())
+	var opponentPartyId identifier.BattleOpponentPartyId
+	if f.input.OpponentPartyId() > 0 {
+		oppId, err := identifier.NewBattleOpponentPartyId(f.input.OpponentPartyId())
+		if err != nil {
+			return nil, err
+		}
+		opponentPartyId = *oppId
+	} else {
+		opponentPartyId = identifier.NewEmptyBattleOpponentPartyId()
+	}
 
 	domain := battles.NewBattleRecord(*id, *partyId, season, result, selfPokemons, selfTrainedPokemons,
-		value.NewEmptyBattleOpponentPartyId(), opponentPokemons)
+		opponentPartyId, opponentPokemons)
 	return &domain, nil
 }
