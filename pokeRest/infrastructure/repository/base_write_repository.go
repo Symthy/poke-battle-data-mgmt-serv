@@ -9,7 +9,8 @@ import (
 type BaseWriteRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], K infrastructure.IValueId] struct {
 	dbClient           orm.IDbClient
 	emptySchemaBuilder func() TS
-	schemaConverter    func(model TD) TS
+	toSchemaConverter  func(model TD) TS
+	toDomainConverter  func(schema TS) (*TD, error)
 }
 
 // Todo: error handling
@@ -19,13 +20,13 @@ func (rep BaseWriteRepository[TS, TD, K]) Create(model TD) (*TD, error) {
 }
 
 func (rep BaseWriteRepository[TS, TD, K]) CreateRecord(db *gorm.DB, model TD) (*TD, error) {
-	schema := rep.schemaConverter(model)
+	schema := rep.toSchemaConverter(model)
 	tx := db.Create(&schema)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	s := schema.ConvertToDomain()
-	return &s, nil
+	domain, err := rep.toDomainConverter(schema)
+	return domain, err
 }
 
 func (rep BaseWriteRepository[TS, TD, K]) Update(model TD) (*TD, error) {
@@ -40,13 +41,13 @@ func (rep BaseWriteRepository[TS, TD, K]) UpdateRecord(db *gorm.DB, model TD) (*
 		}
 		return nil, tx.Error
 	}
-	schema := rep.schemaConverter(model)
+	schema := rep.toSchemaConverter(model)
 	tx := db.Model(&target).Updates(&schema)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	s := schema.ConvertToDomain()
-	return &s, nil
+	domain, err := rep.toDomainConverter(schema)
+	return domain, err
 }
 
 func (rep BaseWriteRepository[TS, TD, K]) Delete(id uint) (*TD, error) {
@@ -62,6 +63,6 @@ func (rep BaseWriteRepository[TS, TD, K]) DeleteRecord(db *gorm.DB, id uint) (*T
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	s := schema.ConvertToDomain()
-	return &s, nil
+	domain, err := rep.toDomainConverter(schema)
+	return domain, err
 }

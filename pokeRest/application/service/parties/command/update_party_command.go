@@ -1,19 +1,16 @@
 package command
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
+)
 
 type UpdatePartyCommand struct {
-	parties.Party
+	factory.PartyInput
 }
 
 func NewUpdatePartyCommand(id uint, name string, battleFormat string, isPrivate bool,
 	partyResultIds []uint, partyTagIds []uint, trainedPokemonIds []uint) UpdatePartyCommand {
-	cmd := UpdatePartyCommand{
-		parties.NewPartyForUpdated(id, name, battleFormat, isPrivate, partyResultIds, partyTagIds, trainedPokemonIds),
+	return UpdatePartyCommand{
+		factory.NewPartyInput(id, name, battleFormat, isPrivate, 0, partyResultIds, partyTagIds, trainedPokemonIds),
 	}
-	return cmd
-}
-
-func (cmd UpdatePartyCommand) ToDomain() parties.Party {
-	return cmd.Party
 }

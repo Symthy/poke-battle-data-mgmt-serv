@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IPartyRepository = (*PartyRepository)(nil)
@@ -24,12 +24,14 @@ func NewPartyRepository(dbClient orm.IDbClient) *PartyRepository {
 		BaseSingleReadRepository: BaseSingleReadRepository[schema.Party, parties.Party, identifier.PartyId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartySchemaBuilder,
-			schemaConverter:    dto.ToSchemaParty,
+			toSchemaConverter:  conv.ToSchemaParty,
+			toDomainConverter:  conv.ToDomainParty,
 		},
 		BaseWriteRepository: BaseWriteRepository[schema.Party, parties.Party, identifier.PartyId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartySchemaBuilder,
-			schemaConverter:    dto.ToSchemaParty,
+			toSchemaConverter:  conv.ToSchemaParty,
+			toDomainConverter:  conv.ToDomainParty,
 		},
 		dbClient: dbClient,
 	}

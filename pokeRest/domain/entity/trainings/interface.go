@@ -48,8 +48,8 @@ type ITrainedPokemonDefenceNotification interface {
 type ITrainedPokemonParamNotification interface {
 	SetId(identifier.TrainedPokemonId)
 	SetGender(value.Gender)
-	SetNickname(*string)
-	SetDescription(*string)
+	SetNickname(string)
+	SetDescription(string)
 	SetAdjustmentId(identifier.TrainedAdjustmentId)
 	SetIsPrivate(bool)
 	SetUserId(identifier.UserId)

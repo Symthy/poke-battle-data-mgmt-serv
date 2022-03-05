@@ -24,7 +24,7 @@ func throwServerErrorWithFields(errKey ServerErrKey, fieldValues ...string) erro
 	return e
 }
 
-func ThrowServerErrorInvalidValue(className string, fieldName string, value string) error {
+func ThrowErrorInvalidValue(className string, fieldName string, value string) error {
 	return throwServerErrorWithFields(ErrInvalidValue, className, fieldName, value)
 }
 

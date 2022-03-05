@@ -14,7 +14,7 @@ type IPokemonNotification interface {
 	SetEnglishName(string)
 	SetGeneration(int)
 	SetTypeSet(value.PokemonTypeSet)
-	SetAbilitySet(value.PokemonAbilitySet)
+	SetAbilitySet(value.PokemonAbilityIdSet)
 	SetBaseStatsH(value.PokemonBaseStats)
 	SetBaseStatsA(value.PokemonBaseStats)
 	SetBaseStatsB(value.PokemonBaseStats)

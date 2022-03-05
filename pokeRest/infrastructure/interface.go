@@ -1,7 +1,7 @@
 package infrastructure
 
 type ISchema[T IDomain[K], K IValueId] interface {
-	ConvertToDomain() T
+	TableName() string
 }
 
 type IDomain[K IValueId] interface {

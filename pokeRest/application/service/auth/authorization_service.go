@@ -13,6 +13,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Todo: remake
+
 type AuthorizationService struct {
 	service    users.UserReadService
 	authConfig config.AuthConfig
@@ -33,7 +35,7 @@ func (as *AuthorizationService) GenerateToken(name string, password string) (*st
 		return nil, err
 	}
 
-	if user.Id() == 0 {
+	if user.Id().Value() == 0 {
 		return nil, errs.ThrowServerError(errs.ErrUserNotFound)
 	}
 
@@ -41,7 +43,7 @@ func (as *AuthorizationService) GenerateToken(name string, password string) (*st
 		return nil, errs.ThrowServerError(errs.ErrAuthentication)
 	}
 
-	claims := config.NewJwtCustomClaims(user.Id(), user.Name().Value())
+	claims := config.NewJwtCustomClaims(user.Id().Value(), user.Name().Value())
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString(as.authConfig)
 	return &t, err
@@ -54,7 +56,7 @@ func (a AuthorizationService) CreateSignUpUser(name string, password string) (*m
 	if err != nil {
 		return nil, err
 	}
-	if u.Id() != 0 {
+	if u.Id().Value() != 0 {
 		return nil, &echo.HTTPError{
 			Code:    http.StatusConflict,
 			Message: "name already exists",
@@ -78,7 +80,7 @@ func (a AuthorizationService) ValidateUserIdInToken(c echo.Context) error {
 	claims := accessUser.Claims.(*config.JwtCustomClaims)
 	var uid uint = uint(claims.ID)
 	user, err := a.service.GetUserById(uid)
-	if user.Id() == 0 {
+	if user.Id().Value() == 0 {
 		return echo.ErrNotFound
 	}
 	if err != nil {

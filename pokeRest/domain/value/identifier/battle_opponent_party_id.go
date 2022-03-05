@@ -8,7 +8,7 @@ type BattleOpponentPartyId struct {
 
 func NewBattleOpponentPartyId(value uint) (*BattleOpponentPartyId, error) {
 	if value < 0 {
-		return nil, errs.ThrowServerErrorInvalidValue("BattleOpponentPartyId", "value", string(rune(value)))
+		return nil, errs.ThrowErrorInvalidValue("BattleOpponentPartyId", "value", string(rune(value)))
 	}
 	return &BattleOpponentPartyId{ValueId{value}}, nil
 }

@@ -1,18 +1,15 @@
 package command
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
+)
 
 type CreatePartyCommand struct {
-	parties.Party
+	factory.PartyInput
 }
 
 func NewCreatePartyCommand(name string, battleFormat string, isPrivate bool, userId uint, partyTagIds []uint, trainedPokemonIds []uint) CreatePartyCommand {
-	cmd := CreatePartyCommand{
-		parties.NewPartyOfUnregistered(name, battleFormat, isPrivate, userId, partyTagIds, trainedPokemonIds),
+	return CreatePartyCommand{
+		factory.NewPartyInput(0, name, battleFormat, isPrivate, userId, nil, partyTagIds, trainedPokemonIds),
 	}
-	return cmd
-}
-
-func (cmd CreatePartyCommand) ToDomain() parties.Party {
-	return cmd.Party
 }

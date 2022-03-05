@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IMoveRepository = (*MoveRepository)(nil)
@@ -24,13 +24,14 @@ type MoveRepository struct {
 func NewMoveRepository(dbClient orm.IDbClient) *MoveRepository {
 	return &MoveRepository{
 		dbClient: dbClient,
-		BaseReadRepository: BaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId]{
-			dbClient:            dbClient,
-			emptySchemaBuilder:  emptyMoveBuilder,
-			emptySchemasBuilder: emptyMovesBuilder,
-			domainsConstructor:  moves.NewMoves,
-			schemaConverter:     dto.ToSchemaMove,
-		},
+		BaseReadRepository: NewBaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId](
+			dbClient,
+			emptyMoveBuilder,
+			emptyMovesBuilder,
+			moves.NewMoves,
+			conv.ToSchemaMove,
+			conv.ToDomainMove,
+		),
 	}
 }
 

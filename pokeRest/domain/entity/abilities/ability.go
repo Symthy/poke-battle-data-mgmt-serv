@@ -12,13 +12,13 @@ type Ability struct {
 	id               identifier.AbilityId
 	name             string
 	description      string
-	correctionValues []value.CorrectionValue
+	correctionValues value.CorrectionValues
 	// Todo
 	triggerCondition *interface{}
 }
 
 func NewAbility(
-	id identifier.AbilityId, name string, description string, correctionValues []value.CorrectionValue,
+	id identifier.AbilityId, name string, description string, correctionValues value.CorrectionValues,
 ) Ability {
 	return Ability{
 		id:               id,

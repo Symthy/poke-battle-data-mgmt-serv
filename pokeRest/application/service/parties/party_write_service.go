@@ -16,11 +16,19 @@ func NewPartyWriteService(repo repository.IPartyRepository) PartyWriteService {
 }
 
 func (s PartyWriteService) SaveParty(cmd command.CreatePartyCommand) (*parties.Party, error) {
-	return s.repo.Create(cmd.ToDomain())
+	domain, err := cmd.BuildDomain()
+	if err != nil {
+		return nil, err
+	}
+	return s.repo.Create(*domain)
 }
 
 func (s PartyWriteService) UpdateParty(cmd command.UpdatePartyCommand) (*parties.Party, error) {
-	return s.repo.Update(cmd.ToDomain())
+	domain, err := cmd.BuildDomain()
+	if err != nil {
+		return nil, err
+	}
+	return s.repo.Update(*domain)
 }
 
 func (s PartyWriteService) DeleteParty(id uint) (*parties.Party, error) {

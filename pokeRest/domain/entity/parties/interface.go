@@ -11,8 +11,8 @@ type IPartyNotification interface {
 	SetName(string)
 	SetBattleFormat(value.BattleFormat)
 	SetIsPrivate(bool)
-	SetPartyResultIds([]identifier.PartyBattleResultId)
-	SetPartyTagIds([]identifier.PartyTagId)
+	SetPartyResultIds(value.PartyBattleResultIds)
+	SetPartyTagIds(value.PartyTagIds)
 	SetTrainedPokemons(value.PartyPokemonIds)
 	SetUserId(identifier.UserId)
 }

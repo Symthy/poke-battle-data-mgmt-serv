@@ -23,16 +23,30 @@ type TrainedPokemonAttackTarget struct {
 func NewTrainedPokemonAttackTarget(
 	id identifier.TrainedAttackTargetId, trainedPokemonId identifier.TrainedPokemonId,
 	moveId identifier.MoveId, targetPokemonId identifier.PokemonId, targetPokemonNature string,
-	targetPokemonEffortH int, targetPokemonEffortB int, targetPokemonEffortD int) TrainedPokemonAttackTarget {
-	return TrainedPokemonAttackTarget{
+	targetPokemonEffortH int, targetPokemonEffortB int, targetPokemonEffortD int,
+) (*TrainedPokemonAttackTarget, error) {
+	effortValueH, err := value.NewEffortValue(targetPokemonEffortH, value.H)
+	if err != nil {
+		return nil, err
+	}
+	effortValueB, err := value.NewEffortValue(targetPokemonEffortH, value.B)
+	if err != nil {
+		return nil, err
+	}
+	effortValueD, err := value.NewEffortValue(targetPokemonEffortH, value.D)
+	if err != nil {
+		return nil, err
+	}
+	return &TrainedPokemonAttackTarget{
 		id:                   id,
 		trainedPokemonId:     trainedPokemonId,
 		moveId:               moveId,
 		targetPokemonId:      targetPokemonId,
 		targetPokemonNature:  value.NewPokemonNature(targetPokemonNature),
-		targetPokemonEffortH: value.NewEffortValue(targetPokemonEffortH),
-		targetPokemonEffortB: value.NewEffortValue(targetPokemonEffortB),
-	}
+		targetPokemonEffortH: *effortValueH,
+		targetPokemonEffortB: *effortValueB,
+		targetPokemonEffortD: *effortValueD,
+	}, nil
 }
 
 // Todo: refactor Notification

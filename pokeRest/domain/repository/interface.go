@@ -11,23 +11,24 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"gorm.io/gorm"
 )
 
 // common
-type ISingleRecordFinder[T entity.IDomain] interface {
+type ISingleRecordFinder[T entity.IDomain[K], K entity.IValueId] interface {
 	FindById(id uint) (*T, error)
 }
 
-type IAllRecordRepository[L entity.IDomains[T], T entity.IDomain] interface {
+type IAllRecordRepository[L entity.IDomains[T, K], T entity.IDomain[K], K entity.IValueId] interface {
 	FindAll(page int, pageSize int) (*L, error)
 }
 
-type IPokemonStatsRepository[L entity.IDomains[T], T entity.IDomain] interface {
+type IPokemonStatsRepository[L entity.IDomains[T, K], T entity.IDomain[K], K entity.IValueId] interface {
 	FindOfPokemon(pokemonId uint) (*L, error)
 }
 
-type IWritableRepository[TD entity.IDomain] interface {
+type IWritableRepository[TD entity.IDomain[K], K entity.IValueId] interface {
 	Create(TD) (*TD, error)
 	Update(TD) (*TD, error)
 	Delete(id uint) (*TD, error)
@@ -42,47 +43,47 @@ type ITransactionalRepository interface {
 
 // special
 type IPokemonRepository interface {
-	ISingleRecordFinder[pokemons.Pokemon]
-	IAllRecordRepository[pokemons.Pokemons, pokemons.Pokemon]
-	IWritableRepository[pokemons.Pokemon]
+	ISingleRecordFinder[pokemons.Pokemon, identifier.PokemonId]
+	IAllRecordRepository[pokemons.Pokemons, pokemons.Pokemon, identifier.PokemonId]
+	IWritableRepository[pokemons.Pokemon, identifier.PokemonId]
 }
 
 type IAbilityRepository interface {
-	ISingleRecordFinder[abilities.Ability]
-	IAllRecordRepository[abilities.Abilities, abilities.Ability]
-	IPokemonStatsRepository[abilities.Abilities, abilities.Ability]
+	ISingleRecordFinder[abilities.Ability, identifier.AbilityId]
+	IAllRecordRepository[abilities.Abilities, abilities.Ability, identifier.AbilityId]
+	IPokemonStatsRepository[abilities.Abilities, abilities.Ability, identifier.AbilityId]
 }
 
 type IMoveRepository interface {
-	ISingleRecordFinder[moves.Move]
-	IAllRecordRepository[moves.Moves, moves.Move]
-	IPokemonStatsRepository[moves.Moves, moves.Move]
+	ISingleRecordFinder[moves.Move, identifier.MoveId]
+	IAllRecordRepository[moves.Moves, moves.Move, identifier.MoveId]
+	IPokemonStatsRepository[moves.Moves, moves.Move, identifier.MoveId]
 }
 
 type IHeldItemRepository interface {
-	ISingleRecordFinder[items.HeldItem]
-	IAllRecordRepository[items.HeldItems, items.HeldItem]
+	ISingleRecordFinder[items.HeldItem, identifier.HeldItemId]
+	IAllRecordRepository[items.HeldItems, items.HeldItem, identifier.HeldItemId]
 }
 
 type IPartyTagRepository interface {
-	ISingleRecordFinder[parties.PartyTag]
-	IAllRecordRepository[parties.PartyTags, parties.PartyTag]
-	IWritableRepository[parties.PartyTag]
+	ISingleRecordFinder[parties.PartyTag, identifier.PartyTagId]
+	IAllRecordRepository[parties.PartyTags, parties.PartyTag, identifier.PartyTagId]
+	IWritableRepository[parties.PartyTag, identifier.PartyTagId]
 }
 
 type IPartyRepository interface {
-	ISingleRecordFinder[parties.Party]
-	IWritableRepository[parties.Party]
+	ISingleRecordFinder[parties.Party, identifier.PartyId]
+	IWritableRepository[parties.Party, identifier.PartyId]
 }
 
 type IPartyBattleResultRepository interface {
-	IWritableRepository[parties.PartyBattleResult]
+	IWritableRepository[parties.PartyBattleResult, identifier.PartyBattleResultId]
 }
 
 // Todo: Don't want to depend gorm. wrap?
 type IBattleRecordRepository interface {
-	ISingleRecordFinder[battles.BattleRecord]
-	IWritableRepository[battles.BattleRecord]
+	ISingleRecordFinder[battles.BattleRecord, identifier.BattleRecordId]
+	IWritableRepository[battles.BattleRecord, identifier.BattleRecordId]
 	CreateRecord(*gorm.DB, battles.BattleRecord) (*battles.BattleRecord, error)
 	UpdateRecord(*gorm.DB, battles.BattleRecord) (*battles.BattleRecord, error)
 	DeleteRecord(*gorm.DB, uint) (*battles.BattleRecord, error)
@@ -100,39 +101,39 @@ type IBattleRecordTransactionalRepository interface {
 }
 
 type IBattleOpponentPartyRepository interface {
-	IWritableRepository[battles.BattleOpponentParty]
+	IWritableRepository[battles.BattleOpponentParty, identifier.BattleOpponentPartyId]
 	FindParty(value.PartyPokemonIds) (*battles.BattleOpponentParty, error)
 }
 
 // Todo: Don't want to depend gorm. wrap?
 type ITrainedPokemonRepository interface {
-	IWritableRepository[trainings.TrainedPokemonParam]
+	IWritableRepository[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
 	CreateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
 	UpdateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
 	DeleteRecord(*gorm.DB, uint) (*trainings.TrainedPokemonParam, error)
 }
 type ITrainedPokemonTransactionalRepository interface {
-	ISingleRecordFinder[trainings.TrainedPokemonParam]
+	ISingleRecordFinder[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
 	ITrainedPokemonRepository
 	ITransactionalRepository
 }
 
 type ITrainedPokemonAdjustmentRepository interface {
 	Find(trainings.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error)
-	IAllRecordRepository[trainings.TrainedPokemonAdjustments, trainings.TrainedPokemonAdjustment]
-	IWritableRepository[trainings.TrainedPokemonAdjustment]
+	IAllRecordRepository[trainings.TrainedPokemonAdjustments, trainings.TrainedPokemonAdjustment, identifier.TrainedAdjustmentId]
+	IWritableRepository[trainings.TrainedPokemonAdjustment, identifier.TrainedAdjustmentId]
 }
 
 type ITrainedPokemonAttackRepository interface {
-	IWritableRepository[trainings.TrainedPokemonAttackTarget]
+	IWritableRepository[trainings.TrainedPokemonAttackTarget, identifier.TrainedAttackTargetId]
 }
 
 type ITrainedPokemonDeffenceRepository interface {
-	IWritableRepository[trainings.TrainedPokemonDefenceTarget]
+	IWritableRepository[trainings.TrainedPokemonDefenceTarget, identifier.TrainedDefenceTargetId]
 }
 
 type IUserRepository interface {
 	FindById(id uint) (*users.User, error)
 	FindByName(targetName string, filterFields ...string) (*users.User, error)
-	IWritableRepository[users.User]
+	IWritableRepository[users.User, identifier.UserId]
 }

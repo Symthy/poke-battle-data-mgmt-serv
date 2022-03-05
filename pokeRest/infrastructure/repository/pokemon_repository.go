@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IPokemonRepository = (*PokemonRepository)(nil)
@@ -23,7 +23,8 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 		BaseWriteRepository: BaseWriteRepository[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPokemonBuilder,
-			schemaConverter:    dto.ToSchemaPokemon,
+			toSchemaConverter:  conv.ToSchemaPokemon,
+			toDomainConverter:  conv.ToDomainPokemon,
 		},
 		dbClient: dbClient,
 	}
@@ -36,8 +37,7 @@ func (rep PokemonRepository) FindById(id uint) (*pokemons.Pokemon, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	p := pokemon.ConvertToDomain()
-	return &p, tx.Error
+	return rep.toDomainConverter(pokemon)
 }
 
 // Todo: args is condition
@@ -51,7 +51,10 @@ func (rep PokemonRepository) FindAll(next int, pageSize int) (*pokemons.Pokemons
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	pokemonDomains := dto.ConvertToDomains[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId](schemas)
+	pokemonDomains, err := conv.ConvertToDomains[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId](schemas, rep.toDomainConverter)
+	if err != nil {
+		return nil, err
+	}
 	pokemonList := pokemons.NewPokemons(pokemonDomains)
 	return &pokemonList, nil
 }

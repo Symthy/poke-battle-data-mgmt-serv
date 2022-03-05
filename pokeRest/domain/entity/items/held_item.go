@@ -12,21 +12,17 @@ type HeldItem struct {
 	id               identifier.HeldItemId
 	name             string
 	description      string
-	correctionValues []value.CorrectionValue
+	correctionValues value.CorrectionValues
 }
 
 func NewHeldItem(
-	id identifier.HeldItemId, name, description string, correctionValues []value.CorrectionValue,
+	id identifier.HeldItemId, name, description string, correctionValues value.CorrectionValues,
 ) HeldItem {
-	var corrections []value.CorrectionValue = nil
-	if len(correctionValues) > 0 {
-		corrections = correctionValues
-	}
 	return HeldItem{
 		id:               id,
 		name:             name,
 		description:      description,
-		correctionValues: corrections,
+		correctionValues: correctionValues,
 	}
 }
 

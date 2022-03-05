@@ -2,7 +2,6 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
 )
 
 type Move struct {
@@ -23,14 +22,9 @@ type Move struct {
 	// 1:M -> TrainedPokemonAttackTarget
 	TrainedPokemonAttackTarget TrainedPokemonAttackTarget `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	// 1:M -> TrainedPokemonDeffenceTarget
-	TrainedPokemonDeffenceTarget TrainedPokemonDeffenceTarget `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TrainedPokemonDeffenceTarget TrainedPokemonDefenceTarget `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (Move) TableName() string {
 	return "moves"
-}
-
-func (m Move) ConvertToDomain() moves.Move {
-	return moves.NewMove(m.ID, m.Name, m.Species.String(), m.Power, m.Accuracy, m.PP,
-		*m.IsContained, *m.IsCanGuard)
 }

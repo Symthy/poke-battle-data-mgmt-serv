@@ -14,41 +14,24 @@ type TrainedPokemonAdjustment struct {
 	nature       value.PokemonNature
 	abilityId    identifier.AbilityId
 	heldItemId   identifier.HeldItemId
-	effortValueH value.EffortValue
-	effortValueA value.EffortValue
-	effortValueB value.EffortValue
-	effortValueC value.EffortValue
-	effortValueD value.EffortValue
-	effortValueS value.EffortValue
-	moveId1      identifier.MoveId
-	moveId2      identifier.MoveId
-	moveId3      identifier.MoveId
-	moveId4      identifier.MoveId
+	effortValues value.EffortValues
+	moveSet      value.PokemonMoveIdSet
 }
 
 func NewTrainedPokemonAdjustment(
-	id identifier.TrainedAdjustmentId, pokemonId identifier.PokemonId, nature string,
-	abilityId identifier.AbilityId, heldItemId identifier.HeldItemId, effortValueH int,
-	effortValueA int, effortValueB int, effortValueC int, effortValueD int, effortValueS int,
-	moveId1 identifier.MoveId, moveId2 identifier.MoveId, moveId3 identifier.MoveId, moveId4 identifier.MoveId,
+	id identifier.TrainedAdjustmentId, pokemonId identifier.PokemonId, nature value.PokemonNature,
+	abilityId identifier.AbilityId, heldItemId identifier.HeldItemId, effortValues value.EffortValues,
+	moveSet value.PokemonMoveIdSet,
 ) TrainedPokemonAdjustment {
 	// Todo: add and validate
 	return TrainedPokemonAdjustment{
 		id:           id,
 		pokemonId:    pokemonId,
-		nature:       value.NewPokemonNature(nature),
+		nature:       nature,
 		abilityId:    abilityId,
 		heldItemId:   heldItemId,
-		effortValueH: value.NewEffortValue(effortValueH),
-		effortValueA: value.NewEffortValue(effortValueA),
-		effortValueB: value.NewEffortValue(effortValueB),
-		effortValueC: value.NewEffortValue(effortValueC),
-		effortValueD: value.NewEffortValue(effortValueD),
-		effortValueS: value.NewEffortValue(effortValueS),
-		moveId1:      moveId1,
-		moveId2:      moveId2,
-		moveId3:      moveId3,
-		moveId4:      moveId4,
+		effortValues: effortValues,
+		moveSet:      moveSet,
 	}
 }
 
@@ -66,14 +49,15 @@ func (t TrainedPokemonAdjustment) Notify(note ITrainedPokemonAdjustNotification)
 	note.SetNature(t.nature)
 	note.SetAbilityId(t.abilityId)
 	note.SetHeldItemId(t.heldItemId)
-	note.SetEffortValueH(t.effortValueH)
-	note.SetEffortValueA(t.effortValueA)
-	note.SetEffortValueB(t.effortValueB)
-	note.SetEffortValueC(t.effortValueC)
-	note.SetEffortValueD(t.effortValueD)
-	note.SetEffortValueS(t.effortValueS)
-	note.SetMoveId1(t.moveId1)
-	note.SetMoveId2(t.moveId2)
-	note.SetMoveId3(t.moveId3)
-	note.SetMoveId4(t.moveId4)
+	note.SetEffortValueH(t.effortValues.H())
+	note.SetEffortValueA(t.effortValues.A())
+	note.SetEffortValueB(t.effortValues.B())
+	note.SetEffortValueC(t.effortValues.C())
+	note.SetEffortValueD(t.effortValues.D())
+	note.SetEffortValueS(t.effortValues.S())
+	moveId1, moveId2, moveId3, moveId4 := t.moveSet.GetMoveIds()
+	note.SetMoveId1(moveId1)
+	note.SetMoveId2(moveId2)
+	note.SetMoveId3(moveId3)
+	note.SetMoveId4(moveId4)
 }

@@ -2,7 +2,6 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 )
 
 type Ability struct {
@@ -20,9 +19,4 @@ type Ability struct {
 
 func (Ability) TableName() string {
 	return "abilities"
-}
-
-func (a Ability) ConvertToDomain() abilities.Ability {
-	// Todo: generate correction values
-	return abilities.NewAbility(a.ID, a.Name, a.Description, nil)
 }

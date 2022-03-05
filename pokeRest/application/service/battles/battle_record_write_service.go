@@ -5,7 +5,6 @@ import (
 
 	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/command"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
-	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	d_service "github.com/Symthy/PokeRest/pokeRest/domain/service"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
@@ -42,11 +41,11 @@ func NewBattleRecordWriteService(
 
 // UC: 戦績登録 (パーティ戦績も更新)
 func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCommand) (*battles.BattleRecord, error) {
-	input, err := factory.NewBattleRecordFactory(cmd.InputBattleRecord).CreateDomain()
+	input, err := cmd.BuildDomain()
 	if err != nil {
 		return nil, err
 	}
-	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyMember())
+	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyPokemonIds())
 	transactionalRepo := s.transactionalRepositoryBuilder(s.battleRecordRepo)
 
 	if err := transactionalRepo.StartTransaction(); err != nil {
@@ -74,11 +73,11 @@ func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCom
 
 // UC: 戦績編集 (パーティ戦績も更新)
 func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordCommand) (*battles.BattleRecord, error) {
-	input, err := factory.NewBattleRecordFactory(cmd.InputBattleRecord).CreateDomain()
+	input, err := cmd.BuildDomain()
 	if err != nil {
 		return nil, err
 	}
-	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyMember())
+	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyPokemonIds())
 	transactionalRepo := s.transactionalRepositoryBuilder(s.battleRecordRepo)
 
 	if err := transactionalRepo.StartTransaction(); err != nil {

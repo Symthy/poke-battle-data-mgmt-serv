@@ -2,7 +2,6 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"gorm.io/gorm"
 )
 
@@ -27,11 +26,4 @@ type TrainedPokemonAdjustment struct {
 
 func (TrainedPokemonAdjustment) TableName() string {
 	return "trained_pokemon_adjustments"
-}
-
-func (t TrainedPokemonAdjustment) ConvertToDomain() trainings.TrainedPokemonAdjustment {
-	return trainings.NewTrainedPokemonAdjustment(
-		t.ID, int(t.PokemonId), t.Nature.String(), t.AbilityId, t.HeldItemId, t.EffortValueH,
-		t.EffortValueA, t.EffortValueB, t.EffortValueC, t.EffortValueD, t.EffortValueS,
-		t.MoveId1, t.MoveId2, t.MoveId3, t.MoveId4)
 }

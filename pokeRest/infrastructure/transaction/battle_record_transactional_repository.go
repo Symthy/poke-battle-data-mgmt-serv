@@ -4,6 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
 )
 
@@ -11,7 +12,7 @@ var _ repository.IBattleRecordTransactionalRepository = (*BattleRecordTransactio
 
 type BattleRecordTransactionalRepository struct {
 	TransactionalRepositoryWrapper[battles.BattleRecord]
-	repo infrastructure.ISingleRecordFinder[battles.BattleRecord]
+	repo infrastructure.ISingleRecordFinder[battles.BattleRecord, identifier.BattleRecordId]
 }
 
 func NewBattleRecordTransactionalRepository(

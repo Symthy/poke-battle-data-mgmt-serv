@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IBattleRecordRepository = (*BattleRecordRepository)(nil)
@@ -24,12 +24,14 @@ func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 		BaseSingleReadRepository: BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
-			schemaConverter:    dto.ToSchemaBattleRecord,
+			toSchemaConverter:  conv.ToSchemaBattleRecord,
+			toDomainConverter:  conv.ToDomainBattleRecord,
 		},
 		BaseWriteRepository: BaseWriteRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
-			schemaConverter:    dto.ToSchemaBattleRecord,
+			toSchemaConverter:  conv.ToSchemaBattleRecord,
+			toDomainConverter:  conv.ToDomainBattleRecord,
 		},
 		dbClient: dbClient,
 	}

@@ -107,7 +107,7 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 
 func (suite *ServerErrorTestSuite) TestServerErrorFields() {
 	suite.Run("add field and value in server error", func() {
-		e := errs.ThrowServerErrorInvalidValue("testClass", "testField", "testValue")
+		e := errs.ThrowErrorInvalidValue("testClass", "testField", "testValue")
 		assert.Equal(suite.T(), "[WARN  - D0001] invalid value. (class=testClass, field=testField, value=testValue)", e.Error())
 	})
 }

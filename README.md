@@ -1,6 +1,11 @@
 # PokeRest
 
-Poke REST API
+Pokemon REST API
+
+- Todo
+  - package名見直し
+  - POST/PUT APIのリクエストボディ定義
+  - jennifer使ってコード自動生成化
 
 ## API Specification File
 
@@ -8,7 +13,7 @@ apiDoc/PokeRest.v1.yaml
 
 ### Search
 
-ひとまず以下のような検索用の独自QLは設けない
+以下のような検索用の独自QLは設けない
 
 https://github.com/cbrand/go-filterparams
 
@@ -20,9 +25,7 @@ https://github.com/cbrand/go-filterparams
 |AND|`&`|xxx='aaa&bbb&ccc'|
 |OR|`|`|xxx='aaa|bbb|ccc'|
 
-※恐らく無いが、高度な全文検索が必要になるならElasticsearchの併用も検討
-
-https://github.com/elastic/go-elasticsearch
+※高度な検索が必要になるなら別途検討
 
 ## Code Auto Generate
 
@@ -82,6 +85,7 @@ log.SetOutput(&lumberjack.Logger{
 })
 ```
 
+- ZAP
 
 ### Test/Mock
 ref: https://github.com/bmuschko/go-testing-frameworks

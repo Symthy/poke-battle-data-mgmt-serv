@@ -27,6 +27,18 @@
 
 - [忘れがちなGo言語の書式指定子を例付きでまとめた](https://qiita.com/Sekky0905/items/c9cbda2498a685517ad0)
 
+- [Go のモジュール管理【バージョン 1.17 改訂版】](https://zenn.dev/spiegel/articles/20210223-go-module-aware-mode)
+
+### 命名
+
+[Golangのパッケージ名はどうするのが正解か](https://zenn.dev/_kazuya/scraps/fdc65096b0d1d7)
+
+[パッケージ名 (Package names)](https://www.ymotongpoo.com/works/goblog-ja/post/package-names/)
+
+[他言語プログラマが最低限、気にすべきGoのネーミングルール](https://zenn.dev/keitakn/articles/go-naming-rules)
+
+[Go の命名規則](https://micnncim.com/posts/ja/go-naming-convention)
+
 ### エラーハンドリング
 
 #### エラー基礎

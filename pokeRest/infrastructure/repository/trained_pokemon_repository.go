@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.ITrainedPokemonRepository = (*TrainedPokemonRepository)(nil)
@@ -23,7 +23,8 @@ func NewTrainedPokemonRepository(dbClient orm.IDbClient) *TrainedPokemonReposito
 		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemon, trainings.TrainedPokemonParam, identifier.TrainedPokemonId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyTrainedPokemonSchemaBuilder,
-			schemaConverter:    dto.ToSchemaTrainedPokemon,
+			toSchemaConverter:  conv.ToSchemaTrainedPokemon,
+			toDomainConverter:  conv.ToDomainTrainedPokemonParam,
 		},
 		dbClient: dbClient,
 	}

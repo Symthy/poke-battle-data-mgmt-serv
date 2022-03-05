@@ -4,19 +4,21 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
 type is = items.HeldItems
 type i = items.HeldItem
+type ii = identifier.HeldItemId
 
 type ItemReadService struct {
 	repo repository.IHeldItemRepository
-	service.EntityAllFinder[is, i]
+	service.EntityAllFinder[is, i, ii]
 }
 
 func NewItemReadService(repo repository.IHeldItemRepository) ItemReadService {
 	serv := ItemReadService{repo: repo}
-	serv.EntityAllFinder = service.NewEntityAllFinder[is, i](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[is, i, ii](repo)
 	return serv
 }
 

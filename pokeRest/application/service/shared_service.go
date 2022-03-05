@@ -6,33 +6,33 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 )
 
-type PokemonStatsFinder[L entity.IDomains[T], T entity.IDomain] struct {
-	repo repository.IPokemonStatsRepository[L, T]
+type PokemonStatsFinder[L entity.IDomains[T, K], T entity.IDomain[K], K entity.IValueId] struct {
+	repo repository.IPokemonStatsRepository[L, T, K]
 }
 
-func NewPokemonStatsFinder[L entity.IDomains[T], T entity.IDomain](repo repository.IPokemonStatsRepository[L, T]) PokemonStatsFinder[L, T] {
-	return PokemonStatsFinder[L, T]{
+func NewPokemonStatsFinder[L entity.IDomains[T, K], T entity.IDomain[K], K entity.IValueId](repo repository.IPokemonStatsRepository[L, T, K]) PokemonStatsFinder[L, T, K] {
+	return PokemonStatsFinder[L, T, K]{
 		repo: repo,
 	}
 }
 
-func (f PokemonStatsFinder[L, T]) FindOfPokemon(pokemonId uint) (*L, error) {
+func (f PokemonStatsFinder[L, T, K]) FindOfPokemon(pokemonId uint) (*L, error) {
 	// Todo: error when empty
 	// Todo: error wrap
 	return f.repo.FindOfPokemon(pokemonId)
 }
 
-type EntityAllFinder[L entity.IDomains[T], T entity.IDomain] struct {
-	repo repository.IAllRecordRepository[L, T]
+type EntityAllFinder[L entity.IDomains[T, K], T entity.IDomain[K], K entity.IValueId] struct {
+	repo repository.IAllRecordRepository[L, T, K]
 }
 
-func NewEntityAllFinder[L entity.IDomains[T], T entity.IDomain](repo repository.IAllRecordRepository[L, T]) EntityAllFinder[L, T] {
-	return EntityAllFinder[L, T]{
+func NewEntityAllFinder[L entity.IDomains[T, K], T entity.IDomain[K], K entity.IValueId](repo repository.IAllRecordRepository[L, T, K]) EntityAllFinder[L, T, K] {
+	return EntityAllFinder[L, T, K]{
 		repo: repo,
 	}
 }
 
-func (f EntityAllFinder[L, T]) FindAll(cmd command.PagenationCommand) (*L, error) {
+func (f EntityAllFinder[L, T, K]) FindAll(cmd command.PagenationCommand) (*L, error) {
 	// Todo: error when empty
 	// Todo: error wrap
 	return f.repo.FindAll(cmd.Next(), cmd.PageSize())

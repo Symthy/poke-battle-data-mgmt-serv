@@ -1,16 +1,16 @@
 package value
 
 var (
-	NatureARise = ParamCorrection{param: Attack, rate: 1.1}
-	NatureADown = ParamCorrection{param: Attack, rate: 0.9}
-	NatureBRise = ParamCorrection{param: Deffence, rate: 1.1}
-	NatureBDown = ParamCorrection{param: Deffence, rate: 0.9}
-	NatureCRise = ParamCorrection{param: SpecialAttack, rate: 1.1}
-	NatureCDown = ParamCorrection{param: SpecialAttack, rate: 0.9}
-	NatureDRise = ParamCorrection{param: SpacialDefense, rate: 1.1}
-	NatureDDown = ParamCorrection{param: SpacialDefense, rate: 0.9}
-	NatureSRise = ParamCorrection{param: Speed, rate: 1.1}
-	NatureSDown = ParamCorrection{param: Speed, rate: 0.9}
+	NatureARise = ParamCorrection{param: A, rate: 1.1}
+	NatureADown = ParamCorrection{param: A, rate: 0.9}
+	NatureBRise = ParamCorrection{param: B, rate: 1.1}
+	NatureBDown = ParamCorrection{param: B, rate: 0.9}
+	NatureCRise = ParamCorrection{param: C, rate: 1.1}
+	NatureCDown = ParamCorrection{param: C, rate: 0.9}
+	NatureDRise = ParamCorrection{param: D, rate: 1.1}
+	NatureDDown = ParamCorrection{param: D, rate: 0.9}
+	NatureSRise = ParamCorrection{param: S, rate: 1.1}
+	NatureSDown = ParamCorrection{param: S, rate: 0.9}
 )
 
 type ParamCorrection struct {

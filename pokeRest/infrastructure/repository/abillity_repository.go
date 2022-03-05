@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IAbilityRepository = (*AbilityRepository)(nil)
@@ -24,13 +24,14 @@ type AbilityRepository struct {
 func NewAbilityRepository(dbClient orm.IDbClient) *AbilityRepository {
 	return &AbilityRepository{
 		dbClient: dbClient,
-		BaseReadRepository: BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId]{
-			dbClient:            dbClient,
-			emptySchemaBuilder:  emptyAbilityBuilder,
-			emptySchemasBuilder: emptyAbilitiesBuilder,
-			domainsConstructor:  abilities.NewAbilities,
-			schemaConverter:     dto.ToSchemaAbility,
-		},
+		BaseReadRepository: NewBaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId](
+			dbClient,
+			emptyAbilityBuilder,
+			emptyAbilitiesBuilder,
+			abilities.NewAbilities,
+			conv.ToSchemaAbility,
+			conv.ToDomainAbility,
+		),
 	}
 }
 

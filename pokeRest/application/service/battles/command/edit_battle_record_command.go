@@ -1,18 +1,20 @@
 package command
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/factory/inputs"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
+)
 
 type EditBattleRecordCommand struct {
-	inputs.InputBattleRecord
+	factory.BattleRecordInput
 }
 
 func NewEditBattleRecordCommand(
 	id uint, partyId uint, generation int, series int, season int, battleResult string,
-	selfPokemonIds []int, selfTrainedPokemonIds []uint, opponentPokemonIds []int, opponentPartyMember []int,
+	selfPokemonIds []int, selfTrainedPokemonIds []uint, opponentPokemonIds []int, opponentPartyMember []uint,
 ) EditBattleRecordCommand {
 	return EditBattleRecordCommand{
-		InputBattleRecord: inputs.NewInputBattleRecord(
+		factory.NewBattleRecordInput(
 			id, partyId, generation, series, season, battleResult,
-			selfPokemonIds, selfTrainedPokemonIds, opponentPokemonIds, opponentPartyMember),
+			selfPokemonIds, selfTrainedPokemonIds, opponentPokemonIds, 0, opponentPartyMember),
 	}
 }

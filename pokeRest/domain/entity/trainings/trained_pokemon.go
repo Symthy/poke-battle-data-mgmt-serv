@@ -19,33 +19,24 @@ func NewTrainedPokemon(param TrainedPokemonParam, adjustment TrainedPokemonAdjus
 
 // Todo: factory
 func NewTrainedPokemonOfUnregistered(
-	nickname *string, gender string, description *string, isPrivate bool, userId identifier.UserId,
-	pokemonId identifier.PokemonId, nature string, abilityId identifier.AbilityId, heldItemId identifier.HeldItemId,
-	effortValueH, effortValueA, effortValueB, effortValueC, effortValueD, effortValueS int,
-	moveId1, moveId2, moveId3, moveId4 identifier.MoveId) TrainedPokemon {
+	nickname string, gender value.Gender, description string, isPrivate bool, userId identifier.UserId,
+	pokemonId identifier.PokemonId, nature value.PokemonNature, abilityId identifier.AbilityId, heldItemId identifier.HeldItemId,
+	effortValues value.EffortValues, moveSet value.PokemonMoveIdSet) TrainedPokemon {
 	entity := TrainedPokemon{}
 	entity.TrainedPokemonParam = TrainedPokemonParam{
 		nickname:    nickname,
-		gender:      value.Gender(gender),
+		gender:      gender,
 		description: description,
 		isPrivate:   isPrivate,
 		userId:      userId,
 	}
 	entity.TrainedPokemonAdjustment = TrainedPokemonAdjustment{
 		pokemonId:    pokemonId,
-		nature:       value.NewPokemonNature(nature),
+		nature:       nature,
 		abilityId:    abilityId,
 		heldItemId:   heldItemId,
-		effortValueH: value.NewEffortValue(effortValueH),
-		effortValueA: value.NewEffortValue(effortValueA),
-		effortValueB: value.NewEffortValue(effortValueB),
-		effortValueC: value.NewEffortValue(effortValueC),
-		effortValueD: value.NewEffortValue(effortValueD),
-		effortValueS: value.NewEffortValue(effortValueS),
-		moveId1:      moveId1,
-		moveId2:      moveId2,
-		moveId3:      moveId3,
-		moveId4:      moveId4,
+		effortValues: effortValues,
+		moveSet:      moveSet,
 	}
 	return entity
 

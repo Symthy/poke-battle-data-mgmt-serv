@@ -13,7 +13,7 @@ type BattleRecordId struct {
 
 func NewBattleRecordId(value uint) (*BattleRecordId, error) {
 	if value < 0 {
-		return nil, errs.ThrowServerErrorInvalidValue("BattleRecordId", "value", string(rune(value)))
+		return nil, errs.ThrowErrorInvalidValue("BattleRecordId", "value", string(rune(value)))
 	}
 	return &BattleRecordId{ValueId{value}}, nil
 }

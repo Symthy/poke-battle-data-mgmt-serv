@@ -1,12 +1,12 @@
 package value
 
-type PokemonParam int
+type PokemonParam string
 
 const (
-	HP             PokemonParam = 1
-	Attack         PokemonParam = 2
-	Deffence       PokemonParam = 3
-	SpecialAttack  PokemonParam = 4
-	SpacialDefense PokemonParam = 5
-	Speed          PokemonParam = 6
+	H PokemonParam = "H"
+	A PokemonParam = "A"
+	B PokemonParam = "B"
+	C PokemonParam = "C"
+	D PokemonParam = "D"
+	S PokemonParam = "S"
 )

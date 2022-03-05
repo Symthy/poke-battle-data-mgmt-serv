@@ -10,33 +10,33 @@ import (
 
 var _ IWritableRepository[infrastructure.IDomain] = (*TransactionalRepositoryWrapper[infrastructure.IDomain])(nil)
 
-type InnerWriteRepository[TD infrastructure.IDomain] interface {
+type InnerWriteRepository[TD infrastructure.IDomain[K], K infrastructure.IValueId] interface {
 	CreateRecord(*gorm.DB, TD) (*TD, error)
 	UpdateRecord(*gorm.DB, TD) (*TD, error)
 	DeleteRecord(*gorm.DB, uint) (*TD, error)
 }
 
-type IWritableRepository[TD infrastructure.IDomain] interface {
+type IWritableRepository[TD infrastructure.IDomain[K], K infrastructure.IValueId] interface {
 	Create(TD) (*TD, error)
 	Update(TD) (*TD, error)
 	Delete(uint) (*TD, error)
 }
 
-type TransactionalRepositoryWrapper[TD infrastructure.IDomain] struct {
-	InnerWriteRepository[TD]
+type TransactionalRepositoryWrapper[TD infrastructure.IDomain[K], K infrastructure.IValueId] struct {
+	InnerWriteRepository[TD, K]
 	dbClient orm.IDbClient
 	tx       *gorm.DB // Todo: wrapして外に渡さないといけない
 }
 
-func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain](
-	repo InnerWriteRepository[TD], dbClient orm.IDbClient) TransactionalRepositoryWrapper[TD] {
-	return TransactionalRepositoryWrapper[TD]{
+func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain[K], K infrastructure.IValueId](
+	repo InnerWriteRepository[TD, K], dbClient orm.IDbClient) TransactionalRepositoryWrapper[TD, K] {
+	return TransactionalRepositoryWrapper[TD, K]{
 		InnerWriteRepository: repo,
 		dbClient:             dbClient,
 	}
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) StartTransaction() error {
+func (trw TransactionalRepositoryWrapper[TD, K]) StartTransaction() error {
 	db := trw.dbClient.Db()
 	tx := db.Begin()
 	if tx.Error != nil {
@@ -46,7 +46,7 @@ func (trw TransactionalRepositoryWrapper[TD]) StartTransaction() error {
 	return nil
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) CancelTransaction() error {
+func (trw TransactionalRepositoryWrapper[TD, K]) CancelTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
 		return fmt.Errorf("could't rollback")
@@ -56,7 +56,7 @@ func (trw TransactionalRepositoryWrapper[TD]) CancelTransaction() error {
 	return err
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) FinishTransaction() error {
+func (trw TransactionalRepositoryWrapper[TD, K]) FinishTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
 		return fmt.Errorf("could't commit")
@@ -64,28 +64,28 @@ func (trw TransactionalRepositoryWrapper[TD]) FinishTransaction() error {
 	return trw.tx.Commit().Error
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) PanicPostProcess() {
+func (trw TransactionalRepositoryWrapper[TD, K]) PanicPostProcess() {
 	if r := recover(); r != nil {
 		trw.CancelTransaction()
 	}
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) Create(model TD) (*TD, error) {
+func (trw TransactionalRepositoryWrapper[TD, K]) Create(model TD) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.CreateRecord(trw.tx, model)
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) Update(model TD) (*TD, error) {
+func (trw TransactionalRepositoryWrapper[TD, K]) Update(model TD) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.UpdateRecord(trw.tx, model)
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) Delete(id uint) (*TD, error) {
+func (trw TransactionalRepositoryWrapper[TD, K]) Delete(id uint) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.DeleteRecord(trw.tx, id)
 }
 
-func (trw TransactionalRepositoryWrapper[TD]) validateTransactioning() {
+func (trw TransactionalRepositoryWrapper[TD, K]) validateTransactioning() {
 	if trw.tx == nil {
 		panic("error: non transactioning")
 	}

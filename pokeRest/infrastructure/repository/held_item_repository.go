@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IHeldItemRepository = (*HeldItemRepository)(nil)
@@ -24,13 +24,14 @@ type HeldItemRepository struct {
 func NewHeldItemRepository(dbClient orm.IDbClient) *HeldItemRepository {
 	return &HeldItemRepository{
 		dbClient: dbClient,
-		BaseReadRepository: BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId]{
-			dbClient:            dbClient,
-			emptySchemaBuilder:  emptyHeldItemBuilder,
-			emptySchemasBuilder: emptyHeldItemsBuilder,
-			domainsConstructor:  items.NewHeldItems,
-			schemaConverter:     dto.ToSchemaHeldItem,
-		},
+		BaseReadRepository: NewBaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId](
+			dbClient,
+			emptyHeldItemBuilder,
+			emptyHeldItemsBuilder,
+			items.NewHeldItems,
+			conv.ToSchemaHeldItem,
+			conv.ToDomainHeldItem,
+		),
 	}
 }
 

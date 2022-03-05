@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"gorm.io/gorm"
 )
 
@@ -28,19 +28,20 @@ func NewTrainedPokemonAdjustmentRepository(dbClient orm.IDbClient) *TrainedPokem
 		BaseReadRepository: BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, identifier.TrainedAdjustmentId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
-			schemaConverter:    dto.ToSchemaTrainedPokemonAdjustment,
+			toSchemaConverter:  conv.ToSchemaTrainedPokemonAdjustment,
 		},
 		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
-			schemaConverter:    dto.ToSchemaTrainedPokemonAdjustment,
+			toSchemaConverter:  conv.ToSchemaTrainedPokemonAdjustment,
+			toDomainConverter:  conv.ToDomainTrainedPokemonAdjustment,
 		},
 		dbClient: dbClient,
 	}
 }
 
-func (repo TrainedPokemonAdjustmentRepository) Find(adjustment adjustmentDomain) (*adjustmentDomain, error) {
-	db := repo.dbClient.Db()
+func (rep TrainedPokemonAdjustmentRepository) Find(adjustment adjustmentDomain) (*adjustmentDomain, error) {
+	db := rep.dbClient.Db()
 	schema := emptyAdjustmentSchemaBuilder()
 	tx := db.Where(adjustment).First(&schema)
 	if tx.Error == gorm.ErrRecordNotFound {
@@ -49,8 +50,7 @@ func (repo TrainedPokemonAdjustmentRepository) Find(adjustment adjustmentDomain)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	s := schema.ConvertToDomain()
-	return &s, nil
+	return rep.toDomainConverter(schema)
 }
 
 // FindAll <- BaseReadRepository

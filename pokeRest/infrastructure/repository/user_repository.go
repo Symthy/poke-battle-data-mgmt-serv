@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IUserRepository = (*UserRepository)(nil)
@@ -29,12 +29,13 @@ func NewUserRepository(dbClient orm.IDbClient) *UserRepository {
 			emptySchemaBuilder:  emptyUserBuilder,
 			emptySchemasBuilder: emptyUsersBuilder,
 			domainsConstructor:  users.NewUsers,
-			schemaConverter:     dto.ToSchemaUser,
+			toSchemaConverter:   conv.ToSchemaUser,
 		},
 		BaseWriteRepository: BaseWriteRepository[schema.User, users.User, identifier.UserId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyUserBuilder,
-			schemaConverter:    dto.ToSchemaUser,
+			toSchemaConverter:  conv.ToSchemaUser,
+			toDomainConverter:  conv.ToDomainUser,
 		},
 		dbClient: dbClient,
 	}

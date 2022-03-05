@@ -1,14 +1,16 @@
 package command
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/factory/inputs"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
+)
 
 type AddBattleRecordCommand struct {
-	inputs.InputBattleRecord
+	factory.BattleRecordInput
 }
 
 func NewAddBattleRecordOfCurrentCommand(
 	partyId uint, battleResult string, selfPokemonIds []int, selfTrainedPokemonIds []uint,
-	opponentPokemonIds []int, opponentPartyMember []int,
+	opponentPokemonIds []int, opponentPartyMember []uint,
 ) AddBattleRecordCommand {
 	return NewAddBattleRecordCommand(
 		partyId, 0, 0, 0, battleResult, selfPokemonIds, selfTrainedPokemonIds,
@@ -17,11 +19,11 @@ func NewAddBattleRecordOfCurrentCommand(
 
 func NewAddBattleRecordCommand(
 	partyId uint, generation int, series int, season int, battleResult string,
-	selfPokemonIds []int, selfTrainedPokemonIds []uint, opponentPokemonIds []int, opponentPartyMember []int,
+	selfPokemonIds []int, selfTrainedPokemonIds []uint, opponentPokemonIds []int, opponentPartyMember []uint,
 ) AddBattleRecordCommand {
 	return AddBattleRecordCommand{
-		InputBattleRecord: inputs.NewInputBattleRecord(
+		factory.NewBattleRecordInput(
 			0, partyId, generation, series, season, battleResult,
-			selfPokemonIds, selfTrainedPokemonIds, opponentPokemonIds, opponentPartyMember),
+			selfPokemonIds, selfTrainedPokemonIds, opponentPokemonIds, 0, opponentPartyMember),
 	}
 }

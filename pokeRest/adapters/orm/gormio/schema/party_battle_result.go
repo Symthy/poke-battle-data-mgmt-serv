@@ -1,8 +1,6 @@
 package schema
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
-
-type PartyBattleResult struct {
+type PartySeasonResult struct {
 	ID               uint `gorm:"primaryKey;autoIncrement:true"` // has many
 	Generation       int
 	Series           int
@@ -14,11 +12,6 @@ type PartyBattleResult struct {
 	LoseCount        int
 }
 
-func (PartyBattleResult) TableName() string {
+func (PartySeasonResult) TableName() string {
 	return "party_battle_results"
-}
-
-func (p PartyBattleResult) ConvertToDomain() parties.PartyBattleResult {
-	return parties.NewPartyBattleResult(p.ID, p.Generation, p.Series, p.Season, p.MaxRate,
-		p.SeasonRanking, p.MaxSeasonRanking, p.WinCount, p.LoseCount)
 }

@@ -1,7 +1,6 @@
 package schema
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"gorm.io/gorm"
 )
 
@@ -15,13 +14,4 @@ type PartyTag struct {
 
 func (PartyTag) TableName() string {
 	return "party_tags"
-}
-
-func (t PartyTag) ConvertToDomain() parties.PartyTag {
-	return parties.NewPartyTag(
-		t.ID,
-		t.Name,
-		*t.IsGeneration,
-		*t.IsSeason,
-	)
 }

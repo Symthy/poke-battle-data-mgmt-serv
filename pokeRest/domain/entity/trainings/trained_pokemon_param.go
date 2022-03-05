@@ -11,20 +11,20 @@ var _ entity.IDomain[identifier.TrainedPokemonId] = (*TrainedPokemonParam)(nil)
 type TrainedPokemonParam struct {
 	id           identifier.TrainedPokemonId
 	gender       value.Gender
-	nickname     *string
-	description  *string
+	nickname     string
+	description  string
 	adjustmentId identifier.TrainedAdjustmentId
 	isPrivate    bool
 	userId       identifier.UserId
 }
 
-func NewTrainedPokemonParam(id identifier.TrainedPokemonId, gender string, nickname, description *string,
+func NewTrainedPokemonParam(id identifier.TrainedPokemonId, gender value.Gender, nickname, description string,
 	adjustmentId identifier.TrainedAdjustmentId, isPrivate bool, userId identifier.UserId,
 ) TrainedPokemonParam {
 	// Todo: factory
 	return TrainedPokemonParam{
 		id:           id,
-		gender:       value.Gender(gender),
+		gender:       gender,
 		adjustmentId: adjustmentId,
 		nickname:     nickname,
 		description:  description,

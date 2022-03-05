@@ -14,16 +14,17 @@ type Party struct {
 	name            string
 	battleFormat    value.BattleFormat
 	isPrivate       bool
-	partyResultIds  []identifier.PartyBattleResultId // Todo: do you need aggregation?
-	partyTagIds     []identifier.PartyTagId
+	partyResultIds  value.PartyBattleResultIds // Todo: do you need aggregation?
+	partyTagIds     value.PartyTagIds
 	trainedPokemons value.PartyPokemonIds
 	userId          identifier.UserId
 }
 
 func NewParty(
-	id identifier.PartyId, name string, battleFormat string, isPrivate bool, userId identifier.UserId,
-	partyResultIds []identifier.PartyBattleResultId, partyTagIds []identifier.PartyTagId,
-	trainedPokemonIds value.PartyPokemonIds) Party {
+	id identifier.PartyId, name string, battleFormat value.BattleFormat, isPrivate bool,
+	userId identifier.UserId, partyResultIds value.PartyBattleResultIds,
+	partyTagIds value.PartyTagIds, trainedPokemonIds value.PartyPokemonIds,
+) Party {
 	return Party{
 		id:              id,
 		name:            name,
@@ -37,18 +38,20 @@ func NewParty(
 }
 
 func NewPartyOfUnregistered(
-	name string, battleFormat string, isPrivate bool, userId identifier.UserId,
-	partyTagIds []identifier.PartyTagId, trainedPokemonIds value.PartyPokemonIds) Party {
+	name string, battleFormat value.BattleFormat, isPrivate bool, userId identifier.UserId,
+	partyTagIds value.PartyTagIds, trainedPokemonIds value.PartyPokemonIds) Party {
 	// Todo: factory
-	return NewParty(identifier.NewEmptyPartyId(), name, battleFormat, isPrivate, userId, nil, partyTagIds, trainedPokemonIds)
+	return NewParty(identifier.NewEmptyPartyId(), name, battleFormat, isPrivate, userId,
+		value.NewEmptyPartyBattleResultIds(), partyTagIds, trainedPokemonIds)
 }
 
 func NewPartyForUpdated(
-	id uint, name string, battleFormat string, isPrivate bool, userId identifier.UserId,
-	partyResultIds []identifier.PartyBattleResultId, partyTagIds []identifier.PartyTagId,
+	id uint, name string, battleFormat value.BattleFormat, isPrivate bool, userId identifier.UserId,
+	partyResultIds value.PartyBattleResultIds, partyTagIds value.PartyTagIds,
 	trainedPokemonIds value.PartyPokemonIds) Party {
 	// Todo: factory
-	return NewParty(identifier.NewEmptyPartyId(), name, battleFormat, isPrivate, userId, partyResultIds, partyTagIds, trainedPokemonIds)
+	return NewParty(identifier.NewEmptyPartyId(), name, battleFormat, isPrivate, userId,
+		partyResultIds, partyTagIds, trainedPokemonIds)
 }
 
 func (p Party) Id() identifier.PartyId {

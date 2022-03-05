@@ -4,6 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
 )
 
@@ -11,7 +12,7 @@ var _ repository.ITrainedPokemonTransactionalRepository = (*TrainedPokemonTransa
 
 type TrainedPokemonTransactionalRepository struct {
 	TransactionalRepositoryWrapper[trainings.TrainedPokemonParam]
-	repo infrastructure.ISingleRecordFinder[trainings.TrainedPokemonParam]
+	repo infrastructure.ISingleRecordFinder[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
 }
 
 func NewTrainedPokemonTransactionalRepository(

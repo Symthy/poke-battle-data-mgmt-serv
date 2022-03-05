@@ -7,8 +7,8 @@ type PartyId struct {
 }
 
 func NewPartyId(value uint) (*PartyId, error) {
-	if value < 1 {
-		return nil, errs.ThrowServerErrorInvalidValue("PartyId", "value", string(rune(value)))
+	if value < 0 {
+		return nil, errs.ThrowErrorInvalidValue("PartyId", "value", string(rune(value)))
 	}
 	return &PartyId{ValueId{value}}, nil
 }

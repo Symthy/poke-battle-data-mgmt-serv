@@ -7,7 +7,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"gorm.io/gorm"
 )
 
@@ -27,7 +27,8 @@ func NewBattleOpponentPartyRepository(dbClient orm.IDbClient) *BattleOpponentPar
 		BaseWriteRepository: BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleOpponentPartySchemaBuilder,
-			schemaConverter:    dto.ToSchemaBattleOpponentParty,
+			toSchemaConverter:  conv.ToSchemaBattleOpponentParty,
+			toDomainConverter:  conv.ToDomainBattleOpponentParty,
 		},
 		dbClient: dbClient,
 	}
@@ -48,8 +49,7 @@ func (rep BattleOpponentPartyRepository) FindParty(partyMember value.PartyPokemo
 	if tx != nil {
 		return nil, tx.Error
 	}
-	domain := schema.ConvertToDomain()
-	return &domain, nil
+	return rep.toDomainConverter(schema)
 }
 
 func buildSearchPartySchema(partyMember value.PartyPokemonIds) schema.BattleOpponentParty {

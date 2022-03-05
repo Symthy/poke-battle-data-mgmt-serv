@@ -40,7 +40,7 @@ func (b *PokemonSchemaBuilder) SetTypeSet(value value.PokemonTypeSet) {
 	b.Type1 = enum.PokemonType(type1)
 	b.Type2 = enum.PokemonType(type2)
 }
-func (b *PokemonSchemaBuilder) SetAbilitySet(value value.PokemonAbilitySet) {
+func (b *PokemonSchemaBuilder) SetAbilitySet(value value.PokemonAbilityIdSet) {
 	abilityId1, abilityId2, hiddenAbilityId := value.GetAbilityIds()
 	b.AbilityId1 = convertIdToNullInt16(abilityId1)
 	b.AbilityId2 = convertIdToNullInt16(abilityId2)

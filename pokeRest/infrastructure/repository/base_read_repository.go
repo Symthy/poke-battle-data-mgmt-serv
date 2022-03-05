@@ -5,6 +5,7 @@ import (
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/field"
 	"gorm.io/gorm"
@@ -16,7 +17,30 @@ type BaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDom
 	emptySchemaBuilder  func() TS
 	emptySchemasBuilder func() []TS
 	domainsConstructor  func([]TD) TM
-	schemaConverter     func(model TD) TS
+	toSchemaConverter   func(TD) TS
+}
+
+func NewBaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], TM infrastructure.IDomains[TD, K], K infrastructure.IValueId](
+	dbClient orm.IDbClient,
+	emptySchemaBuilder func() TS,
+	emptySchemasBuilder func() []TS,
+	domainsConstructor func([]TD) TM,
+	toSchemaConverter func(TD) TS,
+	toDomainConverter func(TS) (*TD, error),
+) BaseReadRepository[TS, TD, TM, K] {
+	return BaseReadRepository[TS, TD, TM, K]{
+		BaseSingleReadRepository: BaseSingleReadRepository[TS, TD, K]{
+			dbClient:           dbClient,
+			emptySchemaBuilder: emptySchemaBuilder,
+			toSchemaConverter:  toSchemaConverter,
+			toDomainConverter:  toDomainConverter,
+		},
+		dbClient:            dbClient,
+		emptySchemaBuilder:  emptySchemaBuilder,
+		emptySchemasBuilder: emptySchemasBuilder,
+		domainsConstructor:  domainsConstructor,
+		toSchemaConverter:   toSchemaConverter,
+	}
 }
 
 // Todo: error handling
@@ -56,7 +80,10 @@ func (rep BaseReadRepository[TS, TD, TM, K]) FindAll(next int, pageSize int) (*T
 }
 
 func (rep BaseReadRepository[TS, TD, TM, K]) resolveReturnValues(schemas []TS) (*TM, error) {
-	domainArray := dto.ConvertToDomains[TS, TD, K](schemas)
+	domainArray, err := conv.ConvertToDomains[TS, TD, K](schemas, rep.toDomainConverter)
+	if err != nil {
+		return nil, err
+	}
 	domains := dto.BuildDomains[TD, TM, K](domainArray, rep.domainsConstructor)
 	if domains == nil {
 		// Todo: error
