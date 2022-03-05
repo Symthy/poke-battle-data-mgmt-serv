@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-	"reflect"
 	"regexp"
 	"testing"
 
@@ -10,8 +8,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -55,16 +55,12 @@ func (suite *PokemonRepositoryTestSuite) TestFindById() {
 					[]byte(enum.Poison), dummyPokemon.AbilityId1, dummyPokemon.AbilityId2,
 					dummyPokemon.HiddenAbilityId, 80, 82, 83, 100, 100, 80, true))
 
-		expected := dummyPokemon.ConvertToDomain()
+		expected, _ := conv.ToDomainPokemon(dummyPokemon)
 		actual, err := suite.repository.FindById(id)
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, *actual) {
-			suite.Fail("expected and actual is unmatched")
-			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", *actual)
-		}
+		assert.EqualValues(suite.T(), *expected, *actual)
 	})
 }
 
@@ -82,17 +78,13 @@ func (suite *PokemonRepositoryTestSuite) TestCreate() {
 	suite.mock.ExpectCommit()
 
 	dummyPokemon.ID = 0 // non id
-	pokemon := dummyPokemon.ConvertToDomain()
-	created, err := suite.repository.Create(pokemon)
+	pokemon, _ := conv.ToDomainPokemon(dummyPokemon)
+	created, err := suite.repository.Create(*pokemon)
 
 	if err != nil {
 		suite.Fail(err.Error())
 	}
-	if created.Id() != id {
-		suite.Fail("invalid id of created pokemon record")
-		fmt.Printf("expected:%v\n", id)
-		fmt.Printf("actual:  %v\n", created.Id())
-	}
+	assert.Equal(suite.T(), id, created.Id().Value())
 }
 
 // fmt.Printf("%#v\n", *v)

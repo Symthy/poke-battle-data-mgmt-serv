@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
 	"github.com/stretchr/testify/assert"
@@ -31,7 +32,7 @@ func TestPokemonControllerTestSuite(t *testing.T) {
 func (suite *PokemonControllerTestSuite) TestGetPokemon() {
 	var id uint = 3
 	actual, err := suite.serv.FindPokemon(id)
-	expected := data.DummyPokemon3().ConvertToDomain()
+	expected, _ := conv.ToDomainPokemon(data.DummyPokemon3())
 
 	if err != nil {
 		suite.Fail(err.Error())

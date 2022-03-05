@@ -3,6 +3,7 @@ package mock
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"gorm.io/gorm"
 )
@@ -21,8 +22,7 @@ func (mock UserRepositoryMock) FindById(id uint) (*users.User, error) {
 	if dummyUser.ID != id {
 		return &users.User{}, nil
 	}
-	u := dummyUser.ConvertToDomain()
-	return &u, nil
+	return conv.ToDomainUser(dummyUser)
 }
 
 func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...string) (*users.User, error) {
@@ -30,8 +30,7 @@ func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...str
 	if dummyUser.Name != targetName {
 		return nil, gorm.ErrRecordNotFound
 	}
-	u := dummyUser.ConvertToDomain()
-	return &u, nil
+	return conv.ToDomainUser(dummyUser)
 }
 
 func (mock UserRepositoryMock) Create(user users.User) (*users.User, error) {

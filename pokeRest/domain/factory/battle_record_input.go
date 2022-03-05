@@ -13,16 +13,16 @@ type BattleRecordInput struct {
 	series                     int
 	season                     int
 	battleResult               string
-	selfPokemonIds             []int
+	selfPokemonIds             []uint
 	selfTrainedPokemonIds      []uint
-	opponentElectionPokemonIds []int
+	opponentElectionPokemonIds []uint
 	opponentPartyId            uint
 	opponentPartyPokemonIds    []uint
 }
 
 func NewBattleRecordInput(
-	id, partyId uint, generation, series, season int, battleResult string, selfPokemonIds []int,
-	selfTrainedPokemonIds []uint, opponentElectionPokemonIds []int,
+	id, partyId uint, generation, series, season int, battleResult string, selfPokemonIds []uint,
+	selfTrainedPokemonIds []uint, opponentElectionPokemonIds []uint,
 	opponentPartyId uint, opponentPartyPokemonIds []uint,
 ) BattleRecordInput {
 	return BattleRecordInput{

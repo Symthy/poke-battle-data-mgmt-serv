@@ -11,7 +11,7 @@ import (
 var _ repository.ITrainedPokemonTransactionalRepository = (*TrainedPokemonTransactionalRepository)(nil)
 
 type TrainedPokemonTransactionalRepository struct {
-	TransactionalRepositoryWrapper[trainings.TrainedPokemonParam]
+	TransactionalRepositoryWrapper[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
 	repo infrastructure.ISingleRecordFinder[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
 }
 
@@ -19,7 +19,7 @@ func NewTrainedPokemonTransactionalRepository(
 	repo repository.ITrainedPokemonRepository,
 	dbClient orm.IDbClient,
 ) *TrainedPokemonTransactionalRepository {
-	var innerWriteRepository InnerWriteRepository[trainings.TrainedPokemonParam] = repo
+	var innerWriteRepository InnerWriteRepository[trainings.TrainedPokemonParam, identifier.TrainedPokemonId] = repo
 	return &TrainedPokemonTransactionalRepository{
 		TransactionalRepositoryWrapper: NewTransactionalRepositoryWrapper(innerWriteRepository, dbClient),
 	}

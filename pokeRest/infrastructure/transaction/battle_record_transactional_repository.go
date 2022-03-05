@@ -11,7 +11,7 @@ import (
 var _ repository.IBattleRecordTransactionalRepository = (*BattleRecordTransactionalRepository)(nil)
 
 type BattleRecordTransactionalRepository struct {
-	TransactionalRepositoryWrapper[battles.BattleRecord]
+	TransactionalRepositoryWrapper[battles.BattleRecord, identifier.BattleRecordId]
 	repo infrastructure.ISingleRecordFinder[battles.BattleRecord, identifier.BattleRecordId]
 }
 
@@ -19,7 +19,7 @@ func NewBattleRecordTransactionalRepository(
 	repo repository.IBattleRecordRepository,
 	dbClient orm.IDbClient,
 ) *BattleRecordTransactionalRepository {
-	var innerWriteRepository InnerWriteRepository[battles.BattleRecord] = repo
+	var innerWriteRepository InnerWriteRepository[battles.BattleRecord, identifier.BattleRecordId] = repo
 	return &BattleRecordTransactionalRepository{
 		TransactionalRepositoryWrapper: NewTransactionalRepositoryWrapper(innerWriteRepository, dbClient),
 		repo:                           repo,

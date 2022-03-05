@@ -1,22 +1,22 @@
 package battles
 
-type ElectionPokemons[T int | uint] struct {
-	pokemonIds []T
+type ElectionPokemons struct {
+	pokemonIds []uint
 	size       int
 }
 
-func NewElectionPokemons[T int | uint](pokemonIds []T) ElectionPokemons[T] {
-	return ElectionPokemons[T]{
+func NewElectionPokemons(pokemonIds []uint) ElectionPokemons {
+	return ElectionPokemons{
 		pokemonIds: pokemonIds,
 		size:       len(pokemonIds),
 	}
 }
 
-func (e ElectionPokemons[T]) Ids() []T {
+func (e ElectionPokemons) Ids() []uint {
 	return e.pokemonIds
 }
 
-func (e ElectionPokemons[T]) Get(i int) *T {
+func (e ElectionPokemons) Get(i int) *uint {
 	if i >= e.Size() {
 		return nil
 	}
@@ -24,6 +24,6 @@ func (e ElectionPokemons[T]) Get(i int) *T {
 	return &id
 }
 
-func (e ElectionPokemons[T]) Size() int {
+func (e ElectionPokemons) Size() int {
 	return e.size
 }

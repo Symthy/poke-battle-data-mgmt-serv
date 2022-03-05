@@ -34,7 +34,7 @@ func (b *BattleRecordSchemaBuilder) SetBattleOpponentPartyId(id identifier.Battl
 }
 
 // Todo: refactor
-func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.ElectionPokemons[int]) {
+func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.ElectionPokemons) {
 	b.SelfElectionPokemonId1 = ids.Get(0)
 	b.SelfElectionPokemonId2 = ids.Get(1)
 	b.SelfElectionPokemonId3 = ids.Get(2)
@@ -42,7 +42,7 @@ func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.Election
 		b.SelfElectionPokemonId4 = ids.Get(3)
 	}
 }
-func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionPokemons[uint]) {
+func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionPokemons) {
 	b.SelfTrainedPokemonId1 = ids.Get(0)
 	b.SelfTrainedPokemonId2 = ids.Get(1)
 	b.SelfTrainedPokemonId3 = ids.Get(2)
@@ -50,7 +50,7 @@ func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionP
 		b.SelfTrainedPokemonId4 = ids.Get(3)
 	}
 }
-func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids battles.ElectionPokemons[int]) {
+func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids battles.ElectionPokemons) {
 	b.OpponentElectionPokemonId1 = ids.Get(0)
 	b.OpponentElectionPokemonId2 = ids.Get(1)
 	b.OpponentElectionPokemonId3 = ids.Get(2)

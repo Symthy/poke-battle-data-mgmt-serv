@@ -20,14 +20,14 @@ func NewBattleRecordController(service battles.BattleRecordWriteService) *Battle
 
 func (c BattleRecordController) SaveBattleRecord(ctx echo.Context) error {
 	// Todo: accept value
-	cmd := command.NewAddBattleRecordCommand(0, 0, 0, 0, "", []int{}, []uint{}, []int{}, []uint{})
+	cmd := command.NewAddBattleRecordCommand(0, 0, 0, 0, "", []uint{}, []uint{}, []uint{}, []uint{})
 	domain, err := c.service.AddBattleRecord(cmd)
 	return c.singleDataResolver.Resolve(ctx, domain, err)
 }
 
 func (c BattleRecordController) UpdateBattleRecord(ctx echo.Context) error {
 	// Todo: accept value
-	cmd := command.NewEditBattleRecordCommand(0, 0, 0, 0, 0, "", []int{}, []uint{}, []int{}, []uint{})
+	cmd := command.NewEditBattleRecordCommand(0, 0, 0, 0, 0, "", []uint{}, []uint{}, []uint{}, []uint{})
 	domain, err := c.service.EditBattleRecord(cmd)
 	return c.singleDataResolver.Resolve(ctx, domain, err)
 }

@@ -3,6 +3,7 @@ package mock
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 )
 
@@ -21,8 +22,7 @@ func (mock PokemonRepositoryMock) FindById(id uint) (*pokemons.Pokemon, error) {
 	if dummyPokemon.ID != id {
 		return &pokemons.Pokemon{}, nil
 	}
-	p := dummyPokemon.ConvertToDomain()
-	return &p, nil
+	return conv.ToDomainPokemon(dummyPokemon)
 }
 
 func (mock PokemonRepositoryMock) FindAll(page int, pageSize int) (*pokemons.Pokemons, error) {

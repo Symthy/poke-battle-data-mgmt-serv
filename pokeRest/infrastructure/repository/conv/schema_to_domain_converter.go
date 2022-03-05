@@ -133,13 +133,13 @@ func ToDomainPartyBattleResult(schema schema.PartySeasonResult) (*parties.PartyB
 }
 
 func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, error) {
-	selfElectionPokemonIds := []int{}
+	selfElectionPokemonIds := []uint{}
 	lists.AddsToList(selfElectionPokemonIds, schema.SelfElectionPokemonId1,
 		schema.SelfElectionPokemonId2, schema.SelfElectionPokemonId3, schema.SelfElectionPokemonId4)
 	selfTrainedPokemonIds := []uint{}
 	lists.AddsToList(selfTrainedPokemonIds, schema.SelfTrainedPokemonId1,
 		schema.SelfTrainedPokemonId2, schema.SelfTrainedPokemonId3, schema.SelfTrainedPokemonId4)
-	opponentElectionPokemonIds := []int{}
+	opponentElectionPokemonIds := []uint{}
 	lists.AddsToList(opponentElectionPokemonIds, schema.OpponentElectionPokemonId1,
 		schema.OpponentElectionPokemonId2, schema.OpponentElectionPokemonId3, schema.OpponentElectionPokemonId4)
 

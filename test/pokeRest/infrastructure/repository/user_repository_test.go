@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-	"reflect"
 	"regexp"
 	"testing"
 	"time"
@@ -11,8 +9,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -50,16 +50,12 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "DisplayName", "Email", "Profile", "Role"}).
 				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
 
-		expected := dummyUser.ConvertToDomain()
+		expected, _ := conv.ToDomainUser(dummyUser)
 		actual, err := suite.repository.FindById(id)
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, *actual) {
-			suite.Fail("expected and actual is unmatched")
-			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", *actual)
-		}
+		assert.EqualValues(suite.T(), *expected, *actual)
 	})
 
 	suite.Run("find by name when non filter", func() {
@@ -69,16 +65,12 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "DisplayName", "Email", "Profile", "Role"}).
 				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
 
-		expected := dummyUser.ConvertToDomain()
+		expected, _ := conv.ToDomainUser(dummyUser)
 		actual, err := suite.repository.FindByName("dummy_user")
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, *actual) {
-			suite.Fail("expected and actual is unmatched")
-			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", *actual)
-		}
+		assert.EqualValues(suite.T(), *expected, *actual)
 	})
 
 	suite.Run("find by name when exist filter", func() {
@@ -89,16 +81,12 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 			WillReturnRows(sqlmock.NewRows([]string{"ID", "Name", "DisplayName", "Role"}).
 				AddRow(1, "dummy_user", "dummy dummy user", []byte(enum.User)))
 
-		expected := dummyUser.ConvertToDomain()
+		expected, _ := conv.ToDomainUser(dummyUser)
 		actual, err := suite.repository.FindByName("dummy_user", filterFields...)
 		if err != nil {
 			suite.Fail(err.Error())
 		}
-		if !reflect.DeepEqual(expected, *actual) {
-			suite.Fail("expected and actual is unmatched")
-			fmt.Printf("expected:\n%#v\n", expected)
-			fmt.Printf("actual:  \n%#v\n", *actual)
-		}
+		assert.EqualValues(suite.T(), *expected, *actual)
 	})
 }
 
@@ -112,14 +100,10 @@ func (suite *UserRepositoryTestSuite) TestCreate() {
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(id))
 	suite.mock.ExpectCommit()
 
-	user := dummyUser.ConvertToDomainNonId()
-	actual, err := suite.repository.Create(user)
+	user, _ := conv.ToDomainUser(dummyUser)
+	actual, err := suite.repository.Create(*user)
 	if err != nil {
 		suite.Fail(err.Error())
 	}
-	if actual.Id() != id {
-		suite.Fail("invalid id of created user record")
-		fmt.Printf("expected:%v\n", id)
-		fmt.Printf("actual:  %v\n", actual.Id())
-	}
+	assert.Equal(suite.T(), id, actual.Id().Value())
 }

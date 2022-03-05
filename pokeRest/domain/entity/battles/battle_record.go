@@ -12,17 +12,17 @@ type BattleRecord struct {
 	id                       identifier.BattleRecordId
 	partyId                  identifier.PartyId
 	battleResult             value.BattleResult
-	selfElectionPokemons     ElectionPokemons[int]
-	selfTrainedPokemons      ElectionPokemons[uint]
+	selfElectionPokemons     ElectionPokemons
+	selfTrainedPokemons      ElectionPokemons
 	opponentPartyId          identifier.BattleOpponentPartyId
-	opponentElectionPokemons ElectionPokemons[int]
+	opponentElectionPokemons ElectionPokemons
 	Season
 }
 
 func NewBattleRecord(
 	id identifier.BattleRecordId, partyId identifier.PartyId, season Season, battleResult value.BattleResult,
-	selfElectionPokemons ElectionPokemons[int], selfTrainedPokemons ElectionPokemons[uint],
-	opponentPartyId identifier.BattleOpponentPartyId, opponentElectionPokemons ElectionPokemons[int],
+	selfElectionPokemons ElectionPokemons, selfTrainedPokemons ElectionPokemons,
+	opponentPartyId identifier.BattleOpponentPartyId, opponentElectionPokemons ElectionPokemons,
 ) BattleRecord {
 	return BattleRecord{
 		id:                       id,

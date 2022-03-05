@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var _ IWritableRepository[infrastructure.IDomain] = (*TransactionalRepositoryWrapper[infrastructure.IDomain])(nil)
+var _ IWritableRepository[infrastructure.IDomain[infrastructure.IValueId], infrastructure.IValueId] = (*TransactionalRepositoryWrapper[infrastructure.IDomain[infrastructure.IValueId], infrastructure.IValueId])(nil)
 
 type InnerWriteRepository[TD infrastructure.IDomain[K], K infrastructure.IValueId] interface {
 	CreateRecord(*gorm.DB, TD) (*TD, error)
@@ -25,7 +25,7 @@ type IWritableRepository[TD infrastructure.IDomain[K], K infrastructure.IValueId
 type TransactionalRepositoryWrapper[TD infrastructure.IDomain[K], K infrastructure.IValueId] struct {
 	InnerWriteRepository[TD, K]
 	dbClient orm.IDbClient
-	tx       *gorm.DB // Todo: wrapして外に渡さないといけない
+	tx       *gorm.DB
 }
 
 func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain[K], K infrastructure.IValueId](

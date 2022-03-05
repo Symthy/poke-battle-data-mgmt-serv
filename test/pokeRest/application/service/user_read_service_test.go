@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
 	"github.com/stretchr/testify/assert"
@@ -30,7 +31,7 @@ func TestUserControllerTestSuite(t *testing.T) {
 
 func (suite *UserServiceTestSuite) TestGetUser() {
 	var id uint = 1
-	expected := data.DummyUser1().ConvertToDomain()
+	expected, _ := conv.ToDomainUser(data.DummyUser1())
 
 	actual, err := suite.serv.GetUserById(id)
 	if err != nil {
