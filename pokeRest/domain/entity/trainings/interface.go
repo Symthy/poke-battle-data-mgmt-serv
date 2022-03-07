@@ -45,12 +45,11 @@ type ITrainedPokemonDefenceNotification interface {
 	SetTargetPokemonEffortC(value.EffortValue)
 }
 
-type ITrainedPokemonParamNotification interface {
+type ITrainedPokemonNotification interface {
 	SetId(identifier.TrainedPokemonId)
 	SetGender(value.Gender)
 	SetNickname(string)
 	SetDescription(string)
-	SetAdjustmentId(identifier.TrainedAdjustmentId)
 	SetIsPrivate(bool)
 	SetUserId(identifier.UserId)
 }

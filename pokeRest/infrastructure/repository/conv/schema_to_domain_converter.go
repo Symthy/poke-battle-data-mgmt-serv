@@ -54,7 +54,7 @@ func ToDomainHeldItem(schema schema.HeldItem) (*items.HeldItem, error) {
 	return input.BuildDomain()
 }
 
-func ToDomainTrainedPokemonParam(schema schema.TrainedPokemon) (*trainings.TrainedPokemonParam, error) {
+func ToDomainTrainedPokemon(schema schema.TrainedPokemon) (*trainings.TrainedPokemon, error) {
 	nickname := ""
 	if schema.Nickname != nil {
 		nickname = *schema.Nickname
@@ -67,18 +67,23 @@ func ToDomainTrainedPokemonParam(schema schema.TrainedPokemon) (*trainings.Train
 	if schema.CreateUserId != nil {
 		userId = *schema.CreateUserId
 	}
-	input := factory.NewTrainedPokemonParamInput(schema.ID, schema.Gender.String(), nickname,
-		description, schema.TrainedPokemonAdjustmentId, schema.IsPrivate, userId)
+	adjustmentInput := toTrainedPokemonAdjustmentInput(schema.TrainedPokemonAdjustment)
+	input := factory.NewTrainedPokemonInput(schema.ID, schema.Gender.String(), nickname,
+		description, schema.TrainedPokemonAdjustmentId, schema.IsPrivate, userId, adjustmentInput)
 	return input.BuildDomain()
 }
 
-func ToDomainTrainedPokemonAdjustment(schema schema.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error) {
+func toTrainedPokemonAdjustmentInput(schema schema.TrainedPokemonAdjustment) factory.TrainedPokemonAdjustmentInput {
 	input := factory.NewTrainedPokemonAdjustmentInput(
 		schema.ID, schema.PokemonId, schema.Nature.String(), uint(*schema.AbilityId), uint(*schema.HeldItemId),
 		schema.EffortValueH, schema.EffortValueA, schema.EffortValueB, schema.EffortValueC,
 		schema.EffortValueD, schema.EffortValueS, uint(*schema.MoveId1), uint(*schema.MoveId2),
 		uint(*schema.MoveId3), uint(*schema.MoveId4))
-	return input.BuildDomain()
+	return input
+}
+
+func ToDomainTrainedPokemonAdjustment(schema schema.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error) {
+	return toTrainedPokemonAdjustmentInput(schema).BuildDomain()
 }
 
 func ToDomainTrainedPokemonAttackTarget(schema schema.TrainedPokemonAttackTarget) (*trainings.TrainedPokemonAttackTarget, error) {

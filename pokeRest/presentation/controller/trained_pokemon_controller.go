@@ -17,10 +17,8 @@ type TrainedPokemonController struct {
 }
 
 func NewTrainedPokemonController(
-	readServ trainings.TrainedPokemonAdjustmentReadService,
 	writeServ trainings.TrainedPokemonWriteService) *TrainedPokemonController {
 	return &TrainedPokemonController{
-		readServ:         readServ,
 		writeServ:        writeServ,
 		responseResolver: response.NewResponseResolver(response.ConvertTrainedPokemonToResponse),
 	}

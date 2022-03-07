@@ -107,19 +107,12 @@ type IBattleOpponentPartyRepository interface {
 
 // Todo: Don't want to depend gorm. wrap?
 type ITrainedPokemonRepository interface {
-	IWritableRepository[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
-	CreateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
-	UpdateRecord(*gorm.DB, trainings.TrainedPokemonParam) (*trainings.TrainedPokemonParam, error)
-	DeleteRecord(*gorm.DB, uint) (*trainings.TrainedPokemonParam, error)
-}
-type ITrainedPokemonTransactionalRepository interface {
-	ISingleRecordFinder[trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
-	ITrainedPokemonRepository
-	ITransactionalRepository
+	IWritableRepository[trainings.TrainedPokemon, identifier.TrainedPokemonId]
 }
 
+// Todo: Don't want to depend gorm. wrap?
 type ITrainedPokemonAdjustmentRepository interface {
-	Find(trainings.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error)
+	Find(*gorm.DB, trainings.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error)
 	IAllRecordRepository[trainings.TrainedPokemonAdjustments, trainings.TrainedPokemonAdjustment, identifier.TrainedAdjustmentId]
 	IWritableRepository[trainings.TrainedPokemonAdjustment, identifier.TrainedAdjustmentId]
 }

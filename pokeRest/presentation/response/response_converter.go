@@ -12,6 +12,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
 )
 
+// Todo: fix
 func ConvertPokemonToResponse(domain pokemons.Pokemon) server.Pokemon {
 	ability1, _ := domain.AbilityIdPrimary().Get()
 	var ability2 *float32 = nil
@@ -97,7 +98,7 @@ func ConvertPartyTagToResponse(domain parties.PartyTag) server.PartyTag {
 
 func ConvertPartyToResponse(domain parties.Party) server.Party {
 	// Todo: implementation
-	id := float32(domain.Id())
+	id := float32(domain.Id().Value())
 	return server.Party{
 		Id: &id,
 	}
@@ -109,7 +110,7 @@ func ConvertTrainedPokemonToResponse(domain trainings.TrainedPokemon) server.Tra
 }
 
 func ConvertUserToResponse(domain users.User) server.User {
-	id := float32(domain.Id())
+	id := float32(domain.Id().Value())
 	name := domain.Name().Value()
 	email := domain.Email().Value()
 	return server.User{

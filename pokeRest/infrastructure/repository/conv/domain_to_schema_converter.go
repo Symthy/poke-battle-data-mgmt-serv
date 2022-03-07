@@ -70,7 +70,7 @@ func ToSchemaPartyTag(domain parties.PartyTag) schema.PartyTag {
 	return builder.Build()
 }
 
-func ToSchemaTrainedPokemon(t trainings.TrainedPokemonParam) schema.TrainedPokemon {
+func ToSchemaTrainedPokemon(t trainings.TrainedPokemon) schema.TrainedPokemon {
 	schema := schema.TrainedPokemon{}
 	return schema
 }

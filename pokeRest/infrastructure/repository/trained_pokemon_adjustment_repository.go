@@ -40,8 +40,7 @@ func NewTrainedPokemonAdjustmentRepository(dbClient orm.IDbClient) *TrainedPokem
 	}
 }
 
-func (rep TrainedPokemonAdjustmentRepository) Find(adjustment adjustmentDomain) (*adjustmentDomain, error) {
-	db := rep.dbClient.Db()
+func (rep TrainedPokemonAdjustmentRepository) Find(db *gorm.DB, adjustment adjustmentDomain) (*adjustmentDomain, error) {
 	schema := emptyAdjustmentSchemaBuilder()
 	tx := db.Where(adjustment).First(&schema)
 	if tx.Error == gorm.ErrRecordNotFound {

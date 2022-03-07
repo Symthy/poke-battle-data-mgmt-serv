@@ -6,42 +6,39 @@ import (
 )
 
 type TrainedPokemon struct {
-	TrainedPokemonParam
+	id          identifier.TrainedPokemonId
+	gender      value.Gender
+	nickname    string
+	description string
+	isPrivate   bool
+	userId      identifier.UserId
 	TrainedPokemonAdjustment
 }
 
-func NewTrainedPokemon(param TrainedPokemonParam, adjustment TrainedPokemonAdjustment) TrainedPokemon {
-	entity := TrainedPokemon{}
-	entity.TrainedPokemonParam = param
-	entity.TrainedPokemonAdjustment = adjustment
-	return entity
-}
-
-// Todo: factory
-func NewTrainedPokemonOfUnregistered(
-	nickname string, gender value.Gender, description string, isPrivate bool, userId identifier.UserId,
-	pokemonId identifier.PokemonId, nature value.PokemonNature, abilityId identifier.AbilityId, heldItemId identifier.HeldItemId,
-	effortValues value.EffortValues, moveSet value.PokemonMoveIdSet) TrainedPokemon {
-	entity := TrainedPokemon{}
-	entity.TrainedPokemonParam = TrainedPokemonParam{
+func NewTrainedPokemon(
+	id identifier.TrainedPokemonId, gender value.Gender, nickname, description string,
+	isPrivate bool, userId identifier.UserId, adjustment TrainedPokemonAdjustment) TrainedPokemon {
+	entity := TrainedPokemon{
+		id:          id,
 		nickname:    nickname,
 		gender:      gender,
 		description: description,
 		isPrivate:   isPrivate,
 		userId:      userId,
 	}
-	entity.TrainedPokemonAdjustment = TrainedPokemonAdjustment{
-		pokemonId:    pokemonId,
-		nature:       nature,
-		abilityId:    abilityId,
-		heldItemId:   heldItemId,
-		effortValues: effortValues,
-		moveSet:      moveSet,
-	}
+	entity.TrainedPokemonAdjustment = adjustment
 	return entity
-
 }
 
-func (t TrainedPokemon) Id() uint {
-	return t.TrainedPokemonParam.id.Value()
+func (t TrainedPokemon) Id() identifier.TrainedPokemonId {
+	return t.id
+}
+
+func (t TrainedPokemon) Notify(note ITrainedPokemonNotification) {
+	note.SetId(t.id)
+	note.SetGender(t.gender)
+	note.SetNickname(t.nickname)
+	note.SetDescription(t.description)
+	note.SetIsPrivate(t.isPrivate)
+	note.SetUserId(t.userId)
 }

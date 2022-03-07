@@ -18,7 +18,7 @@ import (
 	"github.com/google/wire"
 )
 
-// Bug: Don't auto generation, because wire unsupported generics
+// Bug: Can't auto generation, because wire unsupported generics?
 
 /* User */
 func InitUserController(dbClient orm.IDbClient) *controller.UserController {
