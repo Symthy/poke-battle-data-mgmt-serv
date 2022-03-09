@@ -3,26 +3,26 @@ package data
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
-	"github.com/Symthy/PokeRest/pokeRest/common/collections"
+	"github.com/Symthy/PokeRest/pokeRest/common/lists"
 )
 
 func DummyUser1(filterFields ...string) schema.User {
 	var id uint = 0
-	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "id") {
+	if len(filterFields) == 0 || lists.Contains(filterFields, "id") {
 		id = 1
 	}
 	var displayName *string = nil
-	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "displayName") {
+	if len(filterFields) == 0 || lists.Contains(filterFields, "displayName") {
 		displayName = new(string)
 		*displayName = "dummy dummy user"
 	}
 	var email *string = nil
-	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "email") {
+	if len(filterFields) == 0 || lists.Contains(filterFields, "email") {
 		email = new(string)
 		*email = "test@test.com"
 	}
 	var profile *string = nil
-	if len(filterFields) == 0 || collections.ContainsInList(filterFields, "profile") {
+	if len(filterFields) == 0 || lists.Contains(filterFields, "profile") {
 		profile = new(string)
 		*profile = "detail\nprofile"
 	}

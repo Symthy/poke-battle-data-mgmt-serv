@@ -10,7 +10,6 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/users"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"gorm.io/gorm"
 )
@@ -84,9 +83,6 @@ type IPartyBattleResultRepository interface {
 type IBattleRecordRepository interface {
 	ISingleRecordFinder[battles.BattleRecord, identifier.BattleRecordId]
 	IWritableRepository[battles.BattleRecord, identifier.BattleRecordId]
-	CreateRecord(*gorm.DB, battles.BattleRecord) (*battles.BattleRecord, error)
-	UpdateRecord(*gorm.DB, battles.BattleRecord) (*battles.BattleRecord, error)
-	DeleteRecord(*gorm.DB, uint) (*battles.BattleRecord, error)
 }
 
 type IBattleSeasonRepository interface {
@@ -102,7 +98,7 @@ type IBattleRecordTransactionalRepository interface {
 
 type IBattleOpponentPartyRepository interface {
 	IWritableRepository[battles.BattleOpponentParty, identifier.BattleOpponentPartyId]
-	FindParty(value.PartyPokemonIds) (*battles.BattleOpponentParty, error)
+	FindParty(battles.BattleOpponentParty) (*battles.BattleOpponentParty, error)
 }
 
 // Todo: Don't want to depend gorm. wrap?

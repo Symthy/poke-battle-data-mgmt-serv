@@ -52,4 +52,5 @@ type ITrainedPokemonNotification interface {
 	SetDescription(string)
 	SetIsPrivate(bool)
 	SetUserId(identifier.UserId)
+	SetAdjustment(TrainedPokemonAdjustment)
 }

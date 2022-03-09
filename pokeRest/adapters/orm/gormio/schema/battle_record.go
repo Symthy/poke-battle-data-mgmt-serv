@@ -13,7 +13,9 @@ type BattleRecord struct {
 	Series                int
 	Season                int
 	Result                enum.BattleResult
-	BattleOpponentPartyId uint // has one (感覚的に向き逆だがデータ流用のため許容)
+	BattleOpponentPartyId uint                // belongs to (感覚的に向き逆だがデータ流用のため許容)
+	BattleOpponentParty   BattleOpponentParty `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
+
 	// 自身選出
 	SelfElectionPokemonId1 *uint
 	SelfTrainedPokemonId1  *uint

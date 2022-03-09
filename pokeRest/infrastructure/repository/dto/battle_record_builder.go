@@ -12,6 +12,7 @@ var _ battles.IBattleRecordNotification = (*BattleRecordSchemaBuilder)(nil)
 
 type BattleRecordSchemaBuilder struct {
 	schema.BattleRecord
+	BattleOpponentPartySchemaBuilder
 	BattleSeasonBuilder
 }
 
@@ -20,40 +21,40 @@ func NewBattleRecordBuilder() BattleRecordSchemaBuilder {
 }
 
 func (b *BattleRecordSchemaBuilder) SetId(id identifier.BattleRecordId) {
-	b.ID = id.Value()
+	b.BattleRecord.ID = id.Value()
 }
 func (b *BattleRecordSchemaBuilder) SetPartyId(partyId identifier.PartyId) {
-	b.PartyId = partyId.Value()
+	b.BattleRecord.PartyId = partyId.Value()
 }
 
 func (b *BattleRecordSchemaBuilder) SetBattleResult(battleResult value.BattleResult) {
-	b.Result = enum.BattleResult(battleResult)
+	b.BattleRecord.Result = enum.BattleResult(battleResult)
 }
 func (b *BattleRecordSchemaBuilder) SetBattleOpponentPartyId(id identifier.BattleOpponentPartyId) {
-	b.BattleOpponentPartyId = id.Value()
+	b.BattleRecord.BattleOpponentPartyId = id.Value()
 }
 
 // Todo: refactor
 func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.ElectionPokemons) {
-	b.SelfElectionPokemonId1 = ids.Get(0)
-	b.SelfElectionPokemonId2 = ids.Get(1)
-	b.SelfElectionPokemonId3 = ids.Get(2)
+	b.BattleRecord.SelfElectionPokemonId1 = ids.Get(0)
+	b.BattleRecord.SelfElectionPokemonId2 = ids.Get(1)
+	b.BattleRecord.SelfElectionPokemonId3 = ids.Get(2)
 	if ids.Size() == 4 {
-		b.SelfElectionPokemonId4 = ids.Get(3)
+		b.BattleRecord.SelfElectionPokemonId4 = ids.Get(3)
 	}
 }
 func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionPokemons) {
-	b.SelfTrainedPokemonId1 = ids.Get(0)
-	b.SelfTrainedPokemonId2 = ids.Get(1)
-	b.SelfTrainedPokemonId3 = ids.Get(2)
+	b.BattleRecord.SelfTrainedPokemonId1 = ids.Get(0)
+	b.BattleRecord.SelfTrainedPokemonId2 = ids.Get(1)
+	b.BattleRecord.SelfTrainedPokemonId3 = ids.Get(2)
 	if ids.Size() == 4 {
-		b.SelfTrainedPokemonId4 = ids.Get(3)
+		b.BattleRecord.SelfTrainedPokemonId4 = ids.Get(3)
 	}
 }
 func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids battles.ElectionPokemons) {
-	b.OpponentElectionPokemonId1 = ids.Get(0)
-	b.OpponentElectionPokemonId2 = ids.Get(1)
-	b.OpponentElectionPokemonId3 = ids.Get(2)
+	b.BattleRecord.OpponentElectionPokemonId1 = ids.Get(0)
+	b.BattleRecord.OpponentElectionPokemonId2 = ids.Get(1)
+	b.BattleRecord.OpponentElectionPokemonId3 = ids.Get(2)
 	if ids.Size() == 4 {
 		b.OpponentElectionPokemonId4 = ids.Get(3)
 	}
@@ -61,26 +62,4 @@ func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids battles.Elec
 
 func (b BattleRecordSchemaBuilder) Build() schema.BattleRecord {
 	return b.BattleRecord
-}
-
-var _ battles.IBattleSeasonNotification = (*BattleSeasonBuilder)(nil)
-
-type BattleSeasonBuilder struct {
-	generation int
-	series     int
-	season     int
-}
-
-func (b *BattleSeasonBuilder) SetGeneration(generation int) {
-	b.generation = generation
-}
-func (b *BattleSeasonBuilder) SetSeries(series int) {
-	b.series = series
-}
-func (b *BattleSeasonBuilder) SetSeason(season int) {
-	b.season = season
-}
-
-func (b BattleSeasonBuilder) Build() (int, int, int) {
-	return b.generation, b.series, b.season
 }

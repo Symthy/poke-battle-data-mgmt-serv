@@ -5,7 +5,6 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"gorm.io/gorm"
@@ -38,27 +37,17 @@ func NewBattleOpponentPartyRepository(dbClient orm.IDbClient) *BattleOpponentPar
 // Update <- BaseWriteRepository
 // Delete <- BaseWriteRepository
 
-func (rep BattleOpponentPartyRepository) FindParty(partyMember value.PartyPokemonIds) (*battles.BattleOpponentParty, error) {
+func (rep BattleOpponentPartyRepository) FindParty(opponentParty battles.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
 	db := rep.dbClient.Db()
-	searchParty := buildSearchPartySchema(partyMember)
-	schema := schema.BattleOpponentParty{}
-	tx := db.Where(searchParty).First(&schema)
+
+	searchParty := conv.ToSchemaBattleOpponentParty(opponentParty)
+	ret := schema.BattleOpponentParty{}
+	tx := db.Where(searchParty).First(&ret)
 	if tx.Error == gorm.ErrRecordNotFound {
 		return nil, nil
 	}
 	if tx != nil {
 		return nil, tx.Error
 	}
-	return rep.toDomainConverter(schema)
-}
-
-func buildSearchPartySchema(partyMember value.PartyPokemonIds) schema.BattleOpponentParty {
-	return schema.BattleOpponentParty{
-		OpponentPokemonId1: partyMember.Get(0),
-		OpponentPokemonId2: partyMember.Get(1),
-		OpponentPokemonId3: partyMember.Get(2),
-		OpponentPokemonId4: partyMember.Get(3),
-		OpponentPokemonId5: partyMember.Get(4),
-		OpponentPokemonId6: partyMember.Get(5),
-	}
+	return rep.toDomainConverter(ret)
 }

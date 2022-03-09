@@ -106,8 +106,8 @@ func ToSchemaBattleRecord(domain battles.BattleRecord) schema.BattleRecord {
 	return builder.Build()
 }
 
-func ToSchemaBattleOpponentParty(b battles.BattleOpponentParty) schema.BattleOpponentParty {
-	battleParty := schema.BattleOpponentParty{}
-	battleParty.ID = b.Id().Value()
-	return battleParty
+func ToSchemaBattleOpponentParty(domain battles.BattleOpponentParty) schema.BattleOpponentParty {
+	builder := dto.BattleOpponentPartySchemaBuilder{}
+	domain.Notify(&builder)
+	return builder.Build()
 }

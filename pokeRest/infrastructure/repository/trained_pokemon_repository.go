@@ -41,7 +41,6 @@ func (rep TrainedPokemonRepository) Create(domain trainings.TrainedPokemon) (*tr
 			return err
 		}
 		if adjustment == nil {
-
 			adjustmentSchema := conv.ToSchemaTrainedPokemonAdjustment(*adjustment)
 			schema.TrainedPokemonAdjustment = adjustmentSchema
 		} else {
@@ -67,7 +66,7 @@ func (rep TrainedPokemonRepository) Update(domain trainings.TrainedPokemon) (*tr
 			return err
 		}
 		if adjustment == nil {
-			adjustmentDomain, err := rep.adjustmentRepo.CreateRecord(tx, domain.TrainedPokemonAdjustment)
+			adjustmentDomain, err := rep.adjustmentRepo.CreateDelegate(tx, domain.TrainedPokemonAdjustment)
 			if err != nil {
 				return err
 			}

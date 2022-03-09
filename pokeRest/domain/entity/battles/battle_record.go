@@ -14,15 +14,15 @@ type BattleRecord struct {
 	battleResult             value.BattleResult
 	selfElectionPokemons     ElectionPokemons
 	selfTrainedPokemons      ElectionPokemons
-	opponentPartyId          identifier.BattleOpponentPartyId
 	opponentElectionPokemons ElectionPokemons
+	BattleOpponentParty
 	Season
 }
 
 func NewBattleRecord(
 	id identifier.BattleRecordId, partyId identifier.PartyId, season Season, battleResult value.BattleResult,
 	selfElectionPokemons ElectionPokemons, selfTrainedPokemons ElectionPokemons,
-	opponentPartyId identifier.BattleOpponentPartyId, opponentElectionPokemons ElectionPokemons,
+	opponentElectionPokemons ElectionPokemons, opponentParty BattleOpponentParty,
 ) BattleRecord {
 	return BattleRecord{
 		id:                       id,
@@ -30,8 +30,8 @@ func NewBattleRecord(
 		battleResult:             battleResult,
 		selfElectionPokemons:     selfElectionPokemons,
 		selfTrainedPokemons:      selfTrainedPokemons,
-		opponentPartyId:          opponentPartyId,
 		opponentElectionPokemons: opponentElectionPokemons,
+		BattleOpponentParty:      opponentParty,
 		Season:                   season,
 	}
 }
@@ -44,17 +44,21 @@ func (b BattleRecord) PartyId() identifier.PartyId {
 	return b.partyId
 }
 
+func (b BattleRecord) OpponentParty() BattleOpponentParty {
+	return b.BattleOpponentParty
+}
+
+func (b *BattleRecord) ApplyOpponentParty(opponentParty BattleOpponentParty) {
+	b.BattleOpponentParty = opponentParty
+}
+
 func (b BattleRecord) Notify(note IBattleRecordNotification) {
 	note.SetId(b.id)
 	note.SetPartyId(b.partyId)
 	note.SetBattleResult(b.battleResult)
-	note.SetBattleOpponentPartyId(b.opponentPartyId)
 	note.SetSelfElectionPokemons(b.selfElectionPokemons)
 	note.SetSelfTrainedPokemons(b.selfTrainedPokemons)
 	note.SetOpponentElectionPokemons(b.opponentElectionPokemons)
+	b.BattleOpponentParty.Notify(note)
 	b.Season.Notify(note)
-}
-
-func (b *BattleRecord) ApplyOpponentPartyId(opponentPartyId identifier.BattleOpponentPartyId) {
-	b.opponentPartyId = opponentPartyId
 }

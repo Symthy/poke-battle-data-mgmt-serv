@@ -148,17 +148,26 @@ func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, er
 	lists.AddsToList(opponentElectionPokemonIds, schema.OpponentElectionPokemonId1,
 		schema.OpponentElectionPokemonId2, schema.OpponentElectionPokemonId3, schema.OpponentElectionPokemonId4)
 
-	input := factory.NewBattleRecordInput(schema.ID, schema.PartyId, schema.Generation, schema.Series, schema.Season,
-		schema.Result.String(), selfElectionPokemonIds, selfTrainedPokemonIds, opponentElectionPokemonIds,
-		schema.BattleOpponentPartyId, nil)
+	opponentPartyInput := toBattleOpponentPartyInput(schema.BattleOpponentParty)
+
+	input := factory.NewBattleRecordInput(schema.ID, schema.PartyId, schema.Generation, schema.Series,
+		schema.Season, schema.Result.String(), selfElectionPokemonIds, selfTrainedPokemonIds,
+		opponentElectionPokemonIds, opponentPartyInput)
 	return input.BuildDomain()
 }
 
 func ToDomainBattleOpponentParty(schema schema.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
-	input := factory.NewBattleOpponentPartyInput(schema.ID, schema.OpponentPokemonId1,
-		schema.OpponentPokemonId2, schema.OpponentPokemonId3, schema.OpponentPokemonId4,
-		schema.OpponentPokemonId5, schema.OpponentPokemonId6)
+	input := toBattleOpponentPartyInput(schema)
 	return input.BuildDomain()
+}
+
+func toBattleOpponentPartyInput(schema schema.BattleOpponentParty) factory.BattleOpponentPartyInput {
+	opponentPokemonIds := []uint{}
+	lists.AddsToList(opponentPokemonIds,
+		schema.OpponentPokemonId1, schema.OpponentPokemonId2, schema.OpponentPokemonId3,
+		schema.OpponentPokemonId4, schema.OpponentPokemonId5, schema.OpponentPokemonId6)
+	input := factory.NewBattleOpponentPartyInput(schema.ID, opponentPokemonIds...)
+	return input
 }
 
 func ToDomainUser(schema schema.User) (*users.User, error) {

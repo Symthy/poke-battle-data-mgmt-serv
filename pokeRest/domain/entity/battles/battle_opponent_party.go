@@ -9,8 +9,8 @@ import (
 var _ entity.IDomain[identifier.BattleOpponentPartyId] = (*BattleOpponentParty)(nil)
 
 type BattleOpponentParty struct {
-	id                 identifier.BattleOpponentPartyId
-	opponentPokemonIds value.PartyPokemonIds
+	id         identifier.BattleOpponentPartyId
+	pokemonIds value.PartyPokemonIds
 }
 
 func NewBattleOpponentPartyOfUnregister(pokemonIds value.PartyPokemonIds) BattleOpponentParty {
@@ -21,8 +21,8 @@ func NewBattleOpponentParty(
 	id identifier.BattleOpponentPartyId, pokemonIds value.PartyPokemonIds,
 ) BattleOpponentParty {
 	return BattleOpponentParty{
-		id:                 id,
-		opponentPokemonIds: pokemonIds,
+		id:         id,
+		pokemonIds: pokemonIds,
 	}
 }
 
@@ -31,6 +31,6 @@ func (b BattleOpponentParty) Id() identifier.BattleOpponentPartyId {
 }
 
 func (b BattleOpponentParty) Notify(note IBattleOpponentPartyNotification) {
-	note.SetId(b.id)
-	note.SetOpponentPokemonIds(b.opponentPokemonIds)
+	note.SetOpponentPartyId(b.id)
+	note.SetPokemonIds(b.pokemonIds)
 }

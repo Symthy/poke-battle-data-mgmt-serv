@@ -11,15 +11,8 @@ type BattleOpponentPartyInput struct {
 	opponentPokemonIds []uint
 }
 
-func NewBattleOpponentPartyInput(id uint, pokemonIds ...*uint) BattleOpponentPartyInput {
-	opponentPokemonIds := make([]uint, 0, 1)
-	for _, v := range pokemonIds {
-		if v == nil {
-			continue
-		}
-		opponentPokemonIds = append(opponentPokemonIds, *v)
-	}
-	return BattleOpponentPartyInput{id, opponentPokemonIds}
+func NewBattleOpponentPartyInput(id uint, pokemonIds ...uint) BattleOpponentPartyInput {
+	return BattleOpponentPartyInput{id, pokemonIds}
 }
 
 func (i BattleOpponentPartyInput) BuildDomain() (*battles.BattleOpponentParty, error) {

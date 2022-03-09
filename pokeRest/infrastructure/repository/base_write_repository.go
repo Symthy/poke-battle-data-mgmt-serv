@@ -16,10 +16,10 @@ type BaseWriteRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDo
 // Todo: error handling
 
 func (rep BaseWriteRepository[TS, TD, K]) Create(model TD) (*TD, error) {
-	return rep.CreateRecord(rep.dbClient.Db(), model)
+	return rep.CreateDelegate(rep.dbClient.Db(), model)
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) CreateRecord(db *gorm.DB, model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K]) CreateDelegate(db *gorm.DB, model TD) (*TD, error) {
 	schema := rep.toSchemaConverter(model)
 	tx := db.Create(&schema)
 	if tx.Error != nil {
@@ -30,10 +30,10 @@ func (rep BaseWriteRepository[TS, TD, K]) CreateRecord(db *gorm.DB, model TD) (*
 }
 
 func (rep BaseWriteRepository[TS, TD, K]) Update(model TD) (*TD, error) {
-	return rep.UpdateRecord(rep.dbClient.Db(), model)
+	return rep.UpdateDelegate(rep.dbClient.Db(), model)
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) UpdateRecord(db *gorm.DB, model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K]) UpdateDelegate(db *gorm.DB, model TD) (*TD, error) {
 	target := rep.emptySchemaBuilder()
 	if tx := db.First(&target, model.Id().Value()); tx.Error != nil {
 		if tx.Error == gorm.ErrRecordNotFound {

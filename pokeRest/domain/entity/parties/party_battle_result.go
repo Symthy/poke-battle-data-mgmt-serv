@@ -18,7 +18,7 @@ type PartyBattleResult struct {
 	battles.Season
 }
 
-func NewPartyBattleResult(id identifier.PartyBattleResultId, generation int, series int, season int, maxRate int, seasonRanking int, maxSeasonRanking int, winCount int, loseCount int) PartyBattleResult {
+func NewPartyBattleResult(id identifier.PartyBattleResultId, maxRate int, seasonRanking int, maxSeasonRanking int, winCount int, loseCount int, season battles.Season) PartyBattleResult {
 	return PartyBattleResult{
 		id:               id,
 		maxRate:          maxRate,
@@ -26,7 +26,7 @@ func NewPartyBattleResult(id identifier.PartyBattleResultId, generation int, ser
 		maxSeasonRanking: maxSeasonRanking,
 		winCount:         winCount,
 		loseCount:        loseCount,
-		Season:           battles.NewSeason(generation, series, season),
+		Season:           season,
 	}
 }
 

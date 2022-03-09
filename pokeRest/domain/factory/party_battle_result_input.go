@@ -1,6 +1,7 @@
 package factory
 
 import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/parties"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
@@ -29,7 +30,11 @@ func (i PartyBattleResultInput) BuildDomain() (*parties.PartyBattleResult, error
 	if err != nil {
 		return nil, err
 	}
-	domain := parties.NewPartyBattleResult(*id, i.generation, i.series, i.season, i.maxRate, i.seasonRanking,
-		i.maxSeasonRanking, i.winCount, i.loseCount)
+	season, err := battles.NewSeason(i.generation, i.series, i.season)
+	if err != nil {
+		return nil, err
+	}
+	domain := parties.NewPartyBattleResult(*id, i.maxRate, i.seasonRanking,
+		i.maxSeasonRanking, i.winCount, i.loseCount, *season)
 	return &domain, nil
 }

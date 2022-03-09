@@ -1,59 +1,59 @@
 package spec
 
 import (
+	"fmt"
+
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
 // Todo: rename & split
 type BattleRecordSpecification struct {
-	seasonRepo        repository.IBattleSeasonRepository
-	partyRepo         repository.IPartyRepository
-	opponentPartyRepo repository.IBattleOpponentPartyRepository
+	battleRecordRepo repository.IBattleRecordRepository
+	partyRepo        repository.IPartyRepository
 }
 
 func NewBattleRecordSpecification(
-	seasonRepo repository.IBattleSeasonRepository,
+	battleRecordRepo repository.IBattleRecordRepository,
 	partyRepo repository.IPartyRepository,
-	opponentPartyRepo repository.IBattleOpponentPartyRepository,
 ) BattleRecordSpecification {
 	return BattleRecordSpecification{
-		seasonRepo:        seasonRepo,
-		partyRepo:         partyRepo,
-		opponentPartyRepo: opponentPartyRepo,
+		battleRecordRepo: battleRecordRepo,
+		partyRepo:        partyRepo,
 	}
 }
 
-func (b BattleRecordSpecification) ResolveCurrentSeason() (*battles.Season, error) {
-	currentSeason, err := b.seasonRepo.FindCurrent()
-	if err != nil {
-		return nil, err
+func (s BattleRecordSpecification) IsSatisfyForUpdate(battleRecord battles.BattleRecord) (bool, error) {
+	if _, err := s.ExistSelfParty(battleRecord.PartyId()); err != nil {
+		return false, err
 	}
-	return currentSeason, nil
-}
-
-func (b BattleRecordSpecification) ExistSelfParty(partyId identifier.PartyId) (bool, error) {
-	party, err := b.partyRepo.FindById(partyId.Value())
-	if party == nil {
+	if _, err := s.ExistBattleRecord(battleRecord.Id()); err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (b BattleRecordSpecification) ResolveOppositeParty(
-	opponentPartyMember value.PartyPokemonIds) (*battles.BattleOpponentParty, error) {
-	opponentParty, err := b.opponentPartyRepo.FindParty(opponentPartyMember)
+func (s BattleRecordSpecification) ExistSelfParty(partyId identifier.PartyId) (bool, error) {
+	party, err := s.partyRepo.FindById(partyId.Value())
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	if opponentParty == nil {
-		created, err := b.opponentPartyRepo.Create(battles.NewBattleOpponentPartyOfUnregister(opponentPartyMember))
-		if err != nil {
-			return nil, err
-		}
-		opponentParty = created
+	if party == nil {
+		// Todo: replace error
+		return false, fmt.Errorf("target party not found")
 	}
-	return opponentParty, nil
+	return true, nil
+}
+
+func (s BattleRecordSpecification) ExistBattleRecord(id identifier.BattleRecordId) (bool, error) {
+	retBattleRecord, err := s.battleRecordRepo.FindById(id.Value())
+	if err != nil {
+		return false, err
+	}
+	if retBattleRecord == nil {
+		// Todo: replace error
+		return false, fmt.Errorf("target battle record not found")
+	}
+	return true, nil
 }

@@ -22,7 +22,7 @@ func NewTrainedPokemonWriteService(
 func (s TrainedPokemonWriteService) SaveTrainedPokemon(
 	cmd command.CreateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
 	trainedPokemon := cmd.ToDomain()
-
+	// Todo: validate
 	created, err := s.trainedRepo.Create(trainedPokemon)
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(
 // UC: 育成済み個体更新
 func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
 	trainedPokemon := cmd.ToDomain()
-
+	// Todo: validate
 	updated, err := s.trainedRepo.Update(trainedPokemon)
 	if err != nil {
 		return nil, err
@@ -43,6 +43,7 @@ func (s TrainedPokemonWriteService) UpdateTrainedPokemon(cmd command.UpdateTrain
 
 // UC: 育成済み個体削除
 func (s TrainedPokemonWriteService) DeleteTrainedPokemon(id uint) (*trainings.TrainedPokemon, error) {
+	// Todo: validate
 	deleted, err := s.trainedRepo.Delete(id)
 	return deleted, err
 }

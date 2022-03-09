@@ -9,21 +9,23 @@ type AddBattleRecordCommand struct {
 }
 
 func NewAddBattleRecordOfCurrentCommand(
-	partyId uint, battleResult string, selfPokemonIds []uint, selfTrainedPokemonIds []uint,
-	opponentPokemonIds []uint, opponentPartyMember []uint,
+	partyId uint, battleResult string, selfElectionPokemonIds, selfElectionTrainedPokemonIds,
+	opponentElectionPokemonIds, opponentPartyPokemonIds []uint,
 ) AddBattleRecordCommand {
 	return NewAddBattleRecordCommand(
-		partyId, 0, 0, 0, battleResult, selfPokemonIds, selfTrainedPokemonIds,
-		opponentPokemonIds, opponentPartyMember)
+		partyId, 0, 0, 0, battleResult, selfElectionPokemonIds, selfElectionTrainedPokemonIds,
+		opponentElectionPokemonIds, opponentPartyPokemonIds)
 }
 
 func NewAddBattleRecordCommand(
-	partyId uint, generation int, series int, season int, battleResult string, selfPokemonIds []uint,
-	selfTrainedPokemonIds []uint, opponentPokemonIds []uint, opponentPartyMember []uint,
+	partyId uint, generation, series, season int, battleResult string,
+	selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds,
+	opponentPartyPokemonIds []uint,
 ) AddBattleRecordCommand {
 	return AddBattleRecordCommand{
 		factory.NewBattleRecordInput(
 			0, partyId, generation, series, season, battleResult,
-			selfPokemonIds, selfTrainedPokemonIds, opponentPokemonIds, 0, opponentPartyMember),
+			selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds,
+			factory.NewBattleOpponentPartyInput(0, opponentPartyPokemonIds...)),
 	}
 }

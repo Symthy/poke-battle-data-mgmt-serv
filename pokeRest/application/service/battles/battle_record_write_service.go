@@ -1,41 +1,27 @@
 package battles
 
 import (
-	"fmt"
-
 	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/command"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/spec"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	d_service "github.com/Symthy/PokeRest/pokeRest/domain/service"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
 type battleRecordtransactionalRepositoryBuilder = func(repository.IBattleRecordRepository) repository.IBattleRecordTransactionalRepository
 
 type BattleRecordWriteService struct {
-	// Todo: 個別に分けるかどうか
-	battleRecordRepo               repository.IBattleRecordRepository
-	opponentPartyRepo              repository.IBattleOpponentPartyRepository
-	selfPartyRepo                  repository.IPartyRepository
-	seasonRepo                     repository.IBattleSeasonRepository
-	battleRecordResolver           d_service.BattleRecordResolver
-	transactionalRepositoryBuilder battleRecordtransactionalRepositoryBuilder
+	battleRecordRepo repository.IBattleRecordRepository
+	spec             spec.BattleRecordSpecification
 }
 
 func NewBattleRecordWriteService(
 	battleRecordRepo repository.IBattleRecordRepository,
-	opponentPartyRepo repository.IBattleOpponentPartyRepository,
-	selfPartyRepo repository.IPartyRepository,
-	seasonRepo repository.IBattleSeasonRepository,
-	transactionalRepositoryBuilder battleRecordtransactionalRepositoryBuilder,
+	partyRepo repository.IPartyRepository,
 ) BattleRecordWriteService {
 	return BattleRecordWriteService{
-		battleRecordRepo:               battleRecordRepo,
-		opponentPartyRepo:              opponentPartyRepo,
-		selfPartyRepo:                  selfPartyRepo,
-		seasonRepo:                     seasonRepo,
-		battleRecordResolver:           d_service.NewBattleRecordResolver(opponentPartyRepo, selfPartyRepo, seasonRepo),
-		transactionalRepositoryBuilder: transactionalRepositoryBuilder,
+		battleRecordRepo: battleRecordRepo,
+		spec:             spec.NewBattleRecordSpecification(battleRecordRepo, partyRepo),
 	}
 }
 
@@ -45,29 +31,10 @@ func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCom
 	if err != nil {
 		return nil, err
 	}
-	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyPokemonIds())
-	transactionalRepo := s.transactionalRepositoryBuilder(s.battleRecordRepo)
-
-	if err := transactionalRepo.StartTransaction(); err != nil {
+	if _, err := s.spec.IsSatisfyForUpdate(*input); err != nil {
 		return nil, err
 	}
-	defer transactionalRepo.PanicPostProcess()
-
-	battleRecord, err := s.battleRecordResolver.Resolve(*input, opponentPartyMember)
-	if err != nil {
-		transactionalRepo.CancelTransaction()
-		return nil, err
-	}
-
-	createdBattleRecord, err := transactionalRepo.Create(*battleRecord)
-	if err != nil {
-		transactionalRepo.CancelTransaction()
-		return nil, err
-	}
-
-	if err := transactionalRepo.FinishTransaction(); err != nil {
-		return nil, err
-	}
+	createdBattleRecord, err := s.battleRecordRepo.Create(*input)
 	return createdBattleRecord, nil
 }
 
@@ -77,47 +44,21 @@ func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordC
 	if err != nil {
 		return nil, err
 	}
-	opponentPartyMember := value.NewPartyPokemonIds(cmd.OpponentPartyPokemonIds())
-	transactionalRepo := s.transactionalRepositoryBuilder(s.battleRecordRepo)
-
-	if err := transactionalRepo.StartTransaction(); err != nil {
+	if _, err := s.spec.IsSatisfyForUpdate(*input); err != nil {
 		return nil, err
 	}
-	defer transactionalRepo.PanicPostProcess()
-
-	if err := s.validateBattleRecord(*input); err != nil {
-		return nil, err
-	}
-	battleRecord, err := s.battleRecordResolver.Resolve(*input, opponentPartyMember)
-	if err != nil {
-		transactionalRepo.CancelTransaction()
-		return nil, err
-	}
-	updatedBattleRecord, err := transactionalRepo.Update(*battleRecord)
-	if err != nil {
-		transactionalRepo.CancelTransaction()
-		return nil, err
-	}
-
-	if err := transactionalRepo.FinishTransaction(); err != nil {
-		return nil, err
-	}
+	updatedBattleRecord, err := s.battleRecordRepo.Update(*input)
 	return updatedBattleRecord, nil
 }
 
 // UC: 戦績削除 (パーティ戦績も更新)
 func (s BattleRecordWriteService) DeleteBattleRecord(id uint) (*battles.BattleRecord, error) {
-	return s.battleRecordRepo.Delete(id)
-}
-
-func (s BattleRecordWriteService) validateBattleRecord(battleRecord battles.BattleRecord) error {
-	retBattleRecord, err := s.battleRecordRepo.FindById(battleRecord.Id().Value())
+	battleRecordId, err := identifier.NewBattleRecordId(id)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if retBattleRecord == nil {
-		// Todo: replace error
-		return fmt.Errorf("target battle record not found")
+	if _, err := s.spec.ExistBattleRecord(*battleRecordId); err != nil {
+		return nil, err
 	}
-	return nil
+	return s.battleRecordRepo.Delete(id)
 }
