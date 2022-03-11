@@ -16,13 +16,13 @@ func (s TrainedPokemonTargetService) DeleteAttackAdjustment() {
 }
 
 // UC: 耐久調整登録
-func (s TrainedPokemonTargetService) SaveDeffenceAdjustment() {
+func (s TrainedPokemonTargetService) SaveDefenceAdjustment() {
 }
 
 // UC: 耐久調整更新
-func (s TrainedPokemonTargetService) UpdateDeffenceAdjustment() {
+func (s TrainedPokemonTargetService) UpdateDefenceAdjustment() {
 }
 
 // UC: 耐久調整削除
-func (s TrainedPokemonTargetService) DeleteDeffenceAdjustment() {
+func (s TrainedPokemonTargetService) DeleteDefenceAdjustment() {
 }

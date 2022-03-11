@@ -69,7 +69,7 @@ func ToDomainTrainedPokemon(schema schema.TrainedPokemon) (*trainings.TrainedPok
 	}
 	adjustmentInput := toTrainedPokemonAdjustmentInput(schema.TrainedPokemonAdjustment)
 	input := factory.NewTrainedPokemonInput(schema.ID, schema.Gender.String(), nickname,
-		description, schema.TrainedPokemonAdjustmentId, schema.IsPrivate, userId, adjustmentInput)
+		description, schema.IsPrivate, userId, adjustmentInput)
 	return input.BuildDomain()
 }
 

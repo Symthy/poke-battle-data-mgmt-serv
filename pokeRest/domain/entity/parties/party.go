@@ -45,7 +45,7 @@ func (p Party) UserId() identifier.UserId {
 }
 
 func (p Party) IsUnregister() bool {
-	return p.id.Value() == 0
+	return p.id.IsEmpty()
 }
 
 func (p Party) Notify(note IPartyNotification) {

@@ -7,13 +7,13 @@ type TrainedPokemonReadService struct {
 }
 
 // UC: ユーザの育成済み個体一覧取得
-func (s TrainedPokemonReadService) FindTrainedPokemonsByUser(userId uint) {
+func (s TrainedPokemonReadService) FindByUser(userId uint) {
 }
 
 // UC: 育成済み個体詳細取得
-func (s TrainedPokemonReadService) FindTrainedPokemonById(id uint) {
+func (s TrainedPokemonReadService) FindById(id uint) {
 }
 
 // UC: パーティの育成済み個体取得
-func (s TrainedPokemonReadService) FindTrainedPokemonsByParty(partyId uint) {
+func (s TrainedPokemonReadService) FindByParty(partyId uint) {
 }

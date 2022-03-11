@@ -34,6 +34,14 @@ func (t TrainedPokemon) Id() identifier.TrainedPokemonId {
 	return t.id
 }
 
+func (t TrainedPokemon) UserId() identifier.UserId {
+	return t.userId
+}
+
+func (t TrainedPokemon) IsUnregister() bool {
+	return t.id.IsEmpty()
+}
+
 func (t TrainedPokemon) Notify(note ITrainedPokemonNotification) {
 	note.SetId(t.id)
 	note.SetGender(t.gender)

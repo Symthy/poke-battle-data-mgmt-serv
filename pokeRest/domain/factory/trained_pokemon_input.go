@@ -17,7 +17,7 @@ type TrainedPokemonInput struct {
 }
 
 func NewTrainedPokemonInput(
-	id uint, gender string, nickname string, description string, adjustmentId uint, isPrivate bool,
+	id uint, gender string, nickname string, description string, isPrivate bool,
 	userId uint, adjustment TrainedPokemonAdjustmentInput) TrainedPokemonInput {
 	return TrainedPokemonInput{
 		id:          id,
@@ -27,6 +27,32 @@ func NewTrainedPokemonInput(
 		isPrivate:   isPrivate,
 		userId:      userId,
 	}
+}
+
+func NewTrainedPokemonBuilder() TrainedPokemonInput {
+	return TrainedPokemonInput{}
+}
+
+func (i TrainedPokemonInput) Id(id uint) {
+	i.id = id
+}
+func (i TrainedPokemonInput) Gender(gender string) {
+	i.gender = gender
+}
+func (i TrainedPokemonInput) Nickname(nickname string) {
+	i.nickname = nickname
+}
+func (i TrainedPokemonInput) Description(description string) {
+	i.description = description
+}
+func (i TrainedPokemonInput) SetIsPrivate(isPrivate bool) {
+	i.isPrivate = isPrivate
+}
+func (i TrainedPokemonInput) UserId(userId uint) {
+	i.userId = userId
+}
+func (i TrainedPokemonInput) Adjustment(adjustment TrainedPokemonAdjustmentInput) {
+	i.adjustment = adjustment
 }
 
 func (i TrainedPokemonInput) BuildDomain() (*trainings.TrainedPokemon, error) {

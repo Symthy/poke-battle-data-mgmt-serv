@@ -1,21 +1,19 @@
 package command
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/trainings"
+	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
 )
 
 type CreateTrainedPokemonCommand struct {
-	trainings.TrainedPokemon
+	factory.TrainedPokemonInput
 }
 
 // Todo
-func NewCreateTrainedPokemonCommand() CreateTrainedPokemonCommand {
+func NewCreateTrainedPokemonCommand(
+	gender, nickname, description string, isPrivate bool, userId uint,
+	adjustment factory.TrainedPokemonAdjustmentInput) CreateTrainedPokemonCommand {
 	cmd := CreateTrainedPokemonCommand{
-		// trainings.NewTrainedPokemonOfUnregistered(),
+		factory.NewTrainedPokemonInput(0, gender, nickname, description, isPrivate, userId, adjustment),
 	}
 	return cmd
-}
-
-func (c CreateTrainedPokemonCommand) ToDomain() trainings.TrainedPokemon {
-	return c.TrainedPokemon
 }
