@@ -197,7 +197,7 @@ func (h *PokeRestHandler) PostPartiesId(ctx echo.Context, id int) error {
 // DELETE party
 // (DELETE /parties/{id})
 func (h *PokeRestHandler) DeletePartiesId(ctx echo.Context, id int) error {
-	return h.partyController.DeleteParty(ctx, id)
+	return h.partyController.DeleteParty(ctx, uint(id)) // Todo: fix
 }
 
 // GET party tags

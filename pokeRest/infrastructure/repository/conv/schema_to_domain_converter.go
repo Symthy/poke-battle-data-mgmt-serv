@@ -150,9 +150,9 @@ func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, er
 
 	opponentPartyInput := toBattleOpponentPartyInput(schema.BattleOpponentParty)
 
-	input := factory.NewBattleRecordInput(schema.ID, schema.PartyId, schema.Generation, schema.Series,
-		schema.Season, schema.Result.String(), selfElectionPokemonIds, selfTrainedPokemonIds,
-		opponentElectionPokemonIds, opponentPartyInput)
+	input := factory.NewBattleRecordInput(schema.ID, schema.PartyId, schema.UserId, schema.Generation,
+		schema.Series, schema.Season, schema.Result.String(), selfElectionPokemonIds,
+		selfTrainedPokemonIds, opponentElectionPokemonIds, opponentPartyInput)
 	return input.BuildDomain()
 }
 

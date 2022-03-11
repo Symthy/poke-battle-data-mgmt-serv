@@ -74,17 +74,3 @@ func (a AuthorizationService) CreateSignUpUser(name string, password string) (*m
 	}
 	return &user, nil
 }
-
-func (a AuthorizationService) ValidateUserIdInToken(c echo.Context) error {
-	accessUser := c.Get("user").(*jwt.Token)
-	claims := accessUser.Claims.(*config.JwtCustomClaims)
-	var uid uint = uint(claims.ID)
-	user, err := a.service.GetUserById(uid)
-	if user.Id().Value() == 0 {
-		return echo.ErrNotFound
-	}
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
-	}
-	return nil
-}

@@ -10,6 +10,7 @@ import (
 type IBattleRecordNotification interface {
 	SetId(identifier.BattleRecordId)
 	SetPartyId(identifier.PartyId)
+	SetUserId(identifier.UserId)
 	SetBattleResult(value.BattleResult)
 	SetBattleOpponentPartyId(identifier.BattleOpponentPartyId)
 	SetSelfElectionPokemons(ElectionPokemons)

@@ -9,6 +9,8 @@ type BattleRecord struct {
 	gorm.Model
 	PartyId               uint
 	Party                 Party `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // belongs to
+	UserId                uint
+	User                  User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Generation            int
 	Series                int
 	Season                int

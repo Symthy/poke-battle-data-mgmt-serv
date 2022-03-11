@@ -5,7 +5,6 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/battles/spec"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
 type battleRecordtransactionalRepositoryBuilder = func(repository.IBattleRecordRepository) repository.IBattleRecordTransactionalRepository
@@ -52,13 +51,13 @@ func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordC
 }
 
 // UC: 戦績削除 (パーティ戦績も更新)
-func (s BattleRecordWriteService) DeleteBattleRecord(id uint) (*battles.BattleRecord, error) {
-	battleRecordId, err := identifier.NewBattleRecordId(id)
+func (s BattleRecordWriteService) DeleteBattleRecord(cmd command.DeleteBattleRecord) (*battles.BattleRecord, error) {
+	domain, err := cmd.BuildDomain()
 	if err != nil {
 		return nil, err
 	}
-	if _, err := s.spec.ExistBattleRecord(*battleRecordId); err != nil {
+	if _, err := s.spec.ExistBattleRecord(domain.Id()); err != nil {
 		return nil, err
 	}
-	return s.battleRecordRepo.Delete(id)
+	return s.battleRecordRepo.Delete(domain.Id().Value())
 }

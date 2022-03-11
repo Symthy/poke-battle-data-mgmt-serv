@@ -9,13 +9,13 @@ type EditBattleRecordCommand struct {
 }
 
 func NewEditBattleRecordCommand(
-	id, partyId uint, generation, series, season int, battleResult string,
+	id, partyId, userId uint, generation, series, season int, battleResult string,
 	selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds,
 	opponentPartyPokemonIds []uint,
 ) EditBattleRecordCommand {
 	return EditBattleRecordCommand{
 		factory.NewBattleRecordInput(
-			id, partyId, generation, series, season, battleResult,
+			id, partyId, userId, generation, series, season, battleResult,
 			selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds,
 			factory.NewBattleOpponentPartyInput(0, opponentPartyPokemonIds...)),
 	}

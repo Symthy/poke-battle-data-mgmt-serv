@@ -47,6 +47,10 @@ func NewTrainedPokemonAdjustmentInput(
 	}
 }
 
+func NewTrainedPokemonAdjustmentBuilder() TrainedPokemonAdjustmentInput {
+	return TrainedPokemonAdjustmentInput{}
+}
+
 func (i TrainedPokemonAdjustmentInput) BuildDomain() (*trainings.TrainedPokemonAdjustment, error) {
 	id, err := identifier.NewTrainedAdjustmentId(i.id)
 	if err != nil {

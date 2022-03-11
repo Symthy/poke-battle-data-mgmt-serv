@@ -11,6 +11,7 @@ var _ entity.IDomain[identifier.BattleRecordId] = (*BattleRecord)(nil)
 type BattleRecord struct {
 	id                       identifier.BattleRecordId
 	partyId                  identifier.PartyId
+	userId                   identifier.UserId
 	battleResult             value.BattleResult
 	selfElectionPokemons     ElectionPokemons
 	selfTrainedPokemons      ElectionPokemons
@@ -20,10 +21,10 @@ type BattleRecord struct {
 }
 
 func NewBattleRecord(
-	id identifier.BattleRecordId, partyId identifier.PartyId, season Season, battleResult value.BattleResult,
-	selfElectionPokemons ElectionPokemons, selfTrainedPokemons ElectionPokemons,
-	opponentElectionPokemons ElectionPokemons, opponentParty BattleOpponentParty,
-) BattleRecord {
+	id identifier.BattleRecordId, partyId identifier.PartyId, userId identifier.UserId,
+	season Season, battleResult value.BattleResult, selfElectionPokemons ElectionPokemons,
+	selfTrainedPokemons ElectionPokemons, opponentElectionPokemons ElectionPokemons,
+	opponentParty BattleOpponentParty) BattleRecord {
 	return BattleRecord{
 		id:                       id,
 		partyId:                  partyId,
@@ -44,6 +45,10 @@ func (b BattleRecord) PartyId() identifier.PartyId {
 	return b.partyId
 }
 
+func (b BattleRecord) UserId() identifier.UserId {
+	return b.userId
+}
+
 func (b BattleRecord) OpponentParty() BattleOpponentParty {
 	return b.BattleOpponentParty
 }
@@ -55,6 +60,7 @@ func (b *BattleRecord) ApplyOpponentParty(opponentParty BattleOpponentParty) {
 func (b BattleRecord) Notify(note IBattleRecordNotification) {
 	note.SetId(b.id)
 	note.SetPartyId(b.partyId)
+	note.SetUserId(b.userId)
 	note.SetBattleResult(b.battleResult)
 	note.SetSelfElectionPokemons(b.selfElectionPokemons)
 	note.SetSelfTrainedPokemons(b.selfTrainedPokemons)
