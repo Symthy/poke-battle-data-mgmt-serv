@@ -35,7 +35,8 @@ func (c PartyController) UpdateParty(ctx echo.Context, id int) error {
 	return c.responseResolver.Resolve(ctx, domain, err)
 }
 
-func (c PartyController) DeleteParty(ctx echo.Context, id int) error {
-	domain, err := c.writeServ.DeleteParty(uint(id))
+func (c PartyController) DeleteParty(ctx echo.Context, id uint, userId uint) error {
+	cmd := command.NewDeletePartyCommand(id, userId)
+	domain, err := c.writeServ.DeleteParty(cmd)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }

@@ -79,7 +79,6 @@ type IPartyBattleResultRepository interface {
 	IWritableRepository[parties.PartyBattleResult, identifier.PartyBattleResultId]
 }
 
-// Todo: Don't want to depend gorm. wrap?
 type IBattleRecordRepository interface {
 	ISingleRecordFinder[battles.BattleRecord, identifier.BattleRecordId]
 	IWritableRepository[battles.BattleRecord, identifier.BattleRecordId]
@@ -101,7 +100,6 @@ type IBattleOpponentPartyRepository interface {
 	FindParty(battles.BattleOpponentParty) (*battles.BattleOpponentParty, error)
 }
 
-// Todo: Don't want to depend gorm. wrap?
 type ITrainedPokemonRepository interface {
 	IWritableRepository[trainings.TrainedPokemon, identifier.TrainedPokemonId]
 }

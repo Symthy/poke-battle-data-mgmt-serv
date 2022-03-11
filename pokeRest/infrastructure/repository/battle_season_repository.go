@@ -7,6 +7,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
+	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 )
 
 var _ repository.IBattleSeasonRepository = (*BattleSeasonRepository)(nil)
@@ -28,8 +29,7 @@ func (rep BattleSeasonRepository) FindCurrent() (*battles.Season, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	domain := schema.ConvertToDomainSeason()
-	return &domain, nil
+	return conv.ToDomainSeason(schema)
 }
 
 func (rep BattleSeasonRepository) Find(season battles.Season) (*battles.SeasonPeriods, error) {
@@ -44,15 +44,23 @@ func (rep BattleSeasonRepository) FindAll() (*battles.SeasonPeriods, error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	domains := battles.NewSeasonPeriods(convertToDomains(schemas))
+	seasonPeriods, err := convertToDomains(schemas)
+	if err != nil {
+		return nil, err
+	}
+	domains := battles.NewSeasonPeriods(seasonPeriods)
 	return &domains, nil
 }
 
 // non use common func. season is non id...
-func convertToDomains(schemas []schema.BattleSeason) []battles.SeasonPeriod {
+func convertToDomains(schemas []schema.BattleSeason) ([]battles.SeasonPeriod, error) {
 	domains := make([]battles.SeasonPeriod, len(schemas), len(schemas))
 	for i, s := range schemas {
-		domains[i] = s.ConvertToDomain()
+		d, err := conv.ToDomainSeasonPeriod(s)
+		if err != nil {
+			return nil, err
+		}
+		domains[i] = *d
 	}
-	return domains
+	return domains, nil
 }

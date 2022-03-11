@@ -33,3 +33,11 @@ func NewPartyBattleResult(id identifier.PartyBattleResultId, maxRate int, season
 func (p PartyBattleResult) Id() identifier.PartyBattleResultId {
 	return p.id
 }
+
+func (p PartyBattleResult) getWinCount() int {
+	return p.winCount
+}
+
+func (p PartyBattleResult) getLoseCount() int {
+	return p.loseCount
+}

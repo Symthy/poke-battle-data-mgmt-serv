@@ -31,6 +31,35 @@ func NewPartyInput(id uint, name, battleFormat string, isPrivate bool, userId ui
 	}
 }
 
+func NewPartyBuilder() PartyInput {
+	return PartyInput{}
+}
+
+func (i PartyInput) Id(id uint) {
+	i.id = id
+}
+func (i PartyInput) Name(name string) {
+	i.name = name
+}
+func (i PartyInput) BattleFormat(battleFormat string) {
+	i.battleFormat = battleFormat
+}
+func (i PartyInput) SetIsPrivate(isPrivate bool) {
+	i.isPrivate = isPrivate
+}
+func (i PartyInput) UserId(userId uint) {
+	i.userId = userId
+}
+func (i PartyInput) PartyResultIds(ids []uint) {
+	i.partyResultIds = ids
+}
+func (i PartyInput) PartyTagIds(ids []uint) {
+	i.partyTagIds = ids
+}
+func (i PartyInput) TrainedPokemonIds(ids []uint) {
+	i.trainedPokemonIds = ids
+}
+
 func (i PartyInput) BuildDomain() (*parties.Party, error) {
 	id, err := identifier.NewPartyId(i.id)
 	if err != nil {

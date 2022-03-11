@@ -12,8 +12,12 @@ type SeasonPeriod struct {
 }
 
 func NewSeasonPeriod(generation int, series int, season int, startDateTime time.Time,
-	endDateTime time.Time) SeasonPeriod {
-	return SeasonPeriod{Season{generation, series, season}, startDateTime, endDateTime}
+	endDateTime time.Time) (*SeasonPeriod, error) {
+	s, err := NewSeason(generation, series, season)
+	if err != nil {
+		return nil, err
+	}
+	return &SeasonPeriod{*s, startDateTime, endDateTime}, nil
 }
 
 // Todo: temporary. change

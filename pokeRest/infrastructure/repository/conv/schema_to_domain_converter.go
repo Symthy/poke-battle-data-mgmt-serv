@@ -170,6 +170,15 @@ func toBattleOpponentPartyInput(schema schema.BattleOpponentParty) factory.Battl
 	return input
 }
 
+func ToDomainSeasonPeriod(schema schema.BattleSeason) (*battles.SeasonPeriod, error) {
+	return battles.NewSeasonPeriod(schema.Generation, schema.Series, schema.Season,
+		schema.StartDateTime, schema.EndDateTime)
+}
+
+func ToDomainSeason(schema schema.BattleSeason) (*battles.Season, error) {
+	return battles.NewSeason(schema.Generation, schema.Series, schema.Season)
+}
+
 func ToDomainUser(schema schema.User) (*users.User, error) {
 	input := factory.NewUserInput(schema.ID, schema.Name, schema.Role.String())
 	return input.BuildDomain()
