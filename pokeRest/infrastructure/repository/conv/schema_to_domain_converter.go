@@ -87,8 +87,9 @@ func ToDomainTrainedPokemonAdjustment(schema schema.TrainedPokemonAdjustment) (*
 }
 
 func ToDomainTrainedPokemonAttackTarget(schema schema.TrainedPokemonAttackTarget) (*trainings.TrainedPokemonAttackTarget, error) {
-	input := factory.NewTrainedAttackTargetInput(schema.ID, schema.TrainedPokemonId, uint(schema.MoveId),
-		uint(schema.TargetPokemonId), schema.TargetPokemonNature.String(), schema.TargetPokemonEffortValueH,
+	input := factory.NewTrainedAttackTargetInput(schema.ID, schema.TrainedPokemonId,
+		uint(schema.MoveId), uint(schema.TargetPokemonId), schema.TargetPokemonNature.String(),
+		uint(schema.TargetPokemonAbilityId), schema.TargetPokemonEffortValueH,
 		schema.TargetPokemonEffortValueB, schema.TargetPokemonEffortValueD)
 	return input.BuildDomain()
 }
@@ -96,7 +97,8 @@ func ToDomainTrainedPokemonAttackTarget(schema schema.TrainedPokemonAttackTarget
 func ToDomainTrainedPokemonDefenceTarget(schema schema.TrainedPokemonDefenceTarget) (*trainings.TrainedPokemonDefenceTarget, error) {
 	input := factory.NewTrainedDefenceTargetInput(schema.ID, schema.TrainedPokemonId,
 		uint(schema.MoveId), uint(schema.TargetPokemonId), schema.TargetPokemonNature.String(),
-		schema.TargetPokemonEffortValueA, schema.TargetPokemonEffortValueC)
+		uint(schema.TargetPokemonAbilityId), schema.TargetPokemonEffortValueA,
+		schema.TargetPokemonEffortValueC)
 	return input.BuildDomain()
 }
 

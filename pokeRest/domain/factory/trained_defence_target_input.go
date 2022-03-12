@@ -10,6 +10,7 @@ type TrainedDefenceTargetInput struct {
 	trainedPokemonId          uint
 	moveId                    uint
 	targetPokemonId           uint
+	targetPokemonAbilityId    uint
 	targetPokemonNature       string
 	targetPokemonEffortValueA int
 	targetPokemonEffortValueC int
@@ -17,11 +18,17 @@ type TrainedDefenceTargetInput struct {
 
 func NewTrainedDefenceTargetInput(
 	id, trainedPokemonId, moveId, targetPokemonId uint, targetPokemonNature string,
-	targetPokemonEffortValueA, trainedPokemonEffortValueC int,
+	targetPokemonAbilityId uint, targetPokemonEffortValueA, trainedPokemonEffortValueC int,
 ) TrainedDefenceTargetInput {
 	return TrainedDefenceTargetInput{
-		id, trainedPokemonId, moveId, targetPokemonId, targetPokemonNature,
-		targetPokemonEffortValueA, trainedPokemonEffortValueC,
+		id:                        id,
+		trainedPokemonId:          trainedPokemonId,
+		moveId:                    moveId,
+		targetPokemonId:           targetPokemonId,
+		targetPokemonNature:       targetPokemonNature,
+		targetPokemonAbilityId:    targetPokemonAbilityId,
+		targetPokemonEffortValueA: targetPokemonEffortValueA,
+		targetPokemonEffortValueC: trainedPokemonEffortValueC,
 	}
 }
 

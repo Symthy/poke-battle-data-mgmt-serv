@@ -19,10 +19,6 @@ type Move struct {
 	Pokemon []*Pokemon `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	// 1:M -> TrainedPokemon
 	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	// 1:M -> TrainedPokemonAttackTarget
-	TrainedPokemonAttackTarget TrainedPokemonAttackTarget `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	// 1:M -> TrainedPokemonDeffenceTarget
-	TrainedPokemonDeffenceTarget TrainedPokemonDefenceTarget `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (Move) TableName() string {
