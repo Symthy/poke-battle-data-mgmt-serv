@@ -218,7 +218,35 @@ func (h *PokeRestHandler) DeletePartiesTagsId(ctx echo.Context, id int) error {
 	return nil
 }
 
-// Todo: add Battle Record API
+// GET battle record of Party
+// (GET /battles/parties/{partyId})
+func (h *PokeRestHandler) GetBattlesPartyId(ctx echo.Context, partyId int) error {
+	return nil
+}
+
+// GET battle record of User
+// (GET /battles/users/{userId})
+func (h *PokeRestHandler) GetBattlesUserId(ctx echo.Context, userId int) error {
+	return nil
+}
+
+// PUT battle record
+// (PUT /battles)
+func (h *PokeRestHandler) PutBattles(ctx echo.Context) error {
+	return nil
+}
+
+// POST battle record
+// (POST /battles/{id})
+func (h *PokeRestHandler) PostBattles(ctx echo.Context, id int) error {
+	return nil
+}
+
+// DELETE battle record
+// (DELETE /battles/{id})
+func (h *PokeRestHandler) DeleteBattles(ctx echo.Context, id int) error {
+	return h.battleRecordController.DeleteBattleRecord(ctx, uint(id))
+}
 
 // GET trained pokemons
 // (GET /trainedpokemons)
@@ -309,9 +337,15 @@ func (h *PokeRestHandler) DeleteTrainedPokemonsIdDeffencesId(ctx echo.Context, t
 	return nil
 }
 
-// damage calculation
-// (POST /damages)
-func (h *PokeRestHandler) PostDamages(ctx echo.Context) error {
+// damage calculation (multi)
+// (POST /damages/multi)
+func (h *PokeRestHandler) PostDamagesMulti(ctx echo.Context) error {
+	return nil
+}
+
+// damage calculation (single)
+// (POST /damages/single)
+func (h *PokeRestHandler) PostDamagesSingle(ctx echo.Context) error {
 	return nil
 }
 
@@ -329,18 +363,24 @@ func (h *PokeRestHandler) PostSignup(ctx echo.Context) error {
 
 // Your GET endpoint
 // (GET /users/{id})
-func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id string) error {
-	return h.userController.GetUserById(ctx, id)
+func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id int) error {
+	return h.userController.GetUserById(ctx, uint(id))
 }
 
 // GET user parties
 // (GET /users/{id}/parties)
-func (h *PokeRestHandler) GetUsersIdParties(ctx echo.Context, id string, params server.GetUsersIdPartiesParams) error {
+func (h *PokeRestHandler) GetUsersIdParties(ctx echo.Context, id int, params server.GetUsersIdPartiesParams) error {
+	return nil
+}
+
+// GET user battle records
+// (GET /users/{id}/battles)
+func (h *PokeRestHandler) GetUsersIdBattles(ctx echo.Context, id int, params server.GetUsersIdBattlesParams) error {
 	return nil
 }
 
 // GET user trained pokemons
 // (GET /users/{id}/trainedpokemons)
-func (h *PokeRestHandler) GetUsersIdTrainedPokemons(ctx echo.Context, id string, params server.GetUsersIdTrainedPokemonsParams) error {
+func (h *PokeRestHandler) GetUsersIdTrainedPokemons(ctx echo.Context, id int, params server.GetUsersIdTrainedPokemonsParams) error {
 	return nil
 }

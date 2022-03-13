@@ -678,11 +678,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HeldItem'
       operationId: get-held-items-id
       parameters: []
     parameters:
@@ -763,6 +758,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       description: 育成済み個体作成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateTrainedPokemon'
   '/trainedpokemons/{id}':
     parameters:
       - schema:
@@ -775,6 +775,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonDetail'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -809,6 +813,11 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       description: 育成済み個体更新
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokemon'
     delete:
       summary: DELETE trained pokemon
       operationId: delete-trained-pokemons-id
@@ -840,6 +849,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonAttacks'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -867,6 +880,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateTrainedPokeAttackTarget'
   '/trainedpokemons/{trainedPokemonId}/attacks/{attackId}':
     parameters:
       - schema:
@@ -918,6 +936,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokeAttackTarget'
     delete:
       summary: DELETE trained pokemon attack adjustment
       operationId: delete-trained-pokemons-id-attacks-Id
@@ -982,6 +1005,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateTrainedPokeDefenceTarget'
   '/trainedpokemons/{trainedPokemonId}/deffences/{deffenceId}':
     parameters:
       - schema:
@@ -1000,7 +1028,19 @@ paths:
       summary: GET trained pokemon deffence adjustment
       tags:
         - User Transaction Data
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id-deffences-id
       requestBody:
         content:
@@ -1023,6 +1063,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenceTarget'
     delete:
       summary: DELETE trained pokemon deffence adjustment
       operationId: delete-trained-pokemons-id-deffences-id
@@ -1044,13 +1089,24 @@ paths:
       summary: GET Parties
       tags:
         - User Transaction Data
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parties'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
       operationId: get-parties
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Parties'
       parameters:
         - schema:
             type: string
@@ -1062,6 +1118,11 @@ paths:
           in: query
           name: next
           description: next id
+        - schema:
+            type: string
+          in: query
+          name: tag
+          description: タグ
     parameters: []
     put:
       summary: PUT Parties
@@ -1079,6 +1140,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateParty'
   '/parties/{id}':
     parameters:
       - schema:
@@ -1124,6 +1190,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateParty'
     delete:
       summary: DELETE party
       operationId: delete-parties-id
@@ -1140,105 +1211,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-  '/users/{id}':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-    get:
-      summary: GET User
-      tags:
-        - User Transaction Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-users-id
-  '/users/{id}/trainedpokemons':
-    get:
-      summary: GET user trained pokemons
-      tags:
-        - User Transaction Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainedPokemons'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-users-id-trained-pokemons
-      parameters:
-        - schema:
-            type: integer
-          in: query
-          name: next
-          description: next id
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-  '/users/{id}/parties':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-    get:
-      summary: GET user parties
-      tags:
-        - User Transaction Data
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Parties'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      operationId: get-users-id-parties
-      parameters:
-        - schema:
-            type: integer
-          in: query
-          name: next
-          description: next id
   /parties/tags:
     get:
       summary: GET party tags
@@ -1296,6 +1268,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartyTag'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1306,13 +1282,290 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-  /damages:
-    post:
-      summary: damage calculation
-      operationId: post-damages
+  /battles:
+    parameters: []
+    put:
+      summary: PUT battle record
+      operationId: put-battles
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateBattleRecord'
+            examples: {}
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+  '/battles/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    post:
+      summary: POST battle record
+      operationId: post-battles
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateBattleRecord'
+    delete:
+      summary: DELETE battle record
+      operationId: delete-battles
+      responses:
+        '200':
+          description: OK
+  '/battles/parties/{partyId}':
+    parameters:
+      - schema:
+          type: integer
+        name: partyId
+        in: path
+        required: true
+    get:
+      summary: GET battle record of Party
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BattleRecords'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-battles-partyId
+  '/battles/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: GET battle record of User
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BattleRecords'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-battles-userId
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: GET User
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id
+  '/users/{id}/trainedpokemons':
+    get:
+      summary: GET user trained pokemons
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemons'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id-trained-pokemons
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+  '/users/{id}/parties':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: GET user parties
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parties'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id-parties
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
+  '/users/{id}/battles':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: GET user battle records
+      tags:
+        - User Transaction Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BattleRecords'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-users-id-battles
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: next
+          description: next id
+  /damages/single:
+    post:
+      summary: damage calculation (single)
+      operationId: post-damages-single
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DamageResult'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCalclateSingleDamage'
+    parameters: []
+  /damages/multi:
+    post:
+      summary: damage calculation (multi)
+      operationId: post-damages-multi
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DamageResults'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCalclateMultiDamages'
+    parameters: []
   /signin:
     post:
       summary: SignIn
@@ -1805,13 +2058,13 @@ components:
       description: trained pokemon summary
       properties:
         id:
-          type: number
+          type: integer
         pokemonNo:
-          type: number
+          type: integer
         FormNo:
-          type: number
+          type: integer
         PokemonName:
-          type: number
+          type: integer
         nickname:
           type: string
         gender:
@@ -1823,17 +2076,17 @@ components:
         heldItem:
           type: string
         effortValueH:
-          type: number
+          type: integer
         effortValueA:
-          type: number
+          type: integer
         effortValueB:
-          type: number
+          type: integer
         effortValueC:
-          type: number
+          type: integer
         effortValueD:
-          type: number
+          type: integer
         effortValueS:
-          type: number
+          type: integer
         isPrivate:
           type: boolean
         moveName1:
@@ -1870,11 +2123,11 @@ components:
       description: trained pokemon numbers
       properties:
         id:
-          type: number
+          type: integer
         pokemonNo:
-          type: number
+          type: integer
         formNo:
-          type: number
+          type: integer
       required:
         - id
     TrainedPokemonDetail:
@@ -1883,7 +2136,7 @@ components:
       description: trained pokemon detail
       properties:
         id:
-          type: number
+          type: integer
         pokemon:
           $ref: '#/components/schemas/Pokemon'
         nickname:
@@ -1897,17 +2150,17 @@ components:
         heldItem:
           $ref: '#/components/schemas/HeldItem'
         effortValueH:
-          type: number
+          type: integer
         effortValueA:
-          type: number
+          type: integer
         effortValueB:
-          type: number
+          type: integer
         effortValueC:
-          type: number
+          type: integer
         effortValueD:
-          type: number
+          type: integer
         effortValueS:
-          type: number
+          type: integer
         move1:
           $ref: '#/components/schemas/Move'
         move2:
@@ -1927,7 +2180,7 @@ components:
         isPrivate:
           type: boolean
         createdUserId:
-          type: number
+          type: integer
       required:
         - id
         - pokemon
@@ -2007,9 +2260,9 @@ components:
             nature:
               type: string
             effortValueA:
-              type: number
+              type: integer
             effortValueC:
-              type: number
+              type: integer
       required:
         - move
         - opponentPokemon
@@ -2024,9 +2277,10 @@ components:
     Party:
       title: Party
       type: object
+      description: party summary
       properties:
         id:
-          type: number
+          type: integer
         name:
           type: string
         battleFormat:
@@ -2034,22 +2288,63 @@ components:
         partyTags:
           type: array
           items:
-            $ref: '#/components/schemas/PartyTag'
-        members:
+            type: string
+        memberPokemonIds:
           type: array
           items:
-            $ref: '#/components/schemas/TrainedPokemonNo'
+            type: integer
         createdUserId:
-          type: number
-        createdUserDisplayName:
+          type: integer
+        createdUserName:
           type: string
-      description: ''
+    Parties:
+      title: Parties
+      type: object
+      description: パーティ一覧
+      properties:
+        parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Party'
+        count:
+          type: integer
+        hasNext:
+          type: boolean
+        next:
+          type: integer
+      required:
+        - parties
+        - count
+        - hasNext
+    PartyDetail:
+      title: Party Detail
+      type: object
+      description: party detail
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        battleFormat:
+          type: string
+        partyTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartyTags'
+        memberPokemonIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainedPokemonDetail'
+        createdUserId:
+          type: integer
+        createdUserName:
+          type: string
     PartyTag:
       title: PartyTag
       type: object
       properties:
         id:
-          type: number
+          type: integer
         name:
           type: string
         isGeneration:
@@ -2066,34 +2361,552 @@ components:
           items:
             $ref: '#/components/schemas/PartyTag'
         count:
-          type: number
+          type: integer
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
       required:
         - partytags
         - count
         - hasNext
-    Parties:
-      title: Parties
+    BattleRecord:
+      title: BattleRecord
       type: object
-      description: パーティ一覧
       properties:
-        parties:
+        id:
+          type: integer
+        partyId:
+          type: integer
+        battleSeason:
+          $ref: '#/components/schemas/BattleSeason'
+        battleResult:
+          type: string
+        opponentParty:
+          $ref: '#/components/schemas/BattleOpponentParty'
+        selfElectionPokemonIds:
           type: array
           items:
-            $ref: '#/components/schemas/Party'
+            type: integer
+        opponentElectionPokemonIds:
+          type: array
+          items:
+            type: integer
+    BattleRecords:
+      title: PartyTags
+      type: object
+      description: ''
+      properties:
+        partytags:
+          type: array
+          items:
+            $ref: '#/components/schemas/BattleRecord'
         count:
-          type: number
+          type: integer
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
       required:
-        - parties
+        - partytags
         - count
         - hasNext
+    BattleSeason:
+      title: SeasonDetail
+      type: object
+      properties:
+        generation:
+          type: integer
+        series:
+          type: integer
+        season:
+          type: integer
+    BattleOpponentParty:
+      title: BattleOpponentParty
+      type: object
+      properties:
+        id:
+          type: integer
+        pokemonId1:
+          type: integer
+        pokemonId2:
+          type: integer
+        pokemonId3:
+          type: integer
+        pokemonId4:
+          type: integer
+        pokemonId5:
+          type: integer
+        pokemonId6:
+          type: integer
+    RequestCreateBattleRecord:
+      description: ''
+      type: object
+      x-examples: {}
+      properties:
+        partyId:
+          type: integer
+        battleSeason:
+          $ref: '#/components/schemas/BattleSeason'
+        result:
+          type: string
+          minLength: 1
+        battleFormat:
+          type: string
+          minLength: 1
+        opponentParty:
+          type: object
+          required:
+            - pokemonIds
+            - electionPokemonIds
+          properties:
+            pokemonIds:
+              type: array
+              items:
+                type: integer
+            electionPokemonIds:
+              type: array
+              items:
+                type: integer
+      required:
+        - partyId
+        - result
+        - battleFormat
+        - opponentParty
+    RequestUpdateBattleRecord:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 0
+          partyId: 0
+          season:
+            generation: 0
+            series: 0
+            season: 0
+          result: string
+          battleFormat: string
+          opponentParty:
+            pokemonIds:
+              - 0
+            electionPokemonIds:
+              - 0
+      properties:
+        id:
+          type: integer
+        partyId:
+          type: integer
+        battleSeason:
+          $ref: '#/components/schemas/BattleSeason'
+        result:
+          type: string
+          minLength: 1
+        battleFormat:
+          type: string
+          minLength: 1
+        opponentParty:
+          type: object
+          required:
+            - pokemonIds
+            - electionPokemonIds
+          properties:
+            pokemonIds:
+              type: array
+              items:
+                type: integer
+            electionPokemonIds:
+              type: array
+              items:
+                type: integer
+      required:
+        - id
+        - partyId
+        - result
+        - battleFormat
+        - opponentParty
+    RequestCreateParty:
+      title: RequestCreateParty
+      type: object
+      x-examples: {}
+      properties:
+        name:
+          type: string
+        battleFormat:
+          type: string
+        isPrivate:
+          type: boolean
+        partyTags:
+          type: array
+          items:
+            type: string
+        trainedPokemons:
+          type: array
+          items:
+            type: integer
+    RequestUpdateParty:
+      description: ''
+      type: object
+      x-examples: {}
+      title: ''
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+        battleFormat:
+          type: string
+          minLength: 1
+        isPrivate:
+          type: boolean
+        partyTags:
+          type: array
+          items:
+            type: string
+        trainedPokemons:
+          type: array
+          items:
+            type: integer
+      required:
+        - id
+    RequestUpdateTrainedPokemon:
+      title: RequestCreateTrainedPokemon
+      type: object
+      x-examples: {}
+      properties:
+        id:
+          type: integer
+        gender:
+          type: string
+        nickname:
+          type: string
+        description:
+          type: string
+        isPrivate:
+          type: boolean
+        adjustment:
+          type: object
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            abilityId:
+              type: integer
+            heldItemId:
+              type: integer
+            effortValueH:
+              type: integer
+            effortValueA:
+              type: integer
+            effortValueB:
+              type: integer
+            effortValueC:
+              type: integer
+            effortValueD:
+              type: integer
+            effortValueS:
+              type: integer
+            moveIds:
+              type: array
+              items:
+                type: integer
+          required:
+            - pokemonId
+      required:
+        - id
+    RequestCreateTrainedPokemon:
+      title: RequestCreateTrainedPokemon
+      type: object
+      x-examples: {}
+      properties:
+        gender:
+          type: string
+        nickname:
+          type: string
+        description:
+          type: string
+        isPrivate:
+          type: boolean
+        adjustment:
+          type: object
+          required:
+            - pokemonId
+            - nature
+            - abilityId
+            - moveIds
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            abilityId:
+              type: integer
+            heldItemId:
+              type: integer
+            effortValueH:
+              type: integer
+            effortValueA:
+              type: integer
+            effortValueB:
+              type: integer
+            effortValueC:
+              type: integer
+            effortValueD:
+              type: integer
+            effortValueS:
+              type: integer
+            moveIds:
+              type: array
+              items:
+                type: integer
+      required:
+        - isPrivate
+        - adjustment
+    RequestCreateTrainedPokeAttackTarget:
+      title: RequestCreateTrainedPokeAttackTarget
+      type: object
+      description: ''
+      properties:
+        trainedPokemonId:
+          type: integer
+        moveId:
+          type: integer
+        target:
+          type: object
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            effortValueH:
+              type: integer
+            effortValueB:
+              type: integer
+            effortValueD:
+              type: integer
+      required:
+        - trainedPokemonId
+    RequestUpdateTrainedPokeAttackTarget:
+      title: RequestUpdateTrainedPokeAttackTarget
+      type: object
+      description: ''
+      properties:
+        id:
+          type: number
+        trainedPokemonId:
+          type: integer
+        moveId:
+          type: integer
+        target:
+          type: object
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            effortValueH:
+              type: integer
+            effortValueB:
+              type: integer
+            effortValueD:
+              type: integer
+      required:
+        - id
+        - trainedPokemonId
+    RequestCreateTrainedPokeDefenceTarget:
+      title: RequestCreateTrainedPokeDefenceTarget
+      type: object
+      description: ''
+      properties:
+        trainedPokemonId:
+          type: integer
+        moveId:
+          type: integer
+        target:
+          type: object
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            effortValueA:
+              type: integer
+            effortValueC:
+              type: integer
+      required:
+        - trainedPokemonId
+        - moveId
+    RequestUpdateTrainedPokeDefenceTarget:
+      title: RequestUpdateTrainedPokeDefenceTarget
+      type: object
+      properties:
+        id:
+          type: number
+        trainedPokemonId:
+          type: integer
+        moveId:
+          type: integer
+        target:
+          type: object
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            effortValueA:
+              type: integer
+            effortValueC:
+              type: integer
+      required:
+        - id
+    RequestCalclateMultiDamages:
+      description: ''
+      type: object
+      x-examples: {}
+      title: ''
+      properties:
+        self:
+          type: object
+          required:
+            - pokemonId
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            abilityId:
+              type: integer
+            effortValueH:
+              type: integer
+            effortValueA:
+              type: integer
+            effortValueB:
+              type: integer
+            effortValueC:
+              type: number
+            effortValueD:
+              type: number
+        moveId:
+          type: string
+        targets:
+          type: array
+          items:
+            type: object
+            properties:
+              calcIndex:
+                type: number
+              pokemonId:
+                type: number
+              nature:
+                type: string
+              abilityId:
+                type: number
+              effortValueH:
+                type: number
+              effortValueA:
+                type: number
+              effortValueB:
+                type: number
+              effortValueC:
+                type: number
+              effortValueD:
+                type: number
+            required:
+              - pokemonId
+        battleFormat:
+          type: string
+        side:
+          type: string
+      required:
+        - self
+        - moveId
+        - targets
+        - side
+    RequestCalclateSingleDamage:
+      description: ''
+      type: object
+      x-examples: {}
+      title: ''
+      properties:
+        self:
+          type: object
+          required:
+            - pokemonId
+            - effortValueA
+            - effortValueC
+          properties:
+            pokemonId:
+              type: integer
+            nature:
+              type: string
+            abilityId:
+              type: integer
+            effortValueH:
+              type: integer
+            effortValueA:
+              type: integer
+            effortValueB:
+              type: integer
+            effortValueC:
+              type: number
+            effortValueD:
+              type: number
+        moveId:
+          type: string
+        target:
+          type: object
+          properties:
+            pokemonId:
+              type: number
+            nature:
+              type: string
+            abilityId:
+              type: number
+            effortValueH:
+              type: number
+            effortValueA:
+              type: number
+            effortValueB:
+              type: number
+            effortValueC:
+              type: number
+            effortValueD:
+              type: number
+        battleFormat:
+          type: string
+        side:
+          type: string
+      required:
+        - self
+        - moveId
+        - target
+        - side
+    DamageResults:
+      title: Damages
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              calcIndex:
+                type: integer
+              damage:
+                type: integer
+        count:
+          type: integer
+        battleFormat:
+          type: string
+    DamageResult:
+      title: Damage
+      type: object
+      properties:
+        damage:
+          type: integer
+        battleFormat:
+          type: string
   responses:
     '400':
       description: Bad Request
@@ -2125,5 +2938,72 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  requestBodies:
+    CreateBattleRecord:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCreateBattleRecord'
+          examples: {}
+        application/xml:
+          schema:
+            type: object
+            properties: {}
+      description: ''
+    UpdateBattleRecord:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestUpdateBattleRecord'
+    CreateParty:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCreateParty'
+    UpdateParty:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestUpdateParty'
+    CreateTrainedPokemon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCreateTrainedPokemon'
+    UpdateTrainedPokemon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestUpdateTrainedPokemon'
+    CreateTrainedPokeAttackTarget:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCreateTrainedPokeAttackTarget'
+    UpdateTrainedPokeAttackTarget:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestUpdateTrainedPokeAttackTarget'
+    CreateTrainedPokeDefenceTarget:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCreateTrainedPokeDefenceTarget'
+    UpdateTrainedPokeDefenceTarget:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenceTarget'
+    CalculateMultiDamages:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCalclateMultiDamages'
+    CalculateSingleDamage:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestCalclateSingleDamage'
 tags:
   - name: Pokemon Base Data
