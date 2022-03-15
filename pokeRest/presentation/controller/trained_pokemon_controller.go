@@ -39,8 +39,12 @@ func (c TrainedPokemonController) SaveTrainedPokemon(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
+	request := new(server.RequestCreateTrainedPokemon)
+	if err = ctx.Bind(request); err != nil {
+		return err
+	}
 	// Todo: accept value
-	cmd := t_command.NewCreateTrainedPokemonCommand("", "", "", false, userId, factory.NewTrainedPokemonAdjustmentBuilder())
+	cmd := t_command.NewCreateTrainedPokemonCommand(request, userId)
 	domain, error := c.writeServ.SaveTrainedPokemon(cmd)
 	return c.responseResolver.Resolve(ctx, domain, error)
 }

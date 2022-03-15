@@ -741,12 +741,16 @@ paths:
           in: query
           name: next
           description: next id
-    put:
-      summary: PUT trained pokemon
-      operationId: put-trained-pokemons
+    post:
+      summary: POST trained pokemon
+      operationId: post-trainedpokemons
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemon'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -757,7 +761,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-      description: 育成済み個体作成
       requestBody:
         content:
           application/json:
@@ -792,32 +795,6 @@ paths:
       operationId: get-trained-pokemons-id
       tags:
         - User Transaction Data
-    post:
-      summary: POST trained pokemon
-      operationId: post-trained-pokemons-id
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Party'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      description: 育成済み個体更新
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RequestUpdateTrainedPokemon'
     delete:
       summary: DELETE trained pokemon
       operationId: delete-trained-pokemons-id
@@ -835,6 +812,38 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       description: ''
+    put:
+      summary: PUT trained pokemon
+      operationId: put-trainedpokemons-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemon'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokemon'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokemon'
   '/trainedpokemons/{id}/attacks':
     parameters:
       - schema:
@@ -864,12 +873,16 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id-attacks
-    put:
-      summary: PUT trained pokemon attack adjustments
-      operationId: put-trained-pokemons-id-attacks
+    post:
+      summary: POST trained pokemon attack adjustment
+      operationId: post-trainedpokemons-id-attacks
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonAttack'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -920,27 +933,6 @@ paths:
         '500':
           description: Internal Server Error
       operationId: get-trained-pokemons-id-attacks-id
-    post:
-      summary: POST trained pokemon attack adjustment
-      operationId: post-trained-pokemons-id-attacks-id
-      responses:
-        '200':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RequestUpdateTrainedPokeAttackTarget'
     delete:
       summary: DELETE trained pokemon attack adjustment
       operationId: delete-trained-pokemons-id-attacks-Id
@@ -959,6 +951,31 @@ paths:
           $ref: '#/components/responses/500'
       tags:
         - User Transaction Data
+    put:
+      summary: PUT trained pokemon attack adjustment
+      operationId: put-trainedpokemons-trainedPokemonId-attacks-attackId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonAttack'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokeAttackTarget'
   '/trainedpokemons/{id}/deffences':
     parameters:
       - schema:
@@ -968,7 +985,7 @@ paths:
         required: true
         description: trained pokemon id
     get:
-      summary: ''
+      summary: GET trained pokemon deffence adjustments
       tags:
         - User Transaction Data
       responses:
@@ -978,6 +995,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TrainedPokemonDeffences'
+        '201':
+          description: Created
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -989,12 +1008,16 @@ paths:
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id-deffences
-    put:
-      summary: PUT trained pokemon deffence adjustments
-      operationId: put-trained-pokemons-id-deffences
+    post:
+      summary: POST trained pokemon deffence adjustment
+      operationId: post-trainedpokemons-id-deffences
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonDeffence'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1047,27 +1070,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TrainedPokemonDeffence'
-    post:
-      summary: POST trained pokemon deffence adjustment
-      operationId: post-trained-pokemons-id-deffences-id
-      responses:
-        '200':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenceTarget'
     delete:
       summary: DELETE trained pokemon deffence adjustment
       operationId: delete-trained-pokemons-id-deffences-id
@@ -1084,6 +1086,31 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+    put:
+      summary: PUT trained pokemon deffence adjustment
+      operationId: put-trainedpokemons-trainedPokemonId-deffences-deffenceId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainedPokemonDeffence'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenceTarget'
   /parties:
     get:
       summary: GET Parties
@@ -1124,12 +1151,16 @@ paths:
           name: tag
           description: タグ
     parameters: []
-    put:
-      summary: PUT Parties
-      operationId: put-parties
+    post:
+      summary: POST party
+      operationId: post-parties
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1164,23 +1195,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Party'
         '400':
-          description: Bad Request
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-      operationId: get-parties-id
-    post:
-      summary: POST party
-      operationId: post-parties-id
-      responses:
-        '200':
-          description: OK
-        '400':
           $ref: '#/components/responses/400'
         '401':
           $ref: '#/components/responses/401'
@@ -1190,6 +1204,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      operationId: get-parties-id
       requestBody:
         content:
           application/json:
@@ -1211,6 +1226,31 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+    put:
+      summary: PUT party
+      operationId: put-parties-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateParty'
   /parties/tags:
     get:
       summary: GET party tags
@@ -1239,12 +1279,16 @@ paths:
           in: query
           name: next
           description: next id
-    put:
-      summary: PUT party tags
-      operationId: put-parties-tags
+    post:
+      summary: POST party tag
+      operationId: post-parties-tags
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartyTag'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1255,6 +1299,11 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartyTag'
   '/parties/tags/{id}':
     parameters:
       - schema:
@@ -1284,9 +1333,43 @@ paths:
           $ref: '#/components/responses/500'
   /battles:
     parameters: []
+    post:
+      summary: POST Battle record
+      operationId: post-battles
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateBattleRecord'
+  '/battles/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    delete:
+      summary: DELETE battle record
+      operationId: delete-battles
+      responses:
+        '200':
+          description: OK
     put:
-      summary: PUT battle record
-      operationId: put-battles
+      summary: PUT Battle record
+      operationId: put-battles-id
       responses:
         '200':
           description: OK
@@ -1304,36 +1387,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestCreateBattleRecord'
-            examples: {}
-          application/xml:
-            schema:
-              type: object
-              properties: {}
-  '/battles/{id}':
-    parameters:
-      - schema:
-          type: integer
-        name: id
-        in: path
-        required: true
-    post:
-      summary: POST battle record
-      operationId: post-battles
-      responses:
-        '200':
-          description: OK
-      requestBody:
-        content:
-          application/json:
-            schema:
               $ref: '#/components/schemas/RequestUpdateBattleRecord'
-    delete:
-      summary: DELETE battle record
-      operationId: delete-battles
-      responses:
-        '200':
-          description: OK
   '/battles/parties/{partyId}':
     parameters:
       - schema:

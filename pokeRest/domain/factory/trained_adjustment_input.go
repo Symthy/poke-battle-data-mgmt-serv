@@ -50,6 +50,51 @@ func NewTrainedPokemonAdjustmentInput(
 func NewTrainedPokemonAdjustmentBuilder() TrainedPokemonAdjustmentInput {
 	return TrainedPokemonAdjustmentInput{}
 }
+func (i TrainedPokemonAdjustmentInput) Id(id uint) {
+	i.id = id
+}
+func (i TrainedPokemonAdjustmentInput) PokemonId(pokemonId uint) {
+	i.pokemonId = pokemonId
+}
+func (i TrainedPokemonAdjustmentInput) Nature(nature string) {
+	i.nature = nature
+}
+func (i TrainedPokemonAdjustmentInput) AbilityId(abilityId uint) {
+	i.abilityId = abilityId
+}
+func (i TrainedPokemonAdjustmentInput) HeldItemId(itemId uint) {
+	i.heldItemId = itemId
+}
+func (i TrainedPokemonAdjustmentInput) EffortValueH(value int) {
+	i.effortValueH = value
+}
+func (i TrainedPokemonAdjustmentInput) EffortValueA(value int) {
+	i.effortValueA = value
+}
+func (i TrainedPokemonAdjustmentInput) EffortValueB(value int) {
+	i.effortValueB = value
+}
+func (i TrainedPokemonAdjustmentInput) EffortValueC(value int) {
+	i.effortValueC = value
+}
+func (i TrainedPokemonAdjustmentInput) EffortValueD(value int) {
+	i.effortValueD = value
+}
+func (i TrainedPokemonAdjustmentInput) EffortValueS(value int) {
+	i.effortValueS = value
+}
+func (i TrainedPokemonAdjustmentInput) MoveIdFirst(moveId uint) {
+	i.moveId1 = moveId
+}
+func (i TrainedPokemonAdjustmentInput) MoveIdSecond(moveId uint) {
+	i.moveId2 = moveId
+}
+func (i TrainedPokemonAdjustmentInput) MoveIdThird(moveId uint) {
+	i.moveId3 = moveId
+}
+func (i TrainedPokemonAdjustmentInput) MoveIdFourth(moveId uint) {
+	i.moveId4 = moveId
+}
 
 func (i TrainedPokemonAdjustmentInput) BuildDomain() (*trainings.TrainedPokemonAdjustment, error) {
 	id, err := identifier.NewTrainedAdjustmentId(i.id)

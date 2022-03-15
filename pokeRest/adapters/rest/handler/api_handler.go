@@ -176,9 +176,9 @@ func (h *PokeRestHandler) GetParties(ctx echo.Context, params server.GetPartiesP
 	return nil
 }
 
-// PUT Parties
-// (PUT /parties)
-func (h *PokeRestHandler) PutParties(ctx echo.Context) error {
+// POST party
+// (POST /parties)
+func (h *PokeRestHandler) PostParties(ctx echo.Context) error {
 	return h.partyController.SaveParty(ctx)
 }
 
@@ -188,9 +188,9 @@ func (h *PokeRestHandler) GetPartiesId(ctx echo.Context, id int) error {
 	return nil
 }
 
-// POST party
-// (POST /parties/{id})
-func (h *PokeRestHandler) PostPartiesId(ctx echo.Context, id int) error {
+// PUT party
+// (PUT /parties/{id})
+func (h *PokeRestHandler) PutPartiesId(ctx echo.Context, id int) error {
 	return h.partyController.UpdateParty(ctx, id)
 }
 
@@ -206,9 +206,9 @@ func (h *PokeRestHandler) GetPartiesTags(ctx echo.Context, params server.GetPart
 	return nil
 }
 
-// PUT party tags
-// (PUT /parties/tags)
-func (h *PokeRestHandler) PutPartiesTags(ctx echo.Context) error {
+// POST party tag
+// (POST /parties/tags)
+func (h *PokeRestHandler) PostPartiesTags(ctx echo.Context) error {
 	return nil
 }
 
@@ -230,15 +230,15 @@ func (h *PokeRestHandler) GetBattlesUserId(ctx echo.Context, userId int) error {
 	return nil
 }
 
-// PUT battle record
-// (PUT /battles)
-func (h *PokeRestHandler) PutBattles(ctx echo.Context) error {
+// POST Battle record
+// (POST /battles)
+func (h *PokeRestHandler) PostBattles(ctx echo.Context) error {
 	return nil
 }
 
-// POST battle record
-// (POST /battles/{id})
-func (h *PokeRestHandler) PostBattles(ctx echo.Context, id int) error {
+// PUT Battle record
+// (PUT /battles/{id})
+func (h *PokeRestHandler) PutBattlesId(ctx echo.Context, id int) error {
 	return nil
 }
 
@@ -254,9 +254,9 @@ func (h *PokeRestHandler) GetTrainedPokemons(ctx echo.Context, params server.Get
 	return nil
 }
 
-// PUT trained pokemon
-// (PUT /trainedpokemons)
-func (h *PokeRestHandler) PutTrainedPokemons(ctx echo.Context) error {
+// POST trained pokemon
+// (POST /trainedpokemons)
+func (h *PokeRestHandler) PostTrainedpokemons(ctx echo.Context) error {
 	return h.trainedPokemonController.SaveTrainedPokemon(ctx)
 }
 
@@ -266,9 +266,9 @@ func (h *PokeRestHandler) GetTrainedPokemonsId(ctx echo.Context, id int) error {
 	return nil
 }
 
-// POST trained pokemon
-// (POST /trainedpokemons/{id})
-func (h *PokeRestHandler) PostTrainedPokemonsId(ctx echo.Context, id int) error {
+// PUT trained pokemon
+// (PUT /trainedpokemons/{id})
+func (h *PokeRestHandler) PutTrainedpokemonsId(ctx echo.Context, id int) error {
 	return h.trainedPokemonController.UpdateTrainedPokemon(ctx)
 }
 
@@ -284,9 +284,9 @@ func (h *PokeRestHandler) GetTrainedPokemonsIdAttacks(ctx echo.Context, id int) 
 	return nil
 }
 
-// PUT trained pokemon attack adjustments
-// (PUT /trainedpokemons/{id}/attacks)
-func (h *PokeRestHandler) PutTrainedPokemonsIdAttacks(ctx echo.Context, id int) error {
+// POST trained pokemon attack adjustment
+// (POST /trainedpokemons/{id}/attacks)
+func (h *PokeRestHandler) PostTrainedpokemonsIdAttacks(ctx echo.Context, id int) error {
 	return nil
 }
 
@@ -296,9 +296,9 @@ func (h *PokeRestHandler) GetTrainedPokemonsIdAttacksId(ctx echo.Context, traine
 	return nil
 }
 
-// POST trained pokemon attack adjustment
-// (POST /trainedpokemons/{trainedPokemonId}/attacks/{attackId})
-func (h *PokeRestHandler) PostTrainedPokemonsIdAttacksId(ctx echo.Context, trainedPokemonId int, attackId int) error {
+// PUT trained pokemon attack adjustment
+// (PUT /trainedpokemons/{trainedPokemonId}/attacks/{attackId})
+func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdAttacksAttackId(ctx echo.Context, trainedPokemonId int, attackId int) error {
 	return nil
 }
 
@@ -313,9 +313,9 @@ func (h *PokeRestHandler) GetTrainedPokemonsIdDeffences(ctx echo.Context, id int
 	return nil
 }
 
-// PUT trained pokemon deffence adjustments
-// (PUT /trainedpokemons/{id}/deffences)
-func (h *PokeRestHandler) PutTrainedPokemonsIdDeffences(ctx echo.Context, id int) error {
+// POST trained pokemon deffence adjustment
+// (POST /trainedpokemons/{id}/deffences)
+func (h *PokeRestHandler) PostTrainedpokemonsIdDeffences(ctx echo.Context, id int) error {
 	return nil
 }
 
@@ -325,9 +325,9 @@ func (h *PokeRestHandler) GetTrainedPokemonsIdDeffencesId(ctx echo.Context, trai
 	return nil
 }
 
-// POST trained pokemon deffence adjustment
-// (POST /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) PostTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId int, deffenceId int) error {
+// PUT trained pokemon deffence adjustment
+// (PUT /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
+func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdDeffencesDeffenceId(ctx echo.Context, trainedPokemonId int, deffenceId int) error {
 	return nil
 }
 
@@ -361,7 +361,7 @@ func (h *PokeRestHandler) PostSignup(ctx echo.Context) error {
 	return nil
 }
 
-// Your GET endpoint
+// GET user
 // (GET /users/{id})
 func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id int) error {
 	return h.userController.GetUserById(ctx, uint(id))
