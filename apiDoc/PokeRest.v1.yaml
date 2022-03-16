@@ -2735,10 +2735,16 @@ components:
               type: string
             effortValueH:
               type: integer
+              minimum: 0
+              maximum: 252
             effortValueB:
               type: integer
+              minimum: 0
+              maximum: 252
             effortValueD:
               type: integer
+              minimum: 0
+              maximum: 252
       required:
         - trainedPokemonId
     RequestUpdateTrainedPokeAttackTarget:
@@ -2761,10 +2767,16 @@ components:
               type: string
             effortValueH:
               type: integer
+              minimum: 0
+              maximum: 252
             effortValueB:
               type: integer
+              minimum: 0
+              maximum: 252
             effortValueD:
               type: integer
+              minimum: 0
+              maximum: 252
       required:
         - id
         - trainedPokemonId
@@ -2786,8 +2798,12 @@ components:
               type: string
             effortValueA:
               type: integer
+              minimum: 0
+              maximum: 252
             effortValueC:
               type: integer
+              minimum: 0
+              maximum: 252
       required:
         - trainedPokemonId
         - moveId
@@ -2810,10 +2826,41 @@ components:
               type: string
             effortValueA:
               type: integer
+              minimum: 0
+              maximum: 252
             effortValueC:
               type: integer
+              minimum: 0
+              maximum: 252
       required:
         - id
+    RequestCalclateSingleDamage:
+      description: ''
+      type: object
+      x-examples: {}
+      title: ''
+      properties:
+        self:
+          $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
+        moveId:
+          type: string
+        target:
+          $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
+        battleFormat:
+          type: string
+          enum:
+            - Single
+            - Double
+        side:
+          type: string
+          enum:
+            - Attack
+            - Defence
+      required:
+        - self
+        - target
+        - battleFormat
+        - side
     RequestCalclateMultiDamages:
       description: ''
       type: object
@@ -2821,26 +2868,7 @@ components:
       title: ''
       properties:
         self:
-          type: object
-          required:
-            - pokemonId
-          properties:
-            pokemonId:
-              type: integer
-            nature:
-              type: string
-            abilityId:
-              type: integer
-            effortValueH:
-              type: integer
-            effortValueA:
-              type: integer
-            effortValueB:
-              type: integer
-            effortValueC:
-              type: number
-            effortValueD:
-              type: number
+          $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         moveId:
           type: string
         targets:
@@ -2849,93 +2877,72 @@ components:
             type: object
             properties:
               calcIndex:
-                type: number
-              pokemonId:
-                type: number
-              nature:
-                type: string
-              abilityId:
-                type: number
-              effortValueH:
-                type: number
-              effortValueA:
-                type: number
-              effortValueB:
-                type: number
-              effortValueC:
-                type: number
-              effortValueD:
-                type: number
+                type: integer
+              target:
+                $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
             required:
-              - pokemonId
+              - target
         battleFormat:
           type: string
+          enum:
+            - Single
+            - Double
         side:
           type: string
+          enum:
+            - Attack
+            - Defence
       required:
         - self
         - moveId
         - targets
+        - battleFormat
         - side
-    RequestCalclateSingleDamage:
+    RequestDamagePokemonAdjustment:
       description: ''
       type: object
-      x-examples: {}
-      title: ''
+      x-examples:
+        example-1:
+          pokemonId: 0
+          nature: string
+          abilityId: 0
+          heldItemId: string
+          effortValueH: 0
+          effortValueA: 0
+          effortValueB: 0
+          effortValueC: 0
+          effortValueD: 0
       properties:
-        self:
-          type: object
-          required:
-            - pokemonId
-            - effortValueA
-            - effortValueC
-          properties:
-            pokemonId:
-              type: integer
-            nature:
-              type: string
-            abilityId:
-              type: integer
-            effortValueH:
-              type: integer
-            effortValueA:
-              type: integer
-            effortValueB:
-              type: integer
-            effortValueC:
-              type: number
-            effortValueD:
-              type: number
-        moveId:
+        pokemonId:
+          type: integer
+        nature:
           type: string
-        target:
-          type: object
-          properties:
-            pokemonId:
-              type: number
-            nature:
-              type: string
-            abilityId:
-              type: number
-            effortValueH:
-              type: number
-            effortValueA:
-              type: number
-            effortValueB:
-              type: number
-            effortValueC:
-              type: number
-            effortValueD:
-              type: number
-        battleFormat:
-          type: string
-        side:
-          type: string
+        abilityId:
+          type: integer
+        heldItemId:
+          type: integer
+        effortValueH:
+          type: integer
+          minimum: 0
+          maximum: 252
+        effortValueA:
+          type: integer
+          minimum: 0
+          maximum: 252
+        effortValueB:
+          type: integer
+          minimum: 0
+          maximum: 252
+        effortValueC:
+          type: integer
+          minimum: 0
+          maximum: 252
+        effortValueD:
+          type: integer
+          minimum: 0
+          maximum: 252
       required:
-        - self
-        - moveId
-        - target
-        - side
+        - pokemonId
     DamageResults:
       title: Damages
       type: object
@@ -2953,6 +2960,9 @@ components:
           type: integer
         battleFormat:
           type: string
+          enum:
+            - Single
+            - Double
     DamageResult:
       title: Damage
       type: object
