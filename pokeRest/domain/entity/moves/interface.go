@@ -13,5 +13,13 @@ type IMoveNotification interface {
 	SetAccuracyRate(float32) // 命中率
 	SetPP(int)
 	SetIsContained(bool)
-	SetIsCanGuard(bool)
+	SetCanGuard(bool)
+}
+
+type IMoveNotificationForDamageCalc interface {
+	SetMoveType(value.PokemonType)
+	SetMoveSpecies(value.MoveSpecies)
+	SetMovePower(int)
+	SetIsMoveContained(bool)
+	SetCanMoveGuard(bool)
 }

@@ -5,10 +5,10 @@ import (
 )
 
 type HeldItem struct {
-	ID              uint `gorm:"primaryKey;autoIncrement:true"`
-	Name            string
-	Description     string
-	CorrectionValue mixin.CorrectionValue `gorm:"embedded"`
+	ID            uint `gorm:"primaryKey;autoIncrement:true"`
+	Name          string
+	Description   string
+	BattleEffects *mixin.BattleEffects `gorm:"embedded"`
 
 	// relation
 	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> TrainedPokemon

@@ -7,14 +7,14 @@ import (
 )
 
 type HeldItemInput struct {
-	id               uint
-	name             string
-	description      string
-	correctionValues []value.CorrectionValue
+	id            uint
+	name          string
+	description   string
+	battleEffects value.BattleEffects
 }
 
-func NewHeldItemInput(id uint, name string, description string, correctionValues []value.CorrectionValue) HeldItemInput {
-	return HeldItemInput{id, name, description, correctionValues}
+func NewHeldItemInput(id uint, name string, description string, battleEffects value.BattleEffects) HeldItemInput {
+	return HeldItemInput{id, name, description, battleEffects}
 }
 
 func (i HeldItemInput) BuildDomain() (*items.HeldItem, error) {
@@ -22,7 +22,6 @@ func (i HeldItemInput) BuildDomain() (*items.HeldItem, error) {
 	if err != nil {
 		return nil, err
 	}
-	values := value.NewCorrectionValues(i.correctionValues)
-	domain := items.NewHeldItem(*id, i.name, i.description, values)
+	domain := items.NewHeldItem(*id, i.name, i.description, i.battleEffects)
 	return &domain, nil
 }

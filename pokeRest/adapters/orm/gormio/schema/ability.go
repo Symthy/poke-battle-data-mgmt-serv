@@ -5,10 +5,10 @@ import (
 )
 
 type Ability struct {
-	ID              uint   `gorm:"primaryKey;autoIncrement:true"`
-	Name            string `gorm:"unique"`
-	Description     string
-	CorrectionValue mixin.CorrectionValue `gorm:"embedded"`
+	ID            uint   `gorm:"primaryKey;autoIncrement:true"`
+	Name          string `gorm:"unique"`
+	Description   string
+	BattleEffects *mixin.BattleEffects `gorm:"embedded"`
 
 	// relation
 	Pokemon1       []Pokemon        `gorm:"foreignKey:AbilityId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> Pokemon

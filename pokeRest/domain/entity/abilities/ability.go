@@ -9,33 +9,34 @@ import (
 var _ entity.IDomain[identifier.AbilityId] = (*Ability)(nil)
 
 type Ability struct {
-	id               identifier.AbilityId
-	name             string
-	description      string
-	correctionValues value.CorrectionValues
-	// Todo
-	triggerCondition *interface{}
+	id            identifier.AbilityId
+	name          string
+	description   string
+	battleEffects value.BattleEffects
 }
 
 func NewAbility(
-	id identifier.AbilityId, name string, description string, correctionValues value.CorrectionValues,
+	id identifier.AbilityId, name string, description string, battleEffects value.BattleEffects,
 ) Ability {
 	return Ability{
-		id:               id,
-		name:             name,
-		description:      description,
-		correctionValues: correctionValues,
+		id:            id,
+		name:          name,
+		description:   description,
+		battleEffects: battleEffects,
 	}
 }
 
-// Todo: refactor Notification
 func (a Ability) Id() identifier.AbilityId {
 	return a.id
+}
+
+func (a Ability) NotifyBattleEffects(effects value.BattleEffects) {
+	effects.Merge(a.battleEffects)
 }
 
 func (a Ability) Notify(note IAbilityNotification) {
 	note.SetId(a.id)
 	note.SetName(a.name)
 	note.SetDescription(a.description)
-	note.SetCorrectionValues(a.correctionValues)
+	note.SetBattleEffects(a.battleEffects)
 }

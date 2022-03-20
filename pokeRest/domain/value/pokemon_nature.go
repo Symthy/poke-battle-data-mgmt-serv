@@ -12,6 +12,11 @@ func NewPokemonNature(natureNameEN string) PokemonNature {
 	return PokemonNatureAll()[NatureNameEN(natureNameEN)]
 }
 
+func (n PokemonNature) ApplyCorrection(actualValues PokemonActualValues) int {
+	// Todo
+	return 0
+}
+
 func PokemonNatureAll() map[NatureNameEN]PokemonNature {
 	return map[NatureNameEN]PokemonNature{
 		LonelyEN:  Lonely(),

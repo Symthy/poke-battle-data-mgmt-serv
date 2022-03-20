@@ -38,19 +38,19 @@ func ToDomainPokemon(schema schema.Pokemon) (*pokemons.Pokemon, error) {
 
 func ToDomainAbility(ability schema.Ability) (*abilities.Ability, error) {
 	input := factory.NewAbilityInput(ability.ID, ability.Name, ability.Description,
-		toCorrectionValues(ability.CorrectionValue))
+		toBattleEffects(ability.BattleEffects))
 	return input.BuildDomain()
 }
 
 func ToDomainMove(schema schema.Move) (*moves.Move, error) {
-	input := factory.NewMoveInput(schema.ID, schema.Name, schema.Species.String(), schema.Power,
-		schema.Accuracy, schema.PP, *schema.IsContained, *schema.IsCanGuard)
+	input := factory.NewMoveInput(schema.ID, schema.Name, schema.Species.String(), schema.Type.String(),
+		schema.Power, schema.Accuracy, schema.PP, *schema.IsContained, *schema.CanGuard)
 	return input.BuildDomain()
 }
 
 func ToDomainHeldItem(schema schema.HeldItem) (*items.HeldItem, error) {
 	input := factory.NewHeldItemInput(schema.ID, schema.Name, schema.Description,
-		toCorrectionValues(schema.CorrectionValue))
+		toBattleEffects(schema.BattleEffects))
 	return input.BuildDomain()
 }
 

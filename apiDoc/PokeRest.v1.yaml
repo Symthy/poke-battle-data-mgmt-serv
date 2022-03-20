@@ -2843,7 +2843,7 @@ components:
         self:
           $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         moveId:
-          type: string
+          type: integer
         target:
           $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         battleFormat:
@@ -2858,6 +2858,7 @@ components:
             - Defence
       required:
         - self
+        - moveId
         - target
         - battleFormat
         - side
@@ -2870,7 +2871,7 @@ components:
         self:
           $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         moveId:
-          type: string
+          type: integer
         targets:
           type: array
           items:
@@ -2881,6 +2882,7 @@ components:
               target:
                 $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
             required:
+              - calcIndex
               - target
         battleFormat:
           type: string

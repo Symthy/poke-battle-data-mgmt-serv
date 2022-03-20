@@ -8,11 +8,12 @@ type Move struct {
 	ID          uint `gorm:"primaryKey;autoIncrement:true"`
 	Name        string
 	Species     enum.MoveSpecies `sql:"type:species"`
+	Type        enum.PokemonType `sql:"type:pokemonType"`
 	Power       int
 	Accuracy    float32
 	PP          int
 	IsContained *bool `gorm:"default:false"`
-	IsCanGuard  *bool `gorm:"default:true"`
+	CanGuard    *bool `gorm:"default:true"`
 
 	// relation
 	// M:M

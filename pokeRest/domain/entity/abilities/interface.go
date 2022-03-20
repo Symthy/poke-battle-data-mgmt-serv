@@ -9,5 +9,5 @@ type IAbilityNotification interface {
 	SetId(identifier.AbilityId)
 	SetName(string)
 	SetDescription(string)
-	SetCorrectionValues(value.CorrectionValues)
+	SetBattleEffects(value.BattleEffects)
 }

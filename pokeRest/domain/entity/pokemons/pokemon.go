@@ -78,6 +78,30 @@ func (p Pokemon) FormNo() int {
 	return p.formNo
 }
 
+func (p Pokemon) ResolveActualValues(h value.EffortValue, a value.EffortValue, b value.EffortValue, c value.EffortValue, d value.EffortValue, s value.EffortValue) value.PokemonActualValues {
+	actualValues := value.NewPokemonActualValues(
+		calculateActualValueH(p.baseStatsH.Value(), 31, h.Value()),
+		calculateActualValueABCDS(p.baseStatsA.Value(), 31, h.Value()),
+		calculateActualValueABCDS(p.baseStatsB.Value(), 31, a.Value()),
+		calculateActualValueABCDS(p.baseStatsC.Value(), 31, b.Value()),
+		calculateActualValueABCDS(p.baseStatsD.Value(), 31, c.Value()),
+		calculateActualValueABCDS(p.baseStatsS.Value(), 31, d.Value()),
+	)
+	return actualValues
+}
+
+func calculateActualValueH(baseStats int, individualValue int, effortValue int) int {
+	level := 50
+	actual := int(float64(baseStats+individualValue/2+(effortValue/4))*(float64(level)/100.0)) + 10 + level
+	return actual
+}
+
+func calculateActualValueABCDS(baseStats int, individualValue int, effortValue int) int {
+	level := 50
+	actual := int(float64(baseStats+individualValue/2+(effortValue/4))*(float64(level)/100.0)) + 5
+	return actual
+}
+
 func (p Pokemon) Notify(note IPokemonNotification) {
 	note.SetId(p.id)
 	note.SetPokedexNo(p.pokedexNo)

@@ -7,18 +7,18 @@ import (
 )
 
 type AbilityInput struct {
-	id               uint
-	name             string
-	description      string
-	correctionValues []value.CorrectionValue
+	id            uint
+	name          string
+	description   string
+	battleEffects value.BattleEffects
 }
 
-func NewAbilityInput(id uint, name string, description string, correctionValues []value.CorrectionValue) AbilityInput {
+func NewAbilityInput(id uint, name string, description string, battleEffects value.BattleEffects) AbilityInput {
 	return AbilityInput{
-		id:               id,
-		name:             name,
-		description:      description,
-		correctionValues: correctionValues,
+		id:            id,
+		name:          name,
+		description:   description,
+		battleEffects: battleEffects,
 	}
 }
 
@@ -27,7 +27,6 @@ func (a AbilityInput) BuildDomain() (*abilities.Ability, error) {
 	if err != nil {
 		return nil, err
 	}
-	correctionValues := value.NewCorrectionValues(a.correctionValues)
-	domain := abilities.NewAbility(*id, a.name, a.description, correctionValues)
+	domain := abilities.NewAbility(*id, a.name, a.description, a.battleEffects)
 	return &domain, nil
 }

@@ -1,8 +1,8 @@
-package command
+package damages
 
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
-type PokemonAdjustment struct {
+type BattlePokemonAdjustment struct {
 	pokemonId    uint
 	abilityId    uint
 	heldItemId   uint
