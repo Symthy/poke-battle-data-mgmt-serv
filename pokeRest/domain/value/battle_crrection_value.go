@@ -17,7 +17,7 @@ func NewBattleCorrectionValue(target string, value float32, condition *TriggerCo
 	}
 }
 
-func (c BattleCorrectionValue) ApplyCorrection(inputTarget CorrectionTarget, input float32) float32 {
+func (c BattleCorrectionValue) Apply(inputTarget CorrectionTarget, input float32) float32 {
 	if c.target != inputTarget {
 		return input
 	}

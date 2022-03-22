@@ -44,7 +44,7 @@ func (m Move) Power() int {
 	return m.power
 }
 
-func (m Move) NotifyBattleEffects(effects value.BattleEffects) {
+func (m Move) NotifyBattleEffects(effects *value.BattleEffects) {
 	effects.Merge(m.battleEffects)
 }
 

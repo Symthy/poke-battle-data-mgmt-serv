@@ -30,7 +30,7 @@ func (a Ability) Id() identifier.AbilityId {
 	return a.id
 }
 
-func (a Ability) NotifyBattleEffects(effects value.BattleEffects) {
+func (a Ability) NotifyBattleEffects(effects *value.BattleEffects) {
 	effects.Merge(a.battleEffects)
 }
 

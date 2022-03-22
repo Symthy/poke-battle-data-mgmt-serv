@@ -20,6 +20,10 @@ func (t PokemonType) NameJP() string {
 	return t.japaneseName.String()
 }
 
+func (t PokemonType) IsUnknown() bool {
+	return t.englishName == NoneEN
+}
+
 func NewPokemonType(typeName string) PokemonType {
 	for _, t := range PokemonTypeAll() {
 		if t.NameEN() == typeName || t.NameJP() == typeName {

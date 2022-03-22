@@ -16,3 +16,11 @@ func (t PokemonTypeSet) GetTypeNames(lang string) (string, string) {
 func (t PokemonTypeSet) GetTypeEnglishNames() (string, string) {
 	return t.firstType.NameEN(), t.secondType.NameEN()
 }
+
+func (t PokemonTypeSet) FirstType() PokemonType {
+	return t.firstType
+}
+
+func (t PokemonTypeSet) SecondType() PokemonType {
+	return t.secondType
+}

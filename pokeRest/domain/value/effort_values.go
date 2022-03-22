@@ -17,6 +17,10 @@ func NewEffortValues(
 	if total > 510 {
 		return nil, errs.ThrowErrorInvalidValue("EffortValues", "total", string(rune(total)))
 	}
+	return NewEffortValuesNonValidate(valueH, valueA, valueB, valueC, valueD, valueS)
+}
+
+func NewEffortValuesNonValidate(valueH int, valueA int, valueB int, valueC int, valueD int, valueS int) (*EffortValues, error) {
 	effortValueH, err := NewEffortValue(valueH, H)
 	if err != nil {
 		return nil, err

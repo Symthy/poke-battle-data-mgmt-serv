@@ -78,14 +78,18 @@ func (p Pokemon) FormNo() int {
 	return p.formNo
 }
 
-func (p Pokemon) ResolveActualValues(h value.EffortValue, a value.EffortValue, b value.EffortValue, c value.EffortValue, d value.EffortValue, s value.EffortValue) value.PokemonActualValues {
+func (p Pokemon) TypeSet() value.PokemonTypeSet {
+	return p.typeSet
+}
+
+func (p Pokemon) ResolveActualValues(effortValues value.EffortValues) value.PokemonActualValues {
 	actualValues := value.NewPokemonActualValues(
-		calculateActualValueH(p.baseStatsH.Value(), 31, h.Value()),
-		calculateActualValueABCDS(p.baseStatsA.Value(), 31, h.Value()),
-		calculateActualValueABCDS(p.baseStatsB.Value(), 31, a.Value()),
-		calculateActualValueABCDS(p.baseStatsC.Value(), 31, b.Value()),
-		calculateActualValueABCDS(p.baseStatsD.Value(), 31, c.Value()),
-		calculateActualValueABCDS(p.baseStatsS.Value(), 31, d.Value()),
+		calculateActualValueH(p.baseStatsH.Value(), 31, effortValues.H().Value()),
+		calculateActualValueABCDS(p.baseStatsA.Value(), 31, effortValues.A().Value()),
+		calculateActualValueABCDS(p.baseStatsB.Value(), 31, effortValues.B().Value()),
+		calculateActualValueABCDS(p.baseStatsC.Value(), 31, effortValues.C().Value()),
+		calculateActualValueABCDS(p.baseStatsD.Value(), 31, effortValues.D().Value()),
+		calculateActualValueABCDS(p.baseStatsS.Value(), 31, effortValues.S().Value()),
 	)
 	return actualValues
 }

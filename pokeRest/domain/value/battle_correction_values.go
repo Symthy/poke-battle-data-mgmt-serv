@@ -15,13 +15,13 @@ func NewBattleCorrectionValues(values []BattleCorrectionValue) BattleCorrectionV
 	return BattleCorrectionValues{values, targets}
 }
 
-func (c BattleCorrectionValues) ApplyCorrections(correctionTarget CorrectionTarget, value float32) float32 {
+func (c BattleCorrectionValues) Apply(correctionTarget CorrectionTarget, value float32) float32 {
 	if !lists.Contains(c.targets, correctionTarget) {
 		return value
 	}
 	result := value
 	for _, correction := range c.values {
-		result = correction.ApplyCorrection(correctionTarget, result)
+		result = correction.Apply(correctionTarget, result)
 	}
 	return result
 }

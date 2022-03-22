@@ -7,3 +7,11 @@ const (
 	Special  MoveSpecies = "Special"  // 特殊
 	Status   MoveSpecies = "Status"   // 変化
 )
+
+func (m MoveSpecies) IsPhysical() bool {
+	return m == Physical
+}
+
+func (m MoveSpecies) IsSpecial() bool {
+	return m == Special
+}

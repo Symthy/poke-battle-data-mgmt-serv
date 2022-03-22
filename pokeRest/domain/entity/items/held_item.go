@@ -30,7 +30,7 @@ func (i HeldItem) Id() identifier.HeldItemId {
 	return i.id
 }
 
-func (i HeldItem) NotifyBattleEffects(effects value.BattleEffects) {
+func (i HeldItem) NotifyBattleEffects(effects *value.BattleEffects) {
 	effects.Merge(i.battleEffects)
 }
 
