@@ -3,28 +3,24 @@ package damages
 import "math"
 
 type BattleDamage struct {
-	battlePokemons BattlePokemons
+	battlePokemons PokemonBattleDataSet
 	maxDamage      int
 	minDamage      int
 }
 
-func NewBattleDamage(battlePokemons BattlePokemons) BattleDamage {
+func NewBattleDamage(battlePokemons PokemonBattleDataSet) BattleDamage {
 	return BattleDamage{
 		battlePokemons: battlePokemons,
 	}
 }
 
 func (d BattleDamage) calculate() int {
-	// タイプ相性 ×0 なら return 0
 	if d.battlePokemons.IsNoDamage() {
 		return 0
 	}
 
 	// 威力
-	powerValue := d.battlePokemons.attackSide.AttackPower()
-
-	// 攻撃補正
-
+	powerValue := float64(d.battlePokemons.ResolvePowerValue())
 	// 最終攻撃
 	attackValue := 0.0
 
@@ -38,8 +34,9 @@ func (d BattleDamage) calculate() int {
 	// 最終ダメージ
 	level := 50.0
 	levelCorrection := roundDown(level*2.0/5.0 + 2.0)
-	baseDamage = roundDown(roundDown(levelCorrection*powerValue*attackValue/defenceValue)/50 + 2)
+	baseDamage := roundDown(roundDown(levelCorrection*powerValue*attackValue/defenceValue)/50 + 2)
 
+	damage := baseDamage
 	// ダブル補正
 
 	// 天候
@@ -53,10 +50,11 @@ func (d BattleDamage) calculate() int {
 	// 乱数（最大/最小）切り捨て
 
 	// 1未満は1にする
-}
+	if damage < 1 {
+		return 1
+	}
 
-func resolvePower() {
-
+	return int(damage)
 }
 
 func roundDown(value float64) float64 {

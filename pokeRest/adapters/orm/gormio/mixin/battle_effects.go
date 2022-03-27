@@ -17,6 +17,7 @@ type BattleEffects struct {
 func (b *BattleEffects) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
+		// Todo: ok?
 		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
 	}
 	effects := BattleEffects{}
@@ -42,6 +43,5 @@ type Override struct {
 
 type TriggerCondition struct {
 	Entry enum.ConditionEntry `json:"entry"`
-	Sign  enum.ConditionSign  `json:"sign"`
 	Value string              `json:"value"`
 }

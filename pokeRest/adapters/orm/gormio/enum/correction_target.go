@@ -11,6 +11,7 @@ const (
 	// 攻撃力
 	CorrectionAttack        CorrectionTarget = "Attack"
 	CorrectionSpecialAttack CorrectionTarget = "SpecialAttack"
+	CorrectionSpeed         CorrectionTarget = "Speed"
 	// 攻撃威力
 	AttackPower                  CorrectionTarget = "AttackPower"
 	CorrectionSpecialAttackPower CorrectionTarget = "SpecialAttackPower"

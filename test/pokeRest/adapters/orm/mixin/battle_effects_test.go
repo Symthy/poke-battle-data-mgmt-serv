@@ -55,7 +55,6 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						"value": 1.2,
 						"triggerCondition": {
 							"entry": "PokemonType",
-							"sign": "match"
 							"value": "Normal"
 						}
 					},
@@ -64,7 +63,6 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						"value": 1.2,
 						"triggerCondition": {
 							"entry": "PokemonType",
-							"sign": "match"
 							"value": "Normal"
 						}
 					}
@@ -75,7 +73,6 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						"value": "Flying",
 						"triggerCondition": {
 							"entry": "PokemonType",
-							"sign": "match"
 							"value": "Normal"
 						}
 					}
@@ -87,7 +84,6 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						Value:  1.2,
 						TriggerCondition: &mixin.TriggerCondition{
 							Entry: enum.ConditionPokemonType,
-							Sign:  enum.StringMatchSign,
 							Value: enum.Normal.String(),
 						},
 					},
@@ -98,7 +94,6 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						Value:  enum.Flying.String(),
 						TriggerCondition: &mixin.TriggerCondition{
 							Entry: enum.ConditionPokemonType,
-							Sign:  enum.StringMatchSign,
 							Value: enum.Normal.String(),
 						},
 					},

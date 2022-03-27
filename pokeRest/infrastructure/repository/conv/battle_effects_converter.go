@@ -32,7 +32,7 @@ func toBattleEffects(effects *mixin.BattleEffects) value.BattleEffects {
 		}
 	}
 
-	result := value.NewBattleEffects(value.NewBattleCorrectionValues(corrections), value.NewBattleOverrideValues([]value.BattleOverrideValue{}))
+	result := value.NewBattleEffects(value.NewBattleCorrectionValues(corrections), value.NewBattleOverrideValues(overrides))
 	return result
 }
 
@@ -42,7 +42,6 @@ func convertTriggerCondition(triggerCondition *mixin.TriggerCondition) *value.Tr
 	}
 	result := value.NewTriggerCondition(
 		triggerCondition.Entry.String(),
-		triggerCondition.Sign.String(),
 		triggerCondition.Value,
 	)
 	return result

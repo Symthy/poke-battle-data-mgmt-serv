@@ -1,16 +1,31 @@
 package value
 
+type ApplicableResolver func(IPokemonBattleDataSet) bool
+
 type TriggerCondition struct {
-	entry ConditionEntry
-	sign  ConditionSign
-	value string
+	entry    ConditionEntry
+	value    string
+	resolver ApplicableResolver
 }
 
-func NewTriggerCondition(entry string, sign string, value string) *TriggerCondition {
+func NewTriggerCondition(entry string, value string) *TriggerCondition {
+	ent := ConditionEntry(entry)
 	return &TriggerCondition{
-		entry: ConditionEntry(entry),
-		sign:  ConditionSign(sign),
-		value: value,
+		entry:    ent,
+		value:    value,
+		resolver: getApplicableResolver(ent, value),
+	}
+}
+
+func getApplicableResolver(entry ConditionEntry, conditionValue string) ApplicableResolver {
+	// Todo
+	if entry == ConditionPokemonType {
+		return func(arg IPokemonBattleDataSet) bool {
+			return arg.AttackPokemonTypeOfFirst() == conditionValue
+		}
+	}
+	return func(arg IPokemonBattleDataSet) bool {
+		return false
 	}
 }
 
@@ -23,10 +38,12 @@ const (
 	ConditionGender            ConditionEntry = "gender"
 )
 
-type ConditionSign string
-
-const (
-	StringMatchSign ConditionSign = "match"
-	EqualSign       ConditionSign = "=="
-	GraterThanSign  ConditionSign = ">"
-)
+type IPokemonBattleDataSet interface {
+	AttackPokemonTypeOfFirst() string
+	AttackPokemonTypeOfSecond() string
+	AttackPokemonActualValueS() string
+	DefencePokemonActualValueS() string
+	MovePokemonType() string
+	HasItemAttackSide() bool
+	HasItemDefenceSide() bool
+}

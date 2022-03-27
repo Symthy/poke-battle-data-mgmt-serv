@@ -14,6 +14,21 @@ func (b *BattleEffects) Merge(effects BattleEffects) {
 	b.overrides.Merge(effects.overrides)
 }
 
-func (b BattleEffects) ApplyCorrection(target CorrectionTarget, value float32) float32 {
-	return b.corrections.Apply(target, value)
+func (b BattleEffects) Corrections() BattleCorrectionValues {
+	return b.corrections
 }
+
+func (b BattleEffects) Overrides() BattleOverrideValues {
+	return b.overrides
+}
+
+func (b BattleEffects) ApplyCorrection(value float32, target CorrectionTarget) float32 {
+	return b.corrections.Apply(value, target)
+}
+
+type BattleSideType string
+
+const (
+	BattleAttackSide  BattleSideType = "AttackSide"
+	BattleDefenceSide BattleSideType = "DefenceSide"
+)
