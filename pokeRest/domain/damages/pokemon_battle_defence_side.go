@@ -28,8 +28,8 @@ type DefenceSideBattleEffects struct {
 func NewDefenceSideBattleEffects(effects value.BattleEffects) DefenceSideBattleEffects {
 	return DefenceSideBattleEffects{
 		side:                 value.BattleDefenceSide,
-		StatusCorrections:    value.NewStatusCorrections(effects.Corrections()),
-		DamageCorrections:    value.NewDamageCorrections(effects.Corrections()),
+		StatusCorrections:    value.NewStatusCorrections(effects.Corrections(), value.BattleDefenceSide),
+		DamageCorrections:    value.NewDamageCorrections(effects.Corrections(), value.BattleDefenceSide),
 		BattleOverrideValues: effects.Overrides(),
 	}
 }

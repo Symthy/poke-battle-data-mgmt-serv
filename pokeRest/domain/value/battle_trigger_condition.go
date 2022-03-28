@@ -1,32 +1,39 @@
 package value
 
-type ApplicableResolver func(IPokemonBattleDataSet) bool
+type ApplicableResolver func(IPokemonBattleDataSet, BattleSideType) bool
 
 type TriggerCondition struct {
-	entry    ConditionEntry
-	value    string
 	resolver ApplicableResolver
 }
 
-func NewTriggerCondition(entry string, value string) *TriggerCondition {
+func NewTriggerCondition(entry string, conditionValue string) *TriggerCondition {
 	ent := ConditionEntry(entry)
 	return &TriggerCondition{
-		entry:    ent,
-		value:    value,
-		resolver: getApplicableResolver(ent, value),
+		resolver: getApplicableResolver(ent, conditionValue),
 	}
 }
 
-func getApplicableResolver(entry ConditionEntry, conditionValue string) ApplicableResolver {
+func getApplicableResolver(entry ConditionEntry, value string) ApplicableResolver {
 	// Todo
 	if entry == ConditionPokemonType {
-		return func(arg IPokemonBattleDataSet) bool {
-			return arg.AttackPokemonTypeOfFirst() == conditionValue
+		return func(data IPokemonBattleDataSet, side BattleSideType) bool {
+			switch side {
+			case BattleAttackSide:
+				return data.AttackPokemonTypeOfFirst() == value || data.AttackPokemonTypeOfSecond() == value
+			case BattleDefenceSide:
+				return data.DefencePokemonTypeOfFirst() == value || data.DefencePokemonTypeOfSecond() == value
+			default:
+				return false
+			}
 		}
 	}
-	return func(arg IPokemonBattleDataSet) bool {
+	return func(arg IPokemonBattleDataSet, side BattleSideType) bool {
 		return false
 	}
+}
+
+func (t TriggerCondition) isSatisfy(data IPokemonBattleDataSet, side BattleSideType) bool {
+	return t.resolver(data, side)
 }
 
 type ConditionEntry string
@@ -42,6 +49,8 @@ type IPokemonBattleDataSet interface {
 	AttackPokemonTypeOfFirst() string
 	AttackPokemonTypeOfSecond() string
 	AttackPokemonActualValueS() string
+	DefencePokemonTypeOfFirst() string
+	DefencePokemonTypeOfSecond() string
 	DefencePokemonActualValueS() string
 	MovePokemonType() string
 	HasItemAttackSide() bool

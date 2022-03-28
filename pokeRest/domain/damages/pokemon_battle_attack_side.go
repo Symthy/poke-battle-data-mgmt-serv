@@ -60,10 +60,10 @@ type AttackSideBattleEffects struct {
 func NewAttackSideBattleEffects(effects value.BattleEffects) AttackSideBattleEffects {
 	return AttackSideBattleEffects{
 		side:                 value.BattleAttackSide,
-		StatusCorrections:    value.NewStatusCorrections(effects.Corrections()),
+		StatusCorrections:    value.NewStatusCorrections(effects.Corrections(), value.BattleAttackSide),
 		PowerCorrections:     value.NewPowerCorrections(effects.Corrections()),
 		MovePowerCorrections: value.NewMovePowerCorrections(effects.Corrections()),
-		DamageCorrections:    value.NewDamageCorrections(effects.Corrections()),
+		DamageCorrections:    value.NewDamageCorrections(effects.Corrections(), value.BattleAttackSide),
 		BattleOverrideValues: effects.Overrides(),
 	}
 }

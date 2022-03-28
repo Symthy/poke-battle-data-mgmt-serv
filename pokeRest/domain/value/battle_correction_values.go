@@ -2,24 +2,29 @@ package value
 
 import "github.com/Symthy/PokeRest/pokeRest/common/lists"
 
+type correctionApplier func(value float32) float32
+
 func identify(value float32) float32 {
 	return value
 }
 
 type StatusCorrections struct {
 	targets []CorrectionTarget
+	side    BattleSideType
 	BattleCorrectionValues
 }
 
-func NewStatusCorrections(values BattleCorrectionValues) StatusCorrections {
+func NewStatusCorrections(values BattleCorrectionValues, side BattleSideType) StatusCorrections {
 	targets := GetStatusCorrectionTargets()
 	return StatusCorrections{
 		targets:                targets,
+		side:                   side,
 		BattleCorrectionValues: values.get(targets...),
 	}
 }
 
-func (c StatusCorrections) SupplyStatusCorrectionApplier(param PokemonParam) func(value float32) float32 {
+func (c StatusCorrections) SupplyStatusCorrectionApplier(
+	param PokemonParam, data IPokemonBattleDataSet) correctionApplier {
 	target := NoneCorrection
 	if param == A {
 		target = AttackCorrection
@@ -37,23 +42,27 @@ func (c StatusCorrections) SupplyStatusCorrectionApplier(param PokemonParam) fun
 		target = SpeedCorrection
 	}
 	return func(value float32) float32 {
-		return c.Apply(value, target)
+		return c.Apply(value, target, data, c.side)
 	}
 }
 
 type PowerCorrections struct {
 	targets []CorrectionTarget
+	side    BattleSideType
 	BattleCorrectionValues
 }
 
 func NewPowerCorrections(values BattleCorrectionValues) PowerCorrections {
 	targets := GetPowerCorrectionTargets()
 	return PowerCorrections{
+		targets:                targets,
+		side:                   BattleAttackSide,
 		BattleCorrectionValues: values.get(targets...),
 	}
 }
 
-func (c PowerCorrections) SupplyPowerCorrectionApplier(species MoveSpecies) func(value float32) float32 {
+func (c PowerCorrections) SupplyPowerCorrectionApplier(
+	species MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
 	target := NoneCorrection
 	if species == Physical {
 		target = PhysicalPowerCorrection
@@ -62,28 +71,33 @@ func (c PowerCorrections) SupplyPowerCorrectionApplier(species MoveSpecies) func
 		target = SpecialPowerCorrection
 	}
 	return func(value float32) float32 {
-		return c.Apply(value, target)
+		return c.Apply(value, target, data, c.side)
 	}
 }
 
 type MovePowerCorrections struct {
 	targets []CorrectionTarget
+	side    BattleSideType
 	BattleCorrectionValues
 }
 
 func NewMovePowerCorrections(values BattleCorrectionValues) MovePowerCorrections {
+	targets := GetMovePowerCorrectionTargets()
 	return MovePowerCorrections{
+		targets:                targets,
+		side:                   BattleAttackSide,
 		BattleCorrectionValues: values.get(GetMovePowerCorrectionTargets()...),
 	}
 }
 
-func (c MovePowerCorrections) SupplyMovePowerCorrectionApplier(species MoveSpecies) func(value float32) float32 {
+func (c MovePowerCorrections) SupplyMovePowerCorrectionApplier(
+	species MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
 	return func(value float32) float32 {
 		if species == Physical {
-			return c.Apply(value, PhysicalMoveCorrection)
+			return c.Apply(value, PhysicalMoveCorrection, data, c.side)
 		}
 		if species == Special {
-			return c.Apply(value, SpecialMoveCorrection)
+			return c.Apply(value, SpecialMoveCorrection, data, c.side)
 		}
 		return identify(value)
 	}
@@ -91,18 +105,20 @@ func (c MovePowerCorrections) SupplyMovePowerCorrectionApplier(species MoveSpeci
 
 type DamageCorrections struct {
 	targets []CorrectionTarget
+	side    BattleSideType
 	BattleCorrectionValues
 }
 
-func NewDamageCorrections(values BattleCorrectionValues) DamageCorrections {
+func NewDamageCorrections(values BattleCorrectionValues, side BattleSideType) DamageCorrections {
 	return DamageCorrections{
 		BattleCorrectionValues: values.get(GetDamageCorrectionTargets()...),
 	}
 }
 
-func (c DamageCorrections) SupplyDamageCorrectionApplier() func(value float32) float32 {
+func (c DamageCorrections) SupplyDamageCorrectionApplier(
+	data IPokemonBattleDataSet) correctionApplier {
 	return func(value float32) float32 {
-		return c.Apply(value, DamageCorrection)
+		return c.Apply(value, DamageCorrection, data, c.side)
 	}
 }
 
@@ -129,13 +145,14 @@ func (b BattleCorrectionValues) get(targets ...CorrectionTarget) BattleCorrectio
 	return NewBattleCorrectionValues(values)
 }
 
-func (c BattleCorrectionValues) Apply(value float32, target CorrectionTarget) float32 {
+func (c BattleCorrectionValues) Apply(
+	value float32, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) float32 {
 	result := value
 	for _, correction := range c.items {
 		if target != correction.target {
 			continue
 		}
-		result = correction.Apply(result)
+		result = correction.Apply(result, data, side)
 	}
 	return result
 }

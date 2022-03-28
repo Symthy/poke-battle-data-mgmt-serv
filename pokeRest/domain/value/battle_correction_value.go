@@ -3,7 +3,7 @@ package value
 type BattleCorrectionValue struct {
 	target           CorrectionTarget
 	value            float32
-	triggerCondition *TriggerCondition
+	triggerCondition *TriggerCondition // Todo: 無しという状態を持つようようにした方が良い？
 }
 
 func NewBattleCorrectionValue(target string, value float32, condition *TriggerCondition) *BattleCorrectionValue {
@@ -17,8 +17,15 @@ func NewBattleCorrectionValue(target string, value float32, condition *TriggerCo
 	}
 }
 
-func (c BattleCorrectionValue) Apply(input float32) float32 {
-	return input * c.value
+func (c BattleCorrectionValue) Apply(
+	input float32, battleDataSet IPokemonBattleDataSet, side BattleSideType) float32 {
+	if c.triggerCondition == nil { // Todo
+		return input * c.value
+	}
+	if c.triggerCondition.isSatisfy(battleDataSet, side) {
+		return input * c.value
+	}
+	return input
 }
 
 func (c BattleCorrectionValue) equalTarget(target CorrectionTarget) bool {
@@ -45,8 +52,8 @@ const (
 	PhysicalMoveCorrection CorrectionTarget = "PhysicalMove"
 	SpecialMoveCorrection  CorrectionTarget = "SpecialMove"
 	// 威力補正
-	AttackPowerCorrection        CorrectionTarget = "AttackPower"
-	SpecialAttackPowerCorrection CorrectionTarget = "SpecialAttackPower"
+	PhysicalPowerCorrection CorrectionTarget = "AttackPower"
+	SpecialPowerCorrection  CorrectionTarget = "SpecialAttackPower"
 	// ステータス補正
 	AttackCorrection         CorrectionTarget = "Attack"
 	SpecialAttackCorrection  CorrectionTarget = "SpecialAttack"
@@ -80,8 +87,8 @@ func GetStatusCorrectionTargets() []CorrectionTarget {
 
 func GetPowerCorrectionTargets() []CorrectionTarget {
 	return []CorrectionTarget{
-		AttackPowerCorrection,
-		SpecialAttackPowerCorrection,
+		PhysicalPowerCorrection,
+		SpecialPowerCorrection,
 	}
 }
 
