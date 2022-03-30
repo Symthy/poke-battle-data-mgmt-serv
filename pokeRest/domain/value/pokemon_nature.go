@@ -4,8 +4,8 @@ package value
 type PokemonNature struct {
 	englishName    NatureNameEN
 	japaneseName   NatureNameJP
-	riseCorrection *ParamCorrection
-	downCorrection *ParamCorrection
+	riseCorrection *NatureCorrection
+	downCorrection *NatureCorrection
 }
 
 func NewPokemonNature(natureNameEN string) PokemonNature {

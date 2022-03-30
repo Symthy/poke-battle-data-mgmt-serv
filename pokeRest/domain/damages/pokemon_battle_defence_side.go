@@ -3,18 +3,18 @@ package damages
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
 type DefenceSidePokemon struct {
-	deffencePokemonActualValues value.PokemonActualValues
-	defencePokemonNature        value.PokemonNature
-	defencePokemonTypes         value.PokemonTypeSet
+	defencePokemonActualValues value.PokemonActualValues
+	defencePokemonNature       value.PokemonNature
+	defencePokemonTypes        value.PokemonTypeSet
 }
 
 func NewDefenceSidePokemon(
 	deffencePokemonActualValues value.PokemonActualValues, defencePokemonNature value.PokemonNature,
 	defencePokemonTypes value.PokemonTypeSet) DefenceSidePokemon {
 	return DefenceSidePokemon{
-		deffencePokemonActualValues: deffencePokemonActualValues,
-		defencePokemonNature:        defencePokemonNature,
-		defencePokemonTypes:         defencePokemonTypes,
+		defencePokemonActualValues: deffencePokemonActualValues,
+		defencePokemonNature:       defencePokemonNature,
+		defencePokemonTypes:        defencePokemonTypes,
 	}
 }
 

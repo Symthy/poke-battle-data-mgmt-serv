@@ -1,12 +1,14 @@
 package value
 
+import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
+
 type BattleCorrectionValue struct {
 	target           CorrectionTarget
-	value            float32
+	value            int
 	triggerCondition *TriggerCondition // Todo: 無しという状態を持つようようにした方が良い？
 }
 
-func NewBattleCorrectionValue(target string, value float32, condition *TriggerCondition) *BattleCorrectionValue {
+func NewBattleCorrectionValue(target string, value int, condition *TriggerCondition) *BattleCorrectionValue {
 	if isInvalidValue(value) {
 		return nil
 	}
@@ -18,12 +20,12 @@ func NewBattleCorrectionValue(target string, value float32, condition *TriggerCo
 }
 
 func (c BattleCorrectionValue) Apply(
-	input float32, battleDataSet IPokemonBattleDataSet, side BattleSideType) float32 {
+	input int, battleDataSet IPokemonBattleDataSet, side BattleSideType) int {
 	if c.triggerCondition == nil { // Todo
-		return input * c.value
+		return fmath.Round(float64(input*c.value) / 4096)
 	}
 	if c.triggerCondition.isSatisfy(battleDataSet, side) {
-		return input * c.value
+		return fmath.Round(float64(input*c.value) / 4096)
 	}
 	return input
 }
@@ -41,8 +43,8 @@ func (c BattleCorrectionValue) AnyEqualTarget(targets ...CorrectionTarget) bool 
 	return false
 }
 
-func isInvalidValue(rate float32) bool {
-	return rate == 1 || rate <= 0
+func isInvalidValue(rate int) bool {
+	return rate <= 0
 }
 
 type CorrectionTarget string

@@ -1,26 +1,25 @@
 package damages
 
-import "math"
+import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
 
 type BattleDamage struct {
-	battlePokemons PokemonBattleDataSet
-	maxDamage      int
-	minDamage      int
+	dataset PokemonBattleDataSet
+	damages []int
 }
 
 func NewBattleDamage(battlePokemons PokemonBattleDataSet) BattleDamage {
 	return BattleDamage{
-		battlePokemons: battlePokemons,
+		dataset: battlePokemons,
 	}
 }
 
 func (d BattleDamage) calculate() int {
-	if d.battlePokemons.IsNoDamage() {
+	if d.dataset.IsNoDamage() {
 		return 0
 	}
 
 	// 威力
-	powerValue := float64(d.battlePokemons.ResolvePowerValue())
+	powerValue := float64(d.dataset.ResolvePowerValue())
 	// 最終攻撃
 	attackValue := 0.0
 
@@ -33,8 +32,8 @@ func (d BattleDamage) calculate() int {
 
 	// 最終ダメージ
 	level := 50.0
-	levelCorrection := roundDown(level*2.0/5.0 + 2.0)
-	baseDamage := roundDown(roundDown(levelCorrection*powerValue*attackValue/defenceValue)/50 + 2)
+	levelCorrection := fmath.RoundDown(level*2.0/5.0 + 2.0)
+	baseDamage := fmath.RoundDown(fmath.RoundDown(levelCorrection*powerValue*attackValue/defenceValue)/50 + 2)
 
 	damage := baseDamage
 	// ダブル補正
@@ -55,22 +54,4 @@ func (d BattleDamage) calculate() int {
 	}
 
 	return int(damage)
-}
-
-func roundDown(value float64) float64 {
-	// 小数点切り捨て
-	return math.Trunc(value)
-}
-
-func roundUp(value float64) float64 {
-	// 小数点切り上げ
-	return math.Ceil(value)
-}
-
-func roundUpIfDecimalGreaterFive(value float64) float64 {
-	integerValue := roundDown(value)
-	if value-integerValue > 0.5 {
-		return roundUp(value)
-	}
-	return roundDown(value)
 }
