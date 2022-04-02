@@ -12,11 +12,11 @@ type Ability struct {
 	id            identifier.AbilityId
 	name          string
 	description   string
-	battleEffects value.BattleEffects
+	battleEffects *value.BattleEffects
 }
 
 func NewAbility(
-	id identifier.AbilityId, name string, description string, battleEffects value.BattleEffects,
+	id identifier.AbilityId, name string, description string, battleEffects *value.BattleEffects,
 ) Ability {
 	return Ability{
 		id:            id,

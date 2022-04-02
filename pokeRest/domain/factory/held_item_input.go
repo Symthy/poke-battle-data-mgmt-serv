@@ -10,10 +10,10 @@ type HeldItemInput struct {
 	id            uint
 	name          string
 	description   string
-	battleEffects value.BattleEffects
+	battleEffects *value.BattleEffects
 }
 
-func NewHeldItemInput(id uint, name string, description string, battleEffects value.BattleEffects) HeldItemInput {
+func NewHeldItemInput(id uint, name string, description string, battleEffects *value.BattleEffects) HeldItemInput {
 	return HeldItemInput{id, name, description, battleEffects}
 }
 

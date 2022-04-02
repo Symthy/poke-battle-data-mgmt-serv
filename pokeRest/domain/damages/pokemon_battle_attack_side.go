@@ -39,11 +39,11 @@ func NewAttackMove(species value.MoveSpecies, pokemonType value.PokemonType, pow
 
 type AttackSideBattleEffects struct {
 	side value.BattleSideType
-	value.StatusCorrections
-	value.PowerCorrections
-	value.MovePowerCorrections
-	value.DamageCorrections
-	value.BattleOverrideValues
+	*value.StatusCorrections
+	*value.PowerCorrections
+	*value.MovePowerCorrections
+	*value.DamageCorrections
+	*value.BattleOverrideValues
 }
 
 func NewAttackSideBattleEffects(effects value.BattleEffects) AttackSideBattleEffects {

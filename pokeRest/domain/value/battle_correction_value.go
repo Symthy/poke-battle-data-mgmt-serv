@@ -59,8 +59,8 @@ const (
 	// ステータス補正
 	AttackCorrection         CorrectionTarget = "Attack"
 	SpecialAttackCorrection  CorrectionTarget = "SpecialAttack"
-	DefenceCorrection        CorrectionTarget = "Defence"
-	SpecialDefenceCorrection CorrectionTarget = "SpecialDefence"
+	DefenseCorrection        CorrectionTarget = "Defense"
+	SpecialDefenseCorrection CorrectionTarget = "SpecialDefense"
 	SpeedCorrection          CorrectionTarget = "Speed"
 	WeightCorrection         CorrectionTarget = "Weight"
 	// ダメージ
@@ -69,19 +69,27 @@ const (
 	NoneCorrection CorrectionTarget = ""
 )
 
+func (c CorrectionTarget) String() string {
+	return string(c)
+}
+
 type CorrectionType string
 
 const (
 	CorrectionTypeAttack  CorrectionType = "Attack"
-	CorrectionTypeDefence CorrectionType = "Defence"
+	CorrectionTypeDefense CorrectionType = "Defense"
 )
+
+func (c CorrectionType) String() string {
+	return string(c)
+}
 
 func GetStatusCorrectionTargets() []CorrectionTarget {
 	return []CorrectionTarget{
 		AttackCorrection,
 		SpecialAttackCorrection,
-		DefenceCorrection,
-		SpecialDefenceCorrection,
+		DefenseCorrection,
+		SpecialDefenseCorrection,
 		SpeedCorrection,
 		WeightCorrection,
 	}

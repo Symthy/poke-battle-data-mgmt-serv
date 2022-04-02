@@ -19,9 +19,9 @@ func getApplicableResolver(entry ConditionEntry, value string) ApplicableResolve
 		return func(data IPokemonBattleDataSet, side BattleSideType) bool {
 			switch side {
 			case BattleAttackSide:
-				return data.AttackPokemonTypeOfFirst() == value || data.AttackPokemonTypeOfSecond() == value
-			case BattleDefenceSide:
-				return data.DefencePokemonTypeOfFirst() == value || data.DefencePokemonTypeOfSecond() == value
+				return data.AttackPokemonTypeOfFirst().NameEN() == value || data.AttackPokemonTypeOfSecond().NameEN() == value
+			case BattleDefenseSide:
+				return data.DefensePokemonTypeOfFirst().NameEN() == value || data.DefensePokemonTypeOfSecond().NameEN() == value
 			default:
 				return false
 			}
@@ -45,14 +45,18 @@ const (
 	ConditionGender            ConditionEntry = "gender"
 )
 
+func (c ConditionEntry) String() string {
+	return string(c)
+}
+
 type IPokemonBattleDataSet interface {
-	AttackPokemonTypeOfFirst() string
-	AttackPokemonTypeOfSecond() string
-	AttackPokemonActualValueS() string
-	DefencePokemonTypeOfFirst() string
-	DefencePokemonTypeOfSecond() string
-	DefencePokemonActualValueS() string
-	MovePokemonType() string
+	AttackPokemonTypeOfFirst() PokemonType
+	AttackPokemonTypeOfSecond() PokemonType
+	AttackPokemonActualValueS() int
+	DefensePokemonTypeOfFirst() PokemonType
+	DefensePokemonTypeOfSecond() PokemonType
+	DefensePokemonActualValueS() int
+	MovePokemonType() PokemonType
 	HasItemAttackSide() bool
-	HasItemDefenceSide() bool
+	HasItemDefenseSide() bool
 }

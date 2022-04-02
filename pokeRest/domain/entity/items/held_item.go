@@ -12,11 +12,11 @@ type HeldItem struct {
 	id            identifier.HeldItemId
 	name          string
 	description   string
-	battleEffects value.BattleEffects
+	battleEffects *value.BattleEffects
 }
 
 func NewHeldItem(
-	id identifier.HeldItemId, name, description string, battleEffects value.BattleEffects,
+	id identifier.HeldItemId, name, description string, battleEffects *value.BattleEffects,
 ) HeldItem {
 	return HeldItem{
 		id:            id,

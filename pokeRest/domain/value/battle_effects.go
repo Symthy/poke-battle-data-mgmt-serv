@@ -1,24 +1,24 @@
 package value
 
 type BattleEffects struct {
-	corrections BattleCorrectionValues
-	overrides   BattleOverrideValues
+	corrections *BattleCorrectionValues
+	overrides   *BattleOverrideValues
 }
 
-func NewBattleEffects(corrections BattleCorrectionValues, overrides BattleOverrideValues) BattleEffects {
-	return BattleEffects{corrections, overrides}
+func NewBattleEffects(corrections *BattleCorrectionValues, overrides *BattleOverrideValues) *BattleEffects {
+	return &BattleEffects{corrections, overrides}
 }
 
-func (b *BattleEffects) Merge(effects BattleEffects) {
+func (b *BattleEffects) Merge(effects *BattleEffects) {
 	b.corrections.Merge(effects.corrections)
 	b.overrides.Merge(effects.overrides)
 }
 
-func (b BattleEffects) Corrections() BattleCorrectionValues {
+func (b BattleEffects) Corrections() *BattleCorrectionValues {
 	return b.corrections
 }
 
-func (b BattleEffects) Overrides() BattleOverrideValues {
+func (b BattleEffects) Overrides() *BattleOverrideValues {
 	return b.overrides
 }
 
@@ -31,5 +31,5 @@ type BattleSideType string
 
 const (
 	BattleAttackSide  BattleSideType = "AttackSide"
-	BattleDefenceSide BattleSideType = "DefenceSide"
+	BattleDefenseSide BattleSideType = "DefenceSide"
 )

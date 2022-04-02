@@ -5,17 +5,17 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
-type DefenceSideData struct {
+type DefenseSideData struct {
 	actualValues      value.PokemonActualValues
 	nature            value.PokemonNature
 	pokemonTypes      value.PokemonTypeSet
 	additionalEffects value.BattleEffects
 }
 
-func NewDefenceSideData(
+func NewDefenseSideData(
 	actualValues value.PokemonActualValues, pokemonTypes value.PokemonTypeSet,
-	nature value.PokemonNature, additionalEffects value.BattleEffects) DefenceSideData {
-	return DefenceSideData{
+	nature value.PokemonNature, additionalEffects value.BattleEffects) DefenseSideData {
+	return DefenseSideData{
 		actualValues:      actualValues,
 		pokemonTypes:      pokemonTypes,
 		nature:            nature,
@@ -23,14 +23,14 @@ func NewDefenceSideData(
 	}
 }
 
-func (b DefenceSideData) PokemonTypes() value.PokemonTypeSet {
+func (b DefenseSideData) PokemonTypes() value.PokemonTypeSet {
 	return b.pokemonTypes
 }
 
-func (b DefenceSideData) toDefenceSidePokemon() damages.DefenceSidePokemon {
-	return damages.NewDefenceSidePokemon(b.actualValues, b.nature, b.pokemonTypes)
+func (b DefenseSideData) toDefenseSidePokemon() damages.DefenseSidePokemon {
+	return damages.NewDefenseSidePokemon(b.actualValues, b.nature, b.pokemonTypes)
 }
 
-func (p DefenceSideData) toDefenceSideBattleEffects() damages.DefenceSideBattleEffects {
-	return damages.NewDefenceSideBattleEffects(p.additionalEffects)
+func (p DefenseSideData) toDefenseSideBattleEffects() damages.DefenseSideBattleEffects {
+	return damages.NewDefenseSideBattleEffects(p.additionalEffects)
 }

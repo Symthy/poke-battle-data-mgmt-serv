@@ -1,17 +1,18 @@
 package value
 
 type BattleOverrideValues struct {
-	values  []BattleOverrideValue
-	targets []OverrideTarget
+	values  []*BattleOverrideValue
+	targets []*OverrideTarget
 }
 
-func NewBattleOverrideValues(values []BattleOverrideValue) BattleOverrideValues {
-	return BattleOverrideValues{
+func NewBattleOverrideValues(values ...*BattleOverrideValue) *BattleOverrideValues {
+	return &BattleOverrideValues{
 		values: values,
 	}
 }
 
-func (o *BattleOverrideValues) Merge(overrides BattleOverrideValues) {
+func (o *BattleOverrideValues) Merge(overrides *BattleOverrideValues) {
+
 	o.values = append(o.values, overrides.values...)
 	o.targets = append(o.targets, overrides.targets...)
 }

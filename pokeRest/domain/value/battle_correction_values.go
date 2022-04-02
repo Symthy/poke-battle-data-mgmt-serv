@@ -11,12 +11,12 @@ func identify(value int) int {
 type StatusCorrections struct {
 	targets []CorrectionTarget
 	side    BattleSideType
-	BattleCorrectionValues
+	*BattleCorrectionValues
 }
 
-func NewStatusCorrections(values BattleCorrectionValues, side BattleSideType) StatusCorrections {
+func NewStatusCorrections(values *BattleCorrectionValues, side BattleSideType) *StatusCorrections {
 	targets := GetStatusCorrectionTargets()
-	return StatusCorrections{
+	return &StatusCorrections{
 		targets:                targets,
 		side:                   side,
 		BattleCorrectionValues: values.get(targets...),
@@ -42,13 +42,13 @@ func (c StatusCorrections) SupplyStatusCorrectionApplier(
 		target = AttackCorrection
 	}
 	if param == B {
-		target = DefenceCorrection
+		target = DefenseCorrection
 	}
 	if param == C {
 		target = SpecialAttackCorrection
 	}
 	if param == D {
-		target = SpecialDefenceCorrection
+		target = SpecialDefenseCorrection
 	}
 	if param == S {
 		target = SpeedCorrection
@@ -61,12 +61,12 @@ func (c StatusCorrections) SupplyStatusCorrectionApplier(
 type PowerCorrections struct {
 	targets []CorrectionTarget
 	side    BattleSideType
-	BattleCorrectionValues
+	*BattleCorrectionValues
 }
 
-func NewPowerCorrections(values BattleCorrectionValues) PowerCorrections {
+func NewPowerCorrections(values *BattleCorrectionValues) *PowerCorrections {
 	targets := GetPowerCorrectionTargets()
-	return PowerCorrections{
+	return &PowerCorrections{
 		targets:                targets,
 		side:                   BattleAttackSide,
 		BattleCorrectionValues: values.get(targets...),
@@ -90,12 +90,12 @@ func (c PowerCorrections) SupplyPowerCorrectionApplier(
 type MovePowerCorrections struct {
 	targets []CorrectionTarget
 	side    BattleSideType
-	BattleCorrectionValues
+	*BattleCorrectionValues
 }
 
-func NewMovePowerCorrections(values BattleCorrectionValues) MovePowerCorrections {
+func NewMovePowerCorrections(values *BattleCorrectionValues) *MovePowerCorrections {
 	targets := GetMovePowerCorrectionTargets()
-	return MovePowerCorrections{
+	return &MovePowerCorrections{
 		targets:                targets,
 		side:                   BattleAttackSide,
 		BattleCorrectionValues: values.get(GetMovePowerCorrectionTargets()...),
@@ -121,9 +121,9 @@ type DamageCorrections struct {
 	BattleCorrectionValues
 }
 
-func NewDamageCorrections(values BattleCorrectionValues, side BattleSideType) DamageCorrections {
-	return DamageCorrections{
-		BattleCorrectionValues: values.get(GetDamageCorrectionTargets()...),
+func NewDamageCorrections(values *BattleCorrectionValues, side BattleSideType) *DamageCorrections {
+	return &DamageCorrections{
+		BattleCorrectionValues: *values.get(GetDamageCorrectionTargets()...),
 	}
 }
 
@@ -136,25 +136,25 @@ func (c DamageCorrections) SupplyDamageCorrectionApplier(
 
 type BattleCorrectionValues struct {
 	targets []CorrectionTarget
-	items   []BattleCorrectionValue
+	items   []*BattleCorrectionValue
 }
 
-func NewBattleCorrectionValues(items []BattleCorrectionValue) BattleCorrectionValues {
+func NewBattleCorrectionValues(items ...*BattleCorrectionValue) *BattleCorrectionValues {
 	targets := []CorrectionTarget{}
 	for _, correction := range items {
 		targets = append(targets, correction.target)
 	}
-	return BattleCorrectionValues{
+	return &BattleCorrectionValues{
 		targets: targets,
 		items:   items,
 	}
 }
 
-func (b BattleCorrectionValues) get(targets ...CorrectionTarget) BattleCorrectionValues {
-	values := lists.Filter(b.items, func(value BattleCorrectionValue) bool {
+func (b BattleCorrectionValues) get(targets ...CorrectionTarget) *BattleCorrectionValues {
+	values := lists.Filter(b.items, func(value *BattleCorrectionValue) bool {
 		return value.AnyEqualTarget(targets...)
 	})
-	return NewBattleCorrectionValues(values)
+	return NewBattleCorrectionValues(values...)
 }
 
 func (c BattleCorrectionValues) Apply(
@@ -169,7 +169,7 @@ func (c BattleCorrectionValues) Apply(
 	return result
 }
 
-func (c *BattleCorrectionValues) Merge(corrections BattleCorrectionValues) {
+func (c *BattleCorrectionValues) Merge(corrections *BattleCorrectionValues) {
 	c.items = append(c.items, corrections.items...)
 	c.targets = append(c.targets, corrections.targets...)
 }

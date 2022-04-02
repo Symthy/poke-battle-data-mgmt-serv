@@ -9,5 +9,5 @@ type IHeldItemNotification interface {
 	SetId(identifier.HeldItemId)
 	SetName(string)
 	SetDescription(string)
-	SetBattleEffects(value.BattleEffects)
+	SetBattleEffects(*value.BattleEffects)
 }

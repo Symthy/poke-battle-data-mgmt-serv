@@ -5,8 +5,8 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
-func toBattleEffects(effects *mixin.BattleEffects) value.BattleEffects {
-	corrections := []value.BattleCorrectionValue{}
+func toBattleEffects(effects *mixin.BattleEffects) *value.BattleEffects {
+	corrections := []*value.BattleCorrectionValue{}
 	for _, correction := range effects.Corrections {
 		triggerCondition := convertTriggerCondition(correction.TriggerCondition)
 		correctionValue := value.NewBattleCorrectionValue(
@@ -15,11 +15,11 @@ func toBattleEffects(effects *mixin.BattleEffects) value.BattleEffects {
 			triggerCondition,
 		)
 		if correctionValue != nil {
-			corrections = append(corrections, *correctionValue)
+			corrections = append(corrections, correctionValue)
 		}
 	}
 
-	overrides := []value.BattleOverrideValue{}
+	overrides := []*value.BattleOverrideValue{}
 	for _, override := range effects.Overrides {
 		triggerCondition := convertTriggerCondition(override.TriggerCondition)
 		overrideValue := value.NewBattleOverrideValue(
@@ -28,11 +28,11 @@ func toBattleEffects(effects *mixin.BattleEffects) value.BattleEffects {
 			triggerCondition,
 		)
 		if overrideValue != nil {
-			overrides = append(overrides, *overrideValue)
+			overrides = append(overrides, overrideValue)
 		}
 	}
 
-	result := value.NewBattleEffects(value.NewBattleCorrectionValues(corrections), value.NewBattleOverrideValues(overrides))
+	result := value.NewBattleEffects(value.NewBattleCorrectionValues(corrections...), value.NewBattleOverrideValues(overrides...))
 	return result
 }
 

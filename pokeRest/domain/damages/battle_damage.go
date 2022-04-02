@@ -21,19 +21,15 @@ func (d BattleDamage) calculate() int {
 	// 威力
 	powerValue := float64(d.dataset.ResolvePowerValue())
 	// 最終攻撃
-	attackValue := 0.0
-
-	// 防御補正
-
+	attackValue := float64(d.dataset.ResolveAttackValue())
 	// 最終防御
-	defenceValue := 0.0
-
+	defenseValue := float64(d.dataset.ResolveDefenseValue())
 	// ダメージ補正
 
 	// 最終ダメージ
 	level := 50.0
 	levelCorrection := fmath.RoundDown(level*2.0/5.0 + 2.0)
-	baseDamage := fmath.RoundDown(fmath.RoundDown(levelCorrection*powerValue*attackValue/defenceValue)/50 + 2)
+	baseDamage := fmath.RoundDown(fmath.RoundDown(levelCorrection*powerValue*attackValue/defenseValue)/50 + 2)
 
 	damage := baseDamage
 	// ダブル補正

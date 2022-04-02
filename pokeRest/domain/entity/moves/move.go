@@ -18,7 +18,7 @@ type Move struct {
 	pp            int
 	isContained   bool
 	canGuard      bool
-	battleEffects value.BattleEffects
+	battleEffects *value.BattleEffects
 }
 
 func NewMove(id identifier.MoveId, name string, species string, pokemonType string,

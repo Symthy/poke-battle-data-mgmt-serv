@@ -10,10 +10,10 @@ type AbilityInput struct {
 	id            uint
 	name          string
 	description   string
-	battleEffects value.BattleEffects
+	battleEffects *value.BattleEffects
 }
 
-func NewAbilityInput(id uint, name string, description string, battleEffects value.BattleEffects) AbilityInput {
+func NewAbilityInput(id uint, name string, description string, battleEffects *value.BattleEffects) AbilityInput {
 	return AbilityInput{
 		id:            id,
 		name:          name,
