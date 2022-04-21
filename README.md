@@ -4,7 +4,6 @@ Pokemon REST API
 
 - Todo
   - package名見直し
-  - POST/PUT APIのリクエストボディ定義
   - jennifer使ってコード自動生成化
 
 ## API Specification File

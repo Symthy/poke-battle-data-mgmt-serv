@@ -1,6 +1,5 @@
 # Memo Stack
 
-(途中から開始)
 調べたことを無邪気にスタックするメモ置き場
 
 ## Important Reference
@@ -12,6 +11,10 @@
 - [今どきの Go の書き方まとめ (2020 年末版)](https://www.m3tech.blog/entry/golang-way-primer)
 
 ## Golang
+
+VUP：
+- [Go1.18へバージョンアップ](https://zenn.dev/kimkiyong/scraps/3efe5471e8718d)
+- [Goメモ-188 (go.mod の バージョンを go 1.18 に変更する)](https://devlights.hatenablog.com/entry/2022/03/28/073000)
 
 ### 基本
 
