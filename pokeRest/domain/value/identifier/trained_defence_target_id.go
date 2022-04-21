@@ -2,13 +2,13 @@ package identifier
 
 import "github.com/Symthy/PokeRest/pokeRest/errs"
 
-type TrainedDefenceTargetId struct {
+type TrainedDefenseTargetId struct {
 	ValueId
 }
 
-func NewTrainedDefenceTargetId(value uint) (*TrainedDefenceTargetId, error) {
+func NewTrainedDefenseTargetId(value uint) (*TrainedDefenseTargetId, error) {
 	if value < 1 {
-		return nil, errs.ThrowErrorInvalidValue("TrainedDefenceTargetId", "value", string(rune(value)))
+		return nil, errs.ThrowErrorInvalidValue("TrainedDefenseTargetId", "value", string(rune(value)))
 	}
-	return &TrainedDefenceTargetId{ValueId{value}}, nil
+	return &TrainedDefenseTargetId{ValueId{value}}, nil
 }

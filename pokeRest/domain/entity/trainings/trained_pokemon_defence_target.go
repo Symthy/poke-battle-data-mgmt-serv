@@ -6,10 +6,10 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain[identifier.TrainedDefenceTargetId] = (*TrainedPokemonDefenceTarget)(nil)
+var _ entity.IDomain[identifier.TrainedDefenseTargetId] = (*TrainedPokemonDefenceTarget)(nil)
 
 type TrainedPokemonDefenceTarget struct {
-	id                   identifier.TrainedDefenceTargetId
+	id                   identifier.TrainedDefenseTargetId
 	trainedPokemonId     identifier.TrainedPokemonId
 	moveId               identifier.MoveId
 	targetPokemonId      identifier.PokemonId
@@ -19,7 +19,7 @@ type TrainedPokemonDefenceTarget struct {
 }
 
 func NewTrainedPokemonDefenceTarget(
-	id identifier.TrainedDefenceTargetId, trainedPokemonId identifier.TrainedPokemonId,
+	id identifier.TrainedDefenseTargetId, trainedPokemonId identifier.TrainedPokemonId,
 	moveId identifier.MoveId, targetPokemonId identifier.PokemonId, targetPokemonNature string,
 	targetPokemonEffortA int, targetPokemonEffortC int,
 ) (*TrainedPokemonDefenceTarget, error) {
@@ -43,7 +43,7 @@ func NewTrainedPokemonDefenceTarget(
 }
 
 // Todo: refactor Notification
-func (t TrainedPokemonDefenceTarget) Id() identifier.TrainedDefenceTargetId {
+func (t TrainedPokemonDefenceTarget) Id() identifier.TrainedDefenseTargetId {
 	return t.id
 }
 

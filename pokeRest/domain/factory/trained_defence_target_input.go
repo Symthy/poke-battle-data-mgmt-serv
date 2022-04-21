@@ -5,7 +5,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-type TrainedDefenceTargetInput struct {
+type TrainedDefenseTargetInput struct {
 	id                        uint
 	trainedPokemonId          uint
 	moveId                    uint
@@ -16,11 +16,11 @@ type TrainedDefenceTargetInput struct {
 	targetPokemonEffortValueC int
 }
 
-func NewTrainedDefenceTargetInput(
+func NewTrainedDefenseTargetInput(
 	id, trainedPokemonId, moveId, targetPokemonId uint, targetPokemonNature string,
 	targetPokemonAbilityId uint, targetPokemonEffortValueA, trainedPokemonEffortValueC int,
-) TrainedDefenceTargetInput {
-	return TrainedDefenceTargetInput{
+) *TrainedDefenseTargetInput {
+	return &TrainedDefenseTargetInput{
 		id:                        id,
 		trainedPokemonId:          trainedPokemonId,
 		moveId:                    moveId,
@@ -32,8 +32,34 @@ func NewTrainedDefenceTargetInput(
 	}
 }
 
-func (i TrainedDefenceTargetInput) BuildDomain() (*trainings.TrainedPokemonDefenceTarget, error) {
-	id, err := identifier.NewTrainedDefenceTargetId(i.id)
+func NewTrainedDefenseTargetBuilder() *TrainedDefenseTargetInput {
+	return &TrainedDefenseTargetInput{}
+}
+
+func (i *TrainedDefenseTargetInput) Id(id uint) {
+	i.id = id
+}
+func (i *TrainedDefenseTargetInput) TrainedPokemonId(trainedPokemonId uint) {
+	i.trainedPokemonId = trainedPokemonId
+}
+func (i *TrainedDefenseTargetInput) MoveId(moveId uint) {
+	i.moveId = moveId
+}
+func (i *TrainedDefenseTargetInput) TargetPokemonAbilityId(targetPokemonAbilityId uint) {
+	i.targetPokemonAbilityId = targetPokemonAbilityId
+}
+func (i *TrainedDefenseTargetInput) TargetPokemonNature(targetPokemonNature string) {
+	i.targetPokemonNature = targetPokemonNature
+}
+func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueA(effortValueA int) {
+	i.targetPokemonEffortValueA = effortValueA
+}
+func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueC(effortValueC int) {
+	i.targetPokemonEffortValueC = effortValueC
+}
+
+func (i TrainedDefenseTargetInput) BuildDomain() (*trainings.TrainedPokemonDefenceTarget, error) {
+	id, err := identifier.NewTrainedDefenseTargetId(i.id)
 	if err != nil {
 		return nil, err
 	}

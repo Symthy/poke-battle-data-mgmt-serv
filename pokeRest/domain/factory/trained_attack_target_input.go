@@ -20,8 +20,8 @@ type TrainedAttackTargetInput struct {
 func NewTrainedAttackTargetInput(
 	id, trainedPokemonId, moveId, targetPokemonId uint, targetPokemonNature string,
 	targetPokemonAbilityId uint, targetEffortValueH, targetEffortValueB, targetEffortValueD int,
-) TrainedAttackTargetInput {
-	return TrainedAttackTargetInput{
+) *TrainedAttackTargetInput {
+	return &TrainedAttackTargetInput{
 		id:                        id,
 		trainedPokemonId:          trainedPokemonId,
 		moveId:                    moveId,
@@ -32,6 +32,35 @@ func NewTrainedAttackTargetInput(
 		targetPokemonEffortValueB: targetEffortValueB,
 		targetPokemonEffortValueD: targetEffortValueD,
 	}
+}
+
+func NewTrainedAttackTargetBuilder() *TrainedAttackTargetInput {
+	return &TrainedAttackTargetInput{}
+}
+
+func (i *TrainedAttackTargetInput) Id(id uint) {
+	i.id = id
+}
+func (i *TrainedAttackTargetInput) TrainedPokemonId(trainedPokemonId uint) {
+	i.trainedPokemonId = trainedPokemonId
+}
+func (i *TrainedAttackTargetInput) MoveId(moveId uint) {
+	i.moveId = moveId
+}
+func (i *TrainedAttackTargetInput) TargetPokemonAbilityId(targetPokemonAbilityId uint) {
+	i.targetPokemonAbilityId = targetPokemonAbilityId
+}
+func (i *TrainedAttackTargetInput) TargetPokemonNature(targetPokemonNature string) {
+	i.targetPokemonNature = targetPokemonNature
+}
+func (i *TrainedAttackTargetInput) TargetPokemonEffortValueH(effortValueH int) {
+	i.targetPokemonEffortValueH = effortValueH
+}
+func (i *TrainedAttackTargetInput) TargetPokemonEffortValueB(effortValueB int) {
+	i.targetPokemonEffortValueB = effortValueB
+}
+func (i *TrainedAttackTargetInput) TargetPokemonEffortValueD(effortValueD int) {
+	i.targetPokemonEffortValueD = effortValueD
 }
 
 func (i TrainedAttackTargetInput) BuildDomain() (*trainings.TrainedPokemonAttackTarget, error) {

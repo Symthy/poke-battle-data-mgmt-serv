@@ -95,7 +95,7 @@ func ToDomainTrainedPokemonAttackTarget(schema schema.TrainedPokemonAttackTarget
 }
 
 func ToDomainTrainedPokemonDefenceTarget(schema schema.TrainedPokemonDefenceTarget) (*trainings.TrainedPokemonDefenceTarget, error) {
-	input := factory.NewTrainedDefenceTargetInput(schema.ID, schema.TrainedPokemonId,
+	input := factory.NewTrainedDefenseTargetInput(schema.ID, schema.TrainedPokemonId,
 		uint(schema.MoveId), uint(schema.TargetPokemonId), schema.TargetPokemonNature.String(),
 		uint(schema.TargetPokemonAbilityId), schema.TargetPokemonEffortValueA,
 		schema.TargetPokemonEffortValueC)

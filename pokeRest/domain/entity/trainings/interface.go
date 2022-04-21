@@ -39,7 +39,7 @@ type ITrainedPokemonAttackNotification interface {
 }
 
 type ITrainedPokemonDefenceNotification interface {
-	SetId(identifier.TrainedDefenceTargetId)
+	SetId(identifier.TrainedDefenseTargetId)
 	ITrainedPokemonTarget
 	SetTargetPokemonEffortA(value.EffortValue)
 	SetTargetPokemonEffortC(value.EffortValue)
