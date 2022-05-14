@@ -6,4 +6,4 @@ oapi-codegen -generate "server" -package server ./apiDoc/PokeRest.v1.yaml > ./po
 
 oapi-codegen -generate "types" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/adapters/rest/autogen/server/types.gen.go
 
-# wire ./pokerest/adapters/di/wire.go
+wire ./pokerest/adapters/di/wire.go

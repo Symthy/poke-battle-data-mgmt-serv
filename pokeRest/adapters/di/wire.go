@@ -6,13 +6,17 @@ package di
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/abilities"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/battles"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/items"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/moves"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/parties"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
+	"github.com/Symthy/PokeRest/pokeRest/application/service/trainings"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/types"
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
 	i_repository "github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository"
+	"github.com/Symthy/PokeRest/pokeRest/presentation/auth"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
 	"github.com/Symthy/PokeRest/test/mock"
 	"github.com/google/wire"
@@ -63,7 +67,7 @@ func InitPokemonControllerByRepoMock() *controller.PokemonController {
 }
 
 /* Ability */
-func InitAbilityController() *controller.AbilityController {
+func InitAbilityController(dbClient orm.IDbClient) *controller.AbilityController {
 	wire.Build(
 		controller.NewAbilityController,
 		abilities.NewAbilityReadService,
@@ -74,7 +78,7 @@ func InitAbilityController() *controller.AbilityController {
 }
 
 /* Move */
-func InitMoveController() *controller.MoveController {
+func InitMoveController(dbClient orm.IDbClient) *controller.MoveController {
 	wire.Build(
 		controller.NewMoveController,
 		moves.NewMoveReadService,
@@ -85,10 +89,10 @@ func InitMoveController() *controller.MoveController {
 }
 
 /* Item */
-func InitItemController() *controller.ItemController {
+func InitItemController(dbClient orm.IDbClient) *controller.ItemController {
 	wire.Build(
 		controller.NewItemController,
-		moves.NewItemReadService,
+		items.NewItemReadService,
 		repository.NewHeldItemRepository,
 		wire.Bind(new(i_repository.IHeldItemRepository), new(*repository.HeldItemRepository)),
 	)
@@ -105,7 +109,7 @@ func InitTypeController() *controller.TypeController {
 }
 
 /* PartyTag */
-func InitItemController() *controller.ItemController {
+func InitPartyTagController(dbClient orm.IDbClient) *controller.PartyTagController {
 	wire.Build(
 		controller.NewPartyTagController,
 		parties.NewPartyTagReadService,
@@ -117,10 +121,14 @@ func InitItemController() *controller.ItemController {
 }
 
 /* Party */
-func InitPartyController() *controller.PartyController {
+func InitPartyController(dbClient orm.IDbClient) *controller.PartyController {
 	wire.Build(
 		controller.NewPartyController,
+		auth.NewAccessUserResolver,
+		users.NewUserReadService,
 		parties.NewPartyWriteService,
+		repository.NewUserRepository,
+		wire.Bind(new(i_repository.IUserRepository), new(*repository.UserRepository)),
 		repository.NewPartyRepository,
 		wire.Bind(new(i_repository.IPartyRepository), new(*repository.PartyRepository)),
 	)
@@ -128,3 +136,33 @@ func InitPartyController() *controller.PartyController {
 }
 
 /* TrainedPokemon */
+func InitTrainedPokemonController(dbClient orm.IDbClient) *controller.TrainedPokemonController {
+	wire.Build(
+		controller.NewTrainedPokemonController,
+		auth.NewAccessUserResolver,
+		users.NewUserReadService,
+		trainings.NewTrainedPokemonWriteService,
+		repository.NewUserRepository,
+		wire.Bind(new(i_repository.IUserRepository), new(*repository.UserRepository)),
+		repository.NewTrainedPokemonRepository,
+		wire.Bind(new(i_repository.ITrainedPokemonRepository), new(*repository.TrainedPokemonRepository)),
+	)
+	return nil
+}
+
+/* BattleRecord */
+func InitBattleRecordController(dbClient orm.IDbClient) *controller.BattleRecordController {
+	wire.Build(
+		controller.NewBattleRecordController,
+		auth.NewAccessUserResolver,
+		users.NewUserReadService,
+		battles.NewBattleRecordWriteService,
+		repository.NewUserRepository,
+		wire.Bind(new(i_repository.IUserRepository), new(*repository.UserRepository)),
+		repository.NewPartyRepository,
+		wire.Bind(new(i_repository.IPartyRepository), new(*repository.PartyRepository)),
+		repository.NewBattleRecordRepository,
+		wire.Bind(new(i_repository.IBattleRecordRepository), new(*repository.BattleRecordRepository)),
+	)
+	return nil
+}
