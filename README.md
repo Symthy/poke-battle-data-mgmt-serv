@@ -28,15 +28,28 @@ https://github.com/cbrand/go-filterparams
 
 ## Code Auto Generate
 
-```
-./autoGen.sh
+```sh
+go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
+go install github.com/google/wire/cmd/wire@latest
+./run_autogen.sh
 ```
 
 ## Use Libraries
 
+### Lint tool
+
+- golangci: https://github.com/golangci/golangci-lint#macos
+
+※ go-lintは非推奨になった
+
+参考： [golangciを理解する](https://zenn.dev/sanpo_shiho/books/61bc1e1a30bf27/viewer)
+
 ### OpenAPI server code generate
 
 - oapi-codegen: https://github.com/deepmap/oapi-codegen
+
+参考：
+- [OpenAPIスキーマから生成されるコードに任意の型を指定する](https://times.hrbrain.co.jp/entry/2020/12/18/openapi-x-go-type)
 
 ### Framework
 
@@ -46,12 +59,6 @@ https://github.com/cbrand/go-filterparams
 
 - wire
 https://github.com/google/wire
-```
-go get github.com/google/wire/cmd/wire
-```
-```
-wire pokeRest/adapters/di/wire.go 
-```
 
 ### ORM 
 - gorm: 本使用

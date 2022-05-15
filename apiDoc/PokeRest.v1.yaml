@@ -26,12 +26,14 @@ paths:
                 $ref: '#/components/schemas/Pokemons'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemons
@@ -69,6 +71,7 @@ paths:
           description: 最大実数値フィルター
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -76,12 +79,14 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: pokedexNo
         in: path
         required: true
         description: 図鑑No
       - schema:
           type: integer
+          format: uint64
         name: formNo
         in: path
         description: フォルムNo
@@ -99,12 +104,14 @@ paths:
                 $ref: '#/components/schemas/PokemonDetail'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemon-details-by-pokedexNo-and-formNo
@@ -113,6 +120,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: pokedexNo
         in: path
         required: true
@@ -130,12 +138,14 @@ paths:
                 $ref: '#/components/schemas/PokemonDetails'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemon-details-by-pokedexNo
@@ -155,12 +165,14 @@ paths:
                 $ref: '#/components/schemas/Pokemons'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemons-details
@@ -191,12 +203,14 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: pokedexNo
         in: path
         required: true
         description: 図鑑No
       - schema:
           type: integer
+          format: uint64
         name: formNo
         in: path
         description: フォルムNo
@@ -213,12 +227,14 @@ paths:
                 $ref: '#/components/schemas/Pokemon'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemon-by-pokedexNo-and-formNo
@@ -238,12 +254,14 @@ paths:
                 $ref: '#/components/schemas/Pokemons'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemons-by-specified-ability
@@ -252,6 +270,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: abilityId
         in: path
         required: true
@@ -269,12 +288,14 @@ paths:
                 $ref: '#/components/schemas/Pokemons'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-pokemons-by-specified-move
@@ -284,6 +305,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: moveId
         in: path
         required: true
@@ -301,12 +323,14 @@ paths:
           headers: {}
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-abilities
@@ -321,11 +345,16 @@ paths:
           description: 特性名検索
         - schema:
             type: string
+            enum:
+              - All
+              - Attack
+              - Defense
           in: query
-          description: 分類指定(All/Attack/Deffence)
+          description: 分類指定(All/Attack/Defense)
           name: specifies
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -333,6 +362,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: avilityId
         in: path
         description: 特性ID
@@ -349,12 +379,14 @@ paths:
           headers: {}
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-ability-by-Id
@@ -365,6 +397,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: pokemonId
         in: path
         required: true
@@ -380,12 +413,14 @@ paths:
           headers: {}
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-abilities-by-specifed-pokemon-id
@@ -407,12 +442,14 @@ paths:
                 $ref: '#/components/schemas/Moves'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-moves
@@ -430,6 +467,7 @@ paths:
           description: タイプ検索
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -438,6 +476,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: moveId
         in: path
         required: true
@@ -455,12 +494,14 @@ paths:
                 $ref: '#/components/schemas/Move'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-move-by-Id
@@ -479,12 +520,14 @@ paths:
                 $ref: '#/components/schemas/Moves'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-moves-by-specified-pokemon-id
@@ -493,6 +536,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: pokemonId
         in: path
         required: true
@@ -518,12 +562,14 @@ paths:
                   - types
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-types
@@ -543,12 +589,14 @@ paths:
                 $ref: '#/components/schemas/TypeCompatibilityTable'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-types-compability
@@ -575,12 +623,14 @@ paths:
                 $ref: '#/components/schemas/TypeCompatibility'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-type-compability-of-attack-side
@@ -606,12 +656,14 @@ paths:
                 $ref: '#/components/schemas/TypeCompatibility'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-type-compability-of-defense-side
@@ -630,12 +682,14 @@ paths:
                 $ref: '#/components/schemas/HeldItems'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-held-items
@@ -652,6 +706,7 @@ paths:
           description: 分類指定(All/Attack/Deffence)
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -670,12 +725,14 @@ paths:
                 $ref: '#/components/schemas/HeldItems'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-held-items-id
@@ -683,6 +740,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -706,6 +764,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons
@@ -738,6 +802,7 @@ paths:
           description: 持ち物検索
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -759,6 +824,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -770,6 +843,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -790,6 +864,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id
@@ -809,6 +889,10 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
         '500':
           $ref: '#/components/responses/500'
       description: ''
@@ -830,6 +914,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          description: Not Acceptable
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -848,6 +940,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -870,6 +963,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id-attacks
@@ -891,6 +990,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -902,12 +1009,14 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: trainedPokemonId
         in: path
         required: true
         description: trained pokemon id
       - schema:
           type: integer
+          format: uint64
         name: attackId
         in: path
         required: true
@@ -930,6 +1039,12 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           description: Internal Server Error
       operationId: get-trained-pokemons-id-attacks-id
@@ -947,6 +1062,10 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
         '500':
           $ref: '#/components/responses/500'
       tags:
@@ -969,6 +1088,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -980,6 +1107,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -995,8 +1123,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TrainedPokemonDeffences'
-        '201':
-          description: Created
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1005,6 +1131,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id-deffences
@@ -1026,6 +1158,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1037,12 +1177,14 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: trainedPokemonId
         in: path
         required: true
         description: trained pokemon id
       - schema:
           type: integer
+          format: uint64
         name: deffenceId
         in: path
         required: true
@@ -1062,6 +1204,10 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-trained-pokemons-id-deffences-id
@@ -1084,6 +1230,10 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
         '500':
           $ref: '#/components/responses/500'
     put:
@@ -1104,6 +1254,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1131,6 +1289,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-parties
@@ -1142,6 +1306,7 @@ paths:
           description: ポケモン
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -1169,6 +1334,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1180,6 +1353,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1202,6 +1376,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-parties-id
@@ -1224,6 +1404,8 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
         '500':
           $ref: '#/components/responses/500'
     put:
@@ -1244,6 +1426,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1270,12 +1460,17 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-parties-tags
       parameters:
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -1297,6 +1492,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1308,6 +1511,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1329,6 +1533,10 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
         '500':
           $ref: '#/components/responses/500'
   /battles:
@@ -1347,6 +1555,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1354,10 +1570,37 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RequestCreateBattleRecord'
+    get:
+      summary: GET Battle record
+      operationId: get-battles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BattleRecords'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
+        '500':
+          description: Internal Server Error
   '/battles/{id}':
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1367,6 +1610,18 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '414':
+          $ref: '#/components/responses/414'
+        '500':
+          $ref: '#/components/responses/500'
     put:
       summary: PUT Battle record
       operationId: put-battles-id
@@ -1381,6 +1636,14 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1392,6 +1655,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: partyId
         in: path
         required: true
@@ -1413,6 +1677,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-battles-partyId
@@ -1420,6 +1690,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: userId
         in: path
         required: true
@@ -1441,6 +1712,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-battles-userId
@@ -1448,6 +1725,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1470,6 +1748,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id
@@ -1493,18 +1777,26 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id-trained-pokemons
       parameters:
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1512,6 +1804,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1534,12 +1827,19 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id-parties
       parameters:
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -1547,6 +1847,7 @@ paths:
     parameters:
       - schema:
           type: integer
+          format: uint64
         name: id
         in: path
         required: true
@@ -1569,12 +1870,19 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       operationId: get-users-id-battles
       parameters:
         - schema:
             type: integer
+            format: uint64
           in: query
           name: next
           description: next id
@@ -1591,6 +1899,16 @@ paths:
                 $ref: '#/components/schemas/DamageResult'
         '400':
           description: Bad Request
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          description: Not Acceptable
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           description: Internal Server Error
       requestBody:
@@ -1612,6 +1930,16 @@ paths:
                 $ref: '#/components/schemas/DamageResults'
         '400':
           description: Bad Request
+        '403':
+          $ref: '#/components/responses/403'
+        '406':
+          $ref: '#/components/responses/406'
+        '413':
+          $ref: '#/components/responses/413'
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           description: Internal Server Error
       requestBody:
@@ -1639,6 +1967,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '413':
+          description: Request Entity Too Large
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1665,6 +1999,12 @@ paths:
           $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
+        '413':
+          description: Request Entity Too Large
+        '414':
+          $ref: '#/components/responses/414'
+        '415':
+          $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
       requestBody:
@@ -1673,18 +2013,38 @@ paths:
             schema:
               $ref: '#/components/schemas/AuthUser'
     parameters: []
+  /health:
+    get:
+      summary: GET health check
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '414':
+          $ref: '#/components/responses/414'
+        '500':
+          $ref: '#/components/responses/500'
+      operationId: get-health
 components:
   schemas:
     Pokemon:
       description: Pokemon Summary
       type: object
+      title: Pokemon
       properties:
         id:
-          type: number
+          type: integer
+          format: uint16
         pokedexNo:
-          type: number
+          type: integer
+          format: uint16
         formNo:
-          type: number
+          type: integer
+          format: uint16
         formName:
           type: string
         name:
@@ -1694,27 +2054,36 @@ components:
           type: string
           minLength: 1
         baseStatsH:
-          type: number
+          type: integer
+          format: uint8
         baseStatsA:
-          type: number
+          type: integer
+          format: uint8
         baseStatsB:
-          type: number
+          type: integer
+          format: uint8
         baseStatsC:
-          type: number
+          type: integer
+          format: uint8
         baseStatsD:
-          type: number
+          type: integer
+          format: uint8
         baseStatsS:
-          type: number
+          type: integer
+          format: uint8
         type1:
           type: string
         type2:
           type: string
         ability1:
-          type: number
+          type: integer
+          format: uint16
         ability2:
-          type: number
+          type: integer
+          format: uint16
         hiddenAbility:
-          type: number
+          type: integer
+          format: uint16
       required:
         - id
         - pokedexNo
@@ -1730,17 +2099,20 @@ components:
         - baseStatsS
         - type1
         - ability1
-      title: Pokemon
     PokemonDetail:
       description: Pokemon Detail
       type: object
+      title: PokemonDetail
       properties:
         id:
-          type: number
+          type: integer
+          format: uint16
         pokedexNo:
-          type: number
+          type: integer
+          format: uint16
         formNo:
-          type: number
+          type: integer
+          format: uint16
         FormName:
           type: string
         englishName:
@@ -1750,17 +2122,23 @@ components:
           type: string
           minLength: 1
         baseStatsH:
-          type: number
+          type: integer
+          format: uint8
         baseStatsA:
-          type: number
+          type: integer
+          format: uint8
         baseStatsB:
-          type: number
+          type: integer
+          format: uint8
         baseStatsC:
-          type: number
+          type: integer
+          format: uint8
         baseStatsD:
-          type: number
+          type: integer
+          format: uint8
         baseStatsS:
-          type: number
+          type: integer
+          format: uint8
         type1:
           type: string
         type2:
@@ -1788,7 +2166,6 @@ components:
         - type1
         - ability1
         - moves
-      title: PokemonDetail
     Pokemons:
       description: pokemon summary data list
       type: object
@@ -1799,11 +2176,13 @@ components:
           items:
             $ref: '#/components/schemas/Pokemon'
         count:
-          type: number
+          type: integer
+          format: uint16
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
+          format: uint16
       required:
         - pokemons
         - count
@@ -1818,11 +2197,13 @@ components:
           items:
             $ref: '#/components/schemas/PokemonDetail'
         count:
-          type: number
+          type: integer
+          format: uint16
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
+          format: uint16
       required:
         - pokemons
         - count
@@ -1833,7 +2214,8 @@ components:
       title: Move
       properties:
         id:
-          type: string
+          type: integer
+          format: uint16
         name:
           type: string
         type:
@@ -1842,30 +2224,44 @@ components:
           description: 分類（物理/特殊）
           type: string
         power:
-          type: number
+          type: integer
           description: 威力
-        specialMovePower:
-          type: number
-          description: 威力（ダイマックス技等）
+          format: uint8
+          minimum: 0
+          maximum: 200
+        specialPower:
+          type: integer
+          description: 威力
+          format: uint8
+          minimum: 0
+          maximum: 200
         accuracy:
-          type: number
+          type: integer
           description: 命中
+          format: uint8
+          minimum: 0
+          maximum: 100
         pp:
-          type: number
+          type: integer
           description: PP
+          format: uint8
+          minimum: 0
+          maximum: 100
         isContactMove:
-          type: boolean
           description: 接触/非接触
+          type: boolean
         isCanGuard:
           type: boolean
           description: 守る
+        corrections:
+          $ref: '#/components/schemas/CorrectionDataList'
       required:
         - id
         - name
         - type
         - species
         - power
-        - specialMovePower
+        - specialPower
         - accuracy
         - pp
         - isContactMove
@@ -1880,11 +2276,13 @@ components:
           items:
             $ref: '#/components/schemas/Move'
         count:
-          type: number
+          type: integer
+          format: uint16
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
+          format: uint16
       required:
         - moves
         - count
@@ -1892,20 +2290,21 @@ components:
     Ability:
       description: 特性
       type: object
+      title: Ability
       properties:
         id:
-          type: number
+          type: integer
+          format: uint16
         name:
           type: string
         description:
           type: string
-        correctionValues:
-          $ref: '#/components/schemas/CorrectionData'
+        corrections:
+          $ref: '#/components/schemas/CorrectionDataList'
       required:
         - id
         - name
         - description
-      title: Ability
     Abilities:
       description: 特性一覧
       type: object
@@ -1916,11 +2315,13 @@ components:
           items:
             $ref: '#/components/schemas/Ability'
         count:
-          type: number
+          type: integer
+          format: uint16
         hasNext:
-          type: number
+          type: boolean
         next:
-          type: number
+          type: integer
+          format: uint16
       required:
         - abilities
         - count
@@ -1928,16 +2329,21 @@ components:
     HeldItem:
       title: HeldItem
       type: object
+      description: 持ち物
       properties:
         id:
-          type: number
+          type: integer
+          format: uint16
         name:
           type: string
         description:
           type: string
-        correctionValues:
-          $ref: '#/components/schemas/CorrectionData'
-      description: 持ち物
+        corrections:
+          $ref: '#/components/schemas/CorrectionDataList'
+      required:
+        - id
+        - name
+        - description
     HeldItems:
       title: HeldItems
       type: object
@@ -1948,68 +2354,45 @@ components:
           items:
             $ref: '#/components/schemas/HeldItem'
         count:
-          type: number
+          type: integer
+          format: uint16
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
+          format: uint16
       required:
         - heldItems
         - count
         - hasNext
     CorrectionData:
-      description: 各種補正値
       type: object
       properties:
-        physicalMovePowerCorrectionValue:
+        correctionValue:
+          description: 補正値
           type: number
-          description: 物理技威力補正値
-        specialMovePowerCorrectionValue:
-          type: number
-          description: 特殊技威力補正値
-        attackPowerCorrectionValue:
-          type: number
-          description: 攻撃威力補正値
-        specialPowerCorrectionValue:
-          type: number
-          description: 特殊攻撃威力補正値
-        attackCorrectionValue:
-          type: number
-          description: 攻撃(力)補正値
-        specialCorrectionValue:
-          type: number
-          description: 特殊攻撃(力)補正値
-        defenseCorrectionValue:
-          type: number
-          description: 防御(力)補正値
-        specialDefenseCorrectionValue:
-          type: number
-          description: 特殊防御(力)補正値
-        damageCorrectionType1:
+        correctionType:
+          description: 補正対象
           type: string
-          description: ダメージ補正タイプ1
-        damageCorrectionValue1:
-          type: number
-          description: ダメージ補正値1
-        damageCorrectionType2:
-          type: string
-          description: ダメージ補正タイプ2
-        damageCorrectionValue2:
-          type: number
-          description: ダメージ補正値2
-        weightCorrectionValue:
-          type: number
-          description: 重さ補正値
+      required:
+        - correctionValue
+        - correctionType
+    CorrectionDataList:
+      description: 補正値リスト
+      title: ''
+      type: object
+      properties:
+        corrections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrectionData'
+      required:
+        - corrections
     TypeCompatibilityTable:
       description: タイプ相性表
       type: object
-      x-examples:
-        example-1:
-          compatibilityTable:
-            - '0':
-                - {}
-          typeOrder:
-            - {}
+      x-examples: {}
+      title: TypeCompatibilityTable
       properties:
         compatibilityTable:
           type: array
@@ -2025,17 +2408,10 @@ components:
       required:
         - compatibilityTable
         - typeOrder
-      title: TypeCompatibilityTable
     TypeCompatibility:
       description: 1タイプに対するタイプ相性リスト
       type: object
-      x-examples:
-        example-1:
-          compatibilityTable:
-            - '0':
-                - {}
-          typeOrder:
-            - {}
+      x-examples: {}
       title: TypeCompatibility
       properties:
         targetType:
@@ -2050,36 +2426,48 @@ components:
           items:
             type: string
       required:
+        - targetType
         - compatibilities
         - typeOrder
     Form:
       title: Form
       type: object
+      description: フォルム
       properties:
         id:
-          type: number
+          type: integer
+          format: uint16
         name:
           type: string
         IsRegionalVariant:
           type: boolean
         regionName:
           type: string
-      description: フォルム
+      required:
+        - id
+        - name
+        - IsRegionalVariant
+        - regionName
     User:
       title: User
       type: object
       description: user
       properties:
         id:
-          type: number
+          type: integer
+          format: uint64
         name:
           type: string
         displayName:
           type: string
-        email:
+        twitter:
           type: string
         profile:
           type: string
+      required:
+        - id
+        - name
+        - twitter
     Error:
       title: Error
       type: object
@@ -2094,18 +2482,21 @@ components:
       title: AuthUser
       type: object
       properties:
-        id:
-          type: number
         name:
           type: string
         password:
           type: string
+      required:
+        - name
+        - password
     LoginSuccess:
       title: LoginSuccess
       type: object
       properties:
         token:
           type: string
+      required:
+        - token
     TrainedPokemon:
       title: TrainedPokemon
       type: object
@@ -2113,12 +2504,15 @@ components:
       properties:
         id:
           type: integer
+          format: uint64
         pokemonNo:
           type: integer
+          format: uint16
         FormNo:
           type: integer
+          format: uint16
         PokemonName:
-          type: integer
+          type: string
         nickname:
           type: string
         gender:
@@ -2131,16 +2525,22 @@ components:
           type: string
         effortValueH:
           type: integer
+          format: uint8
         effortValueA:
           type: integer
+          format: uint8
         effortValueB:
           type: integer
+          format: uint8
         effortValueC:
           type: integer
+          format: uint8
         effortValueD:
           type: integer
+          format: uint8
         effortValueS:
           type: integer
+          format: uint8
         isPrivate:
           type: boolean
         moveName1:
@@ -2154,11 +2554,13 @@ components:
         attackAdjustmentIds:
           type: array
           items:
-            type: number
+            type: integer
+            format: uint64
         deffenceAdjustmentIds:
           type: array
           items:
-            type: number
+            type: integer
+            format: uint64
       required:
         - id
         - pokemonNo
@@ -2178,12 +2580,17 @@ components:
       properties:
         id:
           type: integer
+          format: uint64
         pokemonNo:
           type: integer
+          format: uint16
         formNo:
           type: integer
+          format: uint16
       required:
         - id
+        - pokemonNo
+        - formNo
     TrainedPokemonDetail:
       title: TrainedPokemonDetail
       type: object
@@ -2191,6 +2598,7 @@ components:
       properties:
         id:
           type: integer
+          format: uint64
         pokemon:
           $ref: '#/components/schemas/Pokemon'
         nickname:
@@ -2205,16 +2613,22 @@ components:
           $ref: '#/components/schemas/HeldItem'
         effortValueH:
           type: integer
+          format: uint8
         effortValueA:
           type: integer
+          format: uint8
         effortValueB:
           type: integer
+          format: uint8
         effortValueC:
           type: integer
+          format: uint8
         effortValueD:
           type: integer
+          format: uint8
         effortValueS:
           type: integer
+          format: uint8
         move1:
           $ref: '#/components/schemas/Move'
         move2:
@@ -2255,11 +2669,13 @@ components:
           items:
             $ref: '#/components/schemas/TrainedPokemon'
         count:
-          type: number
+          type: integer
+          format: uint64
         hasNext:
           type: boolean
         next:
-          type: number
+          type: integer
+          format: uint64
       required:
         - trainedPokemons
         - count
@@ -2274,17 +2690,23 @@ components:
           type: object
           required:
             - pokemon
+            - effortValueH
+            - effortValueB
+            - effortValueD
           properties:
             pokemon:
               $ref: '#/components/schemas/Pokemon'
             nature:
               type: string
             effortValueH:
-              type: number
+              type: integer
+              format: uint8
             effortValueB:
-              type: number
+              type: integer
+              format: uint8
             effortValueD:
-              type: number
+              type: integer
+              format: uint8
       required:
         - move
         - opponentPokemon
@@ -2297,7 +2719,10 @@ components:
           items:
             $ref: '#/components/schemas/TrainedPokemonAttack'
         count:
-          type: number
+          type: integer
+      required:
+        - attackAdjustments
+        - count
     TrainedPokemonDeffence:
       title: TrainedPokemonDeffence
       type: object
@@ -2308,6 +2733,8 @@ components:
           type: object
           required:
             - pokemon
+            - effortValueA
+            - effortValueC
           properties:
             pokemon:
               $ref: '#/components/schemas/Pokemon'
@@ -2315,8 +2742,10 @@ components:
               type: string
             effortValueA:
               type: integer
+              format: uint8
             effortValueC:
               type: integer
+              format: uint8
       required:
         - move
         - opponentPokemon
@@ -2327,7 +2756,10 @@ components:
         deffenceAdjustments:
           $ref: '#/components/schemas/TrainedPokemonDeffence'
         count:
-          type: number
+          type: integer
+      required:
+        - deffenceAdjustments
+        - count
     Party:
       title: Party
       type: object
@@ -2335,6 +2767,7 @@ components:
       properties:
         id:
           type: integer
+          format: uint64
         name:
           type: string
         battleFormat:
@@ -2346,11 +2779,16 @@ components:
         memberPokemonIds:
           type: array
           items:
-            type: integer
+            $ref: '#/components/schemas/TrainedPokemonNo'
         createdUserId:
           type: integer
+          format: uint64
         createdUserName:
           type: string
+      required:
+        - id
+        - battleFormat
+        - memberPokemonIds
     Parties:
       title: Parties
       type: object
@@ -2362,10 +2800,12 @@ components:
             $ref: '#/components/schemas/Party'
         count:
           type: integer
+          format: uint64
         hasNext:
           type: boolean
         next:
           type: integer
+          format: uint64
       required:
         - parties
         - count
@@ -2377,6 +2817,7 @@ components:
       properties:
         id:
           type: integer
+          format: uint64
         name:
           type: string
         battleFormat:
@@ -2385,26 +2826,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PartyTags'
-        memberPokemonIds:
+        memberPokemons:
           type: array
           items:
             $ref: '#/components/schemas/TrainedPokemonDetail'
         createdUserId:
           type: integer
+          format: uint64
         createdUserName:
           type: string
+      required:
+        - id
+        - battleFormat
+        - memberPokemons
     PartyTag:
       title: PartyTag
       type: object
       properties:
         id:
           type: integer
+          format: uint64
         name:
           type: string
         isGeneration:
           type: boolean
         isSeason:
           type: boolean
+      required:
+        - id
+        - name
+        - isGeneration
+        - isSeason
     PartyTags:
       title: PartyTags
       type: object
@@ -2416,10 +2868,12 @@ components:
             $ref: '#/components/schemas/PartyTag'
         count:
           type: integer
+          format: uint64
         hasNext:
           type: boolean
         next:
           type: integer
+          format: uint64
       required:
         - partytags
         - count
@@ -2430,8 +2884,10 @@ components:
       properties:
         id:
           type: integer
+          format: uint64
         partyId:
           type: integer
+          format: uint64
         battleSeason:
           $ref: '#/components/schemas/BattleSeason'
         battleResult:
@@ -2442,10 +2898,20 @@ components:
           type: array
           items:
             type: integer
+            format: uint64
         opponentElectionPokemonIds:
           type: array
           items:
             type: integer
+            format: uint64
+      required:
+        - id
+        - partyId
+        - battleSeason
+        - battleResult
+        - opponentParty
+        - selfElectionPokemonIds
+        - opponentElectionPokemonIds
     BattleRecords:
       title: PartyTags
       type: object
@@ -2457,10 +2923,12 @@ components:
             $ref: '#/components/schemas/BattleRecord'
         count:
           type: integer
+          format: uint64
         hasNext:
           type: boolean
         next:
           type: integer
+          format: uint64
       required:
         - partytags
         - count
@@ -2471,35 +2939,51 @@ components:
       properties:
         generation:
           type: integer
+          format: uint16
         series:
           type: integer
+          format: uint16
         season:
           type: integer
+          format: uint16
+      required:
+        - generation
+        - series
+        - season
     BattleOpponentParty:
       title: BattleOpponentParty
       type: object
       properties:
         id:
           type: integer
+          format: uint64
         pokemonId1:
           type: integer
+          format: uint16
         pokemonId2:
           type: integer
+          format: uint16
         pokemonId3:
           type: integer
+          format: uint16
         pokemonId4:
           type: integer
+          format: uint16
         pokemonId5:
           type: integer
+          format: uint16
         pokemonId6:
           type: integer
+          format: uint16
+      required:
+        - id
     RequestCreateBattleRecord:
       description: ''
       type: object
-      x-examples: {}
       properties:
         partyId:
           type: integer
+          format: uint64
         battleSeason:
           $ref: '#/components/schemas/BattleSeason'
         result:
@@ -2518,10 +3002,12 @@ components:
               type: array
               items:
                 type: integer
+                format: uint16
             electionPokemonIds:
               type: array
               items:
                 type: integer
+                format: uint16
       required:
         - partyId
         - result
@@ -2530,26 +3016,13 @@ components:
     RequestUpdateBattleRecord:
       description: ''
       type: object
-      x-examples:
-        example-1:
-          id: 0
-          partyId: 0
-          season:
-            generation: 0
-            series: 0
-            season: 0
-          result: string
-          battleFormat: string
-          opponentParty:
-            pokemonIds:
-              - 0
-            electionPokemonIds:
-              - 0
       properties:
         id:
           type: integer
+          format: uint64
         partyId:
           type: integer
+          format: uint64
         battleSeason:
           $ref: '#/components/schemas/BattleSeason'
         result:
@@ -2568,10 +3041,12 @@ components:
               type: array
               items:
                 type: integer
+                format: uint64
             electionPokemonIds:
               type: array
               items:
                 type: integer
+                format: uint64
       required:
         - id
         - partyId
@@ -2581,7 +3056,6 @@ components:
     RequestCreateParty:
       title: RequestCreateParty
       type: object
-      x-examples: {}
       properties:
         name:
           type: string
@@ -2593,18 +3067,18 @@ components:
           type: array
           items:
             type: string
-        trainedPokemons:
+        trainedPokemonIds:
           type: array
           items:
             type: integer
+            format: uint64
     RequestUpdateParty:
-      description: ''
       type: object
-      x-examples: {}
-      title: ''
+      title: RequestUpdateParty
       properties:
         id:
           type: integer
+          format: uint64
         name:
           type: string
           minLength: 1
@@ -2617,19 +3091,20 @@ components:
           type: array
           items:
             type: string
-        trainedPokemons:
+        trainedPokemonIds:
           type: array
           items:
             type: integer
+            format: uint64
       required:
         - id
     RequestUpdateTrainedPokemon:
       title: RequestCreateTrainedPokemon
       type: object
-      x-examples: {}
       properties:
         id:
           type: integer
+          format: uint64
         gender:
           type: string
         nickname:
@@ -2643,28 +3118,38 @@ components:
           properties:
             pokemonId:
               type: integer
+              format: uint64
             nature:
               type: string
             abilityId:
               type: integer
+              format: uint64
             heldItemId:
               type: integer
+              format: uint64
             effortValueH:
               type: integer
+              format: uint64
             effortValueA:
               type: integer
+              format: uint64
             effortValueB:
               type: integer
+              format: uint64
             effortValueC:
               type: integer
+              format: uint64
             effortValueD:
               type: integer
+              format: uint64
             effortValueS:
               type: integer
+              format: uint64
             moveIds:
               type: array
               items:
                 type: integer
+                format: uint64
           required:
             - pokemonId
       required:
@@ -2672,7 +3157,6 @@ components:
     RequestCreateTrainedPokemon:
       title: RequestCreateTrainedPokemon
       type: object
-      x-examples: {}
       properties:
         gender:
           type: string
@@ -2692,28 +3176,38 @@ components:
           properties:
             pokemonId:
               type: integer
+              format: uint64
             nature:
               type: string
             abilityId:
               type: integer
+              format: uint64
             heldItemId:
               type: integer
+              format: uint64
             effortValueH:
               type: integer
+              format: uint64
             effortValueA:
               type: integer
+              format: uint64
             effortValueB:
               type: integer
+              format: uint64
             effortValueC:
               type: integer
+              format: uint64
             effortValueD:
               type: integer
+              format: uint64
             effortValueS:
               type: integer
+              format: uint64
             moveIds:
               type: array
               items:
                 type: integer
+                format: uint64
       required:
         - isPrivate
         - adjustment
@@ -2724,25 +3218,31 @@ components:
       properties:
         trainedPokemonId:
           type: integer
+          format: uint64
         moveId:
           type: integer
+          format: uint64
         target:
           type: object
           properties:
             pokemonId:
               type: integer
+              format: uint64
             nature:
               type: string
             effortValueH:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
             effortValueB:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
             effortValueD:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
       required:
@@ -2753,28 +3253,35 @@ components:
       description: ''
       properties:
         id:
-          type: number
+          type: integer
+          format: uint64
         trainedPokemonId:
           type: integer
+          format: uint64
         moveId:
           type: integer
+          format: uint64
         target:
           type: object
           properties:
             pokemonId:
               type: integer
+              format: uint64
             nature:
               type: string
             effortValueH:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
             effortValueB:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
             effortValueD:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
       required:
@@ -2787,21 +3294,26 @@ components:
       properties:
         trainedPokemonId:
           type: integer
+          format: uint64
         moveId:
           type: integer
+          format: uint64
         target:
           type: object
           properties:
             pokemonId:
               type: integer
+              format: uint64
             nature:
               type: string
             effortValueA:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
             effortValueC:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
       required:
@@ -2812,24 +3324,30 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
+          format: uint64
         trainedPokemonId:
           type: integer
+          format: uint64
         moveId:
           type: integer
+          format: uint64
         target:
           type: object
           properties:
             pokemonId:
               type: integer
+              format: uint64
             nature:
               type: string
             effortValueA:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
             effortValueC:
               type: integer
+              format: uint64
               minimum: 0
               maximum: 252
       required:
@@ -2837,13 +3355,13 @@ components:
     RequestCalclateSingleDamage:
       description: ''
       type: object
-      x-examples: {}
-      title: ''
+      title: RequestCalclateSingleDamage
       properties:
         self:
           $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         moveId:
           type: integer
+          format: uint64
         target:
           $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         battleFormat:
@@ -2865,13 +3383,13 @@ components:
     RequestCalclateMultiDamages:
       description: ''
       type: object
-      x-examples: {}
-      title: ''
+      title: RequestCalclateMultiDamages
       properties:
         self:
           $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
         moveId:
           type: integer
+          format: uint64
         targets:
           type: array
           items:
@@ -2879,6 +3397,7 @@ components:
             properties:
               calcIndex:
                 type: integer
+                format: uint64
               target:
                 $ref: '#/components/schemas/RequestDamagePokemonAdjustment'
             required:
@@ -2903,44 +3422,41 @@ components:
     RequestDamagePokemonAdjustment:
       description: ''
       type: object
-      x-examples:
-        example-1:
-          pokemonId: 0
-          nature: string
-          abilityId: 0
-          heldItemId: string
-          effortValueH: 0
-          effortValueA: 0
-          effortValueB: 0
-          effortValueC: 0
-          effortValueD: 0
       properties:
         pokemonId:
           type: integer
+          format: uint64
         nature:
           type: string
         abilityId:
           type: integer
+          format: uint64
         heldItemId:
           type: integer
+          format: uint64
         effortValueH:
           type: integer
+          format: uint64
           minimum: 0
           maximum: 252
         effortValueA:
           type: integer
+          format: uint64
           minimum: 0
           maximum: 252
         effortValueB:
           type: integer
+          format: uint64
           minimum: 0
           maximum: 252
         effortValueC:
           type: integer
+          format: uint64
           minimum: 0
           maximum: 252
         effortValueD:
           type: integer
+          format: uint64
           minimum: 0
           maximum: 252
       required:
@@ -2956,10 +3472,13 @@ components:
             properties:
               calcIndex:
                 type: integer
+                format: uint16
               damage:
                 type: integer
+                format: uint16
         count:
           type: integer
+          format: uint16
         battleFormat:
           type: string
           enum:
@@ -2971,8 +3490,12 @@ components:
       properties:
         damage:
           type: integer
+          format: uint16
         battleFormat:
           type: string
+          enum:
+            - Single
+            - Double
   responses:
     '400':
       description: Bad Request
@@ -2998,6 +3521,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    '406':
+      description: Not Accepable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '413':
+      description: Payload Too Large
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+    '414':
+      description: URI Too Long
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+    '415':
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
     '500':
       description: Internal Server Error
       content:
@@ -3071,5 +3624,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RequestCalclateSingleDamage'
+  parameters: {}
 tags:
   - name: Pokemon Base Data
