@@ -13,18 +13,19 @@ type pi = identifier.PokemonId
 
 type PokemonSummaryReadService struct {
 	repo repository.IPokemonRepository
-	service.EntityAllFinder[ps, p, pi]
+	service.EntityAllFinder[ps, p, pi, uint16]
 }
 
 func NewPokemonSummaryReadService(repo repository.IPokemonRepository) PokemonSummaryReadService {
 	serv := PokemonSummaryReadService{repo: repo}
-	serv.EntityAllFinder = service.NewEntityAllFinder[ps, p, pi](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[ps, p, pi, uint16](repo)
 	return serv
 }
 
 // UC: 単体取得 (need?)
-func (s PokemonSummaryReadService) FindPokemon(id uint) (*pokemons.Pokemon, error) {
-	pokemon, err := s.repo.FindById(id)
+func (s PokemonSummaryReadService) FindPokemon(id uint64) (*pokemons.Pokemon, error) {
+	// Todo: validate id upper limit
+	pokemon, err := s.repo.FindById(uint16(id))
 	return pokemon, err
 }
 

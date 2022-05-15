@@ -14,7 +14,7 @@ type IBattleRecordNotification interface {
 	SetBattleResult(value.BattleResult)
 	SetBattleOpponentPartyId(identifier.BattleOpponentPartyId)
 	SetSelfElectionPokemons(ElectionPokemons)
-	SetSelfTrainedPokemons(ElectionPokemons)
+	SetSelfTrainedPokemons(ElectionTrainedPokemons)
 	SetOpponentElectionPokemons(ElectionPokemons)
 	IBattleOpponentPartyNotification
 	IBattleSeasonNotification
@@ -26,9 +26,9 @@ type IBattleOpponentPartyNotification interface {
 }
 
 type IBattleSeasonNotification interface {
-	SetGeneration(int)
-	SetSeries(int)
-	SetSeason(int)
+	SetGeneration(uint16)
+	SetSeries(uint16)
+	SetSeason(uint16)
 }
 
 type IBattleSeasonPeriodNotification interface {

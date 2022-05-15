@@ -14,7 +14,7 @@ func NewWeatherState(weather string) WeatherState {
 	}
 }
 
-func (w WeatherState) ApplyCorrection(damage int, data IPokemonBattleDataSet) int {
+func (w WeatherState) ApplyCorrection(damage uint16, data IPokemonBattleDataSet) uint16 {
 	if w.weather == WeatherNormal {
 		return damage
 	}

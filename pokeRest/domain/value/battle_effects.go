@@ -23,7 +23,7 @@ func (b BattleEffects) Overrides() *BattleOverrideValues {
 }
 
 func (b BattleEffects) ApplyCorrection(
-	value int, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) int {
+	value uint16, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) uint16 {
 	return b.corrections.Apply(value, target, data, side)
 }
 

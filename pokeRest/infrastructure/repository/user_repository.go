@@ -17,21 +17,21 @@ var (
 )
 
 type UserRepository struct {
-	BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId]
-	BaseWriteRepository[schema.User, users.User, identifier.UserId]
+	BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId, uint64]
+	BaseWriteRepository[schema.User, users.User, identifier.UserId, uint64]
 	dbClient orm.IDbClient
 }
 
 func NewUserRepository(dbClient orm.IDbClient) *UserRepository {
 	return &UserRepository{
-		BaseReadRepository: BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId]{
+		BaseReadRepository: BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId, uint64]{
 			dbClient:            dbClient,
 			emptySchemaBuilder:  emptyUserBuilder,
 			emptySchemasBuilder: emptyUsersBuilder,
 			domainsConstructor:  users.NewUsers,
 			toSchemaConverter:   conv.ToSchemaUser,
 		},
-		BaseWriteRepository: BaseWriteRepository[schema.User, users.User, identifier.UserId]{
+		BaseWriteRepository: BaseWriteRepository[schema.User, users.User, identifier.UserId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyUserBuilder,
 			toSchemaConverter:  conv.ToSchemaUser,

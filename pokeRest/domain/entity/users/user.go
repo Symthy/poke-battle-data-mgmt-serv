@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var _ entity.IDomain[identifier.UserId] = (*User)(nil)
+var _ entity.IDomain[identifier.UserId, uint64] = (*User)(nil)
 
 type User struct {
 	id          identifier.UserId

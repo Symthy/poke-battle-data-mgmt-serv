@@ -3,14 +3,14 @@ package damages
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
 type BattlePokemonAdjustment struct {
-	pokemonId    uint
-	abilityId    uint
-	heldItemId   uint
+	pokemonId    uint16
+	abilityId    uint16
+	heldItemId   uint16
 	nature       value.PokemonNature
 	effortValues value.EffortValues
 }
 
-func NewBattlePokemonAdjustment(pokemonId uint, abilityId uint, heldItemId uint,
+func NewBattlePokemonAdjustment(pokemonId uint16, abilityId uint16, heldItemId uint16,
 	nature value.PokemonNature, effortValues value.EffortValues) BattlePokemonAdjustment {
 	return BattlePokemonAdjustment{
 		pokemonId:    pokemonId,
@@ -21,13 +21,13 @@ func NewBattlePokemonAdjustment(pokemonId uint, abilityId uint, heldItemId uint,
 	}
 }
 
-func (a BattlePokemonAdjustment) PokemonId() uint {
+func (a BattlePokemonAdjustment) PokemonId() uint16 {
 	return a.pokemonId
 }
-func (a BattlePokemonAdjustment) AbilityId() uint {
+func (a BattlePokemonAdjustment) AbilityId() uint16 {
 	return a.abilityId
 }
-func (a BattlePokemonAdjustment) HeldItemId() uint {
+func (a BattlePokemonAdjustment) HeldItemId() uint16 {
 	return a.heldItemId
 }
 func (a BattlePokemonAdjustment) Nature() value.PokemonNature {

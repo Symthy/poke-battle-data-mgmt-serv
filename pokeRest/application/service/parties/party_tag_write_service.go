@@ -19,6 +19,6 @@ func (s PartyTagWriteService) SavePartyTag(name string) (*parties.PartyTag, erro
 	return s.repo.Create(partyTag)
 }
 
-func (s PartyTagWriteService) DeletePartyTag(id uint) (*parties.PartyTag, error) {
+func (s PartyTagWriteService) DeletePartyTag(id uint64) (*parties.PartyTag, error) {
 	return s.repo.Delete(id)
 }

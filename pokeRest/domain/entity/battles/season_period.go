@@ -11,7 +11,7 @@ type SeasonPeriod struct {
 	endDateTime   time.Time
 }
 
-func NewSeasonPeriod(generation int, series int, season int, startDateTime time.Time,
+func NewSeasonPeriod(generation, series, season uint64, startDateTime time.Time,
 	endDateTime time.Time) (*SeasonPeriod, error) {
 	s, err := NewSeason(generation, series, season)
 	if err != nil {

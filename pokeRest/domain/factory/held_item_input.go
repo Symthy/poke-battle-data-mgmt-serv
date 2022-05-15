@@ -7,13 +7,13 @@ import (
 )
 
 type HeldItemInput struct {
-	id            uint
+	id            uint64
 	name          string
 	description   string
 	battleEffects *value.BattleEffects
 }
 
-func NewHeldItemInput(id uint, name string, description string, battleEffects *value.BattleEffects) HeldItemInput {
+func NewHeldItemInput(id uint64, name string, description string, battleEffects *value.BattleEffects) HeldItemInput {
 	return HeldItemInput{id, name, description, battleEffects}
 }
 

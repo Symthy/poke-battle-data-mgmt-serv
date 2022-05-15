@@ -11,16 +11,15 @@ type EffortValues struct {
 	s EffortValue
 }
 
-func NewEffortValues(
-	valueH int, valueA int, valueB int, valueC int, valueD int, valueS int) (*EffortValues, error) {
-	total := valueH + valueA + valueB + valueC + valueD + valueS
+func NewEffortValues(valueH, valueA, valueB, valueC, valueD, valueS uint64) (*EffortValues, error) {
+	total := uint16(valueH + valueA + valueB + valueC + valueD + valueS)
 	if total > 510 {
 		return nil, errs.ThrowErrorInvalidValue("EffortValues", "total", string(rune(total)))
 	}
-	return NewEffortValuesNonValidate(valueH, valueA, valueB, valueC, valueD, valueS)
+	return NewEffortValuesIfValidIndividual(valueH, valueA, valueB, valueC, valueD, valueS)
 }
 
-func NewEffortValuesNonValidate(valueH int, valueA int, valueB int, valueC int, valueD int, valueS int) (*EffortValues, error) {
+func NewEffortValuesIfValidIndividual(valueH, valueA, valueB, valueC, valueD, valueS uint64) (*EffortValues, error) {
 	effortValueH, err := NewEffortValue(valueH, H)
 	if err != nil {
 		return nil, err

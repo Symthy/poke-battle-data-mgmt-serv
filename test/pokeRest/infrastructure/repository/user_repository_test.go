@@ -43,7 +43,7 @@ func TestUserRepositoryTestSuite(t *testing.T) {
 
 func (suite *UserRepositoryTestSuite) TestFind() {
 	suite.Run("find by id", func() {
-		var id uint = 1
+		var id uint64 = 1
 		dummyUser := data.DummyUser1()
 		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL ORDER BY "users"."id" LIMIT 1`)).
 			WithArgs(id).

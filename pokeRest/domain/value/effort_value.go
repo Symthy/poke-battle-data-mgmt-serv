@@ -4,18 +4,17 @@ import "github.com/Symthy/PokeRest/pokeRest/errs"
 
 // 努力値
 type EffortValue struct {
-	value int
+	value uint8
 	param PokemonParam
 }
 
-func NewEffortValue(value int, param PokemonParam) (*EffortValue, error) {
-	v := value
+func NewEffortValue(value uint64, param PokemonParam) (*EffortValue, error) {
 	if value < 0 || value > 252 {
 		return nil, errs.ThrowErrorInvalidValue("EffortValue", "value:"+string(param), string(rune(value)))
 	}
-	return &EffortValue{v, param}, nil
+	return &EffortValue{uint8(value), param}, nil
 }
 
-func (e EffortValue) Value() int {
+func (e EffortValue) Value() uint8 {
 	return e.value
 }

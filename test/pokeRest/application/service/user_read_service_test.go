@@ -30,7 +30,7 @@ func TestUserControllerTestSuite(t *testing.T) {
 }
 
 func (suite *UserServiceTestSuite) TestGetUser() {
-	var id uint = 1
+	var id uint64 = 1
 	expected, _ := conv.ToDomainUser(data.DummyUser1())
 
 	actual, err := suite.serv.GetUserById(id)

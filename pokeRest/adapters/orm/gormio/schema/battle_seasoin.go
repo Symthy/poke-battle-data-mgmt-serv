@@ -5,9 +5,9 @@ import (
 )
 
 type BattleSeason struct {
-	Generation    int `gorm:"primaryKey;autoIncrement:false"`
-	Series        int `gorm:"primaryKey;autoIncrement:false"`
-	Season        int `gorm:"primaryKey;autoIncrement:false"`
+	Generation    uint16 `gorm:"primaryKey;autoIncrement:false"`
+	Series        uint16 `gorm:"primaryKey;autoIncrement:false"`
+	Season        uint16 `gorm:"primaryKey;autoIncrement:false"`
 	StartDateTime time.Time
 	EndDateTime   time.Time
 }

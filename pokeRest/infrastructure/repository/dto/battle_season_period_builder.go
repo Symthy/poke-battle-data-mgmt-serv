@@ -13,15 +13,15 @@ type BattleSeasonPeriodSchemaBuilder struct {
 	schema.BattleSeason
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetGeneration(value int) {
+func (b BattleSeasonPeriodSchemaBuilder) SetGeneration(value uint16) {
 	b.Generation = value
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetSeries(value int) {
+func (b BattleSeasonPeriodSchemaBuilder) SetSeries(value uint16) {
 	b.Series = value
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetSeason(value int) {
+func (b BattleSeasonPeriodSchemaBuilder) SetSeason(value uint16) {
 	b.Season = value
 }
 

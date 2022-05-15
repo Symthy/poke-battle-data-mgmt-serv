@@ -19,8 +19,8 @@ func NewAddAdjustmentAttackTargetCommand(
 func buildTrainedAttackTargetInput(
 	request *server.RequestCreateTrainedPokeAttackTarget) *factory.TrainedAttackTargetInput {
 	builder := factory.NewTrainedAttackTargetBuilder()
-	builder.MoveId(uint(*request.MoveId))
-	builder.TrainedPokemonId(uint(*request.Target.PokemonId))
+	builder.MoveId(*request.MoveId)
+	builder.TrainedPokemonId(*request.Target.PokemonId)
 	//builder.TargetPokemonAbilityId(request.Target.)
 	builder.TargetPokemonNature(*request.Target.Nature)
 	builder.TargetPokemonEffortValueH(*request.Target.EffortValueH)

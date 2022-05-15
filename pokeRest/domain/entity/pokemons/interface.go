@@ -7,12 +7,11 @@ import (
 
 type IPokemonNotification interface {
 	SetId(identifier.PokemonId)
-	SetPokedexNo(int)
-	SetFormNo(int)
+	SetPokedexId(value.PokedexId)
 	SetFormName(string)
 	SetName(string)
 	SetEnglishName(string)
-	SetGeneration(int)
+	SetGeneration(uint16)
 	SetTypeSet(value.PokemonTypeSet)
 	SetAbilitySet(value.PokemonAbilityIdSet)
 	SetBaseStatsH(value.PokemonBaseStats)

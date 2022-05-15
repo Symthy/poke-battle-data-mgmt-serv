@@ -17,13 +17,13 @@ var emptyBattleOpponentPartySchemaBuilder = func() schema.BattleOpponentParty {
 }
 
 type BattleOpponentPartyRepository struct {
-	BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId]
+	BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId, uint64]
 	dbClient orm.IDbClient
 }
 
 func NewBattleOpponentPartyRepository(dbClient orm.IDbClient) *BattleOpponentPartyRepository {
 	return &BattleOpponentPartyRepository{
-		BaseWriteRepository: BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId]{
+		BaseWriteRepository: BaseWriteRepository[schema.BattleOpponentParty, battles.BattleOpponentParty, identifier.BattleOpponentPartyId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleOpponentPartySchemaBuilder,
 			toSchemaConverter:  conv.ToSchemaBattleOpponentParty,

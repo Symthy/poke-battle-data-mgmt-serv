@@ -21,12 +21,12 @@ func NewAttackSidePokemon(
 type AttackMove struct {
 	species     value.MoveSpecies
 	pokemonType value.PokemonType
-	power       int // 威力
+	power       uint16 // 威力
 	isContained bool
 	canGuard    bool
 }
 
-func NewAttackMove(species value.MoveSpecies, pokemonType value.PokemonType, power int,
+func NewAttackMove(species value.MoveSpecies, pokemonType value.PokemonType, power uint16,
 	isContained bool, canGuard bool) AttackMove {
 	return AttackMove{
 		species:     species,

@@ -22,8 +22,8 @@ func NewPartyTagController(readServ parties.PartyTagReadService, writeServ parti
 	}
 }
 
-func (c PartyTagController) GetPartyTag(ctx echo.Context, id int) error {
-	domain, err := c.readServ.FindPartyTag(uint(id))
+func (c PartyTagController) GetPartyTag(ctx echo.Context, id uint64) error {
+	domain, err := c.readServ.FindPartyTag(id)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }
 
@@ -32,7 +32,7 @@ func (c PartyTagController) SavePartyTag(ctx echo.Context, name string) error {
 	return c.responseResolver.Resolve(ctx, domain, err)
 }
 
-func (c PartyTagController) DeletePartyTag(ctx echo.Context, id int) error {
-	domain, err := c.writeServ.DeletePartyTag(uint(id))
+func (c PartyTagController) DeletePartyTag(ctx echo.Context, id uint64) error {
+	domain, err := c.writeServ.DeletePartyTag(id)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }

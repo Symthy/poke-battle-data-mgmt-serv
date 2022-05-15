@@ -7,24 +7,24 @@ import (
 )
 
 type Pokemon struct {
-	ID               uint `gorm:"primaryKey;autoIncrement:true"`
-	PokedexNo        int
-	FormNo           int
+	ID               uint16 `gorm:"primaryKey;autoIncrement:true"`
+	PokedexNo        uint16
+	FormNo           uint8
 	FormName         string
 	Name             string
 	EnglishName      string
-	Generation       int
+	Generation       uint16
 	Type1            enum.PokemonType
 	Type2            enum.PokemonType
 	AbilityId1       sql.NullInt16 // has one
 	AbilityId2       sql.NullInt16 // has one
 	HiddenAbilityId  sql.NullInt16 // has one
-	BaseStatsH       int
-	BaseStatsA       int
-	BaseStatsB       int
-	BaseStatsC       int
-	BaseStatsD       int
-	BaseStatsS       int
+	BaseStatsH       uint8
+	BaseStatsA       uint8
+	BaseStatsB       uint8
+	BaseStatsC       uint8
+	BaseStatsD       uint8
+	BaseStatsS       uint8
 	IsFinalEvolution bool `gorm:"default:false"`
 
 	// relation

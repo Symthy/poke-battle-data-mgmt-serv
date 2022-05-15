@@ -11,26 +11,27 @@ import (
 
 var _ repository.IPokemonRepository = (*PokemonRepository)(nil)
 
-var emptyPokemonBuilder = func() schema.Pokemon { return schema.Pokemon{} }
+var (
+	emptyPokemonBuilder  = func() schema.Pokemon { return schema.Pokemon{} }
+	emptyPokemonsBuilder = func() []schema.Pokemon { return []schema.Pokemon{} }
+)
 
 type PokemonRepository struct {
-	BaseWriteRepository[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId]
+	BaseReadRepository[schema.Pokemon, pokemons.Pokemon, pokemons.Pokemons, identifier.PokemonId, uint16]
 	dbClient orm.IDbClient
 }
 
 func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 	return &PokemonRepository{
-		BaseWriteRepository: BaseWriteRepository[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId]{
-			dbClient:           dbClient,
-			emptySchemaBuilder: emptyPokemonBuilder,
-			toSchemaConverter:  conv.ToSchemaPokemon,
-			toDomainConverter:  conv.ToDomainPokemon,
-		},
+		BaseReadRepository: NewBaseReadRepository[schema.Pokemon, pokemons.Pokemon, pokemons.Pokemons, identifier.PokemonId, uint16](
+			dbClient, emptyPokemonBuilder, emptyPokemonsBuilder, pokemons.NewPokemons,
+			conv.ToSchemaPokemon, conv.ToDomainPokemon,
+		),
 		dbClient: dbClient,
 	}
 }
 
-func (rep PokemonRepository) FindById(id uint) (*pokemons.Pokemon, error) {
+func (rep PokemonRepository) FindById(id uint16) (*pokemons.Pokemon, error) {
 	db := rep.dbClient.Db()
 	var pokemon = schema.Pokemon{}
 	tx := db.First(&pokemon, id)
@@ -41,7 +42,7 @@ func (rep PokemonRepository) FindById(id uint) (*pokemons.Pokemon, error) {
 }
 
 // Todo: args is condition
-func (rep PokemonRepository) FindAll(next int, pageSize int) (*pokemons.Pokemons, error) {
+func (rep PokemonRepository) FindAll(next uint32, pageSize uint16) (*pokemons.Pokemons, error) {
 	db := rep.dbClient.Db()
 	var schemas = []schema.Pokemon{}
 
@@ -51,7 +52,7 @@ func (rep PokemonRepository) FindAll(next int, pageSize int) (*pokemons.Pokemons
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	pokemonDomains, err := conv.ConvertToDomains[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId](schemas, rep.toDomainConverter)
+	pokemonDomains, err := conv.ConvertToDomains[schema.Pokemon, pokemons.Pokemon, identifier.PokemonId, uint16](schemas, rep.toDomainConverter)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +60,6 @@ func (rep PokemonRepository) FindAll(next int, pageSize int) (*pokemons.Pokemons
 	return &pokemonList, nil
 }
 
-func (rep PokemonRepository) FindByMove(moveId uint) (*pokemons.Pokemons, error) {
+func (rep PokemonRepository) FindByMove(moveId uint16) (*pokemons.Pokemons, error) {
 	return nil, nil
 }

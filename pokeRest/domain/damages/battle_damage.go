@@ -4,7 +4,7 @@ import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
 
 type BattleDamage struct {
 	dataset PokemonBattleDataSet
-	damages []int
+	damages []uint16
 }
 
 func NewBattleDamage(battlePokemons PokemonBattleDataSet) BattleDamage {
@@ -28,10 +28,10 @@ func (d BattleDamage) calculate() int {
 
 	// 最終ダメージ
 	level := 50.0
-	levelCorrection := fmath.RoundDown(level*2.0/5.0 + 2.0)
-	baseDamage := fmath.RoundDown(fmath.RoundDown(levelCorrection*powerValue*attackValue/defenseValue)/50 + 2)
+	levelCorrection := float64(fmath.RoundDown[uint16](level*2.0/5.0 + 2.0))
+	damageBaseValue := float64(fmath.RoundDown[uint16](levelCorrection * powerValue * attackValue / defenseValue))
+	damage := fmath.RoundDown[uint16](damageBaseValue/50 + 2)
 
-	damage := baseDamage
 	// ダブル補正
 
 	// 天候

@@ -47,33 +47,33 @@ func (p PokemonBattleDataSet) AttackPokemonTypeOfFirst() value.PokemonType {
 	return p.AttackSidePokemon.attackPokemonType.FirstType()
 }
 func (p PokemonBattleDataSet) AttackPokemonTypeOfSecond() value.PokemonType
-func (p PokemonBattleDataSet) AttackPokemonActualValueS() int
+func (p PokemonBattleDataSet) AttackPokemonActualValueS() uint16
 func (p PokemonBattleDataSet) DefensePokemonTypeOfFirst() value.PokemonType
 func (p PokemonBattleDataSet) DefensePokemonTypeOfSecond() value.PokemonType
-func (p PokemonBattleDataSet) DefensePokemonActualValueS() int
+func (p PokemonBattleDataSet) DefensePokemonActualValueS() uint16
 func (p PokemonBattleDataSet) MovePokemonType() value.PokemonType
 func (p PokemonBattleDataSet) HasItemAttackSide() bool
 func (p PokemonBattleDataSet) HasItemDefenseSide() bool
 
 // Todo: move
-func (p PokemonBattleDataSet) ResolvePowerValue() int {
+func (p PokemonBattleDataSet) ResolvePowerValue() uint16 {
 	attackPower := p.resolveAttackPowerValue()
 	movePower := p.resolveMovePowerValue()
 
-	return fmath.RoundUpIfDecimalGreaterFive(float64(movePower*attackPower) / 4096)
+	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(movePower*attackPower) / 4096)
 }
 
-func (p PokemonBattleDataSet) resolveMovePowerValue() int {
+func (p PokemonBattleDataSet) resolveMovePowerValue() uint16 {
 	applier := p.AttackSideBattleEffects.SupplyMovePowerCorrectionApplier(p.species, p)
 	return applier(p.AttackMove.power)
 }
 
-func (p PokemonBattleDataSet) resolveAttackPowerValue() int {
+func (p PokemonBattleDataSet) resolveAttackPowerValue() uint16 {
 	applier := p.AttackSideBattleEffects.SupplyPowerCorrectionApplier(p.species, p)
 	return applier(4096)
 }
 
-func (p PokemonBattleDataSet) ResolveAttackValue() int {
+func (p PokemonBattleDataSet) ResolveAttackValue() uint16 {
 	if p.species.IsPhysical() {
 		return p.correctedAttackPokemon.A()
 	}
@@ -83,7 +83,7 @@ func (p PokemonBattleDataSet) ResolveAttackValue() int {
 	return 0
 }
 
-func (p PokemonBattleDataSet) ResolveDefenseValue() int {
+func (p PokemonBattleDataSet) ResolveDefenseValue() uint16 {
 	if p.species.IsPhysical() {
 		return p.correctedDefensePokemon.B()
 	}

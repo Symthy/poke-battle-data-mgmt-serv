@@ -5,18 +5,20 @@ import (
 )
 
 type TrainedPokemonDefenceTarget struct {
-	ID                        uint `gorm:"primaryKey;autoIncrement:true"`
-	TrainedPokemonId          uint
+	ID                        uint64 `gorm:"primaryKey;autoIncrement:true"`
+	TrainedPokemonId          uint64
 	TrainedPokemon            TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	MoveId                    int
+	MoveId                    uint16
 	Move                      Move `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	TargetPokemonId           int
+	TargetPokemonId           uint16
 	TargetPokemon             Pokemon `gorm:"foreignKey:TargetPokemonId;references:id;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	TargetPokemonNature       enum.Nature
-	TargetPokemonAbilityId    int
+	TargetPokemonAbilityId    uint16
 	Ability                   Ability `gorm:"foreignKey:TargetPokemonAbilityId;references:id;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	TargetPokemonEffortValueA int     `gorm:"default:0"`
-	TargetPokemonEffortValueC int     `gorm:"default:0"`
+	TargetPokemonHeldItemId   uint16
+	HeldItem                  HeldItem `gorm:"foreignKey:TargetPokemonHeldItemId;references:id;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	TargetPokemonEffortValueA uint8    `gorm:"default:0"`
+	TargetPokemonEffortValueC uint8    `gorm:"default:0"`
 }
 
 func (TrainedPokemonDefenceTarget) TableName() string {

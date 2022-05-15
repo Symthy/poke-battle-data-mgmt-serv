@@ -6,7 +6,7 @@ type DeleteTrainedPokemonCommand struct {
 	factory.TrainedPokemonInput
 }
 
-func NewDeleteTrainedPokemonCommand(id uint, userId uint) DeleteTrainedPokemonCommand {
+func NewDeleteTrainedPokemonCommand(id, userId uint64) DeleteTrainedPokemonCommand {
 	builder := factory.NewTrainedPokemonBuilder()
 	builder.Id(id)
 	builder.UserId(userId)

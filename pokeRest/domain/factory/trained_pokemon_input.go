@@ -7,18 +7,18 @@ import (
 )
 
 type TrainedPokemonInput struct {
-	id          uint
+	id          uint64
 	gender      string
 	nickname    string
 	description string
 	isPrivate   bool
-	userId      uint
+	userId      uint64
 	adjustment  TrainedPokemonAdjustmentInput
 }
 
 func NewTrainedPokemonInput(
-	id uint, gender string, nickname string, description string, isPrivate bool,
-	userId uint, adjustment TrainedPokemonAdjustmentInput) TrainedPokemonInput {
+	id uint64, gender, nickname, description string, isPrivate bool,
+	userId uint64, adjustment TrainedPokemonAdjustmentInput) TrainedPokemonInput {
 	return TrainedPokemonInput{
 		id:          id,
 		gender:      gender,
@@ -33,7 +33,7 @@ func NewTrainedPokemonBuilder() TrainedPokemonInput {
 	return TrainedPokemonInput{}
 }
 
-func (i TrainedPokemonInput) Id(id uint) {
+func (i TrainedPokemonInput) Id(id uint64) {
 	i.id = id
 }
 func (i TrainedPokemonInput) Gender(gender string) {
@@ -48,7 +48,7 @@ func (i TrainedPokemonInput) Description(description string) {
 func (i TrainedPokemonInput) SetIsPrivate(isPrivate bool) {
 	i.isPrivate = isPrivate
 }
-func (i TrainedPokemonInput) UserId(userId uint) {
+func (i TrainedPokemonInput) UserId(userId uint64) {
 	i.userId = userId
 }
 func (i TrainedPokemonInput) Adjustment(adjustment TrainedPokemonAdjustmentInput) {

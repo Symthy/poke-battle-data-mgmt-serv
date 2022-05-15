@@ -1,9 +1,11 @@
 #./node_modules/.bin/openapi-generator-cli generate -g go-server -i ./apiDoc/PokeRest.v1.yaml -o ./src/autoGen
 
-mkdir -p ./pokeRest/adapters/rest/autogen/server
+shell_path=$(dirname $(readlink -f $0))
 
-oapi-codegen -generate "server" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/adapters/rest/autogen/server/api.gen.go
+mkdir -p "${shell_path}/pokeRest/adapters/rest/autogen/server"
 
-oapi-codegen -generate "types" -package server ./apiDoc/PokeRest.v1.yaml > ./pokeRest/adapters/rest/autogen/server/types.gen.go
+oapi-codegen -generate "server" -package server "${shell_path}/apiDoc/PokeRest.v1.yaml" > "${shell_path}/pokeRest/adapters/rest/autogen/server/api.gen.go"
 
-wire ./pokerest/adapters/di/wire.go
+oapi-codegen -generate "types" -package server "${shell_path}/apiDoc/PokeRest.v1.yaml" > "${shell_path}/pokeRest/adapters/rest/autogen/server/types.gen.go"
+
+wire "${shell_path}/pokerest/adapters/di/wire.go"

@@ -13,18 +13,19 @@ type ii = identifier.HeldItemId
 
 type ItemReadService struct {
 	repo repository.IHeldItemRepository
-	service.EntityAllFinder[is, i, ii]
+	service.EntityAllFinder[is, i, ii, uint16]
 }
 
 func NewItemReadService(repo repository.IHeldItemRepository) ItemReadService {
 	serv := ItemReadService{repo: repo}
-	serv.EntityAllFinder = service.NewEntityAllFinder[is, i, ii](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[is, i, ii, uint16](repo)
 	return serv
 }
 
 // UC: 持ち物取得
-func (s ItemReadService) FindHeldItem(itemId uint) (*items.HeldItem, error) {
-	return s.repo.FindById(itemId)
+func (s ItemReadService) FindHeldItem(itemId uint64) (*items.HeldItem, error) {
+	// Todo: validate id upper limit
+	return s.repo.FindById(uint16(itemId))
 }
 
 // UC: 持ち物一覧取得

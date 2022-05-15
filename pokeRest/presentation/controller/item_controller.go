@@ -23,11 +23,11 @@ func NewItemController(service items.ItemReadService) *ItemController {
 	}
 }
 
-func (c ItemController) GetHeldItemById(ctx echo.Context, id int) error {
-	domain, err := c.service.FindHeldItem(uint(id))
+func (c ItemController) GetHeldItemById(ctx echo.Context, id uint64) error {
+	domain, err := c.service.FindHeldItem(id)
 	return c.singleDataResolver.Resolve(ctx, domain, err)
 }
-func (c ItemController) GetHeldItems(ctx echo.Context, next int, pageSize int) error {
+func (c ItemController) GetHeldItems(ctx echo.Context, next uint64, pageSize uint64) error {
 	cmd := command.NewPaginationCommand(next, pageSize)
 	domains, err := c.service.FindAll(cmd)
 	return c.multiDataResolver.Resolve(ctx, domains, err)

@@ -4,43 +4,50 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+	"github.com/Symthy/PokeRest/pokeRest/errs"
 )
 
-var _ entity.IDomain[identifier.MoveId] = (*Move)(nil)
+var _ entity.IDomain[identifier.MoveId, uint16] = (*Move)(nil)
 
 type Move struct {
 	id            identifier.MoveId
 	name          string
 	species       value.MoveSpecies
 	pokemonType   value.PokemonType
-	power         int     // 威力
+	power         uint16  // 威力
 	accuracyRate  float32 // 命中率
-	pp            int
+	pp            uint8
 	isContained   bool
 	canGuard      bool
 	battleEffects *value.BattleEffects
 }
 
-func NewMove(id identifier.MoveId, name string, species string, pokemonType string,
-	power int, accuracyRate float32, pp int, isContained bool, canGuard bool) Move {
-	return Move{
+func NewMove(id identifier.MoveId, name, species, pokemonType string,
+	power uint64, accuracyRate float32, pp uint64, isContained, canGuard bool) (*Move, error) {
+	if power > 300 {
+		return nil, errs.ThrowErrorInvalidValue("Move", "power", string(rune(power)))
+	}
+	if power > 100 {
+		return nil, errs.ThrowErrorInvalidValue("Move", "pp", string(rune(power)))
+	}
+	return &Move{
 		id:           id,
 		name:         name,
 		species:      value.MoveSpecies(species),
 		pokemonType:  value.NewPokemonType(pokemonType),
-		power:        power,
+		power:        uint16(power),
 		accuracyRate: accuracyRate,
-		pp:           pp,
+		pp:           uint8(pp),
 		isContained:  isContained,
 		canGuard:     canGuard,
-	}
+	}, nil
 }
 
 func (m Move) Id() identifier.MoveId {
 	return m.id
 }
 
-func (m Move) Power() int {
+func (m Move) Power() uint16 {
 	return m.power
 }
 

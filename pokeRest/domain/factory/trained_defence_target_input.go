@@ -6,55 +6,46 @@ import (
 )
 
 type TrainedDefenseTargetInput struct {
-	id                        uint
-	trainedPokemonId          uint
-	moveId                    uint
-	targetPokemonId           uint
-	targetPokemonAbilityId    uint
+	id                        uint64
+	trainedPokemonId          uint64
+	moveId                    uint64
+	targetPokemonId           uint64
 	targetPokemonNature       string
-	targetPokemonEffortValueA int
-	targetPokemonEffortValueC int
-}
-
-func NewTrainedDefenseTargetInput(
-	id, trainedPokemonId, moveId, targetPokemonId uint, targetPokemonNature string,
-	targetPokemonAbilityId uint, targetPokemonEffortValueA, trainedPokemonEffortValueC int,
-) *TrainedDefenseTargetInput {
-	return &TrainedDefenseTargetInput{
-		id:                        id,
-		trainedPokemonId:          trainedPokemonId,
-		moveId:                    moveId,
-		targetPokemonId:           targetPokemonId,
-		targetPokemonNature:       targetPokemonNature,
-		targetPokemonAbilityId:    targetPokemonAbilityId,
-		targetPokemonEffortValueA: targetPokemonEffortValueA,
-		targetPokemonEffortValueC: trainedPokemonEffortValueC,
-	}
+	targetPokemonAbilityId    uint64
+	targetPokemonHeldItemId   uint64
+	targetPokemonEffortValueA uint64
+	targetPokemonEffortValueC uint64
 }
 
 func NewTrainedDefenseTargetBuilder() *TrainedDefenseTargetInput {
 	return &TrainedDefenseTargetInput{}
 }
 
-func (i *TrainedDefenseTargetInput) Id(id uint) {
+func (i *TrainedDefenseTargetInput) Id(id uint64) {
 	i.id = id
 }
-func (i *TrainedDefenseTargetInput) TrainedPokemonId(trainedPokemonId uint) {
+func (i *TrainedDefenseTargetInput) TrainedPokemonId(trainedPokemonId uint64) {
 	i.trainedPokemonId = trainedPokemonId
 }
-func (i *TrainedDefenseTargetInput) MoveId(moveId uint) {
+func (i *TrainedDefenseTargetInput) MoveId(moveId uint64) {
 	i.moveId = moveId
 }
-func (i *TrainedDefenseTargetInput) TargetPokemonAbilityId(targetPokemonAbilityId uint) {
-	i.targetPokemonAbilityId = targetPokemonAbilityId
+func (i *TrainedDefenseTargetInput) TargetPokemonId(targetPokemonId uint64) {
+	i.targetPokemonId = targetPokemonId
 }
 func (i *TrainedDefenseTargetInput) TargetPokemonNature(targetPokemonNature string) {
 	i.targetPokemonNature = targetPokemonNature
 }
-func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueA(effortValueA int) {
+func (i *TrainedDefenseTargetInput) TargetPokemonAbilityId(targetPokemonAbilityId uint64) {
+	i.targetPokemonAbilityId = targetPokemonAbilityId
+}
+func (i *TrainedDefenseTargetInput) TargetPokemonHeldItemId(targetPokemonHeldItemId uint64) {
+	i.targetPokemonHeldItemId = targetPokemonHeldItemId
+}
+func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueA(effortValueA uint64) {
 	i.targetPokemonEffortValueA = effortValueA
 }
-func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueC(effortValueC int) {
+func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueC(effortValueC uint64) {
 	i.targetPokemonEffortValueC = effortValueC
 }
 

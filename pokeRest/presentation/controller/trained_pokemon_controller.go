@@ -29,7 +29,7 @@ func NewTrainedPokemonController(
 	}
 }
 
-func (c TrainedPokemonController) FindTrainedPokemonAdjustments(ctx echo.Context, next int, pageSize int) {
+func (c TrainedPokemonController) FindTrainedPokemonAdjustments(ctx echo.Context, next uint64, pageSize uint64) {
 	cmd := command.NewPaginationCommand(next, pageSize)
 	c.readServ.FindAll(cmd)
 }
@@ -60,7 +60,7 @@ func (c TrainedPokemonController) UpdateTrainedPokemon(ctx echo.Context) error {
 	return c.responseResolver.Resolve(ctx, domain, error)
 }
 
-func (c TrainedPokemonController) DeleteTrainedPokemon(ctx echo.Context, id uint) error {
+func (c TrainedPokemonController) DeleteTrainedPokemon(ctx echo.Context, id uint64) error {
 	userId, err := c.userResolver.ResolveId(ctx)
 	if err != nil {
 		return err

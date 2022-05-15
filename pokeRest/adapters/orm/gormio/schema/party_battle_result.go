@@ -1,15 +1,15 @@
 package schema
 
 type PartySeasonResult struct {
-	ID               uint `gorm:"primaryKey;autoIncrement:true"` // has many
-	Generation       int
-	Series           int
-	Season           int
-	MaxRate          int
-	SeasonRanking    int
-	MaxSeasonRanking int
-	WinCount         int
-	LoseCount        int
+	ID               uint64 `gorm:"primaryKey;autoIncrement:true"` // has many
+	Generation       uint16
+	Series           uint16
+	Season           uint16
+	MaxRate          uint16
+	SeasonRanking    uint16
+	MaxSeasonRanking uint16
+	WinCount         uint16
+	LoseCount        uint16
 }
 
 func (PartySeasonResult) TableName() string {

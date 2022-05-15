@@ -52,10 +52,10 @@ func (c ConditionEntry) String() string {
 type IPokemonBattleDataSet interface {
 	AttackPokemonTypeOfFirst() PokemonType
 	AttackPokemonTypeOfSecond() PokemonType
-	AttackPokemonActualValueS() int
+	AttackPokemonActualValueS() uint16
 	DefensePokemonTypeOfFirst() PokemonType
 	DefensePokemonTypeOfSecond() PokemonType
-	DefensePokemonActualValueS() int
+	DefensePokemonActualValueS() uint16
 	MovePokemonType() PokemonType
 	HasItemAttackSide() bool
 	HasItemDefenseSide() bool

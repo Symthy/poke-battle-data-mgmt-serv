@@ -11,8 +11,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type BaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], TM infrastructure.IDomains[TD, K], K infrastructure.IValueId] struct {
-	BaseSingleReadRepository[TS, TD, K]
+type BaseReadRepository[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], TM infrastructure.IDomains[TD, K, I], K infrastructure.IValueId[I], I uint16 | uint64] struct {
+	BaseSingleReadRepository[TS, TD, K, I]
 	dbClient            orm.IDbClient
 	emptySchemaBuilder  func() TS
 	emptySchemasBuilder func() []TS
@@ -20,16 +20,16 @@ type BaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDom
 	toSchemaConverter   func(TD) TS
 }
 
-func NewBaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], TM infrastructure.IDomains[TD, K], K infrastructure.IValueId](
+func NewBaseReadRepository[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], TM infrastructure.IDomains[TD, K, I], K infrastructure.IValueId[I], I uint16 | uint64](
 	dbClient orm.IDbClient,
 	emptySchemaBuilder func() TS,
 	emptySchemasBuilder func() []TS,
 	domainsConstructor func([]TD) TM,
 	toSchemaConverter func(TD) TS,
 	toDomainConverter func(TS) (*TD, error),
-) BaseReadRepository[TS, TD, TM, K] {
-	return BaseReadRepository[TS, TD, TM, K]{
-		BaseSingleReadRepository: BaseSingleReadRepository[TS, TD, K]{
+) BaseReadRepository[TS, TD, TM, K, I] {
+	return BaseReadRepository[TS, TD, TM, K, I]{
+		BaseSingleReadRepository: BaseSingleReadRepository[TS, TD, K, I]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptySchemaBuilder,
 			toSchemaConverter:  toSchemaConverter,
@@ -46,7 +46,7 @@ func NewBaseReadRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.I
 // Todo: error handling
 
 // required: wrap when used
-func (rep BaseReadRepository[TS, TD, TM, K]) FindByField(targetField string, value string, filterFields ...string) (*TM, error) {
+func (rep BaseReadRepository[TS, TD, TM, K, I]) FindByField(targetField string, value string, filterFields ...string) (*TM, error) {
 	db := rep.dbClient.Db()
 	schemas := rep.emptySchemasBuilder()
 	selectedDbFields := field.ConvertToDbField(filterFields...)
@@ -66,7 +66,7 @@ func (rep BaseReadRepository[TS, TD, TM, K]) FindByField(targetField string, val
 }
 
 // Todo: args is condition
-func (rep BaseReadRepository[TS, TD, TM, K]) FindAll(next int, pageSize int) (*TM, error) {
+func (rep BaseReadRepository[TS, TD, TM, K, I]) FindAll(next uint32, pageSize uint16) (*TM, error) {
 	db := rep.dbClient.Db()
 	schemas := rep.emptySchemasBuilder()
 
@@ -79,12 +79,12 @@ func (rep BaseReadRepository[TS, TD, TM, K]) FindAll(next int, pageSize int) (*T
 	return rep.resolveReturnValues(schemas)
 }
 
-func (rep BaseReadRepository[TS, TD, TM, K]) resolveReturnValues(schemas []TS) (*TM, error) {
-	domainArray, err := conv.ConvertToDomains[TS, TD, K](schemas, rep.toDomainConverter)
+func (rep BaseReadRepository[TS, TD, TM, K, I]) resolveReturnValues(schemas []TS) (*TM, error) {
+	domainArray, err := conv.ConvertToDomains[TS, TD, K, I](schemas, rep.toDomainConverter)
 	if err != nil {
 		return nil, err
 	}
-	domains := dto.BuildDomains[TD, TM, K](domainArray, rep.domainsConstructor)
+	domains := dto.BuildDomains[TD, TM, K, I](domainArray, rep.domainsConstructor)
 	if domains == nil {
 		// Todo: error
 		return nil, fmt.Errorf("Not found")

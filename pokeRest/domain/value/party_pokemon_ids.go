@@ -1,34 +1,36 @@
 package value
 
 type PartyPokemonIds struct {
-	pokemonsIds []*uint
-	size        int
+	pokemonsIds []*uint16
+	size        uint8
 }
 
-func NewPartyPokemonIds(pokemonIds []uint) PartyPokemonIds {
-	ids := make([]*uint, 6)
-	for i, p := range pokemonIds {
+func NewPartyPokemonIds(pokemonIds []uint64) PartyPokemonIds {
+	// Todo: validate id
+	ids := make([]*uint16, 6)
+	for i, pid := range pokemonIds {
+		id := uint16(pid)
 		if i < 6 {
-			ids[i] = &p
+			ids[i] = &id
 		}
 	}
 	return PartyPokemonIds{
 		pokemonsIds: ids,
-		size:        len(ids),
+		size:        uint8(len(ids)),
 	}
 }
 
-func (p PartyPokemonIds) Ids() []*uint {
+func (p PartyPokemonIds) Ids() []*uint16 {
 	return p.pokemonsIds
 }
 
-func (p PartyPokemonIds) Get(i int) *uint {
-	if i >= p.size {
+func (p PartyPokemonIds) Get(i uint) *uint16 {
+	if i >= uint(p.size) {
 		return nil
 	}
 	return p.pokemonsIds[i]
 }
 
-func (p PartyPokemonIds) Size() int {
+func (p PartyPokemonIds) Size() uint8 {
 	return p.size
 }

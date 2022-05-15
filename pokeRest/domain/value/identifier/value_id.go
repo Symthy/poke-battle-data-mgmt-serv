@@ -1,13 +1,17 @@
 package identifier
 
-type ValueId struct {
-	value uint
+type ValueId[T uint16 | uint32 | uint64] struct {
+	value T
 }
 
-func (id ValueId) Value() uint {
+func NewValueId[T uint16 | uint32 | uint64](value T) ValueId[T] {
+	return ValueId[T]{value}
+}
+
+func (id ValueId[T]) Value() T {
 	return id.value
 }
 
-func (id ValueId) IsEmpty() bool {
+func (id ValueId[T]) IsEmpty() bool {
 	return id.value == 0
 }

@@ -17,11 +17,9 @@ type PokemonSchemaBuilder struct {
 func (b *PokemonSchemaBuilder) SetId(id identifier.PokemonId) {
 	b.ID = id.Value()
 }
-func (b *PokemonSchemaBuilder) SetPokedexNo(value int) {
-	b.PokedexNo = value
-}
-func (b *PokemonSchemaBuilder) SetFormNo(value int) {
-	b.FormNo = value
+func (b *PokemonSchemaBuilder) SetPokedexId(value value.PokedexId) {
+	b.PokedexNo = value.PokedexNo()
+	b.FormNo = value.FormNo()
 }
 func (b *PokemonSchemaBuilder) SetFormName(value string) {
 	b.FormName = value
@@ -32,7 +30,7 @@ func (b *PokemonSchemaBuilder) SetName(value string) {
 func (b *PokemonSchemaBuilder) SetEnglishName(value string) {
 	b.EnglishName = value
 }
-func (b *PokemonSchemaBuilder) SetGeneration(value int) {
+func (b *PokemonSchemaBuilder) SetGeneration(value uint16) {
 	b.Generation = value
 }
 func (b *PokemonSchemaBuilder) SetTypeSet(value value.PokemonTypeSet) {
@@ -42,9 +40,9 @@ func (b *PokemonSchemaBuilder) SetTypeSet(value value.PokemonTypeSet) {
 }
 func (b *PokemonSchemaBuilder) SetAbilitySet(value value.PokemonAbilityIdSet) {
 	abilityId1, abilityId2, hiddenAbilityId := value.GetAbilityIds()
-	b.AbilityId1 = convertIdToNullInt16(abilityId1)
-	b.AbilityId2 = convertIdToNullInt16(abilityId2)
-	b.HiddenAbilityId = convertIdToNullInt16(hiddenAbilityId)
+	b.AbilityId1 = convertIdToNullInt16[uint16](abilityId1)
+	b.AbilityId2 = convertIdToNullInt16[uint16](abilityId2)
+	b.HiddenAbilityId = convertIdToNullInt16[uint16](hiddenAbilityId)
 }
 func (b *PokemonSchemaBuilder) SetBaseStatsH(value value.PokemonBaseStats) {
 	b.BaseStatsH = value.Value()

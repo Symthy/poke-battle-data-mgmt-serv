@@ -16,13 +16,13 @@ type schemaTpd = schema.TrainedPokemonDefenceTarget
 var emptyTrainedPokemonDeffenceSchemaBuilder = func() schemaTpd { return schemaTpd{} }
 
 type TrainedPokemonDefenceRepository struct {
-	BaseWriteRepository[schemaTpd, trainings.TrainedPokemonDefenceTarget, identifier.TrainedDefenseTargetId]
+	BaseWriteRepository[schemaTpd, trainings.TrainedPokemonDefenceTarget, identifier.TrainedDefenseTargetId, uint64]
 	dbClient orm.IDbClient
 }
 
 func NewTrainedPokemonDefenceRepository(dbClient orm.IDbClient) *TrainedPokemonDefenceRepository {
 	return &TrainedPokemonDefenceRepository{
-		BaseWriteRepository: BaseWriteRepository[schemaTpd, trainings.TrainedPokemonDefenceTarget, identifier.TrainedDefenseTargetId]{
+		BaseWriteRepository: BaseWriteRepository[schemaTpd, trainings.TrainedPokemonDefenceTarget, identifier.TrainedDefenseTargetId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyTrainedPokemonDeffenceSchemaBuilder,
 			toSchemaConverter:  conv.ToSchemaTrainedPokemonDefenceTarget,

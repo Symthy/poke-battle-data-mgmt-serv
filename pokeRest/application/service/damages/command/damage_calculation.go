@@ -3,27 +3,27 @@ package command
 import "github.com/Symthy/PokeRest/pokeRest/adapters/rest/autogen/server"
 
 type DamageCalculation struct {
-	attackPokemonId     uint
+	attackPokemonId     uint64
 	attackNature        string
-	attackAbilityId     uint
-	attackHeldItemId    uint
-	attackEffortValueH  int
-	attackEffortValueA  int
-	attackEffortValueB  int
-	attackEffortValueC  int
-	attackEffortValueD  int
-	attackEffortValueS  int
-	moveId              uint
-	defencePokemonId    uint
+	attackAbilityId     uint64
+	attackHeldItemId    uint64
+	attackEffortValueH  uint64
+	attackEffortValueA  uint64
+	attackEffortValueB  uint64
+	attackEffortValueC  uint64
+	attackEffortValueD  uint64
+	attackEffortValueS  uint64
+	moveId              uint64
+	defencePokemonId    uint64
 	defenceNature       string
-	defenceAbilityId    uint
-	defenceHeldItemId   uint
-	defenceEffortValueH int
-	defenceEffortValueA int
-	defenceEffortValueB int
-	defenceEffortValueC int
-	defenceEffortValueD int
-	defenceEffortValueS int
+	defenceAbilityId    uint64
+	defenceHeldItemId   uint64
+	defenceEffortValueH uint64
+	defenceEffortValueA uint64
+	defenceEffortValueB uint64
+	defenceEffortValueC uint64
+	defenceEffortValueD uint64
+	defenceEffortValueS uint64
 }
 
 func (c DamageCalculation) NewDamageCalculation(request server.RequestCalclateSingleDamage) DamageCalculation {
@@ -35,7 +35,7 @@ func (c DamageCalculation) NewDamageCalculation(request server.RequestCalclateSi
 	attackEffortValueB := resolveEffortValue(request.Self.EffortValueB)
 	attackEffortValueC := resolveEffortValue(request.Self.EffortValueC)
 	attackEffortValueD := resolveEffortValue(request.Self.EffortValueD)
-	attackEffortValueS := 0 // Todo
+	attackEffortValueS := uint64(0) // Todo
 	defenceNature := resolveNullableString(request.Target.Nature)
 	defenceAbilityId := resolveNullableId(request.Target.AbilityId)
 	defenceHeldItemId := resolveNullableId(request.Target.HeldItemId)
@@ -44,10 +44,10 @@ func (c DamageCalculation) NewDamageCalculation(request server.RequestCalclateSi
 	defenceEffortValueB := resolveEffortValue(request.Target.EffortValueB)
 	defenceEffortValueC := resolveEffortValue(request.Target.EffortValueC)
 	defenceEffortValueD := resolveEffortValue(request.Target.EffortValueD)
-	defenceEffortValueS := 0 // Todo
+	defenceEffortValueS := uint64(0) // Todo
 
 	return DamageCalculation{
-		attackPokemonId:     uint(request.Self.PokemonId),
+		attackPokemonId:     request.Self.PokemonId,
 		attackNature:        attackNature,
 		attackAbilityId:     attackAbilityId,
 		attackHeldItemId:    attackHeldItemId,
@@ -57,8 +57,8 @@ func (c DamageCalculation) NewDamageCalculation(request server.RequestCalclateSi
 		attackEffortValueC:  attackEffortValueC,
 		attackEffortValueD:  attackEffortValueD,
 		attackEffortValueS:  attackEffortValueS,
-		moveId:              uint(request.MoveId),
-		defencePokemonId:    uint(request.Target.PokemonId),
+		moveId:              request.MoveId,
+		defencePokemonId:    request.Target.PokemonId,
 		defenceNature:       defenceNature,
 		defenceAbilityId:    defenceAbilityId,
 		defenceHeldItemId:   defenceHeldItemId,
@@ -72,10 +72,10 @@ func (c DamageCalculation) NewDamageCalculation(request server.RequestCalclateSi
 
 }
 
-func resolveNullableId(nullableId *int) uint {
-	var id uint = 0
+func resolveNullableId(nullableId *uint64) uint64 {
+	var id uint64 = 0
 	if nullableId != nil {
-		id = uint(*nullableId)
+		id = *nullableId
 	}
 	return id
 }
@@ -88,8 +88,8 @@ func resolveNullableString(value *string) string {
 	return result
 }
 
-func resolveEffortValue(effortValue *int) int {
-	var value int = 0
+func resolveEffortValue(effortValue *uint64) uint64 {
+	var value uint64 = 0
 	if effortValue != nil {
 		value = *effortValue
 	}

@@ -9,6 +9,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Todo: authorization use twitter
+
 type Authorizer struct {
 	authService auth.AuthorizationService
 }
@@ -23,7 +25,7 @@ func (a Authorizer) SignIn(c echo.Context) error {
 	if err := c.Bind(u); err != nil {
 		return err
 	}
-	token, err := a.authService.GenerateToken(*u.Name, *u.Password)
+	token, err := a.authService.GenerateToken(u.Name, u.Password)
 
 	// Todo: error process
 	if err != nil {
@@ -43,14 +45,14 @@ func (a Authorizer) SignUp(c echo.Context) error {
 	}
 
 	// Todo: error process
-	if *signupUser.Name == "" || *signupUser.Password == "" {
+	if signupUser.Name == "" || signupUser.Password == "" {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
 			Message: "invalid name or password",
 		}
 	}
 
-	user, err := a.authService.CreateSignUpUser(*signupUser.Name, *signupUser.Password)
+	user, err := a.authService.CreateSignUpUser(signupUser.Name, signupUser.Password)
 	if err != nil {
 		return err
 	}

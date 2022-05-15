@@ -7,12 +7,13 @@ import (
 )
 
 type Season struct {
-	generation int
-	series     int
-	season     int
+	generation uint16
+	series     uint16
+	season     uint16
 }
 
-func NewSeason(generation int, series int, season int) (*Season, error) {
+func NewSeason(generation, series, season uint64) (*Season, error) {
+	// Todo: validate upper limit
 	isNotSatisfy := (generation == 0 && (series != 0 || season != 0)) ||
 		(generation != 0 && (series == 0 || season == 0))
 
@@ -20,7 +21,7 @@ func NewSeason(generation int, series int, season int) (*Season, error) {
 		return nil, errs.ThrowErrorInvalidValue("Season", "generation,series,season",
 			fmt.Sprintf("%d,%d,%d", generation, series, season))
 	}
-	return &Season{generation: generation, series: series, season: season}, nil
+	return &Season{generation: uint16(generation), series: uint16(series), season: uint16(season)}, nil
 }
 
 func (s Season) UnsolvedSeason() bool {

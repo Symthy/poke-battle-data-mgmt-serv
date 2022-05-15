@@ -13,20 +13,21 @@ type ai = identifier.AbilityId
 
 type AbilityReadService struct {
 	service.PokemonStatsFinder[as, a, ai]
-	service.EntityAllFinder[as, a, ai]
+	service.EntityAllFinder[as, a, ai, uint16]
 	repo repository.IAbilityRepository
 }
 
 func NewAbilityReadService(repo repository.IAbilityRepository) AbilityReadService {
 	serv := AbilityReadService{repo: repo}
 	serv.PokemonStatsFinder = service.NewPokemonStatsFinder[as, a, ai](repo)
-	serv.EntityAllFinder = service.NewEntityAllFinder[as, a, ai](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[as, a, ai, uint16](repo)
 	return serv
 }
 
 // UC: 特性取得
-func (s AbilityReadService) FindAbility(id uint) (*abilities.Ability, error) {
-	return s.repo.FindById(id)
+func (s AbilityReadService) FindAbility(id uint64) (*abilities.Ability, error) {
+	// Todo: validate id of upper limit
+	return s.repo.FindById(uint16(id))
 }
 
 // UC: 特性保持者取得

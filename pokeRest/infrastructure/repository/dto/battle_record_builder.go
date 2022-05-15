@@ -45,7 +45,7 @@ func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.Election
 		b.BattleRecord.SelfElectionPokemonId4 = ids.Get(3)
 	}
 }
-func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionPokemons) {
+func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionTrainedPokemons) {
 	b.BattleRecord.SelfTrainedPokemonId1 = ids.Get(0)
 	b.BattleRecord.SelfTrainedPokemonId2 = ids.Get(1)
 	b.BattleRecord.SelfTrainedPokemonId3 = ids.Get(2)

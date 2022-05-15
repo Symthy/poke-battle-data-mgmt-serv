@@ -30,7 +30,7 @@ func TestPokemonControllerTestSuite(t *testing.T) {
 }
 
 func (suite *PokemonControllerTestSuite) TestGetPokemon() {
-	var id uint = 3
+	var id uint64 = 3
 	actual, err := suite.serv.FindPokemon(id)
 	expected, _ := conv.ToDomainPokemon(data.DummyPokemon3())
 

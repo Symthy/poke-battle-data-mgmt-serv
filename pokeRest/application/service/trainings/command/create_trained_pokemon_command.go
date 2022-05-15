@@ -10,14 +10,14 @@ type CreateTrainedPokemonCommand struct {
 }
 
 func NewCreateTrainedPokemonCommand(
-	request *server.RequestCreateTrainedPokemon, userId uint) CreateTrainedPokemonCommand {
+	request *server.RequestCreateTrainedPokemon, userId uint64) CreateTrainedPokemonCommand {
 	input := buildTrainedPokemonInput(request, userId)
 	cmd := CreateTrainedPokemonCommand{input}
 	return cmd
 }
 
 func buildTrainedPokemonInput(
-	request *server.RequestCreateTrainedPokemon, userId uint) factory.TrainedPokemonInput {
+	request *server.RequestCreateTrainedPokemon, userId uint64) factory.TrainedPokemonInput {
 	builder := factory.NewTrainedPokemonBuilder()
 	if request.Gender != nil {
 		builder.Gender(*request.Gender)
@@ -33,11 +33,11 @@ func buildTrainedPokemonInput(
 
 	adjustmentBuilder := factory.NewTrainedPokemonAdjustmentBuilder()
 	adjustmentReq := request.Adjustment
-	adjustmentBuilder.PokemonId(uint(adjustmentReq.PokemonId))
+	adjustmentBuilder.PokemonId(adjustmentReq.PokemonId)
 	adjustmentBuilder.Nature(adjustmentReq.Nature)
-	adjustmentBuilder.AbilityId(uint(adjustmentReq.AbilityId))
+	adjustmentBuilder.AbilityId(adjustmentReq.AbilityId)
 	if adjustmentReq.HeldItemId != nil {
-		adjustmentBuilder.HeldItemId(uint(*adjustmentReq.HeldItemId))
+		adjustmentBuilder.HeldItemId(*adjustmentReq.HeldItemId)
 	}
 	if adjustmentReq.EffortValueH != nil {
 		adjustmentBuilder.EffortValueH(*adjustmentReq.EffortValueH)
@@ -58,16 +58,16 @@ func buildTrainedPokemonInput(
 		adjustmentBuilder.EffortValueS(*adjustmentReq.EffortValueS)
 	}
 	if len(adjustmentReq.MoveIds) >= 1 {
-		adjustmentBuilder.MoveIdFirst(uint(adjustmentReq.MoveIds[0]))
+		adjustmentBuilder.MoveIdFirst(adjustmentReq.MoveIds[0])
 	}
 	if len(adjustmentReq.MoveIds) >= 2 {
-		adjustmentBuilder.MoveIdFirst(uint(adjustmentReq.MoveIds[1]))
+		adjustmentBuilder.MoveIdFirst(adjustmentReq.MoveIds[1])
 	}
 	if len(adjustmentReq.MoveIds) >= 3 {
-		adjustmentBuilder.MoveIdFirst(uint(adjustmentReq.MoveIds[2]))
+		adjustmentBuilder.MoveIdFirst(adjustmentReq.MoveIds[2])
 	}
 	if len(adjustmentReq.MoveIds) >= 4 {
-		adjustmentBuilder.MoveIdFirst(uint(adjustmentReq.MoveIds[3]))
+		adjustmentBuilder.MoveIdFirst(adjustmentReq.MoveIds[3])
 	}
 	builder.Adjustment(adjustmentBuilder)
 	return builder

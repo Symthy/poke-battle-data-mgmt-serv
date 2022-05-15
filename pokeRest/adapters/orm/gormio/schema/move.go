@@ -5,13 +5,13 @@ import (
 )
 
 type Move struct {
-	ID          uint `gorm:"primaryKey;autoIncrement:true"`
+	ID          uint16 `gorm:"primaryKey;autoIncrement:true"`
 	Name        string
 	Species     enum.MoveSpecies `sql:"type:species"`
 	Type        enum.PokemonType `sql:"type:pokemonType"`
-	Power       int
+	Power       uint16
 	Accuracy    float32
-	PP          int
+	PP          uint8
 	IsContained *bool `gorm:"default:false"`
 	CanGuard    *bool `gorm:"default:true"`
 

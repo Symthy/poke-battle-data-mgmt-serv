@@ -1,15 +1,16 @@
 package schema
 
 import (
-	"gorm.io/gorm"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 )
 
 type PartyTag struct {
-	gorm.Model
+	ID           uint64 `gorm:"primaryKey;autoIncrement:true"`
 	Name         string
 	IsGeneration *bool   `gorm:"default:false"`
 	IsSeason     *bool   `gorm:"default:false"`
 	Party        []Party `gorm:"many2many:parties_party_tags;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // M:M
+	mixin.UpdateTimes
 }
 
 func (PartyTag) TableName() string {

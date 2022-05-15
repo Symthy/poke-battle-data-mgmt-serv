@@ -1,18 +1,24 @@
 package identifier
 
-import "github.com/Symthy/PokeRest/pokeRest/errs"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
+	"github.com/Symthy/PokeRest/pokeRest/errs"
+)
+
+var _ entity.IValueId[uint16] = (*PokemonId)(nil)
 
 type PokemonId struct {
-	ValueId
+	ValueId[uint16]
 }
 
-func NewPokemonId(value uint) (*PokemonId, error) {
+func NewPokemonId(value uint64) (*PokemonId, error) {
+	// Todo: validate upper limit
 	if value < 1 {
 		return nil, errs.ThrowErrorInvalidValue("PokemonId", "value", string(rune(value)))
 	}
-	return &PokemonId{ValueId{value}}, nil
+	return &PokemonId{ValueId[uint16]{uint16(value)}}, nil
 }
 
 func NewEmptyPokemonId() PokemonId {
-	return PokemonId{ValueId{0}}
+	return PokemonId{ValueId[uint16]{0}}
 }

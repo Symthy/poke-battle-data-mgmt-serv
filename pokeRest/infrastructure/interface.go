@@ -1,21 +1,21 @@
 package infrastructure
 
-type ISchema[T IDomain[K], K IValueId] interface {
+type ISchema[T IDomain[K, I], K IValueId[I], I uint16 | uint32 | uint64] interface {
 	TableName() string
 }
 
-type IDomain[K IValueId] interface {
+type IDomain[K IValueId[I], I uint16 | uint32 | uint64] interface {
 	Id() K
 }
 
-type IValueId interface {
-	Value() uint
+type IValueId[I uint16 | uint32 | uint64] interface {
+	Value() I
 }
 
-type IDomains[T IDomain[K], K IValueId] interface {
+type IDomains[T IDomain[K, I], K IValueId[I], I uint16 | uint32 | uint64] interface {
 	Items() []T
 }
 
-type ISingleRecordFinder[T IDomain[K], K IValueId] interface {
-	FindById(id uint) (*T, error)
+type ISingleRecordFinder[T IDomain[K, I], K IValueId[I], I uint16 | uint32 | uint64] interface {
+	FindById(id I) (*T, error)
 }

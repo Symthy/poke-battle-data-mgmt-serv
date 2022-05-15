@@ -66,3 +66,11 @@ func addToList[T any](array []T, elem *T) {
 		array = append(array, *elem)
 	}
 }
+
+func ConvertTypeUint64To16(values []uint64) []uint16 {
+	return Map(values, func(value uint64) uint16 { return uint16(value) })
+}
+
+func ConvertTypeUint16To64(values []uint16) []uint64 {
+	return Map(values, func(value uint16) uint64 { return uint64(value) })
+}

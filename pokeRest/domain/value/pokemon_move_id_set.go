@@ -9,11 +9,11 @@ type PokemonMoveIdSet struct {
 	moveId4 identifier.MoveId
 }
 
-func NewPokemonMoveIdSet(ids ...uint) (*PokemonMoveIdSet, error) {
-	var id1 uint = 0
-	var id2 uint = 0
-	var id3 uint = 0
-	var id4 uint = 0
+func NewPokemonMoveIdSet(ids ...uint64) (*PokemonMoveIdSet, error) {
+	var id1 uint64 = 0
+	var id2 uint64 = 0
+	var id3 uint64 = 0
+	var id4 uint64 = 0
 	if len(ids) >= 1 {
 		id1 = ids[0]
 	}

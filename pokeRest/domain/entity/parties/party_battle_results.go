@@ -12,18 +12,18 @@ func (p PartyBattleResults) Items() []PartyBattleResult {
 	return p.items
 }
 
-func (p PartyBattleResults) TotalWinCount() int {
-	total := 0
+func (p PartyBattleResults) TotalWinCount() uint64 {
+	total := uint64(0)
 	for _, result := range p.items {
-		total += result.getWinCount()
+		total += uint64(result.getWinCount())
 	}
 	return total
 }
 
-func (p PartyBattleResults) TotalLoseCount() int {
-	total := 0
+func (p PartyBattleResults) TotalLoseCount() uint64 {
+	total := uint64(0)
 	for _, result := range p.items {
-		total += result.getLoseCount()
+		total += uint64(result.getLoseCount())
 	}
 	return total
 }

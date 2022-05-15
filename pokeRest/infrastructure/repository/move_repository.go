@@ -18,13 +18,13 @@ var (
 
 type MoveRepository struct {
 	dbClient orm.IDbClient
-	BaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId]
+	BaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId, uint16]
 }
 
 func NewMoveRepository(dbClient orm.IDbClient) *MoveRepository {
 	return &MoveRepository{
 		dbClient: dbClient,
-		BaseReadRepository: NewBaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId](
+		BaseReadRepository: NewBaseReadRepository[schema.Move, moves.Move, moves.Moves, identifier.MoveId, uint16](
 			dbClient,
 			emptyMoveBuilder,
 			emptyMovesBuilder,
@@ -39,7 +39,7 @@ func NewMoveRepository(dbClient orm.IDbClient) *MoveRepository {
 
 // FindAll <- BaseReadRepository
 
-func (r MoveRepository) FindOfPokemon(pokemonId uint) (*moves.Moves, error) {
+func (r MoveRepository) FindOfPokemon(pokemonId uint16) (*moves.Moves, error) {
 	// Todo: implementation
 	return nil, nil
 }

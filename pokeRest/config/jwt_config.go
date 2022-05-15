@@ -7,12 +7,12 @@ import (
 )
 
 type JwtCustomClaims struct {
-	ID   uint   `json:"id"`
+	ID   uint64 `json:"id"`
 	Name string `json:"name"`
 	jwt.StandardClaims
 }
 
-func NewJwtCustomClaims(id uint, name string) JwtCustomClaims {
+func NewJwtCustomClaims(id uint64, name string) JwtCustomClaims {
 	standardClaims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 	}

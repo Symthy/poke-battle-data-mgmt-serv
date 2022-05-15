@@ -7,11 +7,11 @@ import (
 )
 
 type BattleOpponentPartyInput struct {
-	id                 uint
-	opponentPokemonIds []uint
+	id                 uint64
+	opponentPokemonIds []uint64
 }
 
-func NewBattleOpponentPartyInput(id uint, pokemonIds ...uint) BattleOpponentPartyInput {
+func NewBattleOpponentPartyInput(id uint64, pokemonIds ...uint64) BattleOpponentPartyInput {
 	return BattleOpponentPartyInput{id, pokemonIds}
 }
 
@@ -20,6 +20,7 @@ func (i BattleOpponentPartyInput) BuildDomain() (*battles.BattleOpponentParty, e
 	if err != nil {
 		return nil, err
 	}
+	// Todo: validate upper limit
 	opponentPokemonIds := value.NewPartyPokemonIds(i.opponentPokemonIds)
 	domain := battles.NewBattleOpponentParty(*id, opponentPokemonIds)
 	return &domain, nil

@@ -2,26 +2,27 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"gorm.io/gorm"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 )
 
 type TrainedPokemonAdjustment struct {
-	gorm.Model
-	PokemonId    uint
+	ID           uint64 `gorm:"primaryKey;autoIncrement:true"`
+	PokemonId    uint16
 	Pokemon      Pokemon // belongs to
 	Nature       enum.Nature
-	AbilityId    *int // M:1 <- Ability
-	HeldItemId   *int // M:1 <- HeldItem
-	EffortValueH int  `gorm:"default:0"`
-	EffortValueA int  `gorm:"default:0"`
-	EffortValueB int  `gorm:"default:0"`
-	EffortValueC int  `gorm:"default:0"`
-	EffortValueD int  `gorm:"default:0"`
-	EffortValueS int  `gorm:"default:0"`
-	MoveId1      *int // M:1 <- Move
-	MoveId2      *int // M:1 <- Move
-	MoveId3      *int // M:1 <- Move
-	MoveId4      *int // M:1 <- Move
+	AbilityId    *uint16 // M:1 <- Ability
+	HeldItemId   *uint16 // M:1 <- HeldItem
+	EffortValueH uint8   `gorm:"default:0"`
+	EffortValueA uint8   `gorm:"default:0"`
+	EffortValueB uint8   `gorm:"default:0"`
+	EffortValueC uint8   `gorm:"default:0"`
+	EffortValueD uint8   `gorm:"default:0"`
+	EffortValueS uint8   `gorm:"default:0"`
+	MoveId1      *uint16 // M:1 <- Move
+	MoveId2      *uint16 // M:1 <- Move
+	MoveId3      *uint16 // M:1 <- Move
+	MoveId4      *uint16 // M:1 <- Move
+	mixin.UpdateTimes
 }
 
 func (TrainedPokemonAdjustment) TableName() string {

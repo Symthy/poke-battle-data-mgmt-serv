@@ -18,13 +18,13 @@ var (
 
 type AbilityRepository struct {
 	dbClient orm.IDbClient
-	BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId]
+	BaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId, uint16]
 }
 
 func NewAbilityRepository(dbClient orm.IDbClient) *AbilityRepository {
 	return &AbilityRepository{
 		dbClient: dbClient,
-		BaseReadRepository: NewBaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId](
+		BaseReadRepository: NewBaseReadRepository[schema.Ability, abilities.Ability, abilities.Abilities, identifier.AbilityId, uint16](
 			dbClient,
 			emptyAbilityBuilder,
 			emptyAbilitiesBuilder,
@@ -39,7 +39,7 @@ func NewAbilityRepository(dbClient orm.IDbClient) *AbilityRepository {
 
 // FindAll <- BaseReadRepository
 
-func (r AbilityRepository) FindOfPokemon(pokemonId uint) (*abilities.Abilities, error) {
+func (r AbilityRepository) FindOfPokemon(pokemonId uint16) (*abilities.Abilities, error) {
 	// Todo: implementation
 	return nil, nil
 }

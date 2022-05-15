@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain[identifier.BattleRecordId] = (*BattleRecord)(nil)
+var _ entity.IDomain[identifier.BattleRecordId, uint64] = (*BattleRecord)(nil)
 
 type BattleRecord struct {
 	id                       identifier.BattleRecordId
@@ -14,7 +14,7 @@ type BattleRecord struct {
 	userId                   identifier.UserId
 	battleResult             value.BattleResult
 	selfElectionPokemons     ElectionPokemons
-	selfTrainedPokemons      ElectionPokemons
+	selfTrainedPokemons      ElectionTrainedPokemons
 	opponentElectionPokemons ElectionPokemons
 	BattleOpponentParty
 	Season
@@ -23,7 +23,7 @@ type BattleRecord struct {
 func NewBattleRecord(
 	id identifier.BattleRecordId, partyId identifier.PartyId, userId identifier.UserId,
 	season Season, battleResult value.BattleResult, selfElectionPokemons ElectionPokemons,
-	selfTrainedPokemons ElectionPokemons, opponentElectionPokemons ElectionPokemons,
+	selfTrainedPokemons ElectionTrainedPokemons, opponentElectionPokemons ElectionPokemons,
 	opponentParty BattleOpponentParty) BattleRecord {
 	return BattleRecord{
 		id:                       id,

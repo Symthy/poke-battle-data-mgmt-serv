@@ -18,13 +18,13 @@ var (
 
 type HeldItemRepository struct {
 	dbClient orm.IDbClient
-	BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId]
+	BaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId, uint16]
 }
 
 func NewHeldItemRepository(dbClient orm.IDbClient) *HeldItemRepository {
 	return &HeldItemRepository{
 		dbClient: dbClient,
-		BaseReadRepository: NewBaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId](
+		BaseReadRepository: NewBaseReadRepository[schema.HeldItem, items.HeldItem, items.HeldItems, identifier.HeldItemId, uint16](
 			dbClient,
 			emptyHeldItemBuilder,
 			emptyHeldItemsBuilder,

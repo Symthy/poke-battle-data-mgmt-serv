@@ -9,9 +9,9 @@ type IMoveNotification interface {
 	SetId(identifier.MoveId)
 	SetName(string)
 	SetSpecies(value.MoveSpecies)
-	SetPower(int)            // 威力
+	SetPower(uint16)         // 威力
 	SetAccuracyRate(float32) // 命中率
-	SetPP(int)
+	SetPP(uint8)
 	SetIsContained(bool)
 	SetCanGuard(bool)
 }
@@ -19,7 +19,7 @@ type IMoveNotification interface {
 type IMoveNotificationForDamageCalc interface {
 	SetMoveType(value.PokemonType)
 	SetMoveSpecies(value.MoveSpecies)
-	SetMovePower(int)
+	SetMovePower(uint16)
 	SetIsMoveContained(bool)
 	SetCanMoveGuard(bool)
 }

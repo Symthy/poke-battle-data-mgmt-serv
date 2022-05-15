@@ -30,7 +30,7 @@ func (c BattleRecordController) SaveBattleRecord(ctx echo.Context) error {
 		return err
 	}
 	// Todo: accept value
-	cmd := command.NewAddBattleRecordCommand(0, userId, 0, 0, 0, "", []uint{}, []uint{}, []uint{}, []uint{})
+	cmd := command.NewAddBattleRecordCommand(0, userId, 0, 0, 0, "", []uint64{}, []uint64{}, []uint64{}, []uint64{})
 	domain, err := c.service.AddBattleRecord(cmd)
 	return c.singleDataResolver.Resolve(ctx, domain, err)
 }
@@ -41,12 +41,12 @@ func (c BattleRecordController) UpdateBattleRecord(ctx echo.Context) error {
 		return err
 	}
 	// Todo: accept value
-	cmd := command.NewEditBattleRecordCommand(0, 0, userId, 0, 0, 0, "", []uint{}, []uint{}, []uint{}, []uint{})
+	cmd := command.NewEditBattleRecordCommand(0, 0, userId, 0, 0, 0, "", []uint64{}, []uint64{}, []uint64{}, []uint64{})
 	domain, err := c.service.EditBattleRecord(cmd)
 	return c.singleDataResolver.Resolve(ctx, domain, err)
 }
 
-func (c BattleRecordController) DeleteBattleRecord(ctx echo.Context, id uint) error {
+func (c BattleRecordController) DeleteBattleRecord(ctx echo.Context, id uint64) error {
 	userId, err := c.userResolver.ResolveId(ctx)
 	if err != nil {
 		return err

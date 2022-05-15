@@ -14,13 +14,13 @@ var _ repository.IPartyBattleResultRepository = (*PartySeasonResultRepository)(n
 var emptyPartySeasonResultSchemaBuilder = func() schema.PartySeasonResult { return schema.PartySeasonResult{} }
 
 type PartySeasonResultRepository struct {
-	BaseWriteRepository[schema.PartySeasonResult, parties.PartyBattleResult, identifier.PartyBattleResultId]
+	BaseWriteRepository[schema.PartySeasonResult, parties.PartyBattleResult, identifier.PartyBattleResultId, uint64]
 	dbClient orm.IDbClient
 }
 
 func NewPartyBattleResultRepository(dbClient orm.IDbClient) *PartySeasonResultRepository {
 	return &PartySeasonResultRepository{
-		BaseWriteRepository: BaseWriteRepository[schema.PartySeasonResult, parties.PartyBattleResult, identifier.PartyBattleResultId]{
+		BaseWriteRepository: BaseWriteRepository[schema.PartySeasonResult, parties.PartyBattleResult, identifier.PartyBattleResultId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartySeasonResultSchemaBuilder,
 			toSchemaConverter:  conv.ToSchemaPartySeasonResult,

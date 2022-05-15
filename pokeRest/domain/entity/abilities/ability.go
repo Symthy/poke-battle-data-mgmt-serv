@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain[identifier.AbilityId] = (*Ability)(nil)
+var _ entity.IDomain[identifier.AbilityId, uint16] = (*Ability)(nil)
 
 type Ability struct {
 	id            identifier.AbilityId

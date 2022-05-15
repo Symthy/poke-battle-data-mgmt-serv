@@ -6,13 +6,13 @@ import (
 )
 
 type PartyTagInput struct {
-	id           uint
+	id           uint64
 	name         string
 	isGeneration bool
 	isSeason     bool
 }
 
-func NewPartyTagInput(id uint, name string, isGeneration bool, isSeason bool) PartyTagInput {
+func NewPartyTagInput(id uint64, name string, isGeneration, isSeason bool) PartyTagInput {
 	return PartyTagInput{id, name, isGeneration, isSeason}
 }
 

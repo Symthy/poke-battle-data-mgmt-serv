@@ -1,7 +1,7 @@
 package schema
 
 type Form struct {
-	ID                uint `gorm:"primaryKey;autoIncrement:true"`
+	ID                uint16 `gorm:"primaryKey;autoIncrement:true"`
 	Name              string
 	IsRegionalVariant bool `gorm:"default:false"`
 	RegionName        string

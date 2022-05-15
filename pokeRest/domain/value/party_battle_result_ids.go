@@ -6,7 +6,7 @@ type PartyBattleResultIds struct {
 	ids []identifier.PartyBattleResultId
 }
 
-func NewPartyBattleResultIds(values []uint) (*PartyBattleResultIds, error) {
+func NewPartyBattleResultIds(values []uint64) (*PartyBattleResultIds, error) {
 	ids := make([]identifier.PartyBattleResultId, len(values))
 	for i, v := range values {
 		id, err := identifier.NewPartyBattleResultId(v)

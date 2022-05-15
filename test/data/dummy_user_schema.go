@@ -7,7 +7,7 @@ import (
 )
 
 func DummyUser1(filterFields ...string) schema.User {
-	var id uint = 0
+	var id uint64 = 0
 	if len(filterFields) == 0 || lists.Contains(filterFields, "id") {
 		id = 1
 	}

@@ -31,23 +31,23 @@ func (c PartyController) SaveParty(ctx echo.Context) error {
 		return err
 	}
 	// Todo: accept value
-	cmd := command.NewCreatePartyCommand("", "", false, userId, []uint{}, []uint{})
+	cmd := command.NewCreatePartyCommand("", "", false, userId, []uint64{}, []uint64{})
 	domain, err := c.writeServ.SaveParty(cmd)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }
 
-func (c PartyController) UpdateParty(ctx echo.Context, id int) error {
+func (c PartyController) UpdateParty(ctx echo.Context, id uint64) error {
 	userId, err := c.userResolver.ResolveId(ctx)
 	if err != nil {
 		return err
 	}
 	// Todo: accept value
-	cmd := command.NewUpdatePartyCommand(uint(id), "", "", false, userId, []uint{}, []uint{}, []uint{})
+	cmd := command.NewUpdatePartyCommand(id, "", "", false, userId, []uint64{}, []uint64{}, []uint64{})
 	domain, err := c.writeServ.UpdateParty(cmd)
 	return c.responseResolver.Resolve(ctx, domain, err)
 }
 
-func (c PartyController) DeleteParty(ctx echo.Context, id uint) error {
+func (c PartyController) DeleteParty(ctx echo.Context, id uint64) error {
 	userId, err := c.userResolver.ResolveId(ctx)
 	if err != nil {
 		return err

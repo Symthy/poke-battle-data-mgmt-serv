@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure"
 )
 
-func convertIdToNullInt16(id infrastructure.IValueId) sql.NullInt16 {
+func convertIdToNullInt16[T uint16 | uint32 | uint64](id infrastructure.IValueId[T]) sql.NullInt16 {
 	value := id.Value()
 	nullInt := sql.NullInt16{}
 	if value == 0 {

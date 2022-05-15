@@ -61,31 +61,31 @@ func (h *PokeRestHandler) GetPokemons(ctx echo.Context, params server.GetPokemon
 
 // get pokemon details by Pokedex No
 // (GET /pokemons/{pokedexNo}/details)
-func (h *PokeRestHandler) GetPokemonDetailsByPokedexNo(ctx echo.Context, pokedexNo int) error {
+func (h *PokeRestHandler) GetPokemonDetailsByPokedexNo(ctx echo.Context, pokedexNo uint64) error {
 	return nil
 }
 
 // get pokemon details by Pokedex No and Form No
 // (GET /pokemons/{pokedexNo}/{formNo}/details)
-func (h *PokeRestHandler) GetPokemonDetailsByPokedexNoAndFormNo(ctx echo.Context, pokedexNo int, formNo int) error {
+func (h *PokeRestHandler) GetPokemonDetailsByPokedexNoAndFormNo(ctx echo.Context, pokedexNo uint64, formNo uint64) error {
 	return nil
 }
 
 // get pokemons of specify ability
 // (GET /pokemons/abilities/{abilityId})
-func (h *PokeRestHandler) GetPokemonsBySpecifiedAbility(ctx echo.Context, abilityId int) error {
+func (h *PokeRestHandler) GetPokemonsBySpecifiedAbility(ctx echo.Context, abilityId uint64) error {
 	return nil
 }
 
 // get pokemons with specified move
 // (GET /pokemons/moves/{moveId})
-func (h *PokeRestHandler) GetPokemonsBySpecifiedMove(ctx echo.Context, moveId int) error {
+func (h *PokeRestHandler) GetPokemonsBySpecifiedMove(ctx echo.Context, moveId uint64) error {
 	return nil
 }
 
 // get pokemon by No
 // (GET /pokemons/{pokedexNo}/{formNo})
-func (h *PokeRestHandler) GetPokemonByPokedexNoAndFormNo(ctx echo.Context, pokedexNo int, formNo int) error {
+func (h *PokeRestHandler) GetPokemonByPokedexNoAndFormNo(ctx echo.Context, pokedexNo uint64, formNo uint64) error {
 	// Todo: unsupported?
 	return nil
 }
@@ -100,36 +100,44 @@ func (h *PokeRestHandler) GetPokemonsDetails(ctx echo.Context, params server.Get
 // get abilities
 // (GET /abilities)
 func (h *PokeRestHandler) GetAbilities(ctx echo.Context, params server.GetAbilitiesParams) error {
-	return h.abilityController.GetAbilities(ctx, int(*params.Next), 0)
+	var next uint64 = 0
+	if params.Next != nil {
+		next = *params.Next
+	}
+	return h.abilityController.GetAbilities(ctx, next, 0)
 }
 
 // get ability by id
 // (GET /abilities/{avilityId})
-func (h *PokeRestHandler) GetAbilityById(ctx echo.Context, avilityId int) error {
+func (h *PokeRestHandler) GetAbilityById(ctx echo.Context, avilityId uint64) error {
 	return h.abilityController.GetAbilityById(ctx, avilityId)
 }
 
 // get abilities by specified pokemon id
 // (GET /abilities/pokemons/{pokemonId})
-func (h *PokeRestHandler) GetAbilitiesBySpecifedPokemonId(ctx echo.Context, pokemonId int) error {
+func (h *PokeRestHandler) GetAbilitiesBySpecifedPokemonId(ctx echo.Context, pokemonId uint64) error {
 	return h.abilityController.GetAbilityByPokemonId(ctx, pokemonId)
 }
 
 // get moves
 // (GET /moves)
 func (h *PokeRestHandler) GetMoves(ctx echo.Context, params server.GetMovesParams) error {
-	return h.moveController.GetMoves(ctx, *params.Next, 0)
+	var next uint64 = 0
+	if params.Next != nil {
+		next = *params.Next
+	}
+	return h.moveController.GetMoves(ctx, next, 0)
 }
 
 // get move by id
 // (GET /moves/{moveId})
-func (h *PokeRestHandler) GetMoveById(ctx echo.Context, moveId int) error {
+func (h *PokeRestHandler) GetMoveById(ctx echo.Context, moveId uint64) error {
 	return h.moveController.GetMoveById(ctx, moveId)
 }
 
 // get moves by specified pokemon id
 // (GET /moves/pokemons/{pokemonId})
-func (h *PokeRestHandler) GetMovesBySpecifiedPokemonId(ctx echo.Context, pokemonId int) error {
+func (h *PokeRestHandler) GetMovesBySpecifiedPokemonId(ctx echo.Context, pokemonId uint64) error {
 	return h.moveController.GetMoveByPokemonId(ctx, pokemonId)
 }
 
@@ -141,7 +149,7 @@ func (h *PokeRestHandler) GetHeldItems(ctx echo.Context, params server.GetHeldIt
 
 // get held items by id
 // (GET /helditems/{id})
-func (h *PokeRestHandler) GetHeldItemsId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) GetHeldItemsId(ctx echo.Context, id uint64) error {
 	return h.itemController.GetHeldItemById(ctx, id)
 }
 
@@ -184,20 +192,20 @@ func (h *PokeRestHandler) PostParties(ctx echo.Context) error {
 
 // GET Party
 // (GET /parties/{id})
-func (h *PokeRestHandler) GetPartiesId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) GetPartiesId(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // PUT party
 // (PUT /parties/{id})
-func (h *PokeRestHandler) PutPartiesId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) PutPartiesId(ctx echo.Context, id uint64) error {
 	return h.partyController.UpdateParty(ctx, id)
 }
 
 // DELETE party
 // (DELETE /parties/{id})
-func (h *PokeRestHandler) DeletePartiesId(ctx echo.Context, id int) error {
-	return h.partyController.DeleteParty(ctx, uint(id)) // Todo: fix
+func (h *PokeRestHandler) DeletePartiesId(ctx echo.Context, id uint64) error {
+	return h.partyController.DeleteParty(ctx, id) // Todo: fix
 }
 
 // GET party tags
@@ -214,19 +222,25 @@ func (h *PokeRestHandler) PostPartiesTags(ctx echo.Context) error {
 
 // DELETE party tag
 // (DELETE /parties/tags/{id})
-func (h *PokeRestHandler) DeletePartiesTagsId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) DeletePartiesTagsId(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // GET battle record of Party
 // (GET /battles/parties/{partyId})
-func (h *PokeRestHandler) GetBattlesPartyId(ctx echo.Context, partyId int) error {
+func (h *PokeRestHandler) GetBattlesPartyId(ctx echo.Context, partyId uint64) error {
 	return nil
 }
 
 // GET battle record of User
 // (GET /battles/users/{userId})
-func (h *PokeRestHandler) GetBattlesUserId(ctx echo.Context, userId int) error {
+func (h *PokeRestHandler) GetBattlesUserId(ctx echo.Context, userId uint64) error {
+	return nil
+}
+
+// GET Battle record
+// (GET /battles)
+func (h *PokeRestHandler) GetBattles(ctx echo.Context) error {
 	return nil
 }
 
@@ -238,14 +252,14 @@ func (h *PokeRestHandler) PostBattles(ctx echo.Context) error {
 
 // PUT Battle record
 // (PUT /battles/{id})
-func (h *PokeRestHandler) PutBattlesId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) PutBattlesId(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // DELETE battle record
 // (DELETE /battles/{id})
-func (h *PokeRestHandler) DeleteBattles(ctx echo.Context, id int) error {
-	return h.battleRecordController.DeleteBattleRecord(ctx, uint(id))
+func (h *PokeRestHandler) DeleteBattles(ctx echo.Context, id uint64) error {
+	return h.battleRecordController.DeleteBattleRecord(ctx, id)
 }
 
 // GET trained pokemons
@@ -262,78 +276,78 @@ func (h *PokeRestHandler) PostTrainedpokemons(ctx echo.Context) error {
 
 // GET trained pokemon
 // (GET /trainedpokemons/{id})
-func (h *PokeRestHandler) GetTrainedPokemonsId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) GetTrainedPokemonsId(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // PUT trained pokemon
 // (PUT /trainedpokemons/{id})
-func (h *PokeRestHandler) PutTrainedpokemonsId(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) PutTrainedpokemonsId(ctx echo.Context, id uint64) error {
 	return h.trainedPokemonController.UpdateTrainedPokemon(ctx)
 }
 
 // DELETE trained pokemon
 // (DELETE /trainedpokemons/{id})
-func (h *PokeRestHandler) DeleteTrainedPokemonsId(ctx echo.Context, id int) error {
-	return h.trainedPokemonController.DeleteTrainedPokemon(ctx, uint(id))
+func (h *PokeRestHandler) DeleteTrainedPokemonsId(ctx echo.Context, id uint64) error {
+	return h.trainedPokemonController.DeleteTrainedPokemon(ctx, id)
 }
 
 // GET trained pokemon attack adjustments
 // (GET /trainedpokemons/{id}/attacks)
-func (h *PokeRestHandler) GetTrainedPokemonsIdAttacks(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) GetTrainedPokemonsIdAttacks(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // POST trained pokemon attack adjustment
 // (POST /trainedpokemons/{id}/attacks)
-func (h *PokeRestHandler) PostTrainedpokemonsIdAttacks(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) PostTrainedpokemonsIdAttacks(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // GET trained pokemon attack adjustment
 // (GET /trainedpokemons/{trainedPokemonId}/attacks/{attackId})
-func (h *PokeRestHandler) GetTrainedPokemonsIdAttacksId(ctx echo.Context, trainedPokemonId int, attackId int) error {
+func (h *PokeRestHandler) GetTrainedPokemonsIdAttacksId(ctx echo.Context, trainedPokemonId uint64, attackId uint64) error {
 	return nil
 }
 
 // PUT trained pokemon attack adjustment
 // (PUT /trainedpokemons/{trainedPokemonId}/attacks/{attackId})
-func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdAttacksAttackId(ctx echo.Context, trainedPokemonId int, attackId int) error {
+func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdAttacksAttackId(ctx echo.Context, trainedPokemonId uint64, attackId uint64) error {
 	return nil
 }
 
 // DELETE trained pokemon attack adjustment
 // (DELETE /trainedpokemons/{trainedPokemonId}/attacks/{attackId})
-func (h *PokeRestHandler) DeleteTrainedPokemonsIdAttacksId(ctx echo.Context, trainedPokemonId int, attackId int) error {
+func (h *PokeRestHandler) DeleteTrainedPokemonsIdAttacksId(ctx echo.Context, trainedPokemonId uint64, attackId uint64) error {
 	return nil
 }
 
 // (GET /trainedpokemons/{id}/deffences)
-func (h *PokeRestHandler) GetTrainedPokemonsIdDeffences(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) GetTrainedPokemonsIdDeffences(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // POST trained pokemon deffence adjustment
 // (POST /trainedpokemons/{id}/deffences)
-func (h *PokeRestHandler) PostTrainedpokemonsIdDeffences(ctx echo.Context, id int) error {
+func (h *PokeRestHandler) PostTrainedpokemonsIdDeffences(ctx echo.Context, id uint64) error {
 	return nil
 }
 
 // GET trained pokemon deffence adjustment
 // (GET /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) GetTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId int, deffenceId int) error {
+func (h *PokeRestHandler) GetTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId uint64, deffenceId uint64) error {
 	return nil
 }
 
 // PUT trained pokemon deffence adjustment
 // (PUT /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdDeffencesDeffenceId(ctx echo.Context, trainedPokemonId int, deffenceId int) error {
+func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdDeffencesDeffenceId(ctx echo.Context, trainedPokemonId uint64, deffenceId uint64) error {
 	return nil
 }
 
 // DELETE trained pokemon deffence adjustment
 // (DELETE /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) DeleteTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId int, deffenceId int) error {
+func (h *PokeRestHandler) DeleteTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId uint64, deffenceId uint64) error {
 	return nil
 }
 
@@ -363,24 +377,30 @@ func (h *PokeRestHandler) PostSignup(ctx echo.Context) error {
 
 // GET user
 // (GET /users/{id})
-func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id int) error {
-	return h.userController.GetUserById(ctx, uint(id))
+func (h *PokeRestHandler) GetUsersId(ctx echo.Context, id uint64) error {
+	return h.userController.GetUserById(ctx, id)
 }
 
 // GET user parties
 // (GET /users/{id}/parties)
-func (h *PokeRestHandler) GetUsersIdParties(ctx echo.Context, id int, params server.GetUsersIdPartiesParams) error {
+func (h *PokeRestHandler) GetUsersIdParties(ctx echo.Context, id uint64, params server.GetUsersIdPartiesParams) error {
 	return nil
 }
 
 // GET user battle records
 // (GET /users/{id}/battles)
-func (h *PokeRestHandler) GetUsersIdBattles(ctx echo.Context, id int, params server.GetUsersIdBattlesParams) error {
+func (h *PokeRestHandler) GetUsersIdBattles(ctx echo.Context, id uint64, params server.GetUsersIdBattlesParams) error {
 	return nil
 }
 
 // GET user trained pokemons
 // (GET /users/{id}/trainedpokemons)
-func (h *PokeRestHandler) GetUsersIdTrainedPokemons(ctx echo.Context, id int, params server.GetUsersIdTrainedPokemonsParams) error {
+func (h *PokeRestHandler) GetUsersIdTrainedPokemons(ctx echo.Context, id uint64, params server.GetUsersIdTrainedPokemonsParams) error {
+	return nil
+}
+
+// GET health check
+// (GET /health)
+func (h *PokeRestHandler) GetHealth(ctx echo.Context) error {
 	return nil
 }

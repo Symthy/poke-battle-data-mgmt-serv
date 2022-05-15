@@ -17,14 +17,14 @@ var (
 )
 
 type PartyTagRepository struct {
-	BaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags, identifier.PartyTagId]
-	BaseWriteRepository[schema.PartyTag, parties.PartyTag, identifier.PartyTagId]
+	BaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags, identifier.PartyTagId, uint64]
+	BaseWriteRepository[schema.PartyTag, parties.PartyTag, identifier.PartyTagId, uint64]
 	dbClient orm.IDbClient
 }
 
 func NewPartyTagRepository(dbClient orm.IDbClient) *PartyTagRepository {
 	return &PartyTagRepository{
-		BaseReadRepository: NewBaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags, identifier.PartyTagId](
+		BaseReadRepository: NewBaseReadRepository[schema.PartyTag, parties.PartyTag, parties.PartyTags, identifier.PartyTagId, uint64](
 			dbClient,
 			emptyPartyTagBuilder,
 			emptyPartyTagsBuilder,
@@ -32,7 +32,7 @@ func NewPartyTagRepository(dbClient orm.IDbClient) *PartyTagRepository {
 			conv.ToSchemaPartyTag,
 			conv.ToDomainPartyTag,
 		),
-		BaseWriteRepository: BaseWriteRepository[schema.PartyTag, parties.PartyTag, identifier.PartyTagId]{
+		BaseWriteRepository: BaseWriteRepository[schema.PartyTag, parties.PartyTag, identifier.PartyTagId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyPartyTagBuilder,
 			toSchemaConverter:  conv.ToSchemaPartyTag,

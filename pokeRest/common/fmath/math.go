@@ -2,25 +2,25 @@ package fmath
 
 import "math"
 
-func RoundDown(value float64) float64 {
+func RoundDown[T uint16 | uint32 | uint64](value float64) T {
 	// 小数点切り捨て
-	return math.Trunc(value)
+	return T(math.Trunc(value))
 }
 
-func RoundUp(value float64) float64 {
+func RoundUp[T uint16 | uint32 | uint64](value float64) T {
 	// 小数点切り上げ
-	return math.Ceil(value)
+	return T(math.Ceil(value))
 }
 
-func Round(value float64) int {
-	return int(math.Round(value))
+func Round[T uint16 | uint32 | uint64](value float64) T {
+	return T(math.Round(value))
 }
 
 // 五捨五超入
-func RoundUpIfDecimalGreaterFive(value float64) int {
-	integerValue := RoundDown(value)
+func RoundUpIfDecimalGreaterFive[T uint16 | uint32 | uint64](value float64) T {
+	integerValue := float64(RoundDown[T](value))
 	if value-integerValue > 0.5 {
-		return int(RoundUp(value))
+		return RoundUp[T](value)
 	}
-	return int(RoundDown(value))
+	return RoundDown[T](value)
 }

@@ -5,7 +5,7 @@ import (
 )
 
 type HeldItem struct {
-	ID            uint `gorm:"primaryKey;autoIncrement:true"`
+	ID            uint16 `gorm:"primaryKey;autoIncrement:true"`
 	Name          string
 	Description   string
 	BattleEffects *mixin.BattleEffects `gorm:"embedded"`

@@ -13,17 +13,17 @@ type pti = identifier.PartyTagId
 
 type PartyTagReadService struct {
 	repo repository.IPartyTagRepository
-	service.EntityAllFinder[pts, pt, pti]
+	service.EntityAllFinder[pts, pt, pti, uint64]
 }
 
 func NewPartyTagReadService(repo repository.IPartyTagRepository) PartyTagReadService {
 	serv := PartyTagReadService{repo: repo}
-	serv.EntityAllFinder = service.NewEntityAllFinder[pts, pt, pti](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[pts, pt, pti, uint64](repo)
 	return serv
 }
 
 // UC: 持ち物取得
-func (s PartyTagReadService) FindPartyTag(itemId uint) (*parties.PartyTag, error) {
+func (s PartyTagReadService) FindPartyTag(itemId uint64) (*parties.PartyTag, error) {
 	return s.repo.FindById(itemId)
 }
 

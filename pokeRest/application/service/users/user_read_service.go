@@ -14,7 +14,7 @@ func NewUserReadService(repository repository.IUserRepository) UserReadService {
 	return UserReadService{repository: repository}
 }
 
-func (s UserReadService) GetUserById(id uint) (*users.User, error) {
+func (s UserReadService) GetUserById(id uint64) (*users.User, error) {
 	user, err := s.repository.FindById(id)
 	return user, err
 }

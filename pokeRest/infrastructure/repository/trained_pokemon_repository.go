@@ -84,7 +84,7 @@ func (rep TrainedPokemonRepository) Update(domain trainings.TrainedPokemon) (*tr
 	return conv.ToDomainTrainedPokemon(updated)
 }
 
-func (rep TrainedPokemonRepository) Delete(id uint) (*trainings.TrainedPokemon, error) {
+func (rep TrainedPokemonRepository) Delete(id uint64) (*trainings.TrainedPokemon, error) {
 	db := rep.dbClient.Db()
 	deleted := schema.TrainedPokemon{}
 	db.Transaction(func(tx *gorm.DB) error {

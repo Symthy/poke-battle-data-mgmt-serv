@@ -7,13 +7,13 @@ import (
 )
 
 type UserInput struct {
-	id   uint
+	id   uint64
 	name string
 	role string
 	// Todo
 }
 
-func NewUserInput(id uint, name string, role string) UserInput {
+func NewUserInput(id uint64, name string, role string) UserInput {
 	return UserInput{id, name, role}
 }
 

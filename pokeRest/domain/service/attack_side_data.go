@@ -14,7 +14,7 @@ type AttackSideData struct {
 	nature            value.PokemonNature
 	moveSpecies       value.MoveSpecies
 	moveType          value.PokemonType
-	movePower         int // 威力
+	movePower         uint16 // 威力
 	isMoveContained   bool
 	canMoveGuard      bool
 	additionalEffects value.BattleEffects
@@ -40,7 +40,7 @@ func (a AttackSideData) SetMoveType(moveType value.PokemonType) {
 func (b AttackSideData) SetMoveSpecies(moveSpecies value.MoveSpecies) {
 	b.moveSpecies = moveSpecies
 }
-func (b AttackSideData) SetMovePower(movePower int) {
+func (b AttackSideData) SetMovePower(movePower uint16) {
 	b.movePower = movePower
 }
 func (b AttackSideData) SetIsMoveContained(isMoveContained bool) {

@@ -2,18 +2,19 @@ package schema
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"gorm.io/gorm"
+	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 )
 
 type TrainedPokemon struct {
-	gorm.Model
+	ID                         uint64      `gorm:"primaryKey;autoIncrement:true"`
 	Gender                     enum.Gender `sql:"type:gender"`
 	Nickname                   *string
 	Description                *string
-	TrainedPokemonAdjustmentId uint
+	TrainedPokemonAdjustmentId uint64
 	TrainedPokemonAdjustment   TrainedPokemonAdjustment `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
 	IsPrivate                  bool                     `gorm:"default:false"`
-	CreateUserId               *uint                    // M:1 from User
+	CreateUserId               *uint64                  // M:1 from User
+	mixin.UpdateTimes
 
 	// relation
 	BattleRecord1 []BattleRecord `gorm:"foreignKey:SelfTrainedPokemonId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleRecord

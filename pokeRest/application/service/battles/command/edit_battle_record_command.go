@@ -9,9 +9,8 @@ type EditBattleRecordCommand struct {
 }
 
 func NewEditBattleRecordCommand(
-	id, partyId, userId uint, generation, series, season int, battleResult string,
-	selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds,
-	opponentPartyPokemonIds []uint,
+	id, partyId, userId, generation, series, season uint64, battleResult string,
+	selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds, opponentPartyPokemonIds []uint64,
 ) EditBattleRecordCommand {
 	return EditBattleRecordCommand{
 		factory.NewBattleRecordInput(

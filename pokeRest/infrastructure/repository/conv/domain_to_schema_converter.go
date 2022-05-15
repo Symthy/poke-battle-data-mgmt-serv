@@ -15,7 +15,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/dto"
 )
 
-func ConvertToDomains[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], K infrastructure.IValueId](
+func ConvertToDomains[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], K infrastructure.IValueId[I], I uint16 | uint64](
 	schemas []TS, toDomainConverter func(TS) (*TD, error)) ([]TD, error) {
 	domains := make([]TD, len(schemas), len(schemas))
 	for i, schema := range schemas {

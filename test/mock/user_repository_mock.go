@@ -17,7 +17,7 @@ func NewUserRepositoryMock() *UserRepositoryMock {
 	return &UserRepositoryMock{}
 }
 
-func (mock UserRepositoryMock) FindById(id uint) (*users.User, error) {
+func (mock UserRepositoryMock) FindById(id uint64) (*users.User, error) {
 	dummyUser := data.DummyUser1()
 	if dummyUser.ID != id {
 		return &users.User{}, nil
@@ -41,6 +41,6 @@ func (mock UserRepositoryMock) Update(user users.User) (*users.User, error) {
 	return &users.User{}, nil
 }
 
-func (mock UserRepositoryMock) Delete(id uint) (*users.User, error) {
+func (mock UserRepositoryMock) Delete(id uint64) (*users.User, error) {
 	return &users.User{}, nil
 }

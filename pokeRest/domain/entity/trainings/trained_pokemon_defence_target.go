@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain[identifier.TrainedDefenseTargetId] = (*TrainedPokemonDefenceTarget)(nil)
+var _ entity.IDomain[identifier.TrainedDefenseTargetId, uint64] = (*TrainedPokemonDefenceTarget)(nil)
 
 type TrainedPokemonDefenceTarget struct {
 	id                   identifier.TrainedDefenseTargetId
@@ -21,7 +21,7 @@ type TrainedPokemonDefenceTarget struct {
 func NewTrainedPokemonDefenceTarget(
 	id identifier.TrainedDefenseTargetId, trainedPokemonId identifier.TrainedPokemonId,
 	moveId identifier.MoveId, targetPokemonId identifier.PokemonId, targetPokemonNature string,
-	targetPokemonEffortA int, targetPokemonEffortC int,
+	targetPokemonEffortA, targetPokemonEffortC uint64,
 ) (*TrainedPokemonDefenceTarget, error) {
 	effortValueA, err := value.NewEffortValue(targetPokemonEffortA, value.A)
 	if err != nil {

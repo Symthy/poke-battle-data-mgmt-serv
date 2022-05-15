@@ -8,27 +8,32 @@ import (
 	"gorm.io/gorm"
 )
 
-var _ IWritableRepository[infrastructure.IDomain[infrastructure.IValueId], infrastructure.IValueId] = (*TransactionalRepositoryWrapper[infrastructure.IDomain[infrastructure.IValueId], infrastructure.IValueId])(nil)
+var _ IWritableRepository[
+	infrastructure.IDomain[infrastructure.IValueId[uint64], uint64], infrastructure.IValueId[uint64],
+] = (*TransactionalRepositoryWrapper[
+	infrastructure.IDomain[infrastructure.IValueId[uint64], uint64],
+	infrastructure.IValueId[uint64],
+])(nil)
 
-type InnerWriteRepository[TD infrastructure.IDomain[K], K infrastructure.IValueId] interface {
+type InnerWriteRepository[TD infrastructure.IDomain[K, uint64], K infrastructure.IValueId[uint64]] interface {
 	CreateRecord(*gorm.DB, TD) (*TD, error)
 	UpdateRecord(*gorm.DB, TD) (*TD, error)
 	DeleteRecord(*gorm.DB, uint) (*TD, error)
 }
 
-type IWritableRepository[TD infrastructure.IDomain[K], K infrastructure.IValueId] interface {
+type IWritableRepository[TD infrastructure.IDomain[K, uint64], K infrastructure.IValueId[uint64]] interface {
 	Create(TD) (*TD, error)
 	Update(TD) (*TD, error)
 	Delete(uint) (*TD, error)
 }
 
-type TransactionalRepositoryWrapper[TD infrastructure.IDomain[K], K infrastructure.IValueId] struct {
+type TransactionalRepositoryWrapper[TD infrastructure.IDomain[K, uint64], K infrastructure.IValueId[uint64]] struct {
 	InnerWriteRepository[TD, K]
 	dbClient orm.IDbClient
 	tx       *gorm.DB
 }
 
-func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain[K], K infrastructure.IValueId](
+func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain[K, uint64], K infrastructure.IValueId[uint64]](
 	repo InnerWriteRepository[TD, K], dbClient orm.IDbClient) TransactionalRepositoryWrapper[TD, K] {
 	return TransactionalRepositoryWrapper[TD, K]{
 		InnerWriteRepository: repo,

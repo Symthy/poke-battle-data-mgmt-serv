@@ -7,13 +7,13 @@ import (
 )
 
 type AbilityInput struct {
-	id            uint
+	id            uint64
 	name          string
 	description   string
 	battleEffects *value.BattleEffects
 }
 
-func NewAbilityInput(id uint, name string, description string, battleEffects *value.BattleEffects) AbilityInput {
+func NewAbilityInput(id uint64, name string, description string, battleEffects *value.BattleEffects) AbilityInput {
 	return AbilityInput{
 		id:            id,
 		name:          name,

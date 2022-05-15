@@ -16,7 +16,7 @@ var _ repository.IBattleRecordRepository = (*BattleRecordRepository)(nil)
 var emptyBattleRecordSchemaBuilder = func() schema.BattleRecord { return schema.BattleRecord{} }
 
 type BattleRecordRepository struct {
-	BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]
+	BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId, uint64]
 	seasonRepo        BattleSeasonRepository
 	opponentPartyRepo BattleOpponentPartyRepository
 	dbClient          orm.IDbClient
@@ -24,7 +24,7 @@ type BattleRecordRepository struct {
 
 func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 	return &BattleRecordRepository{
-		BaseSingleReadRepository: BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId]{
+		BaseSingleReadRepository: BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyBattleRecordSchemaBuilder,
 			toSchemaConverter:  conv.ToSchemaBattleRecord,
@@ -98,7 +98,7 @@ func (rep BattleRecordRepository) Update(domain battles.BattleRecord) (*battles.
 	return conv.ToDomainBattleRecord(ret)
 }
 
-func (rep BattleRecordRepository) Delete(id uint) (*battles.BattleRecord, error) {
+func (rep BattleRecordRepository) Delete(id uint64) (*battles.BattleRecord, error) {
 	db := rep.dbClient.Db()
 	deleted := schema.BattleRecord{}
 	db.Transaction(func(tx *gorm.DB) error {

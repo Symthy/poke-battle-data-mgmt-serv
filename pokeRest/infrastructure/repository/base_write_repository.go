@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type BaseWriteRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDomain[K], K infrastructure.IValueId] struct {
+type BaseWriteRepository[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], K infrastructure.IValueId[I], I uint16 | uint64] struct {
 	dbClient           orm.IDbClient
 	emptySchemaBuilder func() TS
 	toSchemaConverter  func(model TD) TS
@@ -15,11 +15,11 @@ type BaseWriteRepository[TS infrastructure.ISchema[TD, K], TD infrastructure.IDo
 
 // Todo: error handling
 
-func (rep BaseWriteRepository[TS, TD, K]) Create(model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) Create(model TD) (*TD, error) {
 	return rep.CreateDelegate(rep.dbClient.Db(), model)
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) CreateDelegate(db *gorm.DB, model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) CreateDelegate(db *gorm.DB, model TD) (*TD, error) {
 	schema := rep.toSchemaConverter(model)
 	tx := db.Create(&schema)
 	if tx.Error != nil {
@@ -29,11 +29,11 @@ func (rep BaseWriteRepository[TS, TD, K]) CreateDelegate(db *gorm.DB, model TD) 
 	return domain, err
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) Update(model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) Update(model TD) (*TD, error) {
 	return rep.UpdateDelegate(rep.dbClient.Db(), model)
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) UpdateDelegate(db *gorm.DB, model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) UpdateDelegate(db *gorm.DB, model TD) (*TD, error) {
 	target := rep.emptySchemaBuilder()
 	if tx := db.First(&target, model.Id().Value()); tx.Error != nil {
 		if tx.Error == gorm.ErrRecordNotFound {
@@ -50,11 +50,11 @@ func (rep BaseWriteRepository[TS, TD, K]) UpdateDelegate(db *gorm.DB, model TD) 
 	return domain, err
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) Delete(id uint) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) Delete(id I) (*TD, error) {
 	return rep.DeleteRecord(rep.dbClient.Db(), id)
 }
 
-func (rep BaseWriteRepository[TS, TD, K]) DeleteRecord(db *gorm.DB, id uint) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) DeleteRecord(db *gorm.DB, id I) (*TD, error) {
 	if tx := db.First(rep.emptySchemaBuilder(), id); tx.Error != nil {
 		return nil, tx.Error
 	}

@@ -18,19 +18,19 @@ type adjustmentDomain = trainings.TrainedPokemonAdjustment
 type adjustmentId = identifier.TrainedAdjustmentId
 
 type TrainedPokemonAdjustmentRepository struct {
-	BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, adjustmentId]
-	BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId]
+	BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, adjustmentId, uint64]
+	BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId, uint64]
 	dbClient orm.IDbClient
 }
 
 func NewTrainedPokemonAdjustmentRepository(dbClient orm.IDbClient) *TrainedPokemonAdjustmentRepository {
 	return &TrainedPokemonAdjustmentRepository{
-		BaseReadRepository: BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, identifier.TrainedAdjustmentId]{
+		BaseReadRepository: BaseReadRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, trainings.TrainedPokemonAdjustments, identifier.TrainedAdjustmentId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
 			toSchemaConverter:  conv.ToSchemaTrainedPokemonAdjustment,
 		},
-		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId]{
+		BaseWriteRepository: BaseWriteRepository[schema.TrainedPokemonAdjustment, adjustmentDomain, adjustmentId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyAdjustmentSchemaBuilder,
 			toSchemaConverter:  conv.ToSchemaTrainedPokemonAdjustment,

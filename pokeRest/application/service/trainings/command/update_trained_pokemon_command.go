@@ -9,8 +9,8 @@ type UpdateTrainedPokemonCommand struct {
 }
 
 // Todo
-func NewUpdateTrainedPokemonCommand(id uint, gender, nickname, description string, isPrivate bool,
-	userId uint, adjustment factory.TrainedPokemonAdjustmentInput) UpdateTrainedPokemonCommand {
+func NewUpdateTrainedPokemonCommand(id uint64, gender, nickname, description string, isPrivate bool,
+	userId uint64, adjustment factory.TrainedPokemonAdjustmentInput) UpdateTrainedPokemonCommand {
 	cmd := UpdateTrainedPokemonCommand{
 		factory.NewTrainedPokemonInput(id, gender, nickname, description, isPrivate, userId, adjustment),
 	}

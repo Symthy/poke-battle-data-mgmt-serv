@@ -12,7 +12,7 @@ type ta = trainings.TrainedPokemonAdjustment
 type tai = identifier.TrainedAdjustmentId
 
 type TrainedPokemonAdjustmentReadService struct {
-	service.EntityAllFinder[tas, ta, tai]
+	service.EntityAllFinder[tas, ta, tai, uint64]
 	repo repository.ITrainedPokemonAdjustmentRepository
 }
 
@@ -21,7 +21,7 @@ func NewTrainedPokemonAdjustmentReadService(
 	serv := TrainedPokemonAdjustmentReadService{
 		repo: repo,
 	}
-	serv.EntityAllFinder = service.NewEntityAllFinder[tas, ta, tai](repo)
+	serv.EntityAllFinder = service.NewEntityAllFinder[tas, ta, tai, uint64](repo)
 	return serv
 }
 

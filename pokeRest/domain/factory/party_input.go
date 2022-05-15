@@ -7,18 +7,18 @@ import (
 )
 
 type PartyInput struct {
-	id                uint
+	id                uint64
 	name              string
 	battleFormat      string
 	isPrivate         bool
-	userId            uint
-	partyResultIds    []uint
-	partyTagIds       []uint
-	trainedPokemonIds []uint
+	userId            uint64
+	partyResultIds    []uint64
+	partyTagIds       []uint64
+	trainedPokemonIds []uint64
 }
 
-func NewPartyInput(id uint, name, battleFormat string, isPrivate bool, userId uint,
-	partyResultIds, partyTagIds, trainedPokemonIds []uint) PartyInput {
+func NewPartyInput(id uint64, name, battleFormat string, isPrivate bool, userId uint64,
+	partyResultIds, partyTagIds, trainedPokemonIds []uint64) PartyInput {
 	return PartyInput{
 		id:                id,
 		name:              name,
@@ -35,7 +35,7 @@ func NewPartyBuilder() PartyInput {
 	return PartyInput{}
 }
 
-func (i PartyInput) Id(id uint) {
+func (i PartyInput) Id(id uint64) {
 	i.id = id
 }
 func (i PartyInput) Name(name string) {
@@ -47,16 +47,16 @@ func (i PartyInput) BattleFormat(battleFormat string) {
 func (i PartyInput) SetIsPrivate(isPrivate bool) {
 	i.isPrivate = isPrivate
 }
-func (i PartyInput) UserId(userId uint) {
+func (i PartyInput) UserId(userId uint64) {
 	i.userId = userId
 }
-func (i PartyInput) PartyResultIds(ids []uint) {
+func (i PartyInput) PartyResultIds(ids []uint64) {
 	i.partyResultIds = ids
 }
-func (i PartyInput) PartyTagIds(ids []uint) {
+func (i PartyInput) PartyTagIds(ids []uint64) {
 	i.partyTagIds = ids
 }
-func (i PartyInput) TrainedPokemonIds(ids []uint) {
+func (i PartyInput) TrainedPokemonIds(ids []uint64) {
 	i.trainedPokemonIds = ids
 }
 

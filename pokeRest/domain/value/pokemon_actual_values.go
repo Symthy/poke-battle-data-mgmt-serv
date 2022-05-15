@@ -1,15 +1,15 @@
 package value
 
 type PokemonActualValues struct {
-	actualValueH int
-	actualValueA int
-	actualValueB int
-	actualValueC int
-	actualValueD int
-	actualValueS int
+	actualValueH uint16
+	actualValueA uint16
+	actualValueB uint16
+	actualValueC uint16
+	actualValueD uint16
+	actualValueS uint16
 }
 
-func NewPokemonActualValues(h int, a int, b int, c int, d int, s int) PokemonActualValues {
+func NewPokemonActualValues(h, a, b, c, d, s uint16) PokemonActualValues {
 	return PokemonActualValues{
 		actualValueH: h,
 		actualValueA: a,
@@ -20,22 +20,22 @@ func NewPokemonActualValues(h int, a int, b int, c int, d int, s int) PokemonAct
 	}
 }
 
-func (p PokemonActualValues) H() int {
+func (p PokemonActualValues) H() uint16 {
 	return p.actualValueH
 }
-func (p PokemonActualValues) A() int {
+func (p PokemonActualValues) A() uint16 {
 	return p.actualValueA
 }
-func (p PokemonActualValues) B() int {
+func (p PokemonActualValues) B() uint16 {
 	return p.actualValueB
 }
-func (p PokemonActualValues) C() int {
+func (p PokemonActualValues) C() uint16 {
 	return p.actualValueC
 }
-func (p PokemonActualValues) D() int {
+func (p PokemonActualValues) D() uint16 {
 	return p.actualValueD
 }
-func (p PokemonActualValues) S() int {
+func (p PokemonActualValues) S() uint16 {
 	return p.actualValueS
 }
 

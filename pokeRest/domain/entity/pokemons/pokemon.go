@@ -6,17 +6,16 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain[identifier.PokemonId] = (*Pokemon)(nil)
+var _ entity.IDomain[identifier.PokemonId, uint16] = (*Pokemon)(nil)
 
 // Todo: add fields
 type Pokemon struct {
 	id               identifier.PokemonId
-	pokedexNo        int
-	formNo           int
+	pokedexId        value.PokedexId
 	formName         string
 	name             string
 	englishName      string
-	generation       int
+	generation       uint16
 	typeSet          value.PokemonTypeSet
 	abilitySet       value.PokemonAbilityIdSet
 	baseStatsH       value.PokemonBaseStats
@@ -28,15 +27,13 @@ type Pokemon struct {
 	isFinalEvolution bool
 }
 
-// Todo: factory
 func NewPokemon(
 	id identifier.PokemonId,
-	pokedexNo int,
-	formNo int,
+	pokedexId value.PokedexId,
 	formName string,
 	name string,
 	englishName string,
-	generation int,
+	generation uint64,
 	typeSet value.PokemonTypeSet,
 	abilitySet value.PokemonAbilityIdSet,
 	baseStatsH value.PokemonBaseStats,
@@ -48,12 +45,11 @@ func NewPokemon(
 	IsFinalEvolution bool) Pokemon {
 	return Pokemon{
 		id:               id,
-		pokedexNo:        pokedexNo,
-		formNo:           formNo,
+		pokedexId:        pokedexId,
 		formName:         formName,
 		name:             name,
 		englishName:      englishName,
-		generation:       generation,
+		generation:       uint16(generation),
 		typeSet:          typeSet,
 		abilitySet:       abilitySet,
 		baseStatsH:       baseStatsH,
@@ -70,46 +66,38 @@ func (p Pokemon) Id() identifier.PokemonId {
 	return p.id
 }
 
-func (p Pokemon) PokedexNo() int {
-	return p.pokedexNo
-}
-
-func (p Pokemon) FormNo() int {
-	return p.formNo
-}
-
 func (p Pokemon) TypeSet() value.PokemonTypeSet {
 	return p.typeSet
 }
 
 func (p Pokemon) ResolveActualValues(effortValues value.EffortValues) value.PokemonActualValues {
 	actualValues := value.NewPokemonActualValues(
-		calculateActualValueH(p.baseStatsH.Value(), 31, effortValues.H().Value()),
-		calculateActualValueABCDS(p.baseStatsA.Value(), 31, effortValues.A().Value()),
-		calculateActualValueABCDS(p.baseStatsB.Value(), 31, effortValues.B().Value()),
-		calculateActualValueABCDS(p.baseStatsC.Value(), 31, effortValues.C().Value()),
-		calculateActualValueABCDS(p.baseStatsD.Value(), 31, effortValues.D().Value()),
-		calculateActualValueABCDS(p.baseStatsS.Value(), 31, effortValues.S().Value()),
+		calculateActualValueH(p.baseStatsH, 31, effortValues.H()),
+		calculateActualValueABCDS(p.baseStatsA, 31, effortValues.A()),
+		calculateActualValueABCDS(p.baseStatsB, 31, effortValues.B()),
+		calculateActualValueABCDS(p.baseStatsC, 31, effortValues.C()),
+		calculateActualValueABCDS(p.baseStatsD, 31, effortValues.D()),
+		calculateActualValueABCDS(p.baseStatsS, 31, effortValues.S()),
 	)
 	return actualValues
 }
 
-func calculateActualValueH(baseStats int, individualValue int, effortValue int) int {
-	level := 50
-	actual := int(float64(baseStats+individualValue/2+(effortValue/4))*(float64(level)/100.0)) + 10 + level
+func calculateActualValueH(baseStats value.PokemonBaseStats, individualValue uint8, effortValue value.EffortValue) uint16 {
+	level := uint16(50)
+	actual := uint16(float64(baseStats.Value()+individualValue/2+(effortValue.Value()/4))*(float64(level)/100.0)) +
+		uint16(10) + level
 	return actual
 }
 
-func calculateActualValueABCDS(baseStats int, individualValue int, effortValue int) int {
-	level := 50
-	actual := int(float64(baseStats+individualValue/2+(effortValue/4))*(float64(level)/100.0)) + 5
+func calculateActualValueABCDS(baseStats value.PokemonBaseStats, individualValue uint8, effortValue value.EffortValue) uint16 {
+	level := uint16(50)
+	actual := uint16(float64(baseStats.Value()+individualValue/2+(effortValue.Value()/4))*(float64(level)/100.0)) + uint16(5)
 	return actual
 }
 
 func (p Pokemon) Notify(note IPokemonNotification) {
 	note.SetId(p.id)
-	note.SetPokedexNo(p.pokedexNo)
-	note.SetFormNo(p.formNo)
+	note.SetPokedexId(p.pokedexId)
 	note.SetFormName(p.formName)
 	note.SetName(p.name)
 	note.SetEnglishName(p.englishName)

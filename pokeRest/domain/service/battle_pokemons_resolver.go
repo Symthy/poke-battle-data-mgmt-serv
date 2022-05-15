@@ -18,7 +18,7 @@ type BattlePokemonResolver struct {
 
 // Todo: use WaitGroup
 func (r BattlePokemonResolver) Resolve(
-	adjustment s_damages.BattlePokemonAdjustment, moveId uint,
+	adjustment s_damages.BattlePokemonAdjustment, moveId uint16,
 ) (*damages.PokemonBattleDataSet, error) {
 	attackChan := make(chan AttackSideData, 1)
 	defer close(attackChan)
@@ -51,7 +51,7 @@ func (r BattlePokemonResolver) Resolve(
 }
 
 func (r BattlePokemonResolver) resolveAttackSide(adjustment s_damages.BattlePokemonAdjustment,
-	moveId uint, resultChan chan<- AttackSideData, errChan chan<- error) {
+	moveId uint16, resultChan chan<- AttackSideData, errChan chan<- error) {
 	pokemon, err := r.pokemonRepo.FindById(adjustment.PokemonId())
 	if err != nil {
 		errChan <- err

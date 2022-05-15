@@ -68,7 +68,7 @@ func (dc GormDbClient) Close() {
 	sqldb.Close()
 }
 
-func (dc GormDbClient) Paginate(next int, pageSize int) func(db *gorm.DB) *gorm.DB {
+func (dc GormDbClient) Paginate(next uint32, pageSize uint16) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		if next == 0 {
 			next = 1
@@ -81,13 +81,12 @@ func (dc GormDbClient) Paginate(next int, pageSize int) func(db *gorm.DB) *gorm.
 			pageSize = 100
 		}
 
-		return db.Offset(next).Limit(pageSize)
+		return db.Offset(int(next)).Limit(int(pageSize))
 	}
 }
 
 func resolveDsn(dbConfig config.DbConfig) string {
-	var confArray = []string{}
-	confArray = []string{
+	confArray := []string{
 		"Host=" + dbConfig.Host,
 		"User=" + dbConfig.User,
 		"Password=" + dbConfig.Password,

@@ -2,9 +2,9 @@ package value
 
 import "github.com/Symthy/PokeRest/pokeRest/common/lists"
 
-type correctionApplier func(value int) int
+type correctionApplier func(value uint16) uint16
 
-func identify(value int) int {
+func identify(value uint16) uint16 {
 	return value
 }
 
@@ -53,7 +53,7 @@ func (c StatusCorrections) SupplyStatusCorrectionApplier(
 	if param == S {
 		target = SpeedCorrection
 	}
-	return func(value int) int {
+	return func(value uint16) uint16 {
 		return c.Apply(value, target, data, c.side)
 	}
 }
@@ -82,7 +82,7 @@ func (c PowerCorrections) SupplyPowerCorrectionApplier(
 	if species == Special {
 		target = SpecialPowerCorrection
 	}
-	return func(value int) int {
+	return func(value uint16) uint16 {
 		return c.Apply(value, target, data, c.side)
 	}
 }
@@ -104,7 +104,7 @@ func NewMovePowerCorrections(values *BattleCorrectionValues) *MovePowerCorrectio
 
 func (c MovePowerCorrections) SupplyMovePowerCorrectionApplier(
 	species MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
-	return func(value int) int {
+	return func(value uint16) uint16 {
 		if species == Physical {
 			return c.Apply(value, PhysicalMoveCorrection, data, c.side)
 		}
@@ -129,7 +129,7 @@ func NewDamageCorrections(values *BattleCorrectionValues, side BattleSideType) *
 
 func (c DamageCorrections) SupplyDamageCorrectionApplier(
 	data IPokemonBattleDataSet) correctionApplier {
-	return func(value int) int {
+	return func(value uint16) uint16 {
 		return c.Apply(value, DamageCorrection, data, c.side)
 	}
 }
@@ -158,7 +158,7 @@ func (b BattleCorrectionValues) get(targets ...CorrectionTarget) *BattleCorrecti
 }
 
 func (c BattleCorrectionValues) Apply(
-	value int, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) int {
+	value uint16, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) uint16 {
 	result := value
 	for _, correction := range c.items {
 		if target != correction.target {
