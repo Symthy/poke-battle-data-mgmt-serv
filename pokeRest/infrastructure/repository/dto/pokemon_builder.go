@@ -40,9 +40,9 @@ func (b *PokemonSchemaBuilder) SetTypeSet(value value.PokemonTypeSet) {
 }
 func (b *PokemonSchemaBuilder) SetAbilitySet(value value.PokemonAbilityIdSet) {
 	abilityId1, abilityId2, hiddenAbilityId := value.GetAbilityIds()
-	b.AbilityId1 = convertIdToNullInt16[uint16](abilityId1)
-	b.AbilityId2 = convertIdToNullInt16[uint16](abilityId2)
-	b.HiddenAbilityId = convertIdToNullInt16[uint16](hiddenAbilityId)
+	b.AbilityID1 = convertIdToNullInt16[uint16](abilityId1)
+	b.AbilityID2 = convertIdToNullInt16[uint16](abilityId2)
+	b.HiddenAbilityID = convertIdToNullInt16[uint16](hiddenAbilityId)
 }
 func (b *PokemonSchemaBuilder) SetBaseStatsH(value value.PokemonBaseStats) {
 	b.BaseStatsH = value.Value()

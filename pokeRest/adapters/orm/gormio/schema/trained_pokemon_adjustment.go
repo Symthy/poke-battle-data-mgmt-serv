@@ -7,21 +7,21 @@ import (
 
 type TrainedPokemonAdjustment struct {
 	ID           uint64 `gorm:"primaryKey;autoIncrement:true"`
-	PokemonId    uint16
+	PokemonID    uint16
 	Pokemon      Pokemon // belongs to
 	Nature       enum.Nature
-	AbilityId    *uint16 // M:1 <- Ability
-	HeldItemId   *uint16 // M:1 <- HeldItem
+	AbilityID    *uint16 // M:1 <- Ability
+	HeldItemID   *uint16 // M:1 <- HeldItem
 	EffortValueH uint8   `gorm:"default:0"`
 	EffortValueA uint8   `gorm:"default:0"`
 	EffortValueB uint8   `gorm:"default:0"`
 	EffortValueC uint8   `gorm:"default:0"`
 	EffortValueD uint8   `gorm:"default:0"`
 	EffortValueS uint8   `gorm:"default:0"`
-	MoveId1      *uint16 // M:1 <- Move
-	MoveId2      *uint16 // M:1 <- Move
-	MoveId3      *uint16 // M:1 <- Move
-	MoveId4      *uint16 // M:1 <- Move
+	MoveID1      *uint16 // M:1 <- Move
+	MoveID2      *uint16 // M:1 <- Move
+	MoveID3      *uint16 // M:1 <- Move
+	MoveID4      *uint16 // M:1 <- Move
 	mixin.UpdateTimes
 }
 

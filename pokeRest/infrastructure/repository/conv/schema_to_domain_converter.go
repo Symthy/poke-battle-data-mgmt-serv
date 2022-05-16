@@ -15,19 +15,19 @@ import (
 )
 
 func ToDomainPokemon(schema schema.Pokemon) (*pokemons.Pokemon, error) {
-	if _, err := schema.AbilityId1.Value(); err != nil {
+	if _, err := schema.AbilityID1.Value(); err != nil {
 		// Todo: error wrap
 		return nil, err
 	}
-	abilityId1 := uint16(schema.AbilityId1.Int16)
-	if _, err := schema.AbilityId2.Value(); err != nil {
+	abilityId1 := uint16(schema.AbilityID1.Int16)
+	if _, err := schema.AbilityID2.Value(); err != nil {
 		return nil, err
 	}
-	abilityId2 := uint16(schema.AbilityId2.Int16)
-	if _, err := schema.HiddenAbilityId.Value(); err != nil {
+	abilityId2 := uint16(schema.AbilityID2.Int16)
+	if _, err := schema.HiddenAbilityID.Value(); err != nil {
 		return nil, err
 	}
-	hiddenAbilityId := uint16(schema.HiddenAbilityId.Int16)
+	hiddenAbilityId := uint16(schema.HiddenAbilityID.Int16)
 
 	builder := factory.NewPokemonBuilder()
 	builder.Id(schema.ID)
@@ -92,16 +92,16 @@ func ToDomainTrainedPokemon(schema schema.TrainedPokemon) (*trainings.TrainedPok
 func toTrainedPokemonAdjustmentInput(schema schema.TrainedPokemonAdjustment) factory.TrainedPokemonAdjustmentInput {
 	builder := factory.NewTrainedPokemonAdjustmentBuilder()
 	builder.Id(schema.ID)
-	builder.PokemonId(uint64(schema.PokemonId))
+	builder.PokemonId(uint64(schema.PokemonID))
 	builder.Nature(schema.Nature.String())
 	var ability uint64 = 0
-	if schema.AbilityId != nil {
-		ability = uint64(*schema.AbilityId)
+	if schema.AbilityID != nil {
+		ability = uint64(*schema.AbilityID)
 	}
 	builder.AbilityId(ability)
 	var heldItem uint64 = 0
-	if schema.HeldItemId != nil {
-		heldItem = uint64(*schema.HeldItemId)
+	if schema.HeldItemID != nil {
+		heldItem = uint64(*schema.HeldItemID)
 	}
 	builder.HeldItemId(heldItem)
 	builder.EffortValueH(uint64(schema.EffortValueH))
@@ -114,17 +114,17 @@ func toTrainedPokemonAdjustmentInput(schema schema.TrainedPokemonAdjustment) fac
 	var move2 uint64 = 0
 	var move3 uint64 = 0
 	var move4 uint64 = 0
-	if schema.MoveId1 != nil {
-		move1 = uint64(*schema.MoveId1)
+	if schema.MoveID1 != nil {
+		move1 = uint64(*schema.MoveID1)
 	}
-	if schema.MoveId2 != nil {
-		move2 = uint64(*schema.MoveId2)
+	if schema.MoveID2 != nil {
+		move2 = uint64(*schema.MoveID2)
 	}
-	if schema.MoveId2 != nil {
-		move3 = uint64(*schema.MoveId2)
+	if schema.MoveID2 != nil {
+		move3 = uint64(*schema.MoveID2)
 	}
-	if schema.MoveId3 != nil {
-		move4 = uint64(*schema.MoveId3)
+	if schema.MoveID3 != nil {
+		move4 = uint64(*schema.MoveID3)
 	}
 	builder.MoveIdFirst(move1)
 	builder.MoveIdSecond(move2)
@@ -174,7 +174,7 @@ func ToDomainParty(party schema.Party) (*parties.Party, error) {
 	partyResultIds := lists.Map(
 		party.PartyResult,
 		func(result schema.PartySeasonResult) uint64 {
-			return result.ID
+			return result.ResultID
 		})
 	partyTagIds := lists.Map(
 		party.PartyTag,
@@ -198,7 +198,7 @@ func ToDomainPartyTag(schema schema.PartyTag) (*parties.PartyTag, error) {
 
 func ToDomainPartyBattleResult(schema schema.PartySeasonResult) (*parties.PartyBattleResult, error) {
 	builder := factory.NewPartyBattleResultBuilder()
-	builder.Id(schema.ID)
+	builder.Id(schema.ResultID)
 	builder.Generation(uint64(schema.Generation))
 	builder.Series(uint64(schema.Series))
 	builder.Season(uint64(schema.Season))

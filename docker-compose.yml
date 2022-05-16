@@ -1,7 +1,9 @@
 version: '3'
 services:
+  # app:
+  #   container_name: pokerest
   postgres:
-    container_name: postgres
+    container_name: pokerestdb
     image: postgres:latest
 #    restart: always
     environment:
@@ -9,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=pokedb
       - PGPASSWORD=postgres
-      - DATABASE_HOST=localhost
+      - DATABASE_HOST=postgres
     ports:
       - '54321:5432'
     volumes:

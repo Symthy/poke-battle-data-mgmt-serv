@@ -8,6 +8,7 @@ import (
 type User struct {
 	ID          uint64 `gorm:"primaryKey;autoIncrement:true"`
 	Name        string
+	TwitterID   string `gorm:"unique"`
 	DisplayName *string
 	Email       *string
 	Profile     *string

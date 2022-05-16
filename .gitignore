@@ -8,8 +8,8 @@ pokeRest/adapters/di/wire_gen.go
 conf/config.yml
 log/
 
-schema/erd.png
-schema/output/
+tools/drivers/
+tools/output/
 
 .vscode
 .VSCodeCounter

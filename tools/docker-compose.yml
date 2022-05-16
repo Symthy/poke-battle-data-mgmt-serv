@@ -1,0 +1,14 @@
+version: '3'
+services:
+  schemaspy:
+    image: schemaspy/schemaspy:latest
+    volumes:
+      - ./output:/output
+      - ./schemaspy.properties:/schemaspy.properties
+      - ./drivers:/drivers
+    networks:
+      - pokerest_default
+
+networks:
+  pokerest_default:
+    external: true

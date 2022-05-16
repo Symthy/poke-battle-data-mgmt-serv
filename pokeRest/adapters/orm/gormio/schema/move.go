@@ -5,8 +5,8 @@ import (
 )
 
 type Move struct {
-	ID          uint16 `gorm:"primaryKey;autoIncrement:true"`
-	Name        string
+	ID          uint16           `gorm:"primaryKey;autoIncrement:true"`
+	Name        string           `gorm:"unique"`
 	Species     enum.MoveSpecies `sql:"type:species"`
 	Type        enum.PokemonType `sql:"type:pokemonType"`
 	Power       uint16
@@ -18,8 +18,11 @@ type Move struct {
 	// relation
 	// M:M
 	Pokemon []*Pokemon `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	// 1:M -> TrainedPokemon
-	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	// 1:M -> TrainedPokemonAdjustment
+	TrainedAdjustment1 []TrainedPokemonAdjustment `gorm:"foreignKey:MoveID1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TrainedAdjustment2 []TrainedPokemonAdjustment `gorm:"foreignKey:MoveID2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TrainedAdjustment3 []TrainedPokemonAdjustment `gorm:"foreignKey:MoveID3;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TrainedAdjustment4 []TrainedPokemonAdjustment `gorm:"foreignKey:MoveID4;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (Move) TableName() string {

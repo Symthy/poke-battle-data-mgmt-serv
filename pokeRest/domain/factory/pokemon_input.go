@@ -65,7 +65,7 @@ func (p *PokemonInput) Id(id uint16) {
 func (p *PokemonInput) PokedexNo(pokedexNo uint16) {
 	p.pokedexNo = uint64(pokedexNo)
 }
-func (p *PokemonInput) FormNo(formNo uint8) {
+func (p *PokemonInput) FormNo(formNo uint16) {
 	p.formNo = uint64(formNo)
 }
 func (p *PokemonInput) FormName(formName string) {

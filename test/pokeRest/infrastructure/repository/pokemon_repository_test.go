@@ -52,8 +52,8 @@ func (suite *PokemonRepositoryTestSuite) TestFindById() {
 				"HiddenAbilityId", "BaseStatsH", "BaseStatsA", "BaseStatsB", "BaseStatsC",
 				"BaseStatsD", "BaseStatsS", "IsFinalEvolution"}).
 				AddRow(3, 3, 1, "Standard", "フシギバナ", "Venusaur", 1, []byte(enum.Grass),
-					[]byte(enum.Poison), dummyPokemon.AbilityId1, dummyPokemon.AbilityId2,
-					dummyPokemon.HiddenAbilityId, 80, 82, 83, 100, 100, 80, true))
+					[]byte(enum.Poison), dummyPokemon.AbilityID1, dummyPokemon.AbilityID2,
+					dummyPokemon.HiddenAbilityID, 80, 82, 83, 100, 100, 80, true))
 
 		expected, _ := conv.ToDomainPokemon(dummyPokemon)
 		actual, err := suite.repository.FindById(id)

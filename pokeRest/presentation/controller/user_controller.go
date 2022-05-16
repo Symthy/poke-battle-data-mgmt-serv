@@ -21,7 +21,7 @@ func NewUserController(service users.UserReadService) *UserController {
 	}
 }
 
-func (uc UserController) GetUserById(ctx echo.Context, id uint) error {
+func (uc UserController) GetUserById(ctx echo.Context, id uint64) error {
 	// Todo: change uint64
 	user, err := uc.service.GetUserById(id)
 	return uc.responseResolver.Resolve(ctx, user, err)

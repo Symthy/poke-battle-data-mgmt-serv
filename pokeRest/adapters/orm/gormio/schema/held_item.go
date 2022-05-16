@@ -6,12 +6,12 @@ import (
 
 type HeldItem struct {
 	ID            uint16 `gorm:"primaryKey;autoIncrement:true"`
-	Name          string
+	Name          string `gorm:"unique"`
 	Description   string
 	BattleEffects *mixin.BattleEffects `gorm:"embedded"`
 
 	// relation
-	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> TrainedPokemon
+	TrainedAdjustment []TrainedPokemonAdjustment `gorm:"foreignKey:HeldItemID;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> TrainedPokemon
 }
 
 func (HeldItem) TableName() string {

@@ -11,10 +11,10 @@ type Ability struct {
 	BattleEffects *mixin.BattleEffects `gorm:"embedded"`
 
 	// relation
-	Pokemon1       []Pokemon        `gorm:"foreignKey:AbilityId1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> Pokemon
-	Pokemon2       []Pokemon        `gorm:"foreignKey:AbilityId2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	Pokemon3       []Pokemon        `gorm:"foreignKey:HiddenAbilityId;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	TrainedPokemon []TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> TrainedPokemon
+	Pokemon1          []Pokemon                  `gorm:"foreignKey:AbilityID1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> Pokemon
+	Pokemon2          []Pokemon                  `gorm:"foreignKey:AbilityID2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Pokemon3          []Pokemon                  `gorm:"foreignKey:HiddenAbilityID;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TrainedAdjustment []TrainedPokemonAdjustment `gorm:"foreignKey:AbilityID;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M
 }
 
 func (Ability) TableName() string {

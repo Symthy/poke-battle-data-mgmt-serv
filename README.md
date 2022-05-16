@@ -135,20 +135,26 @@ https://stoplight.io/studio/
 
 ### Migration tool
 
-prisma: 
-- https://github.com/prisma/prisma
-- https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-typescript-postgres
+[golang-migrate](https://github.com/golang-migrate/migrate/blob/master/database/postgres/TUTORIAL.md]
 
 ### Create ER Diagram tool
 
-#### For Prisma
-- https://www.npmjs.com/package/prisma-uml
-- https://www.npmjs.com/package/prisma-erd-generator
-
 #### SchemaSpy
 
-コンテナのpostgresに繋げられず使用中断
+そのままではschemaspyコンテナ内臓のdriverが古いためか？ postgres に 以下エラーで接続失敗するため
 
-フォルダ： ./schema
+`Failed to connect to database URL [jdbc:postgresql://postgres:5432/pokedb] The authentication type 10 is not supported. Check that you have configured the pg_hba.conf file to include the client's IP address or subnet, and that it is using an authentication scheme supported by the driver.`
 
-ref: [PostgreSQLのER図をコマンド一発で生成したい](https://zenn.dev/ucwork/articles/a42121e85451be)
+tools/drivers に postgres の driver を配置すること（動作実績：postgresql-42.3.5.jar）
+
+```sh
+cd tools
+docker-compose up
+```
+
+ref:
+- [PostgreSQLのER図をコマンド一発で生成したい](https://zenn.dev/ucwork/articles/a42121e85451be)
+- [【さらばER図設計作業】docker-composeで「SchemaSpy」でデータベースのドキュメントを自動生成するやり方](https://blogenist.jp/2019/04/20/8075/)
+- 
+docker-compose.yml作成時に参考：
+- [複数のdocker-compose間を接続するにはnetworksを設定する必要があります](https://amateur-engineer.com/docker-compose-network-share/)

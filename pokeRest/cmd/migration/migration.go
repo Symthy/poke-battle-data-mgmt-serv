@@ -11,6 +11,8 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 	db.AutoMigrate(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},
+		&schema.BattleRecord{},
+		&schema.BattleSeason{},
 		&schema.Form{},
 		&schema.HeldItem{},
 		&schema.Move{},
@@ -19,7 +21,10 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 		&schema.Pokemon{},
 		&schema.PartyTag{},
 		&schema.TrainedPokemon{},
-		&schema.BattleRecord{},
+		&schema.TrainedPokemonAdjustment{},
+		&schema.TrainedPokemonAttackTarget{},
+		&schema.TrainedPokemonDefenceTarget{},
+		&schema.User{},
 	)
 }
 
