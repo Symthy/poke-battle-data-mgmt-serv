@@ -26,12 +26,10 @@ func NewBattleRecordInput(
 	opponentPartyInput BattleOpponentPartyInput,
 ) BattleRecordInput {
 	return BattleRecordInput{
-		id:                            id,
-		partyId:                       partyId,
-		userId:                        userId,
-		generation:                    generation,
-		series:                        series,
-		season:                        season,
+		id:      id,
+		partyId: partyId,
+		userId:  userId,
+		// Todo
 		battleResult:                  battleResult,
 		selfElectionPokemonIds:        selfElectionPokemonIds,
 		selfElectionTrainedPokemonIds: selfElectionTrainedPokemonIds,
@@ -88,7 +86,8 @@ func (b BattleRecordInput) BuildDomain() (*battles.BattleRecord, error) {
 	if err != nil {
 		return nil, err
 	}
-	season, err := battles.NewSeason(b.generation, b.series, b.season)
+	// Todo
+	season, err := battles.NewSeason(0, 0, 0)
 	if err != nil {
 		return nil, err
 	}

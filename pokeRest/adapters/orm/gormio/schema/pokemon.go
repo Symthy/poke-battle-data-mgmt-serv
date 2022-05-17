@@ -28,7 +28,7 @@ type Pokemon struct {
 	IsFinalEvolution bool `gorm:"default:false"`
 
 	// relation
-	Move                  []*Move               `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`        // M:M
+	Move                  []*Move               `gorm:"many2many:pokemons_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`       // M:M
 	BattleOpponentParty1  []BattleOpponentParty `gorm:"foreignKey:OpponentPokemonId1;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 1:M -> BattleOpponentParty
 	BattleOpponentParty2  []BattleOpponentParty `gorm:"foreignKey:OpponentPokemonId2;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	BattleOpponentParty3  []BattleOpponentParty `gorm:"foreignKey:OpponentPokemonId3;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`

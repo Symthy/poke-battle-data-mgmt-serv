@@ -17,7 +17,7 @@ type Move struct {
 
 	// relation
 	// M:M
-	Pokemon []*Pokemon `gorm:"many2many:pokemon_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Pokemon []*Pokemon `gorm:"many2many:pokemons_moves;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	// 1:M -> TrainedPokemonAdjustment
 	TrainedAdjustment1 []TrainedPokemonAdjustment `gorm:"foreignKey:MoveID1;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	TrainedAdjustment2 []TrainedPokemonAdjustment `gorm:"foreignKey:MoveID2;references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`

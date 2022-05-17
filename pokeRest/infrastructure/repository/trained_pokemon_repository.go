@@ -44,7 +44,7 @@ func (rep TrainedPokemonRepository) Create(domain trainings.TrainedPokemon) (*tr
 			adjustmentSchema := conv.ToSchemaTrainedPokemonAdjustment(*adjustment)
 			schema.TrainedPokemonAdjustment = adjustmentSchema
 		} else {
-			schema.TrainedPokemonAdjustmentId = adjustment.Id().Value()
+			schema.AdjustmentID = adjustment.Id().Value()
 		}
 
 		ret := tx.Create(&schema)
@@ -70,9 +70,9 @@ func (rep TrainedPokemonRepository) Update(domain trainings.TrainedPokemon) (*tr
 			if err != nil {
 				return err
 			}
-			trainedPoke.TrainedPokemonAdjustmentId = adjustmentDomain.Id().Value()
+			trainedPoke.AdjustmentID = adjustmentDomain.Id().Value()
 		} else {
-			trainedPoke.TrainedPokemonAdjustmentId = adjustment.Id().Value()
+			trainedPoke.AdjustmentID = adjustment.Id().Value()
 		}
 
 		ret := tx.Model(&updated).Updates(trainedPoke)
@@ -101,7 +101,7 @@ func (rep TrainedPokemonRepository) Delete(id uint64) (*trainings.TrainedPokemon
 	// delete used trained pokemon adjustment if ref num is zero
 	isRefZero := false
 	if isRefZero {
-		_, err := rep.adjustmentRepo.Delete(deleted.TrainedPokemonAdjustmentId)
+		_, err := rep.adjustmentRepo.Delete(deleted.AdjustmentID)
 		if err != nil {
 			return nil, err
 		}

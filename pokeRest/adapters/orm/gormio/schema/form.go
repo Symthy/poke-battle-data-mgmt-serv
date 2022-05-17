@@ -6,7 +6,8 @@ type Form struct {
 	IsRegionalVariant bool   `gorm:"default:false"`
 	RegionName        string
 
-	Pokemon Pokemon `gorm:"foreignKey:FormNo;references:id;foreignKey:FormName;references:name"` // has one
+	Pokemon1 Pokemon `gorm:"foreignKey:FormNo;references:id;"` // has one
+	Pokemon2 Pokemon `gorm:"foreignKey:FormName;references:name"`
 }
 
 func (Form) TableName() string {

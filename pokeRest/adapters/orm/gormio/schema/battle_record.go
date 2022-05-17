@@ -7,18 +7,15 @@ import (
 
 type BattleRecord struct {
 	ID                    uint64 `gorm:"primaryKey;autoIncrement:true"`
-	PartyId               uint64
+	PartyID               uint64
 	Party                 Party `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // belongs to
-	UserId                uint64
+	UserID                uint64
 	User                  User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Generation            uint16
-	Series                uint16
-	Season                uint16
+	SeasonID              uint16
+	BattleSeason          BattleSeason `gorm:"foreignKey:SeasonID;references:id;"`
 	Result                enum.BattleResult
 	BattleOpponentPartyId uint64              // belongs to (感覚的に向き逆だがデータ流用のため許容)
 	BattleOpponentParty   BattleOpponentParty `gorm:"constraint:OnUpdate:CASCADE,OnDelete:NO ACTION;"`
-	mixin.UpdateTimes
-
 	// 自身選出
 	SelfElectionPokemonId1 *uint16
 	SelfTrainedPokemonId1  *uint64
@@ -33,6 +30,7 @@ type BattleRecord struct {
 	OpponentElectionPokemonId2 *uint16
 	OpponentElectionPokemonId3 *uint16
 	OpponentElectionPokemonId4 *uint16
+	mixin.UpdateTimes
 }
 
 func (BattleRecord) TableName() string {

@@ -174,7 +174,7 @@ func ToDomainParty(party schema.Party) (*parties.Party, error) {
 	partyResultIds := lists.Map(
 		party.PartyResult,
 		func(result schema.PartySeasonResult) uint64 {
-			return result.ResultID
+			return result.ID
 		})
 	partyTagIds := lists.Map(
 		party.PartyTag,
@@ -198,7 +198,7 @@ func ToDomainPartyTag(schema schema.PartyTag) (*parties.PartyTag, error) {
 
 func ToDomainPartyBattleResult(schema schema.PartySeasonResult) (*parties.PartyBattleResult, error) {
 	builder := factory.NewPartyBattleResultBuilder()
-	builder.Id(schema.ResultID)
+	builder.Id(schema.ID)
 	builder.Generation(uint64(schema.Generation))
 	builder.Series(uint64(schema.Series))
 	builder.Season(uint64(schema.Season))
@@ -223,9 +223,9 @@ func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, er
 
 	opponentPartyInput := toBattleOpponentPartyInput(schema.BattleOpponentParty)
 
-	input := factory.NewBattleRecordInput(schema.ID, schema.PartyId, schema.UserId,
-		uint64(schema.Generation), uint64(schema.Series), uint64(schema.Season), schema.Result.String(),
-		lists.ConvertTypeUint16To64(selfElectionPokemonIds), selfTrainedPokemonIds,
+	input := factory.NewBattleRecordInput(schema.ID, schema.PartyID, schema.UserID,
+		uint64(schema.BattleSeason.Generation), uint64(schema.BattleSeason.Series), uint64(schema.BattleSeason.Season),
+		schema.Result.String(), lists.ConvertTypeUint16To64(selfElectionPokemonIds), selfTrainedPokemonIds,
 		lists.ConvertTypeUint16To64(opponentElectionPokemonIds), opponentPartyInput)
 	return input.BuildDomain()
 }

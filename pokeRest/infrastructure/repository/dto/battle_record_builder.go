@@ -24,10 +24,10 @@ func (b *BattleRecordSchemaBuilder) SetId(id identifier.BattleRecordId) {
 	b.BattleRecord.ID = id.Value()
 }
 func (b *BattleRecordSchemaBuilder) SetPartyId(partyId identifier.PartyId) {
-	b.BattleRecord.PartyId = partyId.Value()
+	b.BattleRecord.PartyID = partyId.Value()
 }
 func (b *BattleRecordSchemaBuilder) SetUserId(userId identifier.UserId) {
-	b.BattleRecord.UserId = userId.Value()
+	b.BattleRecord.UserID = userId.Value()
 }
 func (b *BattleRecordSchemaBuilder) SetBattleResult(battleResult value.BattleResult) {
 	b.BattleRecord.Result = enum.BattleResult(battleResult)

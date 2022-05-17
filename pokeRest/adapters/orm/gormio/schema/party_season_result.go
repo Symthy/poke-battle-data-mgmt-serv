@@ -1,8 +1,8 @@
 package schema
 
 type PartySeasonResult struct {
-	PartyID          uint64 `gorm:"primaryKey;"`
-	ResultID         uint64 `gorm:"primaryKey;"`
+	ID               uint64 `gorm:"primaryKey;autoIncrement:true"`
+	PartyID          uint64
 	Generation       uint16
 	Series           uint16
 	Season           uint16
@@ -14,5 +14,5 @@ type PartySeasonResult struct {
 }
 
 func (PartySeasonResult) TableName() string {
-	return "party_battle_results"
+	return "party_season_results"
 }
