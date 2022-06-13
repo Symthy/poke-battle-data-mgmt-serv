@@ -24,8 +24,8 @@ func NewPokemonBattleDataSet(
 	attackSide AttackSidePokemon, attackEffects AttackSideBattleEffects,
 	defenseSide DefenseSidePokemon, defenseEffects DefenseSideBattleEffects,
 	attackMove AttackMove, compatibilityDamageRate float32,
-) PokemonBattleDataSet {
-	data := PokemonBattleDataSet{
+) *PokemonBattleDataSet {
+	data := &PokemonBattleDataSet{
 		AttackSidePokemon:           attackSide,
 		AttackSideBattleEffects:     attackEffects,
 		DefenseSidePokemon:          defenseSide,

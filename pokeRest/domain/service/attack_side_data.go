@@ -6,9 +6,9 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
-var _ moves.IMoveNotificationForDamageCalc = (*AttackSideData)(nil)
+var _ moves.IMoveNotificationForDamageCalc = (*AttackSide)(nil)
 
-type AttackSideData struct {
+type AttackSide struct {
 	actualValues      value.PokemonActualValues
 	pokemonType       value.PokemonTypeSet
 	nature            value.PokemonNature
@@ -20,11 +20,11 @@ type AttackSideData struct {
 	additionalEffects value.BattleEffects
 }
 
-func NewAttackSideData(
+func NewAttackSide(
 	actualValues value.PokemonActualValues, pokemonType value.PokemonTypeSet,
 	nature value.PokemonNature, additionalEffects value.BattleEffects, move moves.Move,
-) AttackSideData {
-	attackPokemon := &AttackSideData{
+) AttackSide {
+	attackPokemon := &AttackSide{
 		actualValues:      actualValues,
 		pokemonType:       pokemonType,
 		nature:            nature,
@@ -34,31 +34,31 @@ func NewAttackSideData(
 	return *attackPokemon
 }
 
-func (a AttackSideData) SetMoveType(moveType value.PokemonType) {
+func (a AttackSide) SetMoveType(moveType value.PokemonType) {
 	a.moveType = moveType
 }
-func (b AttackSideData) SetMoveSpecies(moveSpecies value.MoveSpecies) {
+func (b AttackSide) SetMoveSpecies(moveSpecies value.MoveSpecies) {
 	b.moveSpecies = moveSpecies
 }
-func (b AttackSideData) SetMovePower(movePower uint16) {
+func (b AttackSide) SetMovePower(movePower uint16) {
 	b.movePower = movePower
 }
-func (b AttackSideData) SetIsMoveContained(isMoveContained bool) {
+func (b AttackSide) SetIsMoveContained(isMoveContained bool) {
 	b.isMoveContained = isMoveContained
 }
-func (b AttackSideData) SetCanMoveGuard(canMoveGuard bool) {
+func (b AttackSide) SetCanMoveGuard(canMoveGuard bool) {
 	b.canMoveGuard = canMoveGuard
 }
 
-func (p AttackSideData) MoveType() value.PokemonType {
+func (p AttackSide) MoveType() value.PokemonType {
 	return p.moveType
 }
 
-func (p AttackSideData) toAttackSidePokemon() damages.AttackSidePokemon {
+func (p AttackSide) toAttackSidePokemon() damages.AttackSidePokemon {
 	return damages.NewAttackSidePokemon(p.actualValues, p.pokemonType, p.nature)
 }
 
-func (p AttackSideData) toAttackMove() damages.AttackMove {
+func (p AttackSide) toAttackMove() damages.AttackMove {
 	return damages.NewAttackMove(
 		p.moveSpecies,
 		p.moveType,
@@ -68,6 +68,6 @@ func (p AttackSideData) toAttackMove() damages.AttackMove {
 	)
 }
 
-func (p AttackSideData) toAttackSideBattleEffects() damages.AttackSideBattleEffects {
+func (p AttackSide) toAttackSideBattleEffects() damages.AttackSideBattleEffects {
 	return damages.NewAttackSideBattleEffects(p.additionalEffects)
 }

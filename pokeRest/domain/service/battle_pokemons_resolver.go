@@ -6,6 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/damages"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"golang.org/x/sync/errgroup"
 )
 
 type BattlePokemonResolver struct {
@@ -20,72 +21,70 @@ type BattlePokemonResolver struct {
 func (r BattlePokemonResolver) Resolve(
 	adjustment s_damages.BattlePokemonAdjustment, moveId uint16,
 ) (*damages.PokemonBattleDataSet, error) {
-	attackChan := make(chan AttackSideData, 1)
+	eg := new(errgroup.Group)
+
+	attackChan := make(chan AttackSide, 1)
 	defer close(attackChan)
-	defenseChan := make(chan DefenseSideData, 1)
+	defenseChan := make(chan DefenseSide, 1)
 	defer close(defenseChan)
-	errAttackChan := make(chan error, 1)
-	defer close(errAttackChan)
-	errDefenseChan := make(chan error, 1)
 
-	go r.resolveAttackSide(adjustment, moveId, attackChan, errAttackChan)
-	go r.resolveDefenseSide(adjustment, defenseChan, errDefenseChan)
-
-	select {
-	case err := <-errAttackChan:
+	eg.Go(func() error {
+		return r.resolveAttackSide(adjustment, moveId, attackChan)
+	})
+	eg.Go(func() error {
+		return r.resolveDefenseSide(adjustment, defenseChan)
+	})
+	if err := eg.Wait(); err != nil {
 		return nil, err
-	case err := <-errDefenseChan:
-		return nil, err
-	default:
-		attackSide := <-attackChan
-		defenseSide := <-defenseChan
-		battlePokemons := damages.NewPokemonBattleDataSet(
-			attackSide.toAttackSidePokemon(),
-			attackSide.toAttackSideBattleEffects(),
-			defenseSide.toDefenseSidePokemon(),
-			defenseSide.toDefenseSideBattleEffects(),
-			attackSide.toAttackMove(),
-			r.resolveTypeCompatibility(attackSide.MoveType(), defenseSide.PokemonTypes()))
-		return &battlePokemons, nil
 	}
+
+	attackSide := <-attackChan
+	defenseSide := <-defenseChan
+	battlePokemons := damages.NewPokemonBattleDataSet(
+		attackSide.toAttackSidePokemon(),
+		attackSide.toAttackSideBattleEffects(),
+		defenseSide.toDefenseSidePokemon(),
+		defenseSide.toDefenseSideBattleEffects(),
+		attackSide.toAttackMove(),
+		r.resolveTypeCompatibility(attackSide.MoveType(), defenseSide.PokemonTypes()))
+	return battlePokemons, nil
 }
 
 func (r BattlePokemonResolver) resolveAttackSide(adjustment s_damages.BattlePokemonAdjustment,
-	moveId uint16, resultChan chan<- AttackSideData, errChan chan<- error) {
+	moveId uint16, resultChan chan<- AttackSide) error {
 	pokemon, err := r.pokemonRepo.FindById(adjustment.PokemonId())
 	if err != nil {
-		errChan <- err
-		return
+		return err
 	}
 	effects, err := r.buildBattleEffects(adjustment)
 	if err != nil {
-		errChan <- err
-		return
+		return err
 	}
 	move, err := r.moveRepo.FindById(moveId)
 	if err != nil {
-		errChan <- err
-		return
+		return err
 	}
 	move.NotifyBattleEffects(effects)
 	actualValues := pokemon.ResolveActualValues(adjustment.EffortValues())
-	attackSide := NewAttackSideData(actualValues, pokemon.TypeSet(), adjustment.Nature(), *effects, *move)
+	attackSide := NewAttackSide(actualValues, pokemon.TypeSet(), adjustment.Nature(), *effects, *move)
 	resultChan <- attackSide
+	return nil
 }
 
 func (r BattlePokemonResolver) resolveDefenseSide(adjustment s_damages.BattlePokemonAdjustment,
-	resultChan chan<- DefenseSideData, errChan chan<- error) {
+	resultChan chan<- DefenseSide) error {
 	pokemon, err := r.pokemonRepo.FindById(adjustment.PokemonId())
 	if err != nil {
-		errChan <- err
+		return err
 	}
 	effects, err := r.buildBattleEffects(adjustment)
 	if err != nil {
-		errChan <- err
+		return err
 	}
 	actualValues := pokemon.ResolveActualValues(adjustment.EffortValues())
-	defensePokemon := NewDefenseSideData(actualValues, pokemon.TypeSet(), adjustment.Nature(), *effects)
+	defensePokemon := NewDefenseSide(actualValues, pokemon.TypeSet(), adjustment.Nature(), *effects)
 	resultChan <- defensePokemon
+	return nil
 }
 
 func (r BattlePokemonResolver) buildBattleEffects(

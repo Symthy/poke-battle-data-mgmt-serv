@@ -10,6 +10,7 @@ type Email struct {
 	value string
 }
 
+// Todo: bug
 func NewEmail(value string) (*Email, error) {
 	r := regexp.MustCompile(`^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$`)
 	if !r.MatchString(value) {
