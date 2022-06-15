@@ -38,15 +38,3 @@ func (p PokemonActualValues) D() uint16 {
 func (p PokemonActualValues) S() uint16 {
 	return p.actualValueS
 }
-
-func (p PokemonActualValues) ApplyCorrection(appliers map[PokemonParam]correctionApplier) PokemonActualValues {
-	corrected := NewPokemonActualValues(
-		p.H(),
-		appliers[A](p.A()),
-		appliers[B](p.B()),
-		appliers[C](p.C()),
-		appliers[D](p.D()),
-		appliers[S](p.S()),
-	)
-	return corrected
-}

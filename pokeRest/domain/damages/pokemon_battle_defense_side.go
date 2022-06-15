@@ -1,6 +1,9 @@
 package damages
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
+)
 
 type DefenseSidePokemon struct {
 	defensePokemonActualValues value.PokemonActualValues
@@ -19,17 +22,17 @@ func NewDefenseSidePokemon(
 }
 
 type DefenseSideBattleEffects struct {
-	side value.BattleSideType
-	*value.StatusCorrections
-	*value.DamageCorrections
-	*value.BattleOverrideValues
+	side battles.BattleSideType
+	*battles.StatusCorrections
+	*battles.DamageCorrections
+	*battles.BattleOverrideValues
 }
 
-func NewDefenseSideBattleEffects(effects value.BattleEffects) DefenseSideBattleEffects {
+func NewDefenseSideBattleEffects(effects battles.BattleEffects) DefenseSideBattleEffects {
 	return DefenseSideBattleEffects{
-		side:                 value.BattleDefenseSide,
-		StatusCorrections:    value.NewStatusCorrections(effects.Corrections(), value.BattleDefenseSide),
-		DamageCorrections:    value.NewDamageCorrections(effects.Corrections(), value.BattleDefenseSide),
+		side:                 battles.BattleDefenseSide,
+		StatusCorrections:    battles.NewStatusCorrections(effects.Corrections(), battles.BattleDefenseSide),
+		DamageCorrections:    battles.NewDamageCorrections(effects.Corrections(), battles.BattleDefenseSide),
 		BattleOverrideValues: effects.Overrides(),
 	}
 }

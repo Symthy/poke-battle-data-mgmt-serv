@@ -1,4 +1,4 @@
-package value
+package battles
 
 type BattleOverrideValues struct {
 	values  []*BattleOverrideValue

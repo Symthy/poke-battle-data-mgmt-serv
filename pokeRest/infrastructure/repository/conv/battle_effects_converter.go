@@ -41,7 +41,7 @@ func convertTriggerCondition(triggerCondition *mixin.TriggerCondition) *value.Tr
 		return nil
 	}
 	result := value.NewTriggerCondition(
-		triggerCondition.Entry.String(),
+		triggerCondition.Entry.ToString(),
 		triggerCondition.Value,
 	)
 	return result

@@ -48,6 +48,6 @@ func (ty PokemonType) ConvertToDomain() value.PokemonType {
 	return value.NewPokemonType(ty.String())
 }
 
-func Convert(t value.PokemonType) PokemonType {
-	return PokemonType(t.NameEN())
+func Convert(typ value.PokemonType) PokemonType {
+	return PokemonType(typ.ToString())
 }

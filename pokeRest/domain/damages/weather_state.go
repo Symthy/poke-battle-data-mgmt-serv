@@ -1,10 +1,13 @@
 package damages
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
+)
 
 type WeatherState struct {
 	weather     WeatherType
-	corrections *value.BattleCorrectionValues
+	corrections *battles.BattleCorrectionValues
 }
 
 func NewWeatherState(weather string) WeatherState {
@@ -18,32 +21,32 @@ func (w WeatherState) ApplyCorrection(damage uint16, data IPokemonBattleDataSet)
 	if w.weather == WeatherNormal {
 		return damage
 	}
-	return w.corrections.Apply(damage, value.DamageCorrection, data, value.BattleAttackSide)
+	return w.corrections.Apply(damage, battles.DamageCorrection, data, battles.BattleAttackSide)
 }
 
-func resolveWeatherCorrection(weather WeatherType) *value.BattleCorrectionValues {
+func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValues {
 	if weather == WeatherSunny {
-		return value.NewBattleCorrectionValues(
-			value.NewBattleCorrectionValue(
-				value.DamageCorrection.String(),
+		return battles.NewBattleCorrectionValues(
+			battles.NewBattleCorrectionValue(
+				battles.DamageCorrection.String(),
 				6144,
-				value.NewTriggerCondition(value.ConditionPokemonType.String(), value.Fire().NameEN())),
-			value.NewBattleCorrectionValue(
-				value.DamageCorrection.String(),
+				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Fire().ToString())),
+			battles.NewBattleCorrectionValue(
+				battles.DamageCorrection.String(),
 				2048,
-				value.NewTriggerCondition(value.ConditionPokemonType.String(), value.Water().NameEN())),
+				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Water().ToString())),
 		)
 	}
 	if weather == WeatherRainy {
-		return value.NewBattleCorrectionValues(
-			value.NewBattleCorrectionValue(
-				value.DamageCorrection.String(),
+		return battles.NewBattleCorrectionValues(
+			battles.NewBattleCorrectionValue(
+				battles.DamageCorrection.String(),
 				6144,
-				value.NewTriggerCondition(value.ConditionPokemonType.String(), value.Water().NameEN())),
-			value.NewBattleCorrectionValue(
-				value.DamageCorrection.String(),
+				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Water().ToString())),
+			battles.NewBattleCorrectionValue(
+				battles.DamageCorrection.String(),
 				2048,
-				value.NewTriggerCondition(value.ConditionPokemonType.String(), value.Fire().NameEN())),
+				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Fire().ToString())),
 		)
 	}
 	return nil

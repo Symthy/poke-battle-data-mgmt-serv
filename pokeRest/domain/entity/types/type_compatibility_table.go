@@ -45,6 +45,13 @@ func (t TypeCompatibilityTable) ResolveDeffenceTypeCompatibility(deffenceType va
 	return NewTypeCompatibility(deffenceType, deffenceTypeToDamageRate, t.typeOrder)
 }
 
+func (t TypeCompatibilityTable) ResolveDamageRate(
+	attackMoveType value.PokemonType, defenseTypeFirst value.PokemonType, defenseTypeSecond value.PokemonType,
+) float32 {
+	typeCompatibilities := t.ResolveAttackTypeCompatibility(attackMoveType)
+	return typeCompatibilities.GetDamageRate(defenseTypeFirst) * typeCompatibilities.GetDamageRate(defenseTypeSecond)
+}
+
 func buildCompatibilityTable() typeTable {
 	table := map[value.PokemonType]map[value.PokemonType]float32{
 		value.Normal(): {

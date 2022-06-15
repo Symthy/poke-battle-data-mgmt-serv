@@ -33,9 +33,9 @@ func NewPokemonBattleDataSet(
 		AttackMove:                  attackMove,
 		typeCompatibilityDamageRate: compatibilityDamageRate,
 	}
-	statusAppliers := attackEffects.SupplyAllStatusCorrectionApplier(data)
-	data.correctedAttackPokemon = data.attackPokemonActualValues.ApplyCorrection(statusAppliers)
-	data.correctedDefensePokemon = data.defensePokemonActualValues.ApplyCorrection(statusAppliers)
+	allStatusApplier := attackEffects.SupplyAllStatusCorrectionApplier(data)
+	data.correctedAttackPokemon = allStatusApplier(data.attackPokemonActualValues)
+	data.correctedDefensePokemon = allStatusApplier(data.defensePokemonActualValues)
 	return data
 }
 

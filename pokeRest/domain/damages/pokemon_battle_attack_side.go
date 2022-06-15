@@ -1,6 +1,9 @@
 package damages
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
+)
 
 type AttackSidePokemon struct {
 	attackPokemonActualValues value.PokemonActualValues
@@ -38,21 +41,21 @@ func NewAttackMove(species value.MoveSpecies, pokemonType value.PokemonType, pow
 }
 
 type AttackSideBattleEffects struct {
-	side value.BattleSideType
-	*value.StatusCorrections
-	*value.PowerCorrections
-	*value.MovePowerCorrections
-	*value.DamageCorrections
-	*value.BattleOverrideValues
+	side battles.BattleSideType
+	*battles.StatusCorrections
+	*battles.PowerCorrections
+	*battles.MovePowerCorrections
+	*battles.DamageCorrections
+	*battles.BattleOverrideValues
 }
 
-func NewAttackSideBattleEffects(effects value.BattleEffects) AttackSideBattleEffects {
+func NewAttackSideBattleEffects(effects battles.BattleEffects) AttackSideBattleEffects {
 	return AttackSideBattleEffects{
-		side:                 value.BattleAttackSide,
-		StatusCorrections:    value.NewStatusCorrections(effects.Corrections(), value.BattleAttackSide),
-		PowerCorrections:     value.NewPowerCorrections(effects.Corrections()),
-		MovePowerCorrections: value.NewMovePowerCorrections(effects.Corrections()),
-		DamageCorrections:    value.NewDamageCorrections(effects.Corrections(), value.BattleAttackSide),
+		side:                 battles.BattleAttackSide,
+		StatusCorrections:    battles.NewStatusCorrections(effects.Corrections(), battles.BattleAttackSide),
+		PowerCorrections:     battles.NewPowerCorrections(effects.Corrections()),
+		MovePowerCorrections: battles.NewMovePowerCorrections(effects.Corrections()),
+		DamageCorrections:    battles.NewDamageCorrections(effects.Corrections(), battles.BattleAttackSide),
 		BattleOverrideValues: effects.Overrides(),
 	}
 }

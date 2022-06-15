@@ -1,8 +1,13 @@
-package value
+package battles
 
-import "github.com/Symthy/PokeRest/pokeRest/common/lists"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/common/lists"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+)
 
 type correctionApplier func(value uint16) uint16
+
+type correctionsApplier[T any] func(values T) T
 
 func identify(value uint16) uint16 {
 	return value
@@ -24,37 +29,14 @@ func NewStatusCorrections(values *BattleCorrectionValues, side BattleSideType) *
 }
 
 func (c StatusCorrections) SupplyAllStatusCorrectionApplier(
-	data IPokemonBattleDataSet) map[PokemonParam]correctionApplier {
-	appliers := map[PokemonParam]correctionApplier{
-		A: c.SupplyStatusCorrectionApplier(A, data),
-		B: c.SupplyStatusCorrectionApplier(B, data),
-		C: c.SupplyStatusCorrectionApplier(C, data),
-		D: c.SupplyStatusCorrectionApplier(D, data),
-		S: c.SupplyStatusCorrectionApplier(S, data),
-	}
-	return appliers
-}
-
-func (c StatusCorrections) SupplyStatusCorrectionApplier(
-	param PokemonParam, data IPokemonBattleDataSet) correctionApplier {
-	target := NoneCorrection
-	if param == A {
-		target = AttackCorrection
-	}
-	if param == B {
-		target = DefenseCorrection
-	}
-	if param == C {
-		target = SpecialAttackCorrection
-	}
-	if param == D {
-		target = SpecialDefenseCorrection
-	}
-	if param == S {
-		target = SpeedCorrection
-	}
-	return func(value uint16) uint16 {
-		return c.Apply(value, target, data, c.side)
+	data IPokemonBattleDataSet) correctionsApplier[value.PokemonActualValues] {
+	return func(actualValues value.PokemonActualValues) value.PokemonActualValues {
+		aVal := c.Apply(actualValues.A(), AttackCorrection, data, c.side)
+		bVal := c.Apply(actualValues.B(), DefenseCorrection, data, c.side)
+		cVal := c.Apply(actualValues.C(), SpecialAttackCorrection, data, c.side)
+		dVal := c.Apply(actualValues.D(), SpecialDefenseCorrection, data, c.side)
+		sVal := c.Apply(actualValues.S(), SpeedCorrection, data, c.side)
+		return value.NewPokemonActualValues(actualValues.H(), aVal, bVal, cVal, dVal, sVal)
 	}
 }
 
@@ -74,12 +56,12 @@ func NewPowerCorrections(values *BattleCorrectionValues) *PowerCorrections {
 }
 
 func (c PowerCorrections) SupplyPowerCorrectionApplier(
-	species MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
+	species value.MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
 	target := NoneCorrection
-	if species == Physical {
+	if species == value.PhysicalMove {
 		target = PhysicalPowerCorrection
 	}
-	if species == Special {
+	if species == value.SpecialMove {
 		target = SpecialPowerCorrection
 	}
 	return func(value uint16) uint16 {
@@ -103,15 +85,15 @@ func NewMovePowerCorrections(values *BattleCorrectionValues) *MovePowerCorrectio
 }
 
 func (c MovePowerCorrections) SupplyMovePowerCorrectionApplier(
-	species MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
-	return func(value uint16) uint16 {
-		if species == Physical {
-			return c.Apply(value, PhysicalMoveCorrection, data, c.side)
+	species value.MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
+	return func(val uint16) uint16 {
+		if species == value.PhysicalMove {
+			return c.Apply(val, PhysicalMoveCorrection, data, c.side)
 		}
-		if species == Special {
-			return c.Apply(value, SpecialMoveCorrection, data, c.side)
+		if species == value.SpecialMove {
+			return c.Apply(val, SpecialMoveCorrection, data, c.side)
 		}
-		return identify(value)
+		return identify(val)
 	}
 }
 
@@ -151,8 +133,8 @@ func NewBattleCorrectionValues(items ...*BattleCorrectionValue) *BattleCorrectio
 }
 
 func (b BattleCorrectionValues) get(targets ...CorrectionTarget) *BattleCorrectionValues {
-	values := lists.Filter(b.items, func(value *BattleCorrectionValue) bool {
-		return value.AnyEqualTarget(targets...)
+	values := lists.Filter(b.items, func(correctionValue *BattleCorrectionValue) bool {
+		return correctionValue.AnyEqualTarget(targets...)
 	})
 	return NewBattleCorrectionValues(values...)
 }

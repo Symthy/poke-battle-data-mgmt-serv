@@ -6,20 +6,29 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/damages"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"golang.org/x/sync/errgroup"
 )
 
 type BattlePokemonResolver struct {
-	pokemonRepo  repository.IPokemonRepository
-	abilityRepo  repository.IAbilityRepository
-	heldItemRepo repository.IHeldItemRepository
-	moveRepo     repository.IMoveRepository
-	typeServ     types.TypeReadService
+	IBattleEffectsResolver
+	pokemonRepo repository.IPokemonRepository
+	moveRepo    repository.IMoveRepository
+	typeServ    types.TypeReadService
 }
 
-// Todo: use WaitGroup
+func NewBattlePokemonResolver(effectsResolver IBattleEffectsResolver, pokemonRepo repository.IPokemonRepository,
+	moveRepo repository.IMoveRepository) *BattlePokemonResolver {
+	return &BattlePokemonResolver{
+		IBattleEffectsResolver: effectsResolver,
+		pokemonRepo:            pokemonRepo,
+		moveRepo:               moveRepo,
+		typeServ:               types.NewTypeReadService(),
+	}
+}
+
 func (r BattlePokemonResolver) Resolve(
-	adjustment s_damages.BattlePokemonAdjustment, moveId uint16,
+	adjustment s_damages.BattlePokemonAdjustment, moveId identifier.MoveId,
 ) (*damages.PokemonBattleDataSet, error) {
 	eg := new(errgroup.Group)
 
@@ -51,16 +60,16 @@ func (r BattlePokemonResolver) Resolve(
 }
 
 func (r BattlePokemonResolver) resolveAttackSide(adjustment s_damages.BattlePokemonAdjustment,
-	moveId uint16, resultChan chan<- AttackSide) error {
+	moveId identifier.MoveId, resultChan chan<- AttackSide) error {
 	pokemon, err := r.pokemonRepo.FindById(adjustment.PokemonId())
 	if err != nil {
 		return err
 	}
-	effects, err := r.buildBattleEffects(adjustment)
+	effects, err := r.resolve(adjustment)
 	if err != nil {
 		return err
 	}
-	move, err := r.moveRepo.FindById(moveId)
+	move, err := r.moveRepo.FindById(moveId.Value())
 	if err != nil {
 		return err
 	}
@@ -77,7 +86,7 @@ func (r BattlePokemonResolver) resolveDefenseSide(adjustment s_damages.BattlePok
 	if err != nil {
 		return err
 	}
-	effects, err := r.buildBattleEffects(adjustment)
+	effects, err := r.resolve(adjustment)
 	if err != nil {
 		return err
 	}
@@ -85,22 +94,6 @@ func (r BattlePokemonResolver) resolveDefenseSide(adjustment s_damages.BattlePok
 	defensePokemon := NewDefenseSide(actualValues, pokemon.TypeSet(), adjustment.Nature(), *effects)
 	resultChan <- defensePokemon
 	return nil
-}
-
-func (r BattlePokemonResolver) buildBattleEffects(
-	adjustment s_damages.BattlePokemonAdjustment) (*value.BattleEffects, error) {
-	effects := &value.BattleEffects{}
-	ability, err := r.abilityRepo.FindById(adjustment.AbilityId())
-	if err != nil {
-		return nil, err
-	}
-	ability.NotifyBattleEffects(effects)
-	item, err := r.heldItemRepo.FindById(adjustment.HeldItemId())
-	if err != nil {
-		return nil, err
-	}
-	item.NotifyBattleEffects(effects)
-	return effects, err
 }
 
 func (r BattlePokemonResolver) resolveTypeCompatibility(

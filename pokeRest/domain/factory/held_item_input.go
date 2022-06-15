@@ -1,8 +1,8 @@
 package factory
 
 import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/effects"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/items"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
@@ -10,10 +10,10 @@ type HeldItemInput struct {
 	id            uint64
 	name          string
 	description   string
-	battleEffects *value.BattleEffects
+	battleEffects *effects.BattleEffects
 }
 
-func NewHeldItemInput(id uint64, name string, description string, battleEffects *value.BattleEffects) HeldItemInput {
+func NewHeldItemInput(id uint64, name string, description string, battleEffects *effects.BattleEffects) HeldItemInput {
 	return HeldItemInput{id, name, description, battleEffects}
 }
 

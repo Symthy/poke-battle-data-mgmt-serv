@@ -1,4 +1,4 @@
-package value
+package battles
 
 type BattleEffects struct {
 	corrections *BattleCorrectionValues
@@ -26,10 +26,3 @@ func (b BattleEffects) ApplyCorrection(
 	value uint16, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) uint16 {
 	return b.corrections.Apply(value, target, data, side)
 }
-
-type BattleSideType string
-
-const (
-	BattleAttackSide  BattleSideType = "AttackSide"
-	BattleDefenseSide BattleSideType = "DefenceSide"
-)

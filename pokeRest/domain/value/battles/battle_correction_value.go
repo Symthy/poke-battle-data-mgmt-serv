@@ -1,6 +1,8 @@
-package value
+package battles
 
-import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
+)
 
 type BattleCorrectionValue struct {
 	target           CorrectionTarget

@@ -12,12 +12,20 @@ func (t PokemonType) ResolveTypeName(lang string) string {
 	return t.NameEN()
 }
 
+func (t PokemonType) ToString() string {
+	return t.NameEN()
+}
+
 func (t PokemonType) NameEN() string {
 	return t.englishName.String()
 }
 
 func (t PokemonType) NameJP() string {
 	return t.japaneseName.String()
+}
+
+func (t PokemonType) Equals(pokemonType PokemonType) bool {
+	return t.ToString() == pokemonType.ToString()
 }
 
 func (t PokemonType) IsUnknown() bool {
