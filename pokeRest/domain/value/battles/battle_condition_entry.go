@@ -9,6 +9,7 @@ const (
 	ConditionTypeCompatibility ConditionEntry = "typeCompatibility"
 	ConditionTypeMatch         ConditionEntry = "isTypeMatch"
 	ConditionGender            ConditionEntry = "gender"
+	ConditionNotHaveItem       ConditionEntry = "notHaveItem"
 	ConditionUnknown           ConditionEntry = ""
 )
 

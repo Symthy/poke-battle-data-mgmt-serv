@@ -19,40 +19,40 @@ func (n PokemonNature) ApplyCorrection(actualValues PokemonActualValues) int {
 
 func PokemonNatureAll() map[NatureNameEN]PokemonNature {
 	return map[NatureNameEN]PokemonNature{
-		LonelyEN:  Lonely(),
-		AdamantEN: Adamant(),
-		NaughtyEN: Naughty(),
-		BraveEN:   Brave(),
+		LonelyEN:  NatureLonely(),
+		AdamantEN: NatureAdamant(),
+		NaughtyEN: NatureNaughty(),
+		BraveEN:   NatureBrave(),
 
-		BoldEN:    Bold(),
-		ImpishEN:  Impish(),
-		LaxEN:     Lax(),
-		RelaxedEN: Relaxed(),
+		BoldEN:    NatureBold(),
+		ImpishEN:  NatureImpish(),
+		LaxEN:     NatureLax(),
+		RelaxedEN: NatureRelaxed(),
 
-		ModestEN: Modest(),
-		MildEN:   Mild(),
-		RashEN:   Rash(),
-		QuietEN:  Quiet(),
+		ModestEN: NatureModest(),
+		MildEN:   NatureMild(),
+		RashEN:   NatureRash(),
+		QuietEN:  NatureQuiet(),
 
-		CalmEN:    Calm(),
-		GentleEN:  Gentle(),
-		CarefulEN: Careful(),
-		SassyEN:   Sassy(),
+		CalmEN:    NatureCalm(),
+		GentleEN:  NatureGentle(),
+		CarefulEN: NatureCareful(),
+		SassyEN:   NatureSassy(),
 
-		TimidEN: Timid(),
-		HastyEN: Hasty(),
-		JollyEN: Jolly(),
-		NaiveEN: Naive(),
+		TimidEN: NatureTimid(),
+		HastyEN: NatureHasty(),
+		JollyEN: NatureJolly(),
+		NaiveEN: NatureNaive(),
 
-		HardyEN:   Hardy(),
-		DocileEN:  Docile(),
-		SeriousEN: Serious(),
-		BashfulEN: Bashful(),
-		QuirkyEN:  Quirky(),
+		HardyEN:   NatureHardy(),
+		DocileEN:  NatureDocile(),
+		SeriousEN: NatureSerious(),
+		BashfulEN: NatureBashful(),
+		QuirkyEN:  NatureQuirky(),
 	}
 }
 
-func Lonely() PokemonNature { // さみしがりや（A↑B↓）
+func NatureLonely() PokemonNature { // さみしがりや（A↑B↓）
 	return PokemonNature{
 		englishName:    LonelyEN,
 		japaneseName:   LonelyJP,
@@ -60,7 +60,7 @@ func Lonely() PokemonNature { // さみしがりや（A↑B↓）
 		downCorrection: &NatureBDown,
 	}
 }
-func Adamant() PokemonNature { // いじっぱり（A↑C↓）
+func NatureAdamant() PokemonNature { // いじっぱり（A↑C↓）
 	return PokemonNature{
 		englishName:    AdamantEN,
 		japaneseName:   AdamantJP,
@@ -68,7 +68,7 @@ func Adamant() PokemonNature { // いじっぱり（A↑C↓）
 		downCorrection: &NatureCDown,
 	}
 }
-func Naughty() PokemonNature { // やんちゃ（A↑D↓）
+func NatureNaughty() PokemonNature { // やんちゃ（A↑D↓）
 	return PokemonNature{
 		englishName:    NaughtyEN,
 		japaneseName:   NaughtyJP,
@@ -76,7 +76,7 @@ func Naughty() PokemonNature { // やんちゃ（A↑D↓）
 		downCorrection: &NatureDDown,
 	}
 }
-func Brave() PokemonNature { // ゆうかん（A↑S↓）
+func NatureBrave() PokemonNature { // ゆうかん（A↑S↓）
 	return PokemonNature{
 		englishName:    BraveEN,
 		japaneseName:   BraveJP,
@@ -85,7 +85,7 @@ func Brave() PokemonNature { // ゆうかん（A↑S↓）
 	}
 }
 
-func Bold() PokemonNature { // ずぶとい（B↑A↓）
+func NatureBold() PokemonNature { // ずぶとい（B↑A↓）
 	return PokemonNature{
 		englishName:    BoldEN,
 		japaneseName:   BoldJP,
@@ -93,7 +93,7 @@ func Bold() PokemonNature { // ずぶとい（B↑A↓）
 		downCorrection: &NatureADown,
 	}
 }
-func Impish() PokemonNature { // わんぱく（B↑C↓）
+func NatureImpish() PokemonNature { // わんぱく（B↑C↓）
 	return PokemonNature{
 		englishName:    ImpishEN,
 		japaneseName:   ImpishJP,
@@ -101,7 +101,7 @@ func Impish() PokemonNature { // わんぱく（B↑C↓）
 		downCorrection: &NatureCDown,
 	}
 }
-func Lax() PokemonNature { // のうてんき（B↑D↓）
+func NatureLax() PokemonNature { // のうてんき（B↑D↓）
 	return PokemonNature{
 		englishName:    LaxEN,
 		japaneseName:   LaxJP,
@@ -109,7 +109,7 @@ func Lax() PokemonNature { // のうてんき（B↑D↓）
 		downCorrection: &NatureDDown,
 	}
 }
-func Relaxed() PokemonNature { // のんき（B↑S↓）
+func NatureRelaxed() PokemonNature { // のんき（B↑S↓）
 	return PokemonNature{
 		englishName:    RelaxedEN,
 		japaneseName:   RelaxedJP,
@@ -118,7 +118,7 @@ func Relaxed() PokemonNature { // のんき（B↑S↓）
 	}
 }
 
-func Modest() PokemonNature { // ひかえめ（C↑A↓）
+func NatureModest() PokemonNature { // ひかえめ（C↑A↓）
 	return PokemonNature{
 		englishName:    ModestEN,
 		japaneseName:   ModestJP,
@@ -126,7 +126,7 @@ func Modest() PokemonNature { // ひかえめ（C↑A↓）
 		downCorrection: &NatureADown,
 	}
 }
-func Mild() PokemonNature { // おっとり（C↑B↓）
+func NatureMild() PokemonNature { // おっとり（C↑B↓）
 	return PokemonNature{
 		englishName:    MildEN,
 		japaneseName:   MildJP,
@@ -134,7 +134,7 @@ func Mild() PokemonNature { // おっとり（C↑B↓）
 		downCorrection: &NatureBDown,
 	}
 }
-func Rash() PokemonNature { // うっかりや（C↑D↓）
+func NatureRash() PokemonNature { // うっかりや（C↑D↓）
 	return PokemonNature{
 		englishName:    RashEN,
 		japaneseName:   RashJP,
@@ -142,7 +142,7 @@ func Rash() PokemonNature { // うっかりや（C↑D↓）
 		downCorrection: &NatureDDown,
 	}
 }
-func Quiet() PokemonNature { // れいせい（C↑S↓）
+func NatureQuiet() PokemonNature { // れいせい（C↑S↓）
 	return PokemonNature{
 		englishName:    QuietEN,
 		japaneseName:   QuietJP,
@@ -151,7 +151,7 @@ func Quiet() PokemonNature { // れいせい（C↑S↓）
 	}
 }
 
-func Calm() PokemonNature { // おだやか（D↑A↓）
+func NatureCalm() PokemonNature { // おだやか（D↑A↓）
 	return PokemonNature{
 		englishName:    CalmEN,
 		japaneseName:   CalmJP,
@@ -159,7 +159,7 @@ func Calm() PokemonNature { // おだやか（D↑A↓）
 		downCorrection: &NatureADown,
 	}
 }
-func Gentle() PokemonNature { // おとなしい（D↑B↓）
+func NatureGentle() PokemonNature { // おとなしい（D↑B↓）
 	return PokemonNature{
 		englishName:    GentleEN,
 		japaneseName:   GentleJP,
@@ -167,7 +167,7 @@ func Gentle() PokemonNature { // おとなしい（D↑B↓）
 		downCorrection: &NatureBDown,
 	}
 }
-func Careful() PokemonNature { // しんちょう（D↑C↓）
+func NatureCareful() PokemonNature { // しんちょう（D↑C↓）
 	return PokemonNature{
 		englishName:    CarefulEN,
 		japaneseName:   CarefulJP,
@@ -175,7 +175,7 @@ func Careful() PokemonNature { // しんちょう（D↑C↓）
 		downCorrection: &NatureCDown,
 	}
 }
-func Sassy() PokemonNature { // なまいき（D↑S↓）
+func NatureSassy() PokemonNature { // なまいき（D↑S↓）
 	return PokemonNature{
 		englishName:    SassyEN,
 		japaneseName:   SassyJP,
@@ -184,7 +184,7 @@ func Sassy() PokemonNature { // なまいき（D↑S↓）
 	}
 }
 
-func Timid() PokemonNature { // おくびょう（S↑A↓）
+func NatureTimid() PokemonNature { // おくびょう（S↑A↓）
 	return PokemonNature{
 		englishName:    TimidEN,
 		japaneseName:   TimidJP,
@@ -192,7 +192,7 @@ func Timid() PokemonNature { // おくびょう（S↑A↓）
 		downCorrection: &NatureADown,
 	}
 }
-func Hasty() PokemonNature { // せっかち（S↑B↓）
+func NatureHasty() PokemonNature { // せっかち（S↑B↓）
 	return PokemonNature{
 		englishName:    HastyEN,
 		japaneseName:   HastyJP,
@@ -200,7 +200,7 @@ func Hasty() PokemonNature { // せっかち（S↑B↓）
 		downCorrection: &NatureBDown,
 	}
 }
-func Jolly() PokemonNature { // ようき（S↑C↓）
+func NatureJolly() PokemonNature { // ようき（S↑C↓）
 	return PokemonNature{
 		englishName:    HastyEN,
 		japaneseName:   HastyJP,
@@ -208,7 +208,7 @@ func Jolly() PokemonNature { // ようき（S↑C↓）
 		downCorrection: &NatureCDown,
 	}
 }
-func Naive() PokemonNature { // むじゃき（S↑D↓）
+func NatureNaive() PokemonNature { // むじゃき（S↑D↓）
 	return PokemonNature{
 		englishName:    NaiveEN,
 		japaneseName:   NaiveJP,
@@ -217,7 +217,7 @@ func Naive() PokemonNature { // むじゃき（S↑D↓）
 	}
 }
 
-func Hardy() PokemonNature { // がんばりや（補正無し）
+func NatureHardy() PokemonNature { // がんばりや（補正無し）
 	return PokemonNature{
 		englishName:    HardyEN,
 		japaneseName:   HardyJP,
@@ -225,7 +225,7 @@ func Hardy() PokemonNature { // がんばりや（補正無し）
 		downCorrection: nil,
 	}
 }
-func Docile() PokemonNature { // すなお（補正無し）
+func NatureDocile() PokemonNature { // すなお（補正無し）
 	return PokemonNature{
 		englishName:    DocileEN,
 		japaneseName:   DocileJP,
@@ -233,7 +233,7 @@ func Docile() PokemonNature { // すなお（補正無し）
 		downCorrection: nil,
 	}
 }
-func Serious() PokemonNature { // まじめ（補正無し）
+func NatureSerious() PokemonNature { // まじめ（補正無し）
 	return PokemonNature{
 		englishName:    SeriousEN,
 		japaneseName:   SeriousJP,
@@ -241,7 +241,7 @@ func Serious() PokemonNature { // まじめ（補正無し）
 		downCorrection: nil,
 	}
 }
-func Bashful() PokemonNature { // てれや（補正無し）
+func NatureBashful() PokemonNature { // てれや（補正無し）
 	return PokemonNature{
 		englishName:    BashfulEN,
 		japaneseName:   BashfulJP,
@@ -249,7 +249,7 @@ func Bashful() PokemonNature { // てれや（補正無し）
 		downCorrection: nil,
 	}
 }
-func Quirky() PokemonNature { // きまぐれ（補正無し）
+func NatureQuirky() PokemonNature { // きまぐれ（補正無し）
 	return PokemonNature{
 		englishName:    QuirkyEN,
 		japaneseName:   QuirkyJP,

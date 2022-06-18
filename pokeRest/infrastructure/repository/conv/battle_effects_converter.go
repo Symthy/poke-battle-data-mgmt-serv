@@ -2,15 +2,15 @@ package conv
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 )
 
-func toBattleEffects(effects *mixin.BattleEffects) *value.BattleEffects {
-	corrections := []*value.BattleCorrectionValue{}
+func toBattleEffects(effects *mixin.BattleEffects) *battles.BattleEffects {
+	corrections := []*battles.BattleCorrectionValue{}
 	for _, correction := range effects.Corrections {
 		triggerCondition := convertTriggerCondition(correction.TriggerCondition)
-		correctionValue := value.NewBattleCorrectionValue(
-			correction.Target.String(),
+		correctionValue := battles.NewBattleCorrectionValue(
+			battles.NewCorrectionTarget(correction.Target.String()),
 			correction.Value,
 			triggerCondition,
 		)
@@ -19,10 +19,10 @@ func toBattleEffects(effects *mixin.BattleEffects) *value.BattleEffects {
 		}
 	}
 
-	overrides := []*value.BattleOverrideValue{}
+	overrides := []*battles.BattleOverrideValue{}
 	for _, override := range effects.Overrides {
 		triggerCondition := convertTriggerCondition(override.TriggerCondition)
-		overrideValue := value.NewBattleOverrideValue(
+		overrideValue := battles.NewBattleOverrideValue(
 			override.Target.String(),
 			override.Value,
 			triggerCondition,
@@ -32,16 +32,16 @@ func toBattleEffects(effects *mixin.BattleEffects) *value.BattleEffects {
 		}
 	}
 
-	result := value.NewBattleEffects(value.NewBattleCorrectionValues(corrections...), value.NewBattleOverrideValues(overrides...))
+	result := battles.NewBattleEffects(battles.NewBattleCorrectionValues(corrections...), battles.NewBattleOverrideValues(overrides...))
 	return result
 }
 
-func convertTriggerCondition(triggerCondition *mixin.TriggerCondition) *value.TriggerCondition {
+func convertTriggerCondition(triggerCondition *mixin.TriggerCondition) *battles.TriggerCondition {
 	if triggerCondition == nil {
 		return nil
 	}
-	result := value.NewTriggerCondition(
-		triggerCondition.Entry.ToString(),
+	result := battles.NewTriggerCondition(
+		battles.NewConditionEntry(triggerCondition.Entry.String()),
 		triggerCondition.Value,
 	)
 	return result

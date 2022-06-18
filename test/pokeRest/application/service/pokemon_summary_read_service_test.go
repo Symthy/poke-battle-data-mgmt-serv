@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
-	"github.com/Symthy/PokeRest/test/mock"
+	"github.com/Symthy/PokeRest/test/mock/repository"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -18,7 +18,7 @@ type PokemonControllerTestSuite struct {
 
 // Before
 func (suite *PokemonControllerTestSuite) SetupTest() {
-	suite.serv = pokemons.NewPokemonSummaryReadService(mock.NewPokemonRepositoryMock())
+	suite.serv = pokemons.NewPokemonSummaryReadService(repository.NewPokemonRepositoryMock())
 }
 
 // After

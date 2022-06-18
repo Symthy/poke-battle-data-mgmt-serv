@@ -29,13 +29,13 @@ func NewStatusCorrections(values *BattleCorrectionValues, side BattleSideType) *
 }
 
 func (c StatusCorrections) SupplyAllStatusCorrectionApplier(
-	data IPokemonBattleDataSet) correctionsApplier[value.PokemonActualValues] {
-	return func(actualValues value.PokemonActualValues) value.PokemonActualValues {
-		aVal := c.Apply(actualValues.A(), AttackCorrection, data, c.side)
-		bVal := c.Apply(actualValues.B(), DefenseCorrection, data, c.side)
-		cVal := c.Apply(actualValues.C(), SpecialAttackCorrection, data, c.side)
-		dVal := c.Apply(actualValues.D(), SpecialDefenseCorrection, data, c.side)
-		sVal := c.Apply(actualValues.S(), SpeedCorrection, data, c.side)
+	data IPokemonBattleDataSet) correctionsApplier[*value.PokemonActualValues] {
+	return func(actualValues *value.PokemonActualValues) *value.PokemonActualValues {
+		aVal := c.Apply(actualValues.A(), CorrectionStatusA, data, c.side)
+		bVal := c.Apply(actualValues.B(), CorrectionStatusB, data, c.side)
+		cVal := c.Apply(actualValues.C(), CorrectionStatusC, data, c.side)
+		dVal := c.Apply(actualValues.D(), CorrectionStatusD, data, c.side)
+		sVal := c.Apply(actualValues.S(), CorrectionStatusS, data, c.side)
 		return value.NewPokemonActualValues(actualValues.H(), aVal, bVal, cVal, dVal, sVal)
 	}
 }
@@ -57,12 +57,12 @@ func NewPowerCorrections(values *BattleCorrectionValues) *PowerCorrections {
 
 func (c PowerCorrections) SupplyPowerCorrectionApplier(
 	species value.MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
-	target := NoneCorrection
-	if species == value.PhysicalMove {
-		target = PhysicalPowerCorrection
+	target := CorrectionNone
+	if species == value.MoveSpeciesPhysical {
+		target = CorrectionPhysicalPower
 	}
-	if species == value.SpecialMove {
-		target = SpecialPowerCorrection
+	if species == value.MoveSpeciesSpecial {
+		target = CorrectionSpecialPower
 	}
 	return func(value uint16) uint16 {
 		return c.Apply(value, target, data, c.side)
@@ -87,11 +87,11 @@ func NewMovePowerCorrections(values *BattleCorrectionValues) *MovePowerCorrectio
 func (c MovePowerCorrections) SupplyMovePowerCorrectionApplier(
 	species value.MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
 	return func(val uint16) uint16 {
-		if species == value.PhysicalMove {
-			return c.Apply(val, PhysicalMoveCorrection, data, c.side)
+		if species == value.MoveSpeciesPhysical {
+			return c.Apply(val, CorrectionPhysicalMove, data, c.side)
 		}
-		if species == value.SpecialMove {
-			return c.Apply(val, SpecialMoveCorrection, data, c.side)
+		if species == value.MoveSpeciesSpecial {
+			return c.Apply(val, CorrectionSpecialMove, data, c.side)
 		}
 		return identify(val)
 	}
@@ -112,28 +112,32 @@ func NewDamageCorrections(values *BattleCorrectionValues, side BattleSideType) *
 func (c DamageCorrections) SupplyDamageCorrectionApplier(
 	data IPokemonBattleDataSet) correctionApplier {
 	return func(value uint16) uint16 {
-		return c.Apply(value, DamageCorrection, data, c.side)
+		return c.Apply(value, CorrectionDamage, data, c.side)
 	}
 }
 
 type BattleCorrectionValues struct {
+	values  []*BattleCorrectionValue
 	targets []CorrectionTarget
-	items   []*BattleCorrectionValue
 }
 
-func NewBattleCorrectionValues(items ...*BattleCorrectionValue) *BattleCorrectionValues {
-	targets := []CorrectionTarget{}
-	for _, correction := range items {
-		targets = append(targets, correction.target)
+func NewBattleCorrectionValues(values ...*BattleCorrectionValue) *BattleCorrectionValues {
+	if len(values) == 0 {
+		return &BattleCorrectionValues{
+			values:  []*BattleCorrectionValue{},
+			targets: []CorrectionTarget{},
+		}
 	}
 	return &BattleCorrectionValues{
-		targets: targets,
-		items:   items,
+		values: values,
+		targets: lists.Map(values, func(v *BattleCorrectionValue) CorrectionTarget {
+			return v.target
+		}),
 	}
 }
 
 func (b BattleCorrectionValues) get(targets ...CorrectionTarget) *BattleCorrectionValues {
-	values := lists.Filter(b.items, func(correctionValue *BattleCorrectionValue) bool {
+	values := lists.Filter(b.values, func(correctionValue *BattleCorrectionValue) bool {
 		return correctionValue.AnyEqualTarget(targets...)
 	})
 	return NewBattleCorrectionValues(values...)
@@ -142,7 +146,7 @@ func (b BattleCorrectionValues) get(targets ...CorrectionTarget) *BattleCorrecti
 func (c BattleCorrectionValues) Apply(
 	value uint16, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) uint16 {
 	result := value
-	for _, correction := range c.items {
+	for _, correction := range c.values {
 		if target != correction.target {
 			continue
 		}
@@ -152,6 +156,6 @@ func (c BattleCorrectionValues) Apply(
 }
 
 func (c *BattleCorrectionValues) Merge(corrections *BattleCorrectionValues) {
-	c.items = append(c.items, corrections.items...)
+	c.values = append(c.values, corrections.values...)
 	c.targets = append(c.targets, corrections.targets...)
 }

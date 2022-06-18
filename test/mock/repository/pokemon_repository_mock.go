@@ -1,4 +1,4 @@
-package mock
+package repository
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"

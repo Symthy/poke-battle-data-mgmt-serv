@@ -6,18 +6,20 @@ import (
 )
 
 type AttackSidePokemon struct {
-	attackPokemonActualValues value.PokemonActualValues
+	attackPokemonActualValues *value.PokemonActualValues
 	attackPokemonType         value.PokemonTypeSet
 	attackPokemonNature       value.PokemonNature
+	attackPokemonHasItem      bool
 }
 
 func NewAttackSidePokemon(
-	attackPokemon value.PokemonActualValues, attackPokemonType value.PokemonTypeSet,
-	attackPokemonNature value.PokemonNature) AttackSidePokemon {
-	return AttackSidePokemon{
-		attackPokemonActualValues: attackPokemon,
-		attackPokemonType:         attackPokemonType,
-		attackPokemonNature:       attackPokemonNature,
+	actualValues *value.PokemonActualValues, pokemonTypeSet value.PokemonTypeSet,
+	nature value.PokemonNature, hasItem bool) *AttackSidePokemon {
+	return &AttackSidePokemon{
+		attackPokemonActualValues: actualValues,
+		attackPokemonType:         pokemonTypeSet,
+		attackPokemonNature:       nature,
+		attackPokemonHasItem:      hasItem,
 	}
 }
 
@@ -49,8 +51,8 @@ type AttackSideBattleEffects struct {
 	*battles.BattleOverrideValues
 }
 
-func NewAttackSideBattleEffects(effects battles.BattleEffects) AttackSideBattleEffects {
-	return AttackSideBattleEffects{
+func NewAttackSideBattleEffects(effects *battles.BattleEffects) *AttackSideBattleEffects {
+	return &AttackSideBattleEffects{
 		side:                 battles.BattleAttackSide,
 		StatusCorrections:    battles.NewStatusCorrections(effects.Corrections(), battles.BattleAttackSide),
 		PowerCorrections:     battles.NewPowerCorrections(effects.Corrections()),

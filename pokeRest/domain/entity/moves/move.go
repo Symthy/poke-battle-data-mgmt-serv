@@ -3,6 +3,7 @@ package moves
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"github.com/Symthy/PokeRest/pokeRest/errs"
 )
@@ -19,27 +20,32 @@ type Move struct {
 	pp            uint8
 	isContained   bool
 	canGuard      bool
-	battleEffects *value.BattleEffects
+	battleEffects *battles.BattleEffects
 }
 
-func NewMove(id identifier.MoveId, name, species, pokemonType string,
-	power uint64, accuracyRate float32, pp uint64, isContained, canGuard bool) (*Move, error) {
+func NewMove(id identifier.MoveId, name, species, pokemonType string, power uint64, accuracyRate float32, pp uint64,
+	isContained, canGuard bool, battleEffects *battles.BattleEffects) (*Move, error) {
 	if power > 300 {
 		return nil, errs.ThrowErrorInvalidValue("Move", "power", string(rune(power)))
 	}
-	if power > 100 {
-		return nil, errs.ThrowErrorInvalidValue("Move", "pp", string(rune(power)))
+	if pp > 50 {
+		return nil, errs.ThrowErrorInvalidValue("Move", "pp", string(rune(pp)))
+	}
+	effects := battleEffects
+	if battleEffects == nil {
+		effects = battles.NewEmptyBattleEffects()
 	}
 	return &Move{
-		id:           id,
-		name:         name,
-		species:      value.MoveSpecies(species),
-		pokemonType:  value.NewPokemonType(pokemonType),
-		power:        uint16(power),
-		accuracyRate: accuracyRate,
-		pp:           uint8(pp),
-		isContained:  isContained,
-		canGuard:     canGuard,
+		id:            id,
+		name:          name,
+		species:       value.MoveSpecies(species),
+		pokemonType:   value.NewPokemonType(pokemonType),
+		power:         uint16(power),
+		accuracyRate:  accuracyRate,
+		pp:            uint8(pp),
+		isContained:   isContained,
+		canGuard:      canGuard,
+		battleEffects: effects,
 	}, nil
 }
 
@@ -51,7 +57,7 @@ func (m Move) Power() uint16 {
 	return m.power
 }
 
-func (m Move) NotifyBattleEffects(effects *value.BattleEffects) {
+func (m Move) NotifyBattleEffects(effects *battles.BattleEffects) {
 	effects.Merge(m.battleEffects)
 }
 

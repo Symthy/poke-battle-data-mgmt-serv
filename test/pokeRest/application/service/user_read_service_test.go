@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/application/service/users"
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
-	"github.com/Symthy/PokeRest/test/mock"
+	"github.com/Symthy/PokeRest/test/mock/repository"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -18,7 +18,7 @@ type UserServiceTestSuite struct {
 
 // Before
 func (suite *UserServiceTestSuite) SetupTest() {
-	suite.serv = users.NewUserReadService(mock.NewUserRepositoryMock())
+	suite.serv = users.NewUserReadService(repository.NewUserRepositoryMock())
 }
 
 // After

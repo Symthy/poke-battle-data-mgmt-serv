@@ -5,27 +5,35 @@ import "github.com/Symthy/PokeRest/pokeRest/common/lists"
 type MoveSpecies string
 
 const (
-	PhysicalMove MoveSpecies = "Physical" // 物理
-	SpecialMove  MoveSpecies = "Special"  // 特殊
-	StatusMove   MoveSpecies = "Status"   // 変化
-	UnknownMove  MoveSpecies = ""
+	MoveSpeciesPhysical MoveSpecies = "Physical" // 物理
+	MoveSpeciesSpecial  MoveSpecies = "Special"  // 特殊
+	MoveSpeciesStatus   MoveSpecies = "Status"   // 変化
+	MoveSpeciesUnknown  MoveSpecies = ""
 )
 
 func allMoveSpecies() []MoveSpecies {
-	return []MoveSpecies{PhysicalMove, SpecialMove, StatusMove}
+	return []MoveSpecies{MoveSpeciesPhysical, MoveSpeciesSpecial, MoveSpeciesStatus}
 }
 
 func NewMoveSpecies(species string) MoveSpecies {
 	if lists.Contains(allMoveSpecies(), species) {
 		return MoveSpecies(species)
 	}
-	return UnknownMove
+	return MoveSpeciesUnknown
 }
 
 func (m MoveSpecies) IsPhysical() bool {
-	return m == PhysicalMove
+	return m == MoveSpeciesPhysical
 }
 
 func (m MoveSpecies) IsSpecial() bool {
-	return m == SpecialMove
+	return m == MoveSpeciesSpecial
+}
+
+func (m MoveSpecies) IsStatus() bool {
+	return m == MoveSpeciesStatus
+}
+
+func (m MoveSpecies) String() string {
+	return string(m)
 }

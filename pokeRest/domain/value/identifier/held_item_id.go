@@ -18,3 +18,7 @@ func NewHeldItemId(value uint64) (*HeldItemId, error) {
 	}
 	return &HeldItemId{ValueId[uint16]{uint16(value)}}, nil
 }
+
+func NewEmptyHeldItemId() HeldItemId {
+	return HeldItemId{newEmptyId[uint16]()}
+}

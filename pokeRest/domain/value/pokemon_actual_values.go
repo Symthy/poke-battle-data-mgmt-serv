@@ -9,8 +9,8 @@ type PokemonActualValues struct {
 	actualValueS uint16
 }
 
-func NewPokemonActualValues(h, a, b, c, d, s uint16) PokemonActualValues {
-	return PokemonActualValues{
+func NewPokemonActualValues(h, a, b, c, d, s uint16) *PokemonActualValues {
+	return &PokemonActualValues{
 		actualValueH: h,
 		actualValueA: a,
 		actualValueB: b,

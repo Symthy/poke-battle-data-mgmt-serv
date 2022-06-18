@@ -1,8 +1,6 @@
 package lists
 
-import (
-	"reflect"
-)
+import "reflect"
 
 func Contains(list interface{}, elem interface{}) bool {
 	// Todo: refactor
@@ -39,14 +37,14 @@ func Map[TI any, TO any](array []TI, f func(TI) TO) []TO {
 		return []TO{}
 	}
 	rets := make([]TO, len(array))
-	for _, e := range array {
-		rets = append(rets, f(e))
+	for i, e := range array {
+		rets[i] = f(e)
 	}
 	return rets
 }
 
 func Filter[T any](slice []T, f func(T) bool) []T {
-	var n []T
+	n := []T{}
 	for _, e := range slice {
 		if f(e) {
 			n = append(n, e)
@@ -55,16 +53,17 @@ func Filter[T any](slice []T, f func(T) bool) []T {
 	return n
 }
 
-func AddsToList[T any](array []T, elems ...*T) {
+func AddLiterals[T uint16 | uint32 | uint64 | string](array []T, elems ...*T) {
 	for _, e := range elems {
-		addToList(array, e)
+		if e != nil {
+			array = append(array, *e)
+		}
 	}
 }
 
-func addToList[T any](array []T, elem *T) {
-	if elem != nil {
-		array = append(array, *elem)
-	}
+func Add[T any](array []T, elems ...T) []T {
+	rets := append(array, elems...)
+	return rets
 }
 
 func ConvertTypeUint64To16(values []uint64) []uint16 {

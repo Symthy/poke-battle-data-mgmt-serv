@@ -6,7 +6,7 @@ type PokemonTypeSet struct {
 }
 
 func NewPokemonTypeSet(firstType, secondType PokemonType) PokemonTypeSet {
-	return PokemonTypeSet{}
+	return PokemonTypeSet{firstType, secondType}
 }
 
 func (t PokemonTypeSet) GetTypeNames(lang string) (string, string) {

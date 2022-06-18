@@ -50,49 +50,49 @@ func NewTrainedPokemonAdjustmentInput(
 func NewTrainedPokemonAdjustmentBuilder() TrainedPokemonAdjustmentInput {
 	return TrainedPokemonAdjustmentInput{}
 }
-func (i TrainedPokemonAdjustmentInput) Id(id uint64) {
+func (i *TrainedPokemonAdjustmentInput) Id(id uint64) {
 	i.id = id
 }
-func (i TrainedPokemonAdjustmentInput) PokemonId(pokemonId uint64) {
+func (i *TrainedPokemonAdjustmentInput) PokemonId(pokemonId uint64) {
 	i.pokemonId = pokemonId
 }
-func (i TrainedPokemonAdjustmentInput) Nature(nature string) {
+func (i *TrainedPokemonAdjustmentInput) Nature(nature string) {
 	i.nature = nature
 }
-func (i TrainedPokemonAdjustmentInput) AbilityId(abilityId uint64) {
+func (i *TrainedPokemonAdjustmentInput) AbilityId(abilityId uint64) {
 	i.abilityId = abilityId
 }
-func (i TrainedPokemonAdjustmentInput) HeldItemId(itemId uint64) {
+func (i *TrainedPokemonAdjustmentInput) HeldItemId(itemId uint64) {
 	i.heldItemId = itemId
 }
-func (i TrainedPokemonAdjustmentInput) EffortValueH(value uint64) {
+func (i *TrainedPokemonAdjustmentInput) EffortValueH(value uint64) {
 	i.effortValueH = value
 }
-func (i TrainedPokemonAdjustmentInput) EffortValueA(value uint64) {
+func (i *TrainedPokemonAdjustmentInput) EffortValueA(value uint64) {
 	i.effortValueA = value
 }
-func (i TrainedPokemonAdjustmentInput) EffortValueB(value uint64) {
+func (i *TrainedPokemonAdjustmentInput) EffortValueB(value uint64) {
 	i.effortValueB = value
 }
-func (i TrainedPokemonAdjustmentInput) EffortValueC(value uint64) {
+func (i *TrainedPokemonAdjustmentInput) EffortValueC(value uint64) {
 	i.effortValueC = value
 }
-func (i TrainedPokemonAdjustmentInput) EffortValueD(value uint64) {
+func (i *TrainedPokemonAdjustmentInput) EffortValueD(value uint64) {
 	i.effortValueD = value
 }
-func (i TrainedPokemonAdjustmentInput) EffortValueS(value uint64) {
+func (i *TrainedPokemonAdjustmentInput) EffortValueS(value uint64) {
 	i.effortValueS = value
 }
-func (i TrainedPokemonAdjustmentInput) MoveIdFirst(moveId uint64) {
+func (i *TrainedPokemonAdjustmentInput) MoveIdFirst(moveId uint64) {
 	i.moveId1 = moveId
 }
-func (i TrainedPokemonAdjustmentInput) MoveIdSecond(moveId uint64) {
+func (i *TrainedPokemonAdjustmentInput) MoveIdSecond(moveId uint64) {
 	i.moveId2 = moveId
 }
-func (i TrainedPokemonAdjustmentInput) MoveIdThird(moveId uint64) {
+func (i *TrainedPokemonAdjustmentInput) MoveIdThird(moveId uint64) {
 	i.moveId3 = moveId
 }
-func (i TrainedPokemonAdjustmentInput) MoveIdFourth(moveId uint64) {
+func (i *TrainedPokemonAdjustmentInput) MoveIdFourth(moveId uint64) {
 	i.moveId4 = moveId
 }
 

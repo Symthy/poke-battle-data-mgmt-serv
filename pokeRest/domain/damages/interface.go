@@ -12,4 +12,5 @@ type IPokemonBattleDataSet interface {
 	MovePokemonType() value.PokemonType
 	HasItemAttackSide() bool
 	HasItemDefenseSide() bool
+	TypeCompatibilityDamageRate() float32
 }

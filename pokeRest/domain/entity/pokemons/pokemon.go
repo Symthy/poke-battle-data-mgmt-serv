@@ -70,7 +70,7 @@ func (p Pokemon) TypeSet() value.PokemonTypeSet {
 	return p.typeSet
 }
 
-func (p Pokemon) ResolveActualValues(effortValues value.EffortValues) value.PokemonActualValues {
+func (p Pokemon) ResolveActualValues(effortValues *value.EffortValues) *value.PokemonActualValues {
 	actualValues := value.NewPokemonActualValues(
 		calculateActualValueH(p.baseStatsH, 31, effortValues.H()),
 		calculateActualValueABCDS(p.baseStatsA, 31, effortValues.A()),
@@ -84,15 +84,22 @@ func (p Pokemon) ResolveActualValues(effortValues value.EffortValues) value.Poke
 
 func calculateActualValueH(baseStats value.PokemonBaseStats, individualValue uint8, effortValue value.EffortValue) uint16 {
 	level := uint16(50)
-	actual := uint16(float64(baseStats.Value()+individualValue/2+(effortValue.Value()/4))*(float64(level)/100.0)) +
-		uint16(10) + level
-	return actual
+	b := uint16(baseStats.Value() * 2)
+	i := uint16(individualValue)
+	e := uint16(effortValue.Value() / 4)
+	l := float64(level) / 100.0
+	a := float64(b+i+e) * l
+	return uint16(a) + level + 10
 }
 
 func calculateActualValueABCDS(baseStats value.PokemonBaseStats, individualValue uint8, effortValue value.EffortValue) uint16 {
 	level := uint16(50)
-	actual := uint16(float64(baseStats.Value()+individualValue/2+(effortValue.Value()/4))*(float64(level)/100.0)) + uint16(5)
-	return actual
+	b := uint16(baseStats.Value() * 2)
+	i := uint16(individualValue)
+	e := uint16(effortValue.Value() / 4)
+	l := float64(level) / 100.0
+	a := float64(b+i+e) * l
+	return uint16(a) + 5
 }
 
 func (p Pokemon) Notify(note IPokemonNotification) {

@@ -17,3 +17,7 @@ func NewAbilityId(value uint64) (*AbilityId, error) {
 	}
 	return &AbilityId{ValueId[uint16]{uint16(value)}}, nil
 }
+
+func NewEmptyAbilityId() AbilityId {
+	return AbilityId{newEmptyId[uint16]()}
+}

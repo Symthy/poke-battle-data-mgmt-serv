@@ -2,7 +2,7 @@ package items
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
@@ -12,11 +12,11 @@ type HeldItem struct {
 	id            identifier.HeldItemId
 	name          string
 	description   string
-	battleEffects *value.BattleEffects
+	battleEffects *battles.BattleEffects
 }
 
 func NewHeldItem(
-	id identifier.HeldItemId, name, description string, battleEffects *value.BattleEffects,
+	id identifier.HeldItemId, name, description string, battleEffects *battles.BattleEffects,
 ) HeldItem {
 	return HeldItem{
 		id:            id,
@@ -30,7 +30,7 @@ func (i HeldItem) Id() identifier.HeldItemId {
 	return i.id
 }
 
-func (i HeldItem) NotifyBattleEffects(effects *value.BattleEffects) {
+func (i HeldItem) NotifyBattleEffects(effects *battles.BattleEffects) {
 	effects.Merge(i.battleEffects)
 }
 

@@ -5,6 +5,13 @@ type BattleEffects struct {
 	overrides   *BattleOverrideValues
 }
 
+func NewEmptyBattleEffects() *BattleEffects {
+	return &BattleEffects{
+		corrections: NewBattleCorrectionValues(),
+		overrides:   NewBattleOverrideValues(),
+	}
+}
+
 func NewBattleEffects(corrections *BattleCorrectionValues, overrides *BattleOverrideValues) *BattleEffects {
 	return &BattleEffects{corrections, overrides}
 }

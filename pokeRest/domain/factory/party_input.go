@@ -35,28 +35,28 @@ func NewPartyBuilder() PartyInput {
 	return PartyInput{}
 }
 
-func (i PartyInput) Id(id uint64) {
+func (i *PartyInput) Id(id uint64) {
 	i.id = id
 }
-func (i PartyInput) Name(name string) {
+func (i *PartyInput) Name(name string) {
 	i.name = name
 }
-func (i PartyInput) BattleFormat(battleFormat string) {
+func (i *PartyInput) BattleFormat(battleFormat string) {
 	i.battleFormat = battleFormat
 }
-func (i PartyInput) SetIsPrivate(isPrivate bool) {
+func (i *PartyInput) SetIsPrivate(isPrivate bool) {
 	i.isPrivate = isPrivate
 }
-func (i PartyInput) UserId(userId uint64) {
+func (i *PartyInput) UserId(userId uint64) {
 	i.userId = userId
 }
-func (i PartyInput) PartyResultIds(ids []uint64) {
+func (i *PartyInput) PartyResultIds(ids []uint64) {
 	i.partyResultIds = ids
 }
-func (i PartyInput) PartyTagIds(ids []uint64) {
+func (i *PartyInput) PartyTagIds(ids []uint64) {
 	i.partyTagIds = ids
 }
-func (i PartyInput) TrainedPokemonIds(ids []uint64) {
+func (i *PartyInput) TrainedPokemonIds(ids []uint64) {
 	i.trainedPokemonIds = ids
 }
 

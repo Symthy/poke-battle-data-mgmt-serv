@@ -2,6 +2,7 @@ package battles
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
+	"github.com/Symthy/PokeRest/pokeRest/common/lists"
 )
 
 type BattleCorrectionValue struct {
@@ -10,7 +11,7 @@ type BattleCorrectionValue struct {
 	triggerCondition *TriggerCondition // Todo: 無しという状態を持つようようにした方が良い？
 }
 
-func NewBattleCorrectionValue(target string, value float32, condition *TriggerCondition) *BattleCorrectionValue {
+func NewBattleCorrectionValue(target CorrectionTarget, value float32, condition *TriggerCondition) *BattleCorrectionValue {
 	if isInvalidValue(value) {
 		return nil
 	}
@@ -46,30 +47,52 @@ func (c BattleCorrectionValue) AnyEqualTarget(targets ...CorrectionTarget) bool 
 }
 
 func isInvalidValue(rate float32) bool {
-	return rate <= 0
+	return rate < 0
 }
 
 type CorrectionTarget string
 
 const (
 	// 技威力への補正
-	PhysicalMoveCorrection CorrectionTarget = "PhysicalMove"
-	SpecialMoveCorrection  CorrectionTarget = "SpecialMove"
+	CorrectionPhysicalMove CorrectionTarget = "PhysicalMove" // 物理技
+	CorrectionSpecialMove  CorrectionTarget = "SpecialMove"
 	// 威力補正
-	PhysicalPowerCorrection CorrectionTarget = "AttackPower"
-	SpecialPowerCorrection  CorrectionTarget = "SpecialAttackPower"
+	CorrectionPhysicalPower CorrectionTarget = "PhysicalPower"
+	CorrectionSpecialPower  CorrectionTarget = "SpecialPower"
 	// ステータス補正
-	AttackCorrection         CorrectionTarget = "Attack"
-	SpecialAttackCorrection  CorrectionTarget = "SpecialAttack"
-	DefenseCorrection        CorrectionTarget = "Defense"
-	SpecialDefenseCorrection CorrectionTarget = "SpecialDefense"
-	SpeedCorrection          CorrectionTarget = "Speed"
-	WeightCorrection         CorrectionTarget = "Weight"
+	CorrectionStatusA CorrectionTarget = "StatusA"
+	CorrectionStatusC CorrectionTarget = "StatusC"
+	CorrectionStatusB CorrectionTarget = "StatusB"
+	CorrectionStatusD CorrectionTarget = "StatusD"
+	CorrectionStatusS CorrectionTarget = "StatusS"
 	// ダメージ
-	DamageCorrection CorrectionTarget = "Damage"
-	// 補正なし
-	NoneCorrection CorrectionTarget = ""
+	CorrectionDamage CorrectionTarget = "Damage"
+	// その他
+	CorrectionWeight CorrectionTarget = "Weight"
+	CorrectionNone   CorrectionTarget = ""
 )
+
+func allCorrectionTarget() []CorrectionTarget {
+	return []CorrectionTarget{
+		CorrectionPhysicalPower,
+		CorrectionSpecialMove,
+		CorrectionPhysicalPower,
+		CorrectionSpecialPower,
+		CorrectionStatusA,
+		CorrectionStatusC,
+		CorrectionStatusB,
+		CorrectionStatusD,
+		CorrectionStatusS,
+		CorrectionWeight,
+	}
+}
+
+func NewCorrectionTarget(target string) CorrectionTarget {
+	if lists.Contains(allCorrectionTarget(), target) {
+		return CorrectionTarget(target)
+	}
+	return CorrectionNone
+}
 
 func (c CorrectionTarget) String() string {
 	return string(c)
@@ -88,31 +111,31 @@ func (c CorrectionType) String() string {
 
 func GetStatusCorrectionTargets() []CorrectionTarget {
 	return []CorrectionTarget{
-		AttackCorrection,
-		SpecialAttackCorrection,
-		DefenseCorrection,
-		SpecialDefenseCorrection,
-		SpeedCorrection,
-		WeightCorrection,
+		CorrectionStatusA,
+		CorrectionStatusC,
+		CorrectionStatusB,
+		CorrectionStatusD,
+		CorrectionStatusS,
+		CorrectionWeight,
 	}
 }
 
 func GetPowerCorrectionTargets() []CorrectionTarget {
 	return []CorrectionTarget{
-		PhysicalPowerCorrection,
-		SpecialPowerCorrection,
+		CorrectionPhysicalPower,
+		CorrectionSpecialPower,
 	}
 }
 
 func GetMovePowerCorrectionTargets() []CorrectionTarget {
 	return []CorrectionTarget{
-		PhysicalMoveCorrection,
-		SpecialMoveCorrection,
+		CorrectionPhysicalMove,
+		CorrectionSpecialMove,
 	}
 }
 
 func GetDamageCorrectionTargets() []CorrectionTarget {
 	return []CorrectionTarget{
-		DamageCorrection,
+		CorrectionDamage,
 	}
 }

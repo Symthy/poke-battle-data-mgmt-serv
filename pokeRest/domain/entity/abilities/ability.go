@@ -2,7 +2,7 @@ package abilities
 
 import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
@@ -12,11 +12,11 @@ type Ability struct {
 	id            identifier.AbilityId
 	name          string
 	description   string
-	battleEffects *value.BattleEffects
+	battleEffects *battles.BattleEffects
 }
 
 func NewAbility(
-	id identifier.AbilityId, name string, description string, battleEffects *value.BattleEffects,
+	id identifier.AbilityId, name string, description string, battleEffects *battles.BattleEffects,
 ) Ability {
 	return Ability{
 		id:            id,
@@ -30,7 +30,7 @@ func (a Ability) Id() identifier.AbilityId {
 	return a.id
 }
 
-func (a Ability) NotifyBattleEffects(effects *value.BattleEffects) {
+func (a Ability) NotifyBattleEffects(effects *battles.BattleEffects) {
 	effects.Merge(a.battleEffects)
 }
 

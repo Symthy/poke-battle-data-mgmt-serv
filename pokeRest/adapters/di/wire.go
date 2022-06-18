@@ -18,7 +18,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/auth"
 	"github.com/Symthy/PokeRest/pokeRest/presentation/controller"
-	"github.com/Symthy/PokeRest/test/mock"
+	m_repo "github.com/Symthy/PokeRest/test/mock/repository"
 	"github.com/google/wire"
 )
 
@@ -39,8 +39,8 @@ func InitUserControllerByRepoMock() *controller.UserController {
 	wire.Build(
 		controller.NewUserController,
 		users.NewUserReadService,
-		mock.NewUserRepositoryMock,
-		wire.Bind(new(i_repository.IUserRepository), new(*mock.UserRepositoryMock)),
+		m_repo.NewUserRepositoryMock,
+		wire.Bind(new(i_repository.IUserRepository), new(*m_repo.UserRepositoryMock)),
 	)
 	return nil
 }
@@ -60,8 +60,8 @@ func InitPokemonControllerByRepoMock() *controller.PokemonController {
 	wire.Build(
 		controller.NewPokemonController,
 		pokemons.NewPokemonSummaryReadService,
-		mock.NewPokemonRepositoryMock,
-		wire.Bind(new(i_repository.IPokemonRepository), new(*mock.PokemonRepositoryMock)),
+		m_repo.NewPokemonRepositoryMock,
+		wire.Bind(new(i_repository.IPokemonRepository), new(*m_repo.PokemonRepositoryMock)),
 	)
 	return nil
 }

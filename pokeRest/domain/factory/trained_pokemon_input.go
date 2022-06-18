@@ -33,25 +33,25 @@ func NewTrainedPokemonBuilder() TrainedPokemonInput {
 	return TrainedPokemonInput{}
 }
 
-func (i TrainedPokemonInput) Id(id uint64) {
+func (i *TrainedPokemonInput) Id(id uint64) {
 	i.id = id
 }
-func (i TrainedPokemonInput) Gender(gender string) {
+func (i *TrainedPokemonInput) Gender(gender string) {
 	i.gender = gender
 }
-func (i TrainedPokemonInput) Nickname(nickname string) {
+func (i *TrainedPokemonInput) Nickname(nickname string) {
 	i.nickname = nickname
 }
-func (i TrainedPokemonInput) Description(description string) {
+func (i *TrainedPokemonInput) Description(description string) {
 	i.description = description
 }
-func (i TrainedPokemonInput) SetIsPrivate(isPrivate bool) {
+func (i *TrainedPokemonInput) SetIsPrivate(isPrivate bool) {
 	i.isPrivate = isPrivate
 }
-func (i TrainedPokemonInput) UserId(userId uint64) {
+func (i *TrainedPokemonInput) UserId(userId uint64) {
 	i.userId = userId
 }
-func (i TrainedPokemonInput) Adjustment(adjustment TrainedPokemonAdjustmentInput) {
+func (i *TrainedPokemonInput) Adjustment(adjustment TrainedPokemonAdjustmentInput) {
 	i.adjustment = adjustment
 }
 

@@ -21,18 +21,18 @@ func (w WeatherState) ApplyCorrection(damage uint16, data IPokemonBattleDataSet)
 	if w.weather == WeatherNormal {
 		return damage
 	}
-	return w.corrections.Apply(damage, battles.DamageCorrection, data, battles.BattleAttackSide)
+	return w.corrections.Apply(damage, battles.CorrectionDamage, data, battles.BattleAttackSide)
 }
 
 func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValues {
 	if weather == WeatherSunny {
 		return battles.NewBattleCorrectionValues(
 			battles.NewBattleCorrectionValue(
-				battles.DamageCorrection.String(),
+				battles.CorrectionDamage,
 				6144,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Fire().ToString())),
 			battles.NewBattleCorrectionValue(
-				battles.DamageCorrection.String(),
+				battles.CorrectionDamage,
 				2048,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Water().ToString())),
 		)
@@ -40,11 +40,11 @@ func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValu
 	if weather == WeatherRainy {
 		return battles.NewBattleCorrectionValues(
 			battles.NewBattleCorrectionValue(
-				battles.DamageCorrection.String(),
+				battles.CorrectionDamage,
 				6144,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Water().ToString())),
 			battles.NewBattleCorrectionValue(
-				battles.DamageCorrection.String(),
+				battles.CorrectionDamage,
 				2048,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Fire().ToString())),
 		)

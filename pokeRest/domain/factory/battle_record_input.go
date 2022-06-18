@@ -42,34 +42,34 @@ func NewBattleRecordBuilder() BattleRecordInput {
 	return BattleRecordInput{}
 }
 
-func (i BattleRecordInput) Id(id uint64) {
+func (i *BattleRecordInput) Id(id uint64) {
 	i.id = id
 }
-func (i BattleRecordInput) PartyId(partyId uint64) {
+func (i *BattleRecordInput) PartyId(partyId uint64) {
 	i.partyId = partyId
 }
-func (i BattleRecordInput) UserId(userId uint64) {
+func (i *BattleRecordInput) UserId(userId uint64) {
 	i.userId = userId
 }
-func (i BattleRecordInput) Generation(generation uint64) {
+func (i *BattleRecordInput) Generation(generation uint64) {
 	i.generation = generation
 }
-func (i BattleRecordInput) Series(series uint64) {
+func (i *BattleRecordInput) Series(series uint64) {
 	i.series = series
 }
-func (i BattleRecordInput) Season(season uint64) {
+func (i *BattleRecordInput) Season(season uint64) {
 	i.season = season
 }
-func (i BattleRecordInput) BattleResult(battleResult string) {
+func (i *BattleRecordInput) BattleResult(battleResult string) {
 	i.battleResult = battleResult
 }
-func (i BattleRecordInput) SelfElectionPokemonIds(ids []uint64) {
+func (i *BattleRecordInput) SelfElectionPokemonIds(ids []uint64) {
 	i.selfElectionPokemonIds = ids
 }
-func (i BattleRecordInput) OpponentElectionPokemonIds(ids []uint64) {
+func (i *BattleRecordInput) OpponentElectionPokemonIds(ids []uint64) {
 	i.opponentElectionPokemonIds = ids
 }
-func (i BattleRecordInput) BattleOpponentParty(input BattleOpponentPartyInput) {
+func (i *BattleRecordInput) BattleOpponentParty(input BattleOpponentPartyInput) {
 	i.BattleOpponentPartyInput = input
 }
 

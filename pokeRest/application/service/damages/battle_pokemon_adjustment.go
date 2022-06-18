@@ -1,18 +1,23 @@
 package damages
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+)
 
 type BattlePokemonAdjustment struct {
-	pokemonId    uint16
-	abilityId    uint16
-	heldItemId   uint16
+	pokemonId    identifier.PokemonId
+	abilityId    identifier.AbilityId
+	heldItemId   identifier.HeldItemId
 	nature       value.PokemonNature
-	effortValues value.EffortValues
+	effortValues *value.EffortValues
 }
 
-func NewBattlePokemonAdjustment(pokemonId uint16, abilityId uint16, heldItemId uint16,
-	nature value.PokemonNature, effortValues value.EffortValues) BattlePokemonAdjustment {
-	return BattlePokemonAdjustment{
+func NewBattlePokemonAdjustment(
+	pokemonId identifier.PokemonId, abilityId identifier.AbilityId, heldItemId identifier.HeldItemId,
+	nature value.PokemonNature, effortValues *value.EffortValues,
+) *BattlePokemonAdjustment {
+	return &BattlePokemonAdjustment{
 		pokemonId:    pokemonId,
 		abilityId:    abilityId,
 		heldItemId:   heldItemId,
@@ -21,18 +26,18 @@ func NewBattlePokemonAdjustment(pokemonId uint16, abilityId uint16, heldItemId u
 	}
 }
 
-func (a BattlePokemonAdjustment) PokemonId() uint16 {
+func (a BattlePokemonAdjustment) PokemonId() identifier.PokemonId {
 	return a.pokemonId
 }
-func (a BattlePokemonAdjustment) AbilityId() uint16 {
+func (a BattlePokemonAdjustment) AbilityId() identifier.AbilityId {
 	return a.abilityId
 }
-func (a BattlePokemonAdjustment) HeldItemId() uint16 {
+func (a BattlePokemonAdjustment) HeldItemId() identifier.HeldItemId {
 	return a.heldItemId
 }
 func (a BattlePokemonAdjustment) Nature() value.PokemonNature {
 	return a.nature
 }
-func (a BattlePokemonAdjustment) EffortValues() value.EffortValues {
+func (a BattlePokemonAdjustment) EffortValues() *value.EffortValues {
 	return a.effortValues
 }
