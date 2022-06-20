@@ -97,15 +97,16 @@ func TestBattleDataSetResolver(t *testing.T) {
 
 	dummyId, _ := identifier.NewMoveId(1)
 	for _, tt := range cases {
-		resolver := BattleDataSetResolver{tt.inputAttackSideResolver, tt.inputDefenseSideResolver, types.NewTypeReadService()}
-		actual, err := resolver.Resolve(nil, *dummyId)
+		resolver := DamageCalcElementsService{tt.inputAttackSideResolver, tt.inputDefenseSideResolver, types.NewTypeReadService()}
+		elements, err := resolver.Resolve(nil, *dummyId)
+		actual := elements.GetPokemonBattleDataSet()
 		assert.NoError(t, err)
 		assert.Equal(t, tt.expectedAttackPokemonTypeFirst, actual.AttackPokemonTypeOfFirst())
 		assert.Equal(t, tt.expectedAttackPokemonTypeSecond, actual.AttackPokemonTypeOfSecond())
-		assert.Equal(t, tt.expectedAttackPokemonActualValueS, actual.AttackPokemonActualValueS())
+		assert.Equal(t, tt.expectedAttackPokemonActualValueS, actual.AttackPokemonActualValueS(nil))
 		assert.Equal(t, tt.expectedDefensePokemonTypeFirst, actual.DefensePokemonTypeOfFirst())
 		assert.Equal(t, tt.expectedDefencePokemonTypeSecond, actual.DefensePokemonTypeOfSecond())
-		assert.Equal(t, tt.expectedDefensePokemonActualValueS, actual.DefensePokemonActualValueS())
+		assert.Equal(t, tt.expectedDefensePokemonActualValueS, actual.DefensePokemonActualValueS(nil))
 		assert.Equal(t, tt.expectedMoveType, actual.MovePokemonType())
 		assert.Equal(t, tt.expectedHasItemAttackSide, actual.HasItemAttackSide())
 		assert.Equal(t, tt.expectedHasItemDefenseSide, actual.HasItemDefenseSide())

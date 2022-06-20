@@ -18,15 +18,15 @@ type battleDefenseSideResolver interface {
 	resolve(adjustment *s_damages.BattlePokemonAdjustment, resultChan chan<- DefenseSide) error
 }
 
-type BattleDataSetResolver struct {
+type DamageCalcElementsService struct {
 	attackSideResolver  battleAttackSideResolver
 	defenseSideResolver battleDefenseSideResolver
 	typeServ            types.TypeReadService
 }
 
-func NewBattleDataSetResolver(effectsResolver *BattleEffectsResolver, pokemonRepo repository.IPokemonRepository,
-	moveRepo repository.IMoveRepository) *BattleDataSetResolver {
-	return &BattleDataSetResolver{
+func NewDamageCalcPartialValuesFactory(effectsResolver *BattleEffectsResolver, pokemonRepo repository.IPokemonRepository,
+	moveRepo repository.IMoveRepository) *DamageCalcElementsService {
+	return &DamageCalcElementsService{
 		attackSideResolver: attackSideResolver{
 			effectsResolver: effectsResolver,
 			pokemonRepo:     pokemonRepo,
@@ -40,9 +40,9 @@ func NewBattleDataSetResolver(effectsResolver *BattleEffectsResolver, pokemonRep
 	}
 }
 
-func (r BattleDataSetResolver) Resolve(
+func (r DamageCalcElementsService) Resolve(
 	adjustment *s_damages.BattlePokemonAdjustment, moveId identifier.MoveId,
-) (*damages.PokemonBattleDataSet, error) {
+) (*damages.DamageCalcElements, error) {
 	eg := new(errgroup.Group)
 
 	attackChan := make(chan AttackSide, 1)
@@ -64,15 +64,15 @@ func (r BattleDataSetResolver) Resolve(
 	defenseSide := <-defenseChan
 	battlePokemons := damages.NewPokemonBattleDataSet(
 		attackSide.toAttackSidePokemon(),
-		attackSide.toAttackSideBattleEffects(),
 		defenseSide.toDefenseSidePokemon(),
-		defenseSide.toDefenseSideBattleEffects(),
 		attackSide.toAttackMove(),
 		r.resolveTypeCompatibility(attackSide.moveType, defenseSide.PokemonTypes()))
-	return battlePokemons, nil
+	damageCalcElements := damages.NewDamageCalcElements(battlePokemons,
+		attackSide.toAttackSideBattleEffects(), defenseSide.toDefenseSideBattleEffects())
+	return damageCalcElements, nil
 }
 
-func (r BattleDataSetResolver) resolveTypeCompatibility(
+func (r DamageCalcElementsService) resolveTypeCompatibility(
 	attackMoveType value.PokemonType, defensePokemonType value.PokemonTypeSet) float32 {
 	typeCompatibility := r.typeServ.GetAttackTypeCompatibility(attackMoveType.NameEN())
 	return typeCompatibility.GetTotalDamageRate(defensePokemonType)

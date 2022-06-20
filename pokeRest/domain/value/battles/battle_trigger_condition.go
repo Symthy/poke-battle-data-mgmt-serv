@@ -88,15 +88,3 @@ func buildTypeMatchSatisfiesResolver(targetType string) ConditionStisfiesResolve
 		}
 	}
 }
-
-type IPokemonBattleDataSet interface {
-	AttackPokemonTypeOfFirst() value.PokemonType
-	AttackPokemonTypeOfSecond() value.PokemonType
-	AttackPokemonActualValueS() uint16
-	DefensePokemonTypeOfFirst() value.PokemonType
-	DefensePokemonTypeOfSecond() value.PokemonType
-	DefensePokemonActualValueS() uint16
-	MovePokemonType() value.PokemonType
-	HasItemAttackSide() bool
-	HasItemDefenseSide() bool
-}

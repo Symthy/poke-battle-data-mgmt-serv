@@ -1,17 +1,14 @@
-package damages
+package battles
 
-import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
-)
+import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
 type IPokemonBattleDataSet interface {
 	AttackPokemonTypeOfFirst() value.PokemonType
 	AttackPokemonTypeOfSecond() value.PokemonType
-	AttackPokemonActualValueS(*battles.StatusCorrections) uint16
+	AttackPokemonActualValueS(*StatusCorrections) uint16
 	DefensePokemonTypeOfFirst() value.PokemonType
 	DefensePokemonTypeOfSecond() value.PokemonType
-	DefensePokemonActualValueS(*battles.StatusCorrections) uint16
+	DefensePokemonActualValueS(*StatusCorrections) uint16
 	MovePokemonType() value.PokemonType
 	HasItemAttackSide() bool
 	HasItemDefenseSide() bool
