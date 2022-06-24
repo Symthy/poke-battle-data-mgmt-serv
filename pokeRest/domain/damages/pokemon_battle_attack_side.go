@@ -32,8 +32,8 @@ type AttackMove struct {
 }
 
 func NewAttackMove(species value.MoveSpecies, pokemonType value.PokemonType, power uint16,
-	isContained bool, canGuard bool) AttackMove {
-	return AttackMove{
+	isContained bool, canGuard bool) *AttackMove {
+	return &AttackMove{
 		species:     species,
 		pokemonType: pokemonType,
 		power:       power,
@@ -43,21 +43,21 @@ func NewAttackMove(species value.MoveSpecies, pokemonType value.PokemonType, pow
 }
 
 type AttackSideBattleEffects struct {
-	side battles.BattleSideType
-	*battles.StatusCorrections
-	*battles.PowerCorrections
-	*battles.MovePowerCorrections
-	*battles.DamageCorrections
-	*battles.BattleOverrideValues
+	side              battles.BattleSideType
+	statusCorrections *battles.StatusCorrections
+	powerCorrections  *battles.PowerCorrections
+	moveCorrections   *battles.MovePowerCorrections
+	damageCorrections *battles.DamageCorrections
+	overrides         *battles.BattleOverrideValues
 }
 
 func NewAttackSideBattleEffects(effects *battles.BattleEffects) *AttackSideBattleEffects {
 	return &AttackSideBattleEffects{
-		side:                 battles.BattleAttackSide,
-		StatusCorrections:    battles.NewStatusCorrections(effects.Corrections(), battles.BattleAttackSide),
-		PowerCorrections:     battles.NewPowerCorrections(effects.Corrections()),
-		MovePowerCorrections: battles.NewMovePowerCorrections(effects.Corrections()),
-		DamageCorrections:    battles.NewDamageCorrections(effects.Corrections(), battles.BattleAttackSide),
-		BattleOverrideValues: effects.Overrides(),
+		side:              battles.BattleAttackSide,
+		statusCorrections: battles.NewStatusCorrections(effects.Corrections(), battles.BattleAttackSide),
+		powerCorrections:  battles.NewPowerCorrections(effects.Corrections()),
+		moveCorrections:   battles.NewMovePowerCorrections(effects.Corrections()),
+		damageCorrections: battles.NewDamageCorrections(effects.Corrections(), battles.BattleAttackSide),
+		overrides:         effects.Overrides(),
 	}
 }

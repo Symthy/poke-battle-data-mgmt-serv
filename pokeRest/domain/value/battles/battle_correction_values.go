@@ -39,8 +39,12 @@ func (b BattleCorrectionValues) get(targets ...CorrectionTarget) *BattleCorrecti
 	return NewBattleCorrectionValues(values...)
 }
 
+func (c BattleCorrectionValues) IsEmpty() bool {
+	return len(c.targets) == 0
+}
+
 func (c BattleCorrectionValues) Apply(
-	value uint16, target CorrectionTarget, data IPokemonBattleDataSet, side BattleSideType) uint16 {
+	value uint16, target CorrectionTarget, data TriggerConditionParams, side BattleSideType) uint16 {
 	result := value
 	for _, correction := range c.values {
 		if target != correction.target {

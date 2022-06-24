@@ -1,32 +1,28 @@
 package battles
 
-import "github.com/Symthy/PokeRest/pokeRest/domain/value"
-
 type PowerCorrections struct {
-	targets []CorrectionTarget
-	side    BattleSideType
-	*BattleCorrectionValues
+	side        BattleSideType
+	corrections *BattleCorrectionValues
 }
 
 func NewPowerCorrections(values *BattleCorrectionValues) *PowerCorrections {
 	targets := GetPowerCorrectionTargets()
 	return &PowerCorrections{
-		targets:                targets,
-		side:                   BattleAttackSide,
-		BattleCorrectionValues: values.get(targets...),
+		side:        BattleAttackSide,
+		corrections: values.get(targets...),
 	}
 }
 
-func (c PowerCorrections) SupplyPowerCorrectionApplier(
-	species value.MoveSpecies, data IPokemonBattleDataSet) correctionApplier {
+func (c PowerCorrections) Apply(value uint16, dataset IPokemonBattleDataSet) uint16 {
+	if c.corrections.IsEmpty() {
+		return value
+	}
 	target := CorrectionNone
-	if species == value.MoveSpeciesPhysical {
+	if dataset.MoveSpecies().IsPhysical() {
 		target = CorrectionPhysicalPower
 	}
-	if species == value.MoveSpeciesSpecial {
+	if dataset.MoveSpecies().IsSpecial() {
 		target = CorrectionSpecialPower
 	}
-	return func(value uint16) uint16 {
-		return c.Apply(value, target, data, c.side)
-	}
+	return c.corrections.Apply(value, target, dataset, c.side)
 }

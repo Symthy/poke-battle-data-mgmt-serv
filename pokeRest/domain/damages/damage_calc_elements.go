@@ -6,66 +6,39 @@ import (
 )
 
 type DamageCalcElements struct {
-	dataSet        *PokemonBattleDataSet
-	attackEffects  *AttackSideBattleEffects
-	defenseEffects *DefenseSideBattleEffects
+	dataset battles.IPokemonBattleDataSet
 }
 
-func NewDamageCalcElements(dataSet *PokemonBattleDataSet, attackEffects *AttackSideBattleEffects,
+func NewDamageCalcElements(dataset *PokemonBattleDataSet, attackEffects *AttackSideBattleEffects,
 	defenseEffects *DefenseSideBattleEffects) *DamageCalcElements {
 	return &DamageCalcElements{
-		dataSet:        dataSet,
-		attackEffects:  attackEffects,
-		defenseEffects: defenseEffects,
+		dataset: dataset,
 	}
 }
 
 // for testing
-func (e *DamageCalcElements) GetPokemonBattleDataSet() *PokemonBattleDataSet {
-	return e.dataSet
+func (e *DamageCalcElements) GetPokemonBattleDataSet() battles.IPokemonBattleDataSet {
+	return e.dataset
 }
 
 func (e DamageCalcElements) ResolvePowerValue() uint16 {
 	attackPower := e.resolveAttackPowerValue()
 	movePower := e.resolveMovePowerValue()
-
 	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(movePower*attackPower) / 4096)
 }
 
 func (e DamageCalcElements) resolveMovePowerValue() uint16 {
-	applier := e.attackEffects.SupplyMovePowerCorrectionApplier(e.dataSet.species, e.dataSet)
-	return applier(e.dataSet.AttackMove.power)
+	return e.dataset.MovePowerValue()
 }
 
 func (e DamageCalcElements) resolveAttackPowerValue() uint16 {
-	applier := e.attackEffects.SupplyPowerCorrectionApplier(e.dataSet.species, e.dataSet)
-	return applier(4096)
+	return e.dataset.AttackPowerValue()
 }
 
-func (e DamageCalcElements) ResolveAttackValue() uint16 {
-	if e.dataSet.species.IsPhysical() {
-		// Todo: refactor method
-		valueA := e.dataSet.AttackSidePokemon.attackPokemonActualValues.A()
-		return e.attackEffects.StatusCorrections.Apply(valueA, battles.CorrectionStatusA, e.dataSet, battles.BattleAttackSide)
-	}
-	if e.dataSet.species.IsSpecial() {
-		// Todo: refactor method
-		valueA := e.dataSet.AttackSidePokemon.attackPokemonActualValues.C()
-		return e.attackEffects.StatusCorrections.Apply(valueA, battles.CorrectionStatusB, e.dataSet, battles.BattleAttackSide)
-	}
-	return 0
+func (e DamageCalcElements) ResolveAttackActualValue() uint16 {
+	return e.dataset.AttackCorrectedActualValue()
 }
 
-func (e DamageCalcElements) ResolveDefenseValue() uint16 {
-	if e.dataSet.species.IsPhysical() {
-		// Todo: refactor method
-		valueB := e.dataSet.AttackSidePokemon.attackPokemonActualValues.B()
-		return e.attackEffects.StatusCorrections.Apply(valueB, battles.CorrectionStatusB, e.dataSet, battles.BattleDefenseSide)
-	}
-	if e.dataSet.species.IsSpecial() {
-		// Todo: refactor method
-		valueD := e.dataSet.AttackSidePokemon.attackPokemonActualValues.D()
-		return e.attackEffects.StatusCorrections.Apply(valueD, battles.CorrectionStatusD, e.dataSet, battles.BattleDefenseSide)
-	}
-	return 0
+func (e DamageCalcElements) ResolveDefenseActualValue() uint16 {
+	return e.dataset.DefenseCorrectedActualValue()
 }

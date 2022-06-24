@@ -1,20 +1,17 @@
 package battles
 
 type DamageCorrections struct {
-	targets []CorrectionTarget
-	side    BattleSideType
-	BattleCorrectionValues
+	side        BattleSideType
+	corrections *BattleCorrectionValues
 }
 
 func NewDamageCorrections(values *BattleCorrectionValues, side BattleSideType) *DamageCorrections {
 	return &DamageCorrections{
-		BattleCorrectionValues: *values.get(GetDamageCorrectionTargets()...),
+		side:        side,
+		corrections: values.get(GetDamageCorrectionTargets()...),
 	}
 }
 
-func (c DamageCorrections) SupplyDamageCorrectionApplier(
-	data IPokemonBattleDataSet) correctionApplier {
-	return func(value uint16) uint16 {
-		return c.Apply(value, CorrectionDamage, data, c.side)
-	}
+func (c DamageCorrections) Apply(value uint16, dataset IPokemonBattleDataSet) uint16 {
+	return c.corrections.Apply(value, CorrectionDamage, dataset, c.side)
 }

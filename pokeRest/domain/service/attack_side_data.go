@@ -57,7 +57,7 @@ func (p AttackSide) toAttackSidePokemon() *damages.AttackSidePokemon {
 	return damages.NewAttackSidePokemon(p.actualValues, p.pokemonTypeSet, p.nature, p.hasItem)
 }
 
-func (p AttackSide) toAttackMove() damages.AttackMove {
+func (p AttackSide) toAttackMove() *damages.AttackMove {
 	return damages.NewAttackMove(
 		p.moveSpecies,
 		p.moveType,
@@ -67,6 +67,6 @@ func (p AttackSide) toAttackMove() damages.AttackMove {
 	)
 }
 
-func (p AttackSide) toAttackSideBattleEffects() *damages.AttackSideBattleEffects {
-	return damages.NewAttackSideBattleEffects(p.additionalEffects)
+func (p AttackSide) toAttackSideBattleEffects(dataset damages.PokemonBattleDataSet) *damages.AttackSideBattleEffects {
+	return damages.NewAttackSideBattleEffects(p.additionalEffects, dataset)
 }

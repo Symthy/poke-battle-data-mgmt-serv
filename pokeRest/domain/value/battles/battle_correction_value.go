@@ -22,7 +22,7 @@ func NewBattleCorrectionValue(target CorrectionTarget, value float32, condition 
 }
 
 func (c BattleCorrectionValue) Apply(
-	input uint16, battleDataSet IPokemonBattleDataSet, side BattleSideType) uint16 {
+	input uint16, battleDataSet TriggerConditionParams, side BattleSideType) uint16 {
 	if c.triggerCondition == nil { // Todo
 		return fmath.Round[uint16](float64(input) * float64(c.value) / 4096)
 	}

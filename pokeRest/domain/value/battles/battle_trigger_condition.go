@@ -7,7 +7,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 )
 
-type ConditionStisfiesResolver func(IPokemonBattleDataSet, BattleSideType) bool
+type ConditionStisfiesResolver func(TriggerConditionParams, BattleSideType) bool
 
 type TriggerCondition struct {
 	resolver ConditionStisfiesResolver
@@ -19,7 +19,7 @@ func NewTriggerCondition(entry ConditionEntry, conditionValue string) *TriggerCo
 	}
 }
 
-func (t TriggerCondition) isSatisfy(data IPokemonBattleDataSet, side BattleSideType) bool {
+func (t TriggerCondition) isSatisfy(data TriggerConditionParams, side BattleSideType) bool {
 	return t.resolver(data, side)
 }
 
@@ -33,7 +33,7 @@ func buildConditionStisfiesResolver(entry ConditionEntry, conditionValue string)
 	case ConditionTypeMatch:
 		return buildTypeMatchSatisfiesResolver(conditionValue)
 	default:
-		return func(arg IPokemonBattleDataSet, side BattleSideType) bool {
+		return func(arg TriggerConditionParams, side BattleSideType) bool {
 			return false
 		}
 	}
@@ -41,7 +41,7 @@ func buildConditionStisfiesResolver(entry ConditionEntry, conditionValue string)
 
 func buildPokemonTypeSatisfiesResolver(targetType string) ConditionStisfiesResolver {
 	targetPokemonType := value.NewPokemonType(targetType)
-	return func(data IPokemonBattleDataSet, side BattleSideType) bool {
+	return func(data TriggerConditionParams, side BattleSideType) bool {
 		switch side {
 		case BattleAttackSide:
 			return data.AttackPokemonTypeOfFirst().Equals(targetPokemonType) ||
@@ -56,7 +56,7 @@ func buildPokemonTypeSatisfiesResolver(targetType string) ConditionStisfiesResol
 }
 
 func buildTypeCompatibilitySatisfiesResolver(conditionDamageRate string) ConditionStisfiesResolver {
-	return func(data IPokemonBattleDataSet, side BattleSideType) bool {
+	return func(data TriggerConditionParams, side BattleSideType) bool {
 		conditionDamageRateInt, err := strconv.Atoi(conditionDamageRate)
 		if err != nil {
 			return false
@@ -75,7 +75,7 @@ func buildTypeCompatibilitySatisfiesResolver(conditionDamageRate string) Conditi
 
 func buildTypeMatchSatisfiesResolver(targetType string) ConditionStisfiesResolver {
 	targetPokemonType := value.NewPokemonType(targetType)
-	return func(data IPokemonBattleDataSet, side BattleSideType) bool {
+	return func(data TriggerConditionParams, side BattleSideType) bool {
 		switch side {
 		case BattleAttackSide:
 			return data.AttackPokemonTypeOfFirst().Equals(targetPokemonType) ||

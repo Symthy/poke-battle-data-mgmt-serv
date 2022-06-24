@@ -26,7 +26,7 @@ func main() {
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
-
+	// move test
 	if *isMigration {
 		log.Print("Start Migration")
 		migration.RunAutoMigration(conf.DbConfig)

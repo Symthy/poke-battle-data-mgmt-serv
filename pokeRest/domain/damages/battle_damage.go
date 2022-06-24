@@ -3,27 +3,27 @@ package damages
 import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
 
 type BattleDamage struct {
-	damageCalcPartialValues DamageCalcElements
-	damages                 []uint16
+	damageCalcElements DamageCalcElements
+	damages            []uint16
 }
 
 func NewBattleDamage(damageCalcPartialValues DamageCalcElements) BattleDamage {
 	return BattleDamage{
-		damageCalcPartialValues: damageCalcPartialValues,
+		damageCalcElements: damageCalcPartialValues,
 	}
 }
 
 func (d BattleDamage) calculate() int {
-	if d.damageCalcPartialValues.dataSet.IsNoDamage() {
+	if d.damageCalcElements.dataset.IsNoDamage() {
 		return 0
 	}
 
 	// 威力
-	powerValue := float64(d.damageCalcPartialValues.ResolvePowerValue())
+	powerValue := float64(d.damageCalcElements.ResolvePowerValue())
 	// 最終攻撃
-	attackValue := float64(d.damageCalcPartialValues.ResolveAttackValue())
+	attackValue := float64(d.damageCalcElements.ResolveAttackActualValue())
 	// 最終防御
-	defenseValue := float64(d.damageCalcPartialValues.ResolveDefenseValue())
+	defenseValue := float64(d.damageCalcElements.ResolveDefenseActualValue())
 	// ダメージ補正
 
 	// 最終ダメージ

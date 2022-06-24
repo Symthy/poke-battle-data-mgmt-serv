@@ -24,17 +24,17 @@ func NewDefenseSidePokemon(
 }
 
 type DefenseSideBattleEffects struct {
-	side battles.BattleSideType
-	*battles.StatusCorrections
-	*battles.DamageCorrections
-	*battles.BattleOverrideValues
+	side              battles.BattleSideType
+	statusCorrections *battles.StatusCorrections
+	damageCorrections *battles.DamageCorrections
+	overrides         *battles.BattleOverrideValues
 }
 
 func NewDefenseSideBattleEffects(effects *battles.BattleEffects) *DefenseSideBattleEffects {
 	return &DefenseSideBattleEffects{
-		side:                 battles.BattleDefenseSide,
-		StatusCorrections:    battles.NewStatusCorrections(effects.Corrections(), battles.BattleDefenseSide),
-		DamageCorrections:    battles.NewDamageCorrections(effects.Corrections(), battles.BattleDefenseSide),
-		BattleOverrideValues: effects.Overrides(),
+		side:              battles.BattleDefenseSide,
+		statusCorrections: battles.NewStatusCorrections(effects.Corrections(), battles.BattleDefenseSide),
+		damageCorrections: battles.NewDamageCorrections(effects.Corrections(), battles.BattleDefenseSide),
+		overrides:         effects.Overrides(),
 	}
 }

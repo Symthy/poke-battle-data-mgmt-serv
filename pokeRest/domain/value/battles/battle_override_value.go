@@ -7,9 +7,6 @@ type BattleOverrideValue struct {
 }
 
 func NewBattleOverrideValue(target string, value string, condition *TriggerCondition) *BattleOverrideValue {
-	if value == "" {
-		return nil
-	}
 	return &BattleOverrideValue{
 		target:           OverrideTarget(target),
 		value:            value,
@@ -17,13 +14,10 @@ func NewBattleOverrideValue(target string, value string, condition *TriggerCondi
 	}
 }
 
-type OverrideTarget string
+func (v BattleOverrideValue) IsMatch(target OverrideTarget) bool {
+	return v.target == target
+}
 
-const (
-	// ダメージ
-	OverrideFixedDamage OverrideTarget = "FixedDamage"
-	// タイプ一致補正
-	OverrideTypeMatchCorrection OverrideTarget = "TypeMatch"
-	// タイプ
-	OverridePokemonType OverrideTarget = "PokemonType"
-)
+func (v BattleOverrideValue) Apply() string {
+	return v.value
+}

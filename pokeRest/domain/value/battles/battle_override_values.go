@@ -26,3 +26,17 @@ func (o *BattleOverrideValues) Merge(overrides *BattleOverrideValues) {
 	o.values = append(o.values, overrides.values...)
 	o.targets = append(o.targets, overrides.targets...)
 }
+
+func (o BattleOverrideValues) Contatins(target OverrideTarget) bool {
+	return lists.Contains(o.targets, target)
+}
+
+func (o BattleOverrideValues) Apply(target OverrideTarget, value string) string {
+	array := lists.Filter(o.values, func(v *BattleOverrideValue) bool {
+		return v.target == target
+	})
+	if len(array) == 0 {
+		return value
+	}
+	return array[0].Apply()
+}
