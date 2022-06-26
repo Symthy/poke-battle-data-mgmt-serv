@@ -13,7 +13,7 @@ type PokemonBattleDataSet struct {
 	defenseSide                 *DefenseSidePokemon
 	attackMove                  *AttackMove
 	weather                     WeatherState
-	fieldState                  FieldStateType
+	fieldState                  FieldState
 	typeCompatibilityDamageRate float32
 	attackEffects               *AttackSideBattleEffects
 	defenseEffects              *DefenseSideBattleEffects
@@ -56,9 +56,6 @@ func (p PokemonBattleDataSet) AttackCorrectedActualValue() uint16 {
 	}
 	return 0
 }
-func (p PokemonBattleDataSet) AttackPokemonCorrectedActualValueC() uint16 {
-	return p.attackEffects.statusCorrections.ApplyB(p)
-}
 func (p PokemonBattleDataSet) AttackPokemonCorrectedActualValueS() uint16 {
 	return p.attackEffects.statusCorrections.ApplyS(p)
 }
@@ -83,7 +80,7 @@ func (p PokemonBattleDataSet) DefenseCorrectedActualValue() uint16 {
 func (p PokemonBattleDataSet) DefensePokemonCorrectedActualValueS() uint16 {
 	return p.defenseEffects.statusCorrections.ApplyS(p)
 }
-func (p PokemonBattleDataSet) AttackPowerValue() uint16 {
+func (p PokemonBattleDataSet) PowerCorrectedValue() uint16 {
 	return p.attackEffects.powerCorrections.Apply(4096, p)
 }
 func (p PokemonBattleDataSet) MovePokemonType() value.PokemonType {
@@ -98,6 +95,19 @@ func (p PokemonBattleDataSet) HasItemAttackSide() bool {
 func (p PokemonBattleDataSet) HasItemDefenseSide() bool {
 	return p.defenseSide.defensePokemonHasItems
 }
+func (p PokemonBattleDataSet) IsTypeMatch() bool {
+	return p.attackSide.attackPokemonType.FirstType().Equals(p.attackMove.pokemonType) ||
+		p.attackSide.attackPokemonType.SecondType().Equals(p.attackMove.pokemonType)
+}
 func (p PokemonBattleDataSet) TypeCompatibilityDamageRate() float32 {
 	return p.typeCompatibilityDamageRate
+}
+func (p PokemonBattleDataSet) DamageCorrectedValue() uint16 {
+	return p.attackEffects.damageCorrections.Apply(4096, p)
+}
+func (p PokemonBattleDataSet) WeatherCorrectedValue() uint16 {
+	return p.weather.ApplyCorrection(p)
+}
+func (p PokemonBattleDataSet) FieldCorrectedValue() uint16 {
+	return p.fieldState.ApplyCorrection(p)
 }

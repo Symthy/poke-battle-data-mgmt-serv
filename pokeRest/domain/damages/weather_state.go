@@ -17,11 +17,11 @@ func NewWeatherState(weather string) WeatherState {
 	}
 }
 
-func (w WeatherState) ApplyCorrection(damage uint16, data battles.IPokemonBattleDataSet) uint16 {
+func (w WeatherState) ApplyCorrection(data battles.IPokemonBattleDataSet) uint16 {
 	if w.weather == WeatherNormal {
-		return damage
+		return 4096
 	}
-	return w.corrections.Apply(damage, battles.CorrectionDamage, data, battles.BattleAttackSide)
+	return w.corrections.Apply(4096, battles.CorrectionDamage, data, battles.BattleAttackSide)
 }
 
 func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValues {

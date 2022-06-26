@@ -3,21 +3,24 @@ package battles
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
 type IPokemonBattleDataSet interface {
-	PokemonBattleBaseParam
+	PokemonBattleBaseParams
 	TriggerConditionParams
 }
 
-type PokemonBattleBaseParam interface {
+type PokemonBattleBaseParams interface {
 	IsNoDamage() bool
 	MoveSpecies() value.MoveSpecies
 	AttackPokemonActualValues() *value.PokemonActualValues
-	AttackPokemonCorrectedActualValueA() uint16
-	AttackPokemonCorrectedActualValueC() uint16
-	AttackPowerValue() uint16
+	AttackCorrectedActualValue() uint16
+	PowerCorrectedValue() uint16
 	MovePowerValue() uint16
 	DefensePokemonActualValues() *value.PokemonActualValues
-	DefensePokemonCorrectedActualValueB() uint16
-	DefensePokemonCorrectedActualValueD() uint16
+	DefenseCorrectedActualValue() uint16
+	DamageCorrectedValue() uint16
+	WeatherCorrectedValue() uint16
+	FieldCorrectedValue() uint16
+	IsTypeMatch() bool
+	TypeCompatibilityDamageRate() float32
 }
 
 type TriggerConditionParams interface {
