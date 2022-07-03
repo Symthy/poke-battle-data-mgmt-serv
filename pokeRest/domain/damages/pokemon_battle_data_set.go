@@ -10,7 +10,9 @@ var _ battles.IPokemonBattleDataSet = (*PokemonBattleDataSet)(nil)
 // Todo: refactor
 type PokemonBattleDataSet struct {
 	attackSide                  *AttackSidePokemon
+	attackAbnormalState         *AbnormalState
 	defenseSide                 *DefenseSidePokemon
+	defenseAbnormalState        *AbnormalState
 	attackMove                  *AttackMove
 	weather                     WeatherState
 	fieldState                  FieldState
@@ -78,7 +80,8 @@ func (p PokemonBattleDataSet) DefenseCorrectedActualValue() uint16 {
 	return 0
 }
 func (p PokemonBattleDataSet) DefensePokemonCorrectedActualValueS() uint16 {
-	return p.defenseEffects.statusCorrections.ApplyS(p)
+	val := p.defenseEffects.statusCorrections.ApplyS(p)
+	return p.attackAbnormalState.ApplyCorrection(val)
 }
 func (p PokemonBattleDataSet) PowerCorrectedValue() uint16 {
 	return p.attackEffects.powerCorrections.Apply(4096, p)
@@ -103,10 +106,10 @@ func (p PokemonBattleDataSet) TypeCompatibilityDamageRate() float32 {
 	return p.typeCompatibilityDamageRate
 }
 func (p PokemonBattleDataSet) DamageCorrectedValue() uint16 {
-	return p.attackEffects.damageCorrections.Apply(4096, p)
+	return p.attackEffects.damageCorrections.Apply(p)
 }
-func (p PokemonBattleDataSet) WeatherCorrectedValue() uint16 {
-	return p.weather.ApplyCorrection(p)
+func (p PokemonBattleDataSet) ApplyWeatherCorrection(damage uint16) uint16 {
+	return p.weather.ApplyCorrection(damage, p)
 }
 func (p PokemonBattleDataSet) FieldCorrectedValue() uint16 {
 	return p.fieldState.ApplyCorrection(p)

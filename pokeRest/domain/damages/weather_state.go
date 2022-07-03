@@ -1,6 +1,7 @@
 package damages
 
 import (
+	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 )
@@ -17,21 +18,22 @@ func NewWeatherState(weather string) WeatherState {
 	}
 }
 
-func (w WeatherState) ApplyCorrection(data battles.IPokemonBattleDataSet) uint16 {
+func (w WeatherState) ApplyCorrection(damage uint16, data battles.IPokemonBattleDataSet) uint16 {
 	if w.weather == WeatherNormal {
-		return 4096
+		return damage
 	}
-	return w.corrections.Apply(4096, battles.CorrectionDamage, data, battles.BattleAttackSide)
+	correctionValue := w.corrections.Apply(4096, battles.CorrectionDamage, nil, battles.BattleAttackSide)
+	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * correctionValue))
 }
 
 func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValues {
 	if weather == WeatherSunny {
 		return battles.NewBattleCorrectionValues(
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionDamage,
 				6144,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Fire().ToString())),
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionDamage,
 				2048,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Water().ToString())),
@@ -39,11 +41,11 @@ func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValu
 	}
 	if weather == WeatherRainy {
 		return battles.NewBattleCorrectionValues(
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionDamage,
 				6144,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Water().ToString())),
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionDamage,
 				2048,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Fire().ToString())),

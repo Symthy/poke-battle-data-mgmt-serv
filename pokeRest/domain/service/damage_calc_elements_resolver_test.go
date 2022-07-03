@@ -23,20 +23,20 @@ import (
 func battleEffectsPM15SM15() *battles.BattleEffects {
 	effectsBuilder := battles.NewBattleEffectsBuilder()
 	effectsBuilder.AddCorrectionValues(
-		battles.NewBattleCorrectionValue(battles.CorrectionPhysicalMove, 1.5, nil),
-		battles.NewBattleCorrectionValue(battles.CorrectionSpecialMove, 1.5, nil))
+		battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalMove, 1.5, nil),
+		battles.NewDefaultCorrectionValue(battles.CorrectionSpecialMove, 1.5, nil))
 	return effectsBuilder.Build()
 }
 
 func battleEffectsPP15() *battles.BattleEffects {
 	effectsBuilder := battles.NewBattleEffectsBuilder()
-	effectsBuilder.AddCorrectionValues(battles.NewBattleCorrectionValue(battles.CorrectionPhysicalPower, 1.5, nil))
+	effectsBuilder.AddCorrectionValues(battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalPower, 1.5, nil))
 	return effectsBuilder.Build()
 }
 
 func battleEffectsSP15() *battles.BattleEffects {
 	effectsBuilder := battles.NewBattleEffectsBuilder()
-	effectsBuilder.AddCorrectionValues(battles.NewBattleCorrectionValue(battles.CorrectionSpecialPower, 1.5, nil))
+	effectsBuilder.AddCorrectionValues(battles.NewDefaultCorrectionValue(battles.CorrectionSpecialPower, 1.5, nil))
 	return effectsBuilder.Build()
 }
 

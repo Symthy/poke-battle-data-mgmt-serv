@@ -44,13 +44,13 @@ func (c BattleCorrectionValues) IsEmpty() bool {
 }
 
 func (c BattleCorrectionValues) Apply(
-	value uint16, target CorrectionTarget, data TriggerConditionParams, side BattleSideType) uint16 {
-	result := value
+	input uint16, target CorrectionTarget, triggerConditions TriggerConditionParams, side BattleSideType) uint16 {
+	result := input
 	for _, correction := range c.values {
 		if target != correction.target {
 			continue
 		}
-		result = correction.Apply(result, data, side)
+		result = correction.Apply(result, triggerConditions, side)
 	}
 	return result
 }

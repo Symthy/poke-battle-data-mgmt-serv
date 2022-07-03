@@ -12,6 +12,6 @@ func NewDamageCorrections(values *BattleCorrectionValues, side BattleSideType) *
 	}
 }
 
-func (c DamageCorrections) Apply(value uint16, dataset IPokemonBattleDataSet) uint16 {
-	return c.corrections.Apply(value, CorrectionDamage, dataset, c.side)
+func (c DamageCorrections) Apply(dataset IPokemonBattleDataSet) uint16 {
+	return c.corrections.Apply(4096, CorrectionDamage, dataset, c.side)
 }

@@ -6,7 +6,7 @@ type IDamageClacElements interface {
 	AttackActualValue() uint16
 	DefenseActualValue() uint16
 	DamageCorrectedValue() uint16
-	WeatherCorrectedValue() uint16
+	ApplyWeatherCorrection(damage uint16) uint16
 	IsTypeMatch() bool
 	TypeCompatibilityDamageRate() float64
 }

@@ -5,29 +5,53 @@ import (
 )
 
 type BattleCorrectionValue struct {
-	target           CorrectionTarget
-	value            float32
-	triggerCondition *TriggerCondition // Todo: 無しという状態を持つようようにした方が良い？
+	target                 CorrectionTarget
+	value                  float32
+	triggerCondition       *TriggerCondition // Todo: 無しという状態を持つようようにした方が良い？
+	decimalPointCalculator func(float64) uint16
 }
 
-func NewBattleCorrectionValue(target CorrectionTarget, value float32, condition *TriggerCondition) *BattleCorrectionValue {
+func NewDefaultCorrectionValue(target CorrectionTarget, value float32, condition *TriggerCondition) *BattleCorrectionValue {
 	if isInvalidValue(value) {
 		return nil
 	}
 	return &BattleCorrectionValue{
-		target:           CorrectionTarget(target),
-		value:            value,
-		triggerCondition: condition,
+		target:                 CorrectionTarget(target),
+		value:                  value,
+		triggerCondition:       condition,
+		decimalPointCalculator: fmath.Round[uint16],
 	}
+}
+
+func NewCorrectionValue(target CorrectionTarget, value float32, condition *TriggerCondition, decimalPointCalculator func(float64) uint16) *BattleCorrectionValue {
+	if isInvalidValue(value) {
+		return nil
+	}
+	return &BattleCorrectionValue{
+		target:                 CorrectionTarget(target),
+		value:                  value,
+		triggerCondition:       condition,
+		decimalPointCalculator: decimalPointCalculator,
+	}
+}
+
+func NewBattleNonCorrectionValue() *BattleCorrectionValue {
+	return &BattleCorrectionValue{
+		target: CorrectionNone,
+	}
+}
+
+func isInvalidValue(value float32) bool {
+	return value < 0
 }
 
 func (c BattleCorrectionValue) Apply(
 	input uint16, battleDataSet TriggerConditionParams, side BattleSideType) uint16 {
 	if c.triggerCondition == nil { // Todo
-		return fmath.Round[uint16](float64(input) * float64(c.value) / 4096)
+		return c.decimalPointCalculator(float64(input) * float64(c.value) / 4096.0)
 	}
 	if c.triggerCondition.isSatisfy(battleDataSet, side) {
-		return fmath.Round[uint16](float64(input) * float64(c.value) / 4096)
+		return c.decimalPointCalculator(float64(input) * float64(c.value) / 4096.0)
 	}
 	return input
 }
@@ -43,10 +67,6 @@ func (c BattleCorrectionValue) AnyEqualTarget(targets ...CorrectionTarget) bool 
 		}
 	}
 	return false
-}
-
-func isInvalidValue(rate float32) bool {
-	return rate < 0
 }
 
 type CorrectionType string

@@ -9,7 +9,7 @@ func toBattleEffects(effects *mixin.BattleEffects) *battles.BattleEffects {
 	corrections := []*battles.BattleCorrectionValue{}
 	for _, correction := range effects.Corrections {
 		triggerCondition := convertTriggerCondition(correction.TriggerCondition)
-		correctionValue := battles.NewBattleCorrectionValue(
+		correctionValue := battles.NewDefaultCorrectionValue(
 			battles.NewCorrectionTarget(correction.Target.String()),
 			correction.Value,
 			triggerCondition,

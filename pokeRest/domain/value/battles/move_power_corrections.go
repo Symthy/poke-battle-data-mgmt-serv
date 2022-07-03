@@ -1,5 +1,7 @@
 package battles
 
+import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
+
 type MovePowerCorrections struct {
 	side        BattleSideType
 	corrections *BattleCorrectionValues
@@ -12,9 +14,9 @@ func NewMovePowerCorrections(values *BattleCorrectionValues) *MovePowerCorrectio
 	}
 }
 
-func (c MovePowerCorrections) Apply(value uint16, dataset IPokemonBattleDataSet) uint16 {
-	if c.corrections.IsEmpty() {
-		return value
+func (c MovePowerCorrections) Apply(movePower uint16, dataset IPokemonBattleDataSet) uint16 {
+	if c.corrections.IsEmpty() || movePower == 0 {
+		return movePower
 	}
 	target := CorrectionNone
 	if dataset.MoveSpecies().IsPhysical() {
@@ -23,5 +25,10 @@ func (c MovePowerCorrections) Apply(value uint16, dataset IPokemonBattleDataSet)
 	if dataset.MoveSpecies().IsSpecial() {
 		target = CorrectionSpecialMove
 	}
-	return c.corrections.Apply(value, target, dataset, c.side)
+	correctionValue := c.corrections.Apply(4096, target, dataset, c.side)
+	correctedMovePower := fmath.RoundUpIfDecimalGreaterFive[uint16](float64(movePower*correctionValue) / 4096.0)
+	if correctedMovePower < 1 {
+		return 1
+	}
+	return correctedMovePower
 }

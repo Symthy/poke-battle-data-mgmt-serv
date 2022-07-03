@@ -58,8 +58,8 @@ func (e DamageCalcElements) FieldCorrectedValue() uint16 {
 	return e.dataset.FieldCorrectedValue()
 }
 
-func (e DamageCalcElements) WeatherCorrectedValue() uint16 {
-	return e.dataset.WeatherCorrectedValue()
+func (e DamageCalcElements) ApplyWeatherCorrection(damage uint16) uint16 {
+	return e.dataset.ApplyWeatherCorrection(damage)
 }
 
 func (e DamageCalcElements) IsTypeMatch() bool {

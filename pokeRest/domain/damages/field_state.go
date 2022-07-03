@@ -55,11 +55,11 @@ func (f FieldState) ApplyCorrection(data battles.IPokemonBattleDataSet) uint16 {
 func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValues {
 	if field == ElectricField {
 		return battles.NewBattleCorrectionValues(
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
 				5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Electric().ToString())),
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
 				5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Electric().ToString())),
@@ -67,11 +67,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 	}
 	if field == GrassyField {
 		return battles.NewBattleCorrectionValues(
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
 				5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Grass().ToString())),
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
 				5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Grass().ToString())),
@@ -79,11 +79,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 	}
 	if field == MistyField {
 		return battles.NewBattleCorrectionValues(
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
 				2048,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Dragon().ToString())),
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
 				2048,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Dragon().ToString())),
@@ -91,11 +91,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 	}
 	if field == PsychicField {
 		return battles.NewBattleCorrectionValues(
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
 				5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Psychic().ToString())),
-			battles.NewBattleCorrectionValue(
+			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
 				5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Psychic().ToString())),

@@ -2,6 +2,10 @@ package battles
 
 import "github.com/Symthy/PokeRest/pokeRest/domain/value"
 
+type CorrectionApplier interface {
+	Apply() uint16
+}
+
 type IPokemonBattleDataSet interface {
 	PokemonBattleBaseParams
 	TriggerConditionParams
@@ -17,7 +21,7 @@ type PokemonBattleBaseParams interface {
 	DefensePokemonActualValues() *value.PokemonActualValues
 	DefenseCorrectedActualValue() uint16
 	DamageCorrectedValue() uint16
-	WeatherCorrectedValue() uint16
+	ApplyWeatherCorrection(damage uint16) uint16
 	FieldCorrectedValue() uint16
 	IsTypeMatch() bool
 	TypeCompatibilityDamageRate() float32

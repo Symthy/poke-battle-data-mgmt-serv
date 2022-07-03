@@ -67,6 +67,6 @@ func (p AttackSide) toAttackMove() *damages.AttackMove {
 	)
 }
 
-func (p AttackSide) toAttackSideBattleEffects(dataset damages.PokemonBattleDataSet) *damages.AttackSideBattleEffects {
-	return damages.NewAttackSideBattleEffects(p.additionalEffects, dataset)
+func (p AttackSide) toAttackSideBattleEffects() *damages.AttackSideBattleEffects {
+	return damages.NewAttackSideBattleEffects(p.additionalEffects)
 }
