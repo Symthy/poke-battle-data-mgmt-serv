@@ -1,6 +1,7 @@
 package damages
 
 import (
+	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 )
@@ -14,7 +15,7 @@ type PokemonBattleDataSet struct {
 	defenseSide                 *DefenseSidePokemon
 	defenseAbnormalState        *AbnormalState
 	attackMove                  *AttackMove
-	weather                     WeatherState
+	weatherState                WeatherState
 	fieldState                  FieldState
 	typeCompatibilityDamageRate float32
 	attackEffects               *AttackSideBattleEffects
@@ -59,7 +60,11 @@ func (p PokemonBattleDataSet) AttackCorrectedActualValue() uint16 {
 	return 0
 }
 func (p PokemonBattleDataSet) AttackPokemonCorrectedActualValueS() uint16 {
-	return p.attackEffects.statusCorrections.ApplyS(p)
+	valueS := p.attackEffects.statusCorrections.ApplyS(p)
+	if p.attackAbnormalState.IsParalysis() {
+		valueS = fmath.RoundDown[uint16](float64(valueS*p.attackAbnormalState.CorrectedValue()) / 4096.0)
+	}
+	return valueS
 }
 func (p PokemonBattleDataSet) DefensePokemonTypeOfFirst() value.PokemonType {
 	return p.defenseSide.defensePokemonTypes.FirstType()
@@ -80,8 +85,11 @@ func (p PokemonBattleDataSet) DefenseCorrectedActualValue() uint16 {
 	return 0
 }
 func (p PokemonBattleDataSet) DefensePokemonCorrectedActualValueS() uint16 {
-	val := p.defenseEffects.statusCorrections.ApplyS(p)
-	return p.attackAbnormalState.ApplyCorrection(val)
+	valueS := p.defenseEffects.statusCorrections.ApplyS(p)
+	if p.defenseAbnormalState.IsParalysis() {
+		valueS = fmath.RoundDown[uint16](float64(valueS*p.defenseAbnormalState.CorrectedValue()) / 4096.0)
+	}
+	return valueS
 }
 func (p PokemonBattleDataSet) PowerCorrectedValue() uint16 {
 	return p.attackEffects.powerCorrections.Apply(4096, p)
@@ -98,18 +106,25 @@ func (p PokemonBattleDataSet) HasItemAttackSide() bool {
 func (p PokemonBattleDataSet) HasItemDefenseSide() bool {
 	return p.defenseSide.defensePokemonHasItems
 }
-func (p PokemonBattleDataSet) IsTypeMatch() bool {
+func (p PokemonBattleDataSet) IsTypeMatchAttackSide() bool {
 	return p.attackSide.attackPokemonType.FirstType().Equals(p.attackMove.pokemonType) ||
 		p.attackSide.attackPokemonType.SecondType().Equals(p.attackMove.pokemonType)
 }
+func (p PokemonBattleDataSet) IsBurnAttackSide() bool {
+	return p.attackAbnormalState.IsBurn()
+}
+func (p PokemonBattleDataSet) AbnormalStateCorectedValue() uint16 {
+	return p.attackAbnormalState.CorrectedValue()
+}
+
 func (p PokemonBattleDataSet) TypeCompatibilityDamageRate() float32 {
 	return p.typeCompatibilityDamageRate
 }
 func (p PokemonBattleDataSet) DamageCorrectedValue() uint16 {
 	return p.attackEffects.damageCorrections.Apply(p)
 }
-func (p PokemonBattleDataSet) ApplyWeatherCorrection(damage uint16) uint16 {
-	return p.weather.ApplyCorrection(damage, p)
+func (p PokemonBattleDataSet) WeatherCorrectedValue() uint16 {
+	return p.weatherState.correctedValue(p)
 }
 func (p PokemonBattleDataSet) FieldCorrectedValue() uint16 {
 	return p.fieldState.ApplyCorrection(p)

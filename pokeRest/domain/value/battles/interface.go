@@ -21,9 +21,11 @@ type PokemonBattleBaseParams interface {
 	DefensePokemonActualValues() *value.PokemonActualValues
 	DefenseCorrectedActualValue() uint16
 	DamageCorrectedValue() uint16
-	ApplyWeatherCorrection(damage uint16) uint16
+	WeatherCorrectedValue() uint16
 	FieldCorrectedValue() uint16
-	IsTypeMatch() bool
+	IsTypeMatchAttackSide() bool
+	IsBurnAttackSide() bool
+	AbnormalStateAttackSideCorectedValue() uint16
 	TypeCompatibilityDamageRate() float32
 }
 
@@ -38,4 +40,38 @@ type TriggerConditionParams interface {
 	HasItemAttackSide() bool
 	HasItemDefenseSide() bool
 	TypeCompatibilityDamageRate() float32
+}
+
+type EmptyTriggerConditionParams struct {
+}
+
+func (m EmptyTriggerConditionParams) AttackPokemonTypeOfFirst() value.PokemonType {
+	return value.UnknownType()
+}
+func (m EmptyTriggerConditionParams) AttackPokemonTypeOfSecond() value.PokemonType {
+	return value.UnknownType()
+}
+func (m EmptyTriggerConditionParams) AttackPokemonCorrectedActualValueS() uint16 {
+	return 0
+}
+func (m EmptyTriggerConditionParams) DefensePokemonTypeOfFirst() value.PokemonType {
+	return value.UnknownType()
+}
+func (m EmptyTriggerConditionParams) DefensePokemonTypeOfSecond() value.PokemonType {
+	return value.UnknownType()
+}
+func (m EmptyTriggerConditionParams) DefensePokemonCorrectedActualValueS() uint16 {
+	return 0
+}
+func (m EmptyTriggerConditionParams) MovePokemonType() value.PokemonType {
+	return value.UnknownType()
+}
+func (m EmptyTriggerConditionParams) HasItemAttackSide() bool {
+	return false
+}
+func (m EmptyTriggerConditionParams) HasItemDefenseSide() bool {
+	return false
+}
+func (m EmptyTriggerConditionParams) TypeCompatibilityDamageRate() float32 {
+	return 1.0
 }

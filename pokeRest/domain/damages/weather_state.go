@@ -1,7 +1,6 @@
 package damages
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 )
@@ -18,12 +17,11 @@ func NewWeatherState(weather string) WeatherState {
 	}
 }
 
-func (w WeatherState) ApplyCorrection(damage uint16, data battles.IPokemonBattleDataSet) uint16 {
+func (w WeatherState) correctedValue(p battles.IPokemonBattleDataSet) uint16 {
 	if w.weather == WeatherNormal {
-		return damage
+		return 4096
 	}
-	correctionValue := w.corrections.Apply(4096, battles.CorrectionDamage, nil, battles.BattleAttackSide)
-	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * correctionValue))
+	return w.corrections.Apply(4096, battles.CorrectionDamage, nil, battles.BattleAttackSide)
 }
 
 func resolveWeatherCorrection(weather WeatherType) *battles.BattleCorrectionValues {

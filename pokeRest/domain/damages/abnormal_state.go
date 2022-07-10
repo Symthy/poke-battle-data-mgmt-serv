@@ -1,7 +1,6 @@
 package damages
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
 	"github.com/Symthy/PokeRest/pokeRest/common/lists"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 )
@@ -35,7 +34,7 @@ func NewAbnormalState(state string) AbnormalState {
 	}
 	return AbnormalState{
 		state:      AbnormalStateNone,
-		correction: battles.NewBattleNonCorrectionValue(),
+		correction: battles.NewNonCorrectionValue(),
 	}
 }
 
@@ -46,10 +45,18 @@ func resolveCorrection(state AbnormalStateType) *battles.BattleCorrectionValue {
 	if state == AbnormalStateParalysis {
 		return battles.NewDefaultCorrectionValue(battles.CorrectionStatusS, 2048, nil)
 	}
-	return battles.NewBattleNonCorrectionValue()
+	return battles.NewNonCorrectionValue()
 }
 
-func (s AbnormalState) ApplyCorrection(damage uint16) uint16 {
-	correctionValue := s.correction.Apply(4096, nil, s.side)
-	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * correctionValue))
+func (s AbnormalState) CorrectedValue() uint16 {
+
+	return s.correction.Apply(4096, nil, s.side)
+}
+
+func (s AbnormalState) IsParalysis() bool {
+	return s.state == AbnormalStateParalysis
+}
+
+func (s AbnormalState) IsBurn() bool {
+	return s.state == AbnormalStateBurn
 }

@@ -58,12 +58,20 @@ func (e DamageCalcElements) FieldCorrectedValue() uint16 {
 	return e.dataset.FieldCorrectedValue()
 }
 
-func (e DamageCalcElements) ApplyWeatherCorrection(damage uint16) uint16 {
-	return e.dataset.ApplyWeatherCorrection(damage)
+func (e DamageCalcElements) WeatherCorrectedValue() uint16 {
+	return e.dataset.WeatherCorrectedValue()
 }
 
-func (e DamageCalcElements) IsTypeMatch() bool {
-	return e.dataset.IsTypeMatch()
+func (e DamageCalcElements) IsTypeMatchAttackSide() bool {
+	return e.dataset.IsTypeMatchAttackSide()
+}
+
+func (e DamageCalcElements) IsBurnAttackSide() bool {
+	return e.dataset.IsBurnAttackSide()
+}
+
+func (e DamageCalcElements) AbnormalStateAttackSideCorectedValue() uint16 {
+	return e.dataset.AbnormalStateAttackSideCorectedValue()
 }
 
 func (e DamageCalcElements) TypeCompatibilityDamageRate() float64 {

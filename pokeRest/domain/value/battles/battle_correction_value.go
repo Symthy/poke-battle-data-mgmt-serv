@@ -13,7 +13,7 @@ type BattleCorrectionValue struct {
 
 func NewDefaultCorrectionValue(target CorrectionTarget, value float32, condition *TriggerCondition) *BattleCorrectionValue {
 	if isInvalidValue(value) {
-		return nil
+		return NewNonCorrectionValue()
 	}
 	return &BattleCorrectionValue{
 		target:                 CorrectionTarget(target),
@@ -35,7 +35,7 @@ func NewCorrectionValue(target CorrectionTarget, value float32, condition *Trigg
 	}
 }
 
-func NewBattleNonCorrectionValue() *BattleCorrectionValue {
+func NewNonCorrectionValue() *BattleCorrectionValue {
 	return &BattleCorrectionValue{
 		target: CorrectionNone,
 	}
@@ -46,11 +46,11 @@ func isInvalidValue(value float32) bool {
 }
 
 func (c BattleCorrectionValue) Apply(
-	input uint16, battleDataSet TriggerConditionParams, side BattleSideType) uint16 {
+	input uint16, params TriggerConditionParams, side BattleSideType) uint16 {
 	if c.triggerCondition == nil { // Todo
 		return c.decimalPointCalculator(float64(input) * float64(c.value) / 4096.0)
 	}
-	if c.triggerCondition.isSatisfy(battleDataSet, side) {
+	if c.triggerCondition.isSatisfy(params, side) {
 		return c.decimalPointCalculator(float64(input) * float64(c.value) / 4096.0)
 	}
 	return input

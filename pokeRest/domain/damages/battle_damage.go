@@ -25,10 +25,10 @@ func calculate(calcElements DamageCalcElements) []uint16 {
 	// ダブル補正
 
 	// 天候
-	damage = calcElements.ApplyWeatherCorrection(damage)
+	fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * calcElements.WeatherCorrectedValue()))
 
 	// タイプ一致補正
-	if calcElements.IsTypeMatch() {
+	if calcElements.IsTypeMatchAttackSide() {
 		damage = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage) * 6144.0 / 4096.0)
 	}
 
@@ -36,6 +36,10 @@ func calculate(calcElements DamageCalcElements) []uint16 {
 	damage = fmath.Round[uint16](float64(damage) * calcElements.TypeCompatibilityDamageRate())
 
 	// やけど
+	if calcElements.IsBurnAttackSide() {
+		correctionValue := calcElements.AbnormalStateAttackSideCorectedValue()
+		damage = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * correctionValue))
+	}
 
 	// ダメージ補正
 	damage = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * calcElements.DamageCorrectedValue() / 4096.0))
