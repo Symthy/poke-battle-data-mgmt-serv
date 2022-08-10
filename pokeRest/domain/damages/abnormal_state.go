@@ -25,25 +25,35 @@ func allAbnormalStates() []AbnormalStateType {
 	return []AbnormalStateType{AbnormalStatePoison, AbnormalStateParalysis, AbnormalStateBurn, AbnormalStateFreeze}
 }
 
-func NewAbnormalState(state string) AbnormalState {
-	if lists.Contains(allAbnormalStates(), state) {
-		return AbnormalState{
-			state:      AbnormalStateType(state),
-			correction: resolveCorrection(AbnormalStateType(state)),
-		}
-	}
-	return AbnormalState{
+func NewNotAbnormalState(side battles.BattleSideType) *AbnormalState {
+	return &AbnormalState{
 		state:      AbnormalStateNone,
 		correction: battles.NewNonCorrectionValue(),
+		side:       side,
+	}
+}
+
+func NewAbnormalState(state string, side battles.BattleSideType) *AbnormalState {
+	if lists.Contains(allAbnormalStates(), state) {
+		return &AbnormalState{
+			state:      AbnormalStateType(state),
+			correction: resolveCorrection(AbnormalStateType(state)),
+			side:       side,
+		}
+	}
+	return &AbnormalState{
+		state:      AbnormalStateNone,
+		correction: battles.NewNonCorrectionValue(),
+		side:       side,
 	}
 }
 
 func resolveCorrection(state AbnormalStateType) *battles.BattleCorrectionValue {
 	if state == AbnormalStateBurn {
-		return battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalMove, 2048, nil)
+		return battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalMove, battles.Correction2048, nil)
 	}
 	if state == AbnormalStateParalysis {
-		return battles.NewDefaultCorrectionValue(battles.CorrectionStatusS, 2048, nil)
+		return battles.NewDefaultCorrectionValue(battles.CorrectionStatusS, battles.Correction2048, nil)
 	}
 	return battles.NewNonCorrectionValue()
 }

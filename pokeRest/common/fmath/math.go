@@ -13,11 +13,12 @@ func RoundUp[T uint16 | uint32 | uint64](value float64) T {
 }
 
 func Round[T uint16 | uint32 | uint64](value float64) T {
+	// 四捨五入
 	return T(math.Round(value))
 }
 
-// 五捨五超入
 func RoundUpIfDecimalGreaterFive[T uint16 | uint32 | uint64](value float64) T {
+	// 五捨五超入
 	integerValue := float64(RoundDown[T](value))
 	if value-integerValue > 0.5 {
 		return RoundUp[T](value)

@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -29,30 +28,30 @@ func TestBattleEffectsTestSuite(t *testing.T) {
 
 func (suite BattleEffectsTestSuite) TestUnmarshal() {
 
-	tests := []struct {
+	tests := map[string]struct {
 		inputBytes []byte
-		expected   mixin.BattleEffects
+		expected   BattleEffects
 	}{
-		{
+		"empty object": {
 			inputBytes: []byte(`{}`),
-			expected:   mixin.BattleEffects{},
+			expected:   BattleEffects{},
 		},
-		{
+		"elements empty": {
 			inputBytes: []byte(`{
 				"corrections": [],
-				"overrides": [],
+				"overrides": []
 			}`),
-			expected: mixin.BattleEffects{
-				Corrections: []mixin.Correction{},
-				Overrides:   []mixin.Override{},
+			expected: BattleEffects{
+				Corrections: []Correction{},
+				Overrides:   []Override{},
 			},
 		},
-		{
+		"data full set": {
 			inputBytes: []byte(`{
 				"corrections": [
 					{
 						"target": "PhysicalMove",
-						"value": 1.2,
+						"value": 4915,
 						"triggerCondition": {
 							"entry": "PokemonType",
 							"value": "Normal"
@@ -60,7 +59,7 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 					},
 					{
 						"target": "SpecialMove",
-						"value": 1.2,
+						"value": 5325,
 						"triggerCondition": {
 							"entry": "PokemonType",
 							"value": "Normal"
@@ -77,22 +76,30 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						}
 					}
 				]}`),
-			expected: mixin.BattleEffects{
-				Corrections: []mixin.Correction{
+			expected: BattleEffects{
+				Corrections: []Correction{
 					{
 						Target: enum.CorrectionPhysicalMove,
-						Value:  1.2,
-						TriggerCondition: &mixin.TriggerCondition{
+						Value:  4915,
+						TriggerCondition: &TriggerCondition{
+							Entry: enum.ConditionPokemonType,
+							Value: enum.Normal.String(),
+						},
+					},
+					{
+						Target: enum.CorrectionSpecialMove,
+						Value:  5325,
+						TriggerCondition: &TriggerCondition{
 							Entry: enum.ConditionPokemonType,
 							Value: enum.Normal.String(),
 						},
 					},
 				},
-				Overrides: []mixin.Override{
+				Overrides: []Override{
 					{
 						Target: enum.OverridePokemonType,
 						Value:  enum.Flying.String(),
-						TriggerCondition: &mixin.TriggerCondition{
+						TriggerCondition: &TriggerCondition{
 							Entry: enum.ConditionPokemonType,
 							Value: enum.Normal.String(),
 						},
@@ -100,28 +107,28 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 				},
 			},
 		},
-		{
+		"trigger condition is not exist": {
 			inputBytes: []byte(`{
 				"corrections": [
 					{
 						"target": "Damage",
-						"value": 1.5,
-					},
+						"value": 6144
+					}
 				],
 				"overrides": [
 					{
 						"target": "FixedDamage",
-						"value": "50",
+						"value": "50"
 					}
 				]}`),
-			expected: mixin.BattleEffects{
-				Corrections: []mixin.Correction{
+			expected: BattleEffects{
+				Corrections: []Correction{
 					{
 						Target: enum.CorrectionDamage,
-						Value:  1.5,
+						Value:  6144,
 					},
 				},
-				Overrides: []mixin.Override{
+				Overrides: []Override{
 					{
 						Target: enum.OverrideFixedDamage,
 						Value:  "50",
@@ -131,14 +138,16 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 		},
 	}
 
-	for i, tt := range tests {
-		actual := mixin.BattleEffects{}
-		err := json.Unmarshal(tt.inputBytes, &actual)
-		if err != nil {
-			fmt.Printf("error: [index:%d] %#v\n", i, err)
-			suite.Fail("failure json unmarshal")
-			return
-		}
-		assert.EqualValues(suite.T(), tt.expected, actual)
+	for testcaseName, tt := range tests {
+		suite.T().Run(testcaseName, func(t *testing.T) {
+			actual := BattleEffects{}
+			err := json.Unmarshal(tt.inputBytes, &actual)
+			if err != nil {
+				fmt.Printf("error: %s: %#v\n", testcaseName, err)
+				suite.Fail("failure json unmarshal")
+				return
+			}
+			assert.EqualValues(t, tt.expected, actual)
+		})
 	}
 }

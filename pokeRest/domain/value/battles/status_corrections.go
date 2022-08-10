@@ -1,15 +1,9 @@
 package battles
 
-import (
-	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
-)
-
 type StatusCorrections struct {
 	targets          []CorrectionTarget
 	side             BattleSideType
 	correctionValues *BattleCorrectionValues
-	applier          correctionsApplier[*value.PokemonActualValues]
 }
 
 func NewStatusCorrections(values *BattleCorrectionValues, side BattleSideType) *StatusCorrections {
@@ -42,7 +36,6 @@ func (c StatusCorrections) ApplyS(dataset IPokemonBattleDataSet) uint16 {
 	return c.applyCorrection(dataset.AttackPokemonActualValues().S(), CorrectionStatusS, dataset)
 }
 
-func (c StatusCorrections) applyCorrection(actualValue uint16, correctionTarget CorrectionTarget, dataset IPokemonBattleDataSet) uint16 {
-	correctionValue := c.correctionValues.Apply(4096, correctionTarget, dataset, c.side)
-	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(actualValue*correctionValue) / 4096.0)
+func (c StatusCorrections) applyCorrection(value uint16, correctionTarget CorrectionTarget, dataset TriggerConditionParams) uint16 {
+	return c.correctionValues.Apply(value, correctionTarget, dataset, c.side)
 }

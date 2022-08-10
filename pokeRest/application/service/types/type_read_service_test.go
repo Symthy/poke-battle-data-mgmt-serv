@@ -1,9 +1,8 @@
-package service
+package types
 
 import (
 	"testing"
 
-	"github.com/Symthy/PokeRest/pokeRest/application/service/types"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -11,12 +10,12 @@ import (
 
 type TypeServiceTestSuite struct {
 	suite.Suite
-	serv types.TypeReadService
+	serv TypeReadService
 }
 
 // Before
 func (suite *TypeServiceTestSuite) SetupTest() {
-	suite.serv = types.NewTypeReadService()
+	suite.serv = NewTypeReadService()
 }
 
 // After

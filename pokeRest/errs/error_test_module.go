@@ -5,8 +5,6 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-
-	"github.com/Symthy/PokeRest/pokeRest/errs"
 )
 
 type ErrorTestOssAndServerErrWrap struct{}
@@ -16,21 +14,21 @@ func (m ErrorTestOssAndServerErrWrap) FuncA() error {
 }
 func (m ErrorTestOssAndServerErrWrap) funcB() error {
 	e := m.funcC()
-	return errs.WrapServerError(errs.ErrUserNotFound, e)
+	return WrapServerError(ErrUserNotFound, e)
 }
 func (m ErrorTestOssAndServerErrWrap) funcC() error {
 	return m.funcD()
 }
 func (m ErrorTestOssAndServerErrWrap) funcD() error {
 	e := m.funcE()
-	return errs.WrapServerError(errs.ErrAuth, e)
+	return WrapServerError(ErrAuth, e)
 }
 func (m ErrorTestOssAndServerErrWrap) funcE() error {
 	return m.funcF()
 }
 func (m ErrorTestOssAndServerErrWrap) funcF() error {
 	_, err := os.Open("dummy.txt")
-	return errs.WrapServerError(errs.ErrUnexpected, err)
+	return WrapServerError(ErrUnexpected, err)
 }
 
 type ErrorTestServerErrOnlyWrap struct{}
@@ -40,13 +38,13 @@ func (m ErrorTestServerErrOnlyWrap) FuncA() error {
 }
 func (m ErrorTestServerErrOnlyWrap) funcB() error {
 	e := m.funcC()
-	return errs.WrapServerError(errs.ErrUnexpected, e)
+	return WrapServerError(ErrUnexpected, e)
 }
 func (m ErrorTestServerErrOnlyWrap) funcC() error {
 	return m.funcD()
 }
 func (m ErrorTestServerErrOnlyWrap) funcD() error {
-	return errs.ThrowServerError(errs.ErrUserNotFound)
+	return ThrowServerError(ErrUserNotFound)
 }
 
 type ErrorTestMultiErrorWrap struct{}

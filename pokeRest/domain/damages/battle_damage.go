@@ -20,26 +20,21 @@ func calculate(calcElements DamageCalcElements) []uint16 {
 		return []uint16{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	}
 
-	damage := resolveBaseDamage(calcElements)
+	damage := calcBaseDamage(calcElements)
 
 	// ダブル補正
 
 	// 天候
-	fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * calcElements.WeatherCorrectedValue()))
+	damage = calcDamageCorrectedWeather(damage, calcElements)
 
 	// タイプ一致補正
-	if calcElements.IsTypeMatchAttackSide() {
-		damage = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage) * 6144.0 / 4096.0)
-	}
+	damage = calcDamageCorrectedTypeMatch(damage, calcElements)
 
 	// タイプ相性 切り捨て
-	damage = fmath.Round[uint16](float64(damage) * calcElements.TypeCompatibilityDamageRate())
+	damage = calcDamageCorrectedTypeCompatibility(damage, calcElements)
 
 	// やけど
-	if calcElements.IsBurnAttackSide() {
-		correctionValue := calcElements.AbnormalStateAttackSideCorectedValue()
-		damage = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * correctionValue))
-	}
+	damage = calcDamageCorrectedBurn(damage, calcElements)
 
 	// ダメージ補正
 	damage = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * calcElements.DamageCorrectedValue() / 4096.0))
@@ -56,18 +51,47 @@ func calculate(calcElements DamageCalcElements) []uint16 {
 	return damages
 }
 
-func resolveBaseDamage(calcElements DamageCalcElements) uint16 {
+func calcBaseDamage(calcElements DamageCalcElements) uint16 {
 	// 最終威力
-	powerValue := float64(calcElements.FinalAttackValue())
+	attackPower := calcElements.resolvePowerCorrectedValue()
+	attackPower = fmath.Round[uint16](float64(attackPower*calcElements.FieldCorrectedValue()) / 4096.0)
+	movePower := calcElements.resolveMovePowerValue()
+	finalPowerValue := fmath.RoundUpIfDecimalGreaterFive[uint16](float64(movePower*attackPower) / 4096.0)
 	// 最終攻撃
-	attackValue := float64(calcElements.AttackActualValue())
+	finalAttackValue := calcElements.AttackActualValue()
 	// 最終防御
-	defenseValue := float64(calcElements.DefenseActualValue())
+	finalDefenseValue := calcElements.DefenseActualValue()
 
 	level := 50.0
 	levelCorrection := float64(fmath.RoundDown[uint16](level*2.0/5.0 + 2.0))
-	damageBaseValue := float64(fmath.RoundDown[uint16](levelCorrection * powerValue * attackValue / defenseValue))
+	damageBaseValue := float64(fmath.RoundDown[uint16](
+		levelCorrection * float64(finalPowerValue*finalAttackValue) / float64(finalDefenseValue)))
 	return fmath.RoundDown[uint16](damageBaseValue/50 + 2)
+}
+
+func calcDamageCorrectedWeather(damage uint16, calcElements DamageCalcElements) uint16 {
+	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * calcElements.WeatherCorrectedValue()))
+}
+
+func calcDamageCorrectedTypeMatch(damage uint16, calcElements DamageCalcElements) uint16 {
+	result := damage
+	if calcElements.IsTypeMatchAttackSide() {
+		result = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage) * 6144.0 / 4096.0)
+	}
+	return result
+}
+
+func calcDamageCorrectedTypeCompatibility(damage uint16, calcElements DamageCalcElements) uint16 {
+	return fmath.Round[uint16](float64(damage) * calcElements.TypeCompatibilityDamageRate())
+}
+
+func calcDamageCorrectedBurn(damage uint16, calcElements DamageCalcElements) uint16 {
+	result := damage
+	if calcElements.IsBurnAttackSide() {
+		correctionValue := calcElements.AbnormalStateAttackSideCorectedValue()
+		result = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * correctionValue))
+	}
+	return result
 }
 
 func generateRandomDamage(maxDamage uint16) []uint16 {

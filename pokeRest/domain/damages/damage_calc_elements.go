@@ -1,7 +1,6 @@
 package damages
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 )
 
@@ -11,8 +10,7 @@ type DamageCalcElements struct {
 	dataset battles.IPokemonBattleDataSet
 }
 
-func NewDamageCalcElements(dataset *PokemonBattleDataSet, attackEffects *AttackSideBattleEffects,
-	defenseEffects *DefenseSideBattleEffects) *DamageCalcElements {
+func NewDamageCalcElements(dataset *PokemonBattleDataSet) *DamageCalcElements {
 	return &DamageCalcElements{
 		dataset: dataset,
 	}
@@ -25,13 +23,6 @@ func (e *DamageCalcElements) GetPokemonBattleDataSet() battles.IPokemonBattleDat
 
 func (e DamageCalcElements) IsNoDamage() bool {
 	return e.dataset.IsNoDamage()
-}
-
-func (e DamageCalcElements) FinalAttackValue() uint16 {
-	attackPower := e.resolvePowerCorrectedValue()
-	attackPower = fmath.Round[uint16](float64(attackPower*e.FieldCorrectedValue()) / 4096.0)
-	movePower := e.resolveMovePowerValue()
-	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(movePower*attackPower) / 4096.0)
 }
 
 func (e DamageCalcElements) resolveMovePowerValue() uint16 {

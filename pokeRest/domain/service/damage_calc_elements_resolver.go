@@ -66,9 +66,10 @@ func (r DamageCalcElementsService) Resolve(
 		attackSide.toAttackSidePokemon(),
 		defenseSide.toDefenseSidePokemon(),
 		attackSide.toAttackMove(),
-		r.resolveTypeCompatibility(attackSide.moveType, defenseSide.PokemonTypes()))
-	damageCalcElements := damages.NewDamageCalcElements(battlePokemons,
-		attackSide.toAttackSideBattleEffects(), defenseSide.toDefenseSideBattleEffects())
+		r.resolveTypeCompatibility(attackSide.moveType, defenseSide.PokemonTypes()),
+		attackSide.toAttackSideBattleEffects(),
+		defenseSide.toDefenseSideBattleEffects())
+	damageCalcElements := damages.NewDamageCalcElements(battlePokemons)
 	return damageCalcElements, nil
 }
 

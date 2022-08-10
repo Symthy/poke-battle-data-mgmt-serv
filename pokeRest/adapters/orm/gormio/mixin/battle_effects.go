@@ -31,7 +31,7 @@ func (b BattleEffects) Value() (driver.Value, error) {
 
 type Correction struct {
 	Target           enum.CorrectionTarget `json:"target"`
-	Value            float32               `json:"value"`
+	Value            uint16                `json:"value"`
 	TriggerCondition *TriggerCondition     `json:"triggerCondition"`
 }
 

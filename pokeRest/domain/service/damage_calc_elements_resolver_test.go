@@ -23,20 +23,20 @@ import (
 func battleEffectsPM15SM15() *battles.BattleEffects {
 	effectsBuilder := battles.NewBattleEffectsBuilder()
 	effectsBuilder.AddCorrectionValues(
-		battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalMove, 1.5, nil),
-		battles.NewDefaultCorrectionValue(battles.CorrectionSpecialMove, 1.5, nil))
+		battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalMove, battles.Correction6144, nil),
+		battles.NewDefaultCorrectionValue(battles.CorrectionSpecialMove, battles.Correction6144, nil))
 	return effectsBuilder.Build()
 }
 
 func battleEffectsPP15() *battles.BattleEffects {
 	effectsBuilder := battles.NewBattleEffectsBuilder()
-	effectsBuilder.AddCorrectionValues(battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalPower, 1.5, nil))
+	effectsBuilder.AddCorrectionValues(battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalPower, battles.Correction6144, nil))
 	return effectsBuilder.Build()
 }
 
 func battleEffectsSP15() *battles.BattleEffects {
 	effectsBuilder := battles.NewBattleEffectsBuilder()
-	effectsBuilder.AddCorrectionValues(battles.NewDefaultCorrectionValue(battles.CorrectionSpecialPower, 1.5, nil))
+	effectsBuilder.AddCorrectionValues(battles.NewDefaultCorrectionValue(battles.CorrectionSpecialPower, battles.Correction6144, nil))
 	return effectsBuilder.Build()
 }
 
@@ -281,7 +281,7 @@ func TestAttackSideResolver(t *testing.T) {
 		assert.Equal(t, tt.inputIsMoveContained, actual.isMoveContained)
 		assert.Equal(t, tt.inputCanMoveGuard, actual.canMoveGuard)
 		assert.True(t, actual.hasItem)
-		assert.Equal(t, tt.expectedBattleEffects, actual.additionalEffects)
+		assert.Exactly(t, tt.expectedBattleEffects, actual.additionalEffects)
 	}
 }
 

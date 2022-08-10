@@ -39,8 +39,67 @@ type TriggerConditionParams interface {
 	MovePokemonType() value.PokemonType
 	HasItemAttackSide() bool
 	HasItemDefenseSide() bool
-	TypeCompatibilityDamageRate() float32
 }
+
+var _ IPokemonBattleDataSet = (*EmptyPokemonBattleDataSet)(nil)
+
+type EmptyPokemonBattleDataSet struct {
+	PokemonBattleBaseParams
+	EmptyTriggerConditionParams
+}
+
+var _ PokemonBattleBaseParams = (*EmptyPokemonBattleBaseParams)(nil)
+
+type EmptyPokemonBattleBaseParams struct {
+}
+
+func (p EmptyPokemonBattleBaseParams) IsNoDamage() bool {
+	return false
+}
+func (p EmptyPokemonBattleBaseParams) MoveSpecies() value.MoveSpecies {
+	return value.MoveSpeciesUnknown
+}
+func (p EmptyPokemonBattleBaseParams) AttackPokemonActualValues() *value.PokemonActualValues {
+	return nil
+}
+func (p EmptyPokemonBattleBaseParams) AttackCorrectedActualValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) PowerCorrectedValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) MovePowerValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) DefensePokemonActualValues() *value.PokemonActualValues {
+	return nil
+}
+func (p EmptyPokemonBattleBaseParams) DefenseCorrectedActualValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) DamageCorrectedValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) WeatherCorrectedValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) FieldCorrectedValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) IsTypeMatchAttackSide() bool {
+	return false
+}
+func (p EmptyPokemonBattleBaseParams) IsBurnAttackSide() bool {
+	return false
+}
+func (p EmptyPokemonBattleBaseParams) AbnormalStateAttackSideCorectedValue() uint16 {
+	return 0
+}
+func (p EmptyPokemonBattleBaseParams) TypeCompatibilityDamageRate() float32 {
+	return 1.0
+}
+
+var _ TriggerConditionParams = (*EmptyTriggerConditionParams)(nil)
 
 type EmptyTriggerConditionParams struct {
 }
@@ -71,7 +130,4 @@ func (m EmptyTriggerConditionParams) HasItemAttackSide() bool {
 }
 func (m EmptyTriggerConditionParams) HasItemDefenseSide() bool {
 	return false
-}
-func (m EmptyTriggerConditionParams) TypeCompatibilityDamageRate() float32 {
-	return 1.0
 }

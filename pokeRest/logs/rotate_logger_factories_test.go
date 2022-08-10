@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/config"
-	"github.com/Symthy/PokeRest/pokeRest/logs"
 	"github.com/Symthy/PokeRest/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -53,7 +52,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 			assert.Fail(suite.T(), "load failure config.yml.model.", err.Error())
 		}
 		logsConf := config.LogsConfig
-		serverLoggerFactory, accessLoggerFactory, dbLoggerFactory := logs.NewLoggerFactories(logsConf)
+		serverLoggerFactory, accessLoggerFactory, dbLoggerFactory := NewLoggerFactories(logsConf)
 		// Todo: check log writing
 		assert.NotNil(suite.T(), serverLoggerFactory)
 		assert.NotNil(suite.T(), accessLoggerFactory)
@@ -61,7 +60,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	})
 
 	suite.Run("new server logger", func() {
-		factory := logs.NewServerLoggerFactory(suite.logsConf)
+		factory := NewServerLoggerFactory(suite.logsConf)
 		rotateLogger := factory.BuildRotateServerLogger()
 		assert.Equal(suite.T(), "test/path/server.log.test", rotateLogger.Filename)
 		assert.Equal(suite.T(), 1, rotateLogger.MaxSize)
@@ -70,7 +69,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	})
 
 	suite.Run("new access logger", func() {
-		factory := logs.NewAccessLoggerFactory(suite.logsConf)
+		factory := NewAccessLoggerFactory(suite.logsConf)
 		rotateLogger := factory.BuildRotateAccessLogger()
 		assert.Equal(suite.T(), "test/path/access.log.test", rotateLogger.Filename)
 		assert.Equal(suite.T(), 4, rotateLogger.MaxSize)
@@ -79,7 +78,7 @@ func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	})
 
 	suite.Run("new db logger", func() {
-		factory := logs.NewDbLoggerFactory(suite.logsConf)
+		factory := NewDbLoggerFactory(suite.logsConf)
 		rotateLogger := factory.BuildRotateDbLogger()
 		assert.Equal(suite.T(), "test/path/db.log.test", rotateLogger.Filename)
 		assert.Equal(suite.T(), 7, rotateLogger.MaxSize)

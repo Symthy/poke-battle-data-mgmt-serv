@@ -7,6 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var _ TriggerConditionParams = (*mockTriggerConditionParamsForCorrectionValue)(nil)
+
 type mockTriggerConditionParamsForCorrectionValue struct {
 	EmptyTriggerConditionParams
 }
@@ -22,27 +24,35 @@ func TestApply(t *testing.T) {
 		expected       uint16
 	}{
 		"non condition (always applied)": {
-			crrectionValue: NewDefaultCorrectionValue(CorrectionPhysicalMove, 2048, nil),
-			input:          200,
-			expected:       100,
+			crrectionValue: NewDefaultCorrectionValue(
+				CorrectionPhysicalMove,
+				Correction2048,
+				nil),
+			input:    200,
+			expected: 100,
 		},
 		"satisfy condition": {
-			crrectionValue: NewDefaultCorrectionValue(CorrectionPhysicalMove, 2048,
+			crrectionValue: NewDefaultCorrectionValue(
+				CorrectionPhysicalMove,
+				Correction2048,
 				NewTriggerCondition(ConditionPokemonType, value.Normal().ToString())),
 			input:    200,
 			expected: 100,
 		},
 		"non satisfy condition": {
-			crrectionValue: NewDefaultCorrectionValue(CorrectionPhysicalMove, 2048,
+			crrectionValue: NewDefaultCorrectionValue(
+				CorrectionPhysicalMove,
+				Correction2048,
 				NewTriggerCondition(ConditionPokemonType, value.Rock().ToString())),
 			input:    200,
 			expected: 200,
 		},
 	}
 
+	mockTriggerConditionParams := mockTriggerConditionParamsForCorrectionValue{}
 	for testcaseName, tt := range cases {
 		t.Run(testcaseName, func(t *testing.T) {
-			actual := tt.crrectionValue.Apply(200, mockTriggerConditionParamsForCorrectionValue{}, BattleAttackSide)
+			actual := tt.crrectionValue.Apply(tt.input, mockTriggerConditionParams, BattleAttackSide)
 			assert.Equal(t, tt.expected, actual)
 		})
 	}

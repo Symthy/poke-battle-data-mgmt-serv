@@ -15,8 +15,8 @@ type PokemonBattleDataSet struct {
 	defenseSide                 *DefenseSidePokemon
 	defenseAbnormalState        *AbnormalState
 	attackMove                  *AttackMove
-	weatherState                WeatherState
-	fieldState                  FieldState
+	weatherState                *WeatherState
+	fieldState                  *FieldState
 	typeCompatibilityDamageRate float32
 	attackEffects               *AttackSideBattleEffects
 	defenseEffects              *DefenseSideBattleEffects
@@ -24,13 +24,19 @@ type PokemonBattleDataSet struct {
 
 func NewPokemonBattleDataSet(
 	attackSide *AttackSidePokemon, defenseSide *DefenseSidePokemon, attackMove *AttackMove,
-	typeCompatibilityDamageRate float32,
+	typeCompatibilityDamageRate float32, attackEffects *AttackSideBattleEffects, defenseEffects *DefenseSideBattleEffects,
 ) *PokemonBattleDataSet {
 	data := &PokemonBattleDataSet{
 		attackSide:                  attackSide,
+		attackAbnormalState:         NewNotAbnormalState(battles.BattleAttackSide),
 		defenseSide:                 defenseSide,
+		defenseAbnormalState:        NewNotAbnormalState(battles.BattleDefenseSide),
 		attackMove:                  attackMove,
+		weatherState:                NewNormalWeatherState(),
+		fieldState:                  NewNormalFieldState(),
 		typeCompatibilityDamageRate: typeCompatibilityDamageRate,
+		attackEffects:               attackEffects,
+		defenseEffects:              defenseEffects,
 	}
 	return data
 }
@@ -113,7 +119,7 @@ func (p PokemonBattleDataSet) IsTypeMatchAttackSide() bool {
 func (p PokemonBattleDataSet) IsBurnAttackSide() bool {
 	return p.attackAbnormalState.IsBurn()
 }
-func (p PokemonBattleDataSet) AbnormalStateCorectedValue() uint16 {
+func (p PokemonBattleDataSet) AbnormalStateAttackSideCorectedValue() uint16 {
 	return p.attackAbnormalState.CorrectedValue()
 }
 

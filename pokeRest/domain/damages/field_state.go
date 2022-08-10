@@ -25,14 +25,21 @@ type FieldState struct {
 	corrections *battles.BattleCorrectionValues
 }
 
-func NewFieldState(field string) FieldState {
+func NewNormalFieldState() *FieldState {
+	return &FieldState{
+		field:       NormalField,
+		corrections: battles.NewBattleCorrectionValues(),
+	}
+}
+
+func NewFieldState(field string) *FieldState {
 	if !lists.Contains(allFieldStateType(), field) {
-		return FieldState{
+		return &FieldState{
 			field:       FieldStateType(field),
 			corrections: battles.NewBattleCorrectionValues(),
 		}
 	}
-	return FieldState{
+	return &FieldState{
 		field:       FieldStateType(field),
 		corrections: resolveFieldCorrection(FieldStateType(field)),
 	}
@@ -57,11 +64,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 		return battles.NewBattleCorrectionValues(
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
-				5325,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Electric().ToString())),
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
-				5325,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Electric().ToString())),
 		)
 	}
@@ -69,11 +76,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 		return battles.NewBattleCorrectionValues(
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
-				5325,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Grass().ToString())),
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
-				5325,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Grass().ToString())),
 		)
 	}
@@ -81,11 +88,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 		return battles.NewBattleCorrectionValues(
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
-				2048,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Dragon().ToString())),
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
-				2048,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Dragon().ToString())),
 		)
 	}
@@ -93,11 +100,11 @@ func resolveFieldCorrection(field FieldStateType) *battles.BattleCorrectionValue
 		return battles.NewBattleCorrectionValues(
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionPhysicalPower,
-				5325,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Psychic().ToString())),
 			battles.NewDefaultCorrectionValue(
 				battles.CorrectionSpecialPower,
-				5325,
+				battles.Correction5325,
 				battles.NewTriggerCondition(battles.ConditionPokemonType, value.Psychic().ToString())),
 		)
 	}

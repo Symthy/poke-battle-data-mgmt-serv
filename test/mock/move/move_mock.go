@@ -20,7 +20,7 @@ func MoveAcrobatics() *moves.Move {
 	builder.SetIsContained(true)
 
 	condition := battles.NewTriggerCondition(battles.ConditionNotHaveItem, "true")
-	correction := battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalPower, 2, condition)
+	correction := battles.NewDefaultCorrectionValue(battles.CorrectionPhysicalPower, battles.Correction8192, condition)
 	effectsBuilder := battles.NewBattleEffectsBuilder()
 	effectsBuilder.AddCorrectionValues(correction)
 

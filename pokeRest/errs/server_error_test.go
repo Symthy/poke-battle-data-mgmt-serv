@@ -7,7 +7,6 @@ import (
 
 	"errors"
 
-	"github.com/Symthy/PokeRest/pokeRest/errs"
 	"github.com/Symthy/PokeRest/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -33,17 +32,17 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		wrappedErr1 := dummyModule.FuncA()
 
 		assert.NotNil(suite.T(), wrappedErr1)
-		//errs.ErrUserNotFound
-		if errUserNotFound, ok := errs.AsServerError(wrappedErr1); ok {
+		//ErrUserNotFound
+		if errUserNotFound, ok := AsServerError(wrappedErr1); ok {
 			assert.Equal(suite.T(), "[WARN  - A0002] user not found", errUserNotFound.GetMessage())
 			assert.False(suite.T(), errUserNotFound.HasStackTrace())
 		} else {
 			suite.Fail("invalid wrap ErrUserNotFound")
 		}
-		//errs.ErrAuth
+		//ErrAuth
 		wrappedErr2 := errors.Unwrap(wrappedErr1)
 		assert.NotNil(suite.T(), wrappedErr2)
-		if errAuth, ok := errs.AsServerError(wrappedErr2); ok {
+		if errAuth, ok := AsServerError(wrappedErr2); ok {
 			assert.Equal(suite.T(), "[ERROR - 0001] invalid token", errAuth.GetMessage())
 			assert.True(suite.T(), errAuth.HasStackTrace())
 			assert.Contains(suite.T(), errAuth.GetStackTrace(), "ErrorTestOssAndServerErrWrap.funcD")
@@ -51,10 +50,10 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		} else {
 			suite.Fail("invalid wrap ErrAuth")
 		}
-		//errs.ErrUnexpected
+		//ErrUnexpected
 		wrappedErr3 := errors.Unwrap(wrappedErr2)
 		assert.NotNil(suite.T(), wrappedErr3)
-		if errUnexpected, ok := errs.AsServerError(wrappedErr3); ok {
+		if errUnexpected, ok := AsServerError(wrappedErr3); ok {
 			assert.Equal(suite.T(), "[ERROR - 9999] unexpected error", errUnexpected.GetMessage())
 			assert.True(suite.T(), errUnexpected.HasStackTrace())
 			assert.Contains(suite.T(), errUnexpected.GetStackTrace(), "ErrorTestOssAndServerErrWrap.funcF")
@@ -70,7 +69,7 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		assert.Equal(suite.T(), expectedMsg, actualMsg)
 
 		if suite.isStandardOutput {
-			fmt.Printf("actual err message all:\n%s\n", errs.BuildErrorMessage(wrappedErr1))
+			fmt.Printf("actual err message all:\n%s\n", BuildErrorMessage(wrappedErr1))
 		}
 	})
 
@@ -79,18 +78,18 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		wrappedErr1 := dummyModule.FuncA()
 
 		assert.NotNil(suite.T(), wrappedErr1)
-		//errs.ErrUnexpected
-		if errUnexpected, ok := errs.AsServerError(wrappedErr1); ok {
+		//ErrUnexpected
+		if errUnexpected, ok := AsServerError(wrappedErr1); ok {
 			assert.Equal(suite.T(), "[ERROR - 9999] unexpected error", errUnexpected.GetMessage())
 			assert.True(suite.T(), errUnexpected.HasStackTrace())
 			assert.Contains(suite.T(), errUnexpected.GetStackTrace(), "ErrorTestServerErrOnlyWrap.funcB")
 		} else {
 			suite.Fail("invalid wrap ErrUnexpected")
 		}
-		//errs.ErrUserNotFound
+		//ErrUserNotFound
 		wrappedErr2 := errors.Unwrap(wrappedErr1)
 		assert.NotNil(suite.T(), wrappedErr2)
-		if errUserNotFound, ok := errs.AsServerError(wrappedErr2); ok {
+		if errUserNotFound, ok := AsServerError(wrappedErr2); ok {
 			assert.Equal(suite.T(), "[WARN  - A0002] user not found", errUserNotFound.GetMessage())
 			assert.False(suite.T(), errUserNotFound.HasStackTrace())
 		} else {
@@ -100,14 +99,14 @@ func (suite *ServerErrorTestSuite) TestServerError() {
 		assert.Nil(suite.T(), errors.Unwrap(wrappedErr2))
 
 		if suite.isStandardOutput {
-			fmt.Printf("actual err message all:\n%s\n", errs.BuildErrorMessage(wrappedErr1))
+			fmt.Printf("actual err message all:\n%s\n", BuildErrorMessage(wrappedErr1))
 		}
 	})
 }
 
 func (suite *ServerErrorTestSuite) TestServerErrorFields() {
 	suite.Run("add field and value in server error", func() {
-		e := errs.ThrowErrorInvalidValue("testClass", "testField", "testValue")
+		e := ThrowErrorInvalidValue("testClass", "testField", "testValue")
 		assert.Equal(suite.T(), "[WARN  - D0001] invalid value. (class=testClass, field=testField, value=testValue)", e.Error())
 	})
 }
