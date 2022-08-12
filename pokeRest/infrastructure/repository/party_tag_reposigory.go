@@ -12,8 +12,8 @@ import (
 var _ repository.IPartyTagRepository = (*PartyTagRepository)(nil)
 
 var (
-	emptyPartyTagBuilder  = func() schema.PartyTag { return schema.PartyTag{} }
-	emptyPartyTagsBuilder = func() []schema.PartyTag { return []schema.PartyTag{} }
+	emptyPartyTagBuilder  = func() *schema.PartyTag { return &schema.PartyTag{} }
+	emptyPartyTagsBuilder = func() []*schema.PartyTag { return []*schema.PartyTag{} }
 )
 
 type PartyTagRepository struct {

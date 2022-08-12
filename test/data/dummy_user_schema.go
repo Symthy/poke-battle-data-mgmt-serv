@@ -6,7 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/common/lists"
 )
 
-func DummyUser1(filterFields ...string) schema.User {
+func DummyUser1(filterFields ...string) *schema.User {
 	var id uint64 = 0
 	if len(filterFields) == 0 || lists.Contains(filterFields, "id") {
 		id = 1
@@ -27,7 +27,7 @@ func DummyUser1(filterFields ...string) schema.User {
 		*profile = "detail\nprofile"
 	}
 
-	dummyUser := schema.User{
+	dummyUser := &schema.User{
 		Name:        "dummy_user",
 		DisplayName: displayName,
 		Email:       email,

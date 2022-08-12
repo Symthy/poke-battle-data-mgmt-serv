@@ -14,7 +14,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
 )
 
-func ToDomainPokemon(schema schema.Pokemon) (*pokemons.Pokemon, error) {
+func ToDomainPokemon(schema *schema.Pokemon) (*pokemons.Pokemon, error) {
 	if _, err := schema.AbilityID1.Value(); err != nil {
 		// Todo: error wrap
 		return nil, err
@@ -52,25 +52,36 @@ func ToDomainPokemon(schema schema.Pokemon) (*pokemons.Pokemon, error) {
 	return builder.BuildDomain()
 }
 
-func ToDomainAbility(ability schema.Ability) (*abilities.Ability, error) {
+func ToDomainAbility(ability *schema.Ability) (*abilities.Ability, error) {
 	input := factory.NewAbilityInput(uint64(ability.ID), ability.Name, ability.Description,
 		toBattleEffects(ability.BattleEffects))
 	return input.BuildDomain()
 }
 
-func ToDomainMove(schema schema.Move) (*moves.Move, error) {
-	input := factory.NewMoveInput(uint64(schema.ID), schema.Name, schema.Species.String(), schema.Type.String(),
-		uint64(schema.Power), schema.Accuracy, uint64(schema.PP), *schema.IsContained, *schema.CanGuard)
-	return input.BuildDomain()
+func ToDomainMove(schema *schema.Move) (*moves.Move, error) {
+	builder := factory.NewMoveBuilder()
+	builder.Id(uint64(schema.ID))
+	builder.Name(schema.Name)
+	builder.Species(schema.Species.String())
+	builder.MovePokemonType(schema.Type.String())
+	builder.Power(uint64(schema.Power))
+	builder.Accuracy(schema.Accuracy)
+	builder.PP(uint64(schema.PP))
+	builder.SetIsContained(*schema.IsContained)
+	builder.SetCanGuard(*schema.CanGuard)
+	return builder.BuildDomain()
 }
 
-func ToDomainHeldItem(schema schema.HeldItem) (*items.HeldItem, error) {
-	input := factory.NewHeldItemInput(uint64(schema.ID), schema.Name, schema.Description,
-		toBattleEffects(schema.BattleEffects))
-	return input.BuildDomain()
+func ToDomainHeldItem(schema *schema.HeldItem) (*items.HeldItem, error) {
+	builder := factory.NewHeldItemBuilder()
+	builder.Id(uint64(schema.ID))
+	builder.Name(schema.Name)
+	builder.Description(schema.Description)
+	builder.BattleEffects(toBattleEffects(schema.BattleEffects))
+	return builder.BuildDomain()
 }
 
-func ToDomainTrainedPokemon(schema schema.TrainedPokemon) (*trainings.TrainedPokemon, error) {
+func ToDomainTrainedPokemon(schema *schema.TrainedPokemon) (*trainings.TrainedPokemon, error) {
 	nickname := ""
 	if schema.Nickname != nil {
 		nickname = *schema.Nickname
@@ -83,13 +94,19 @@ func ToDomainTrainedPokemon(schema schema.TrainedPokemon) (*trainings.TrainedPok
 	if schema.CreateUserId != nil {
 		userId = *schema.CreateUserId
 	}
-	adjustmentInput := toTrainedPokemonAdjustmentInput(schema.TrainedPokemonAdjustment)
-	input := factory.NewTrainedPokemonInput(schema.ID, schema.Gender.String(), nickname,
-		description, schema.IsPrivate, userId, adjustmentInput)
-	return input.BuildDomain()
+	adjustment := toTrainedPokemonAdjustmentInput(&schema.TrainedPokemonAdjustment)
+	builder := factory.NewTrainedPokemonBuilder()
+	builder.Id(schema.ID)
+	builder.Gender(schema.Gender.String())
+	builder.Nickname(nickname)
+	builder.Description(description)
+	builder.SetIsPrivate(schema.IsPrivate)
+	builder.UserId(userId)
+	builder.Adjustment(adjustment)
+	return builder.BuildDomain()
 }
 
-func toTrainedPokemonAdjustmentInput(schema schema.TrainedPokemonAdjustment) factory.TrainedPokemonAdjustmentInput {
+func toTrainedPokemonAdjustmentInput(schema *schema.TrainedPokemonAdjustment) factory.TrainedPokemonAdjustmentInput {
 	builder := factory.NewTrainedPokemonAdjustmentBuilder()
 	builder.Id(schema.ID)
 	builder.PokemonId(uint64(schema.PokemonID))
@@ -133,11 +150,11 @@ func toTrainedPokemonAdjustmentInput(schema schema.TrainedPokemonAdjustment) fac
 	return builder
 }
 
-func ToDomainTrainedPokemonAdjustment(schema schema.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error) {
+func ToDomainTrainedPokemonAdjustment(schema *schema.TrainedPokemonAdjustment) (*trainings.TrainedPokemonAdjustment, error) {
 	return toTrainedPokemonAdjustmentInput(schema).BuildDomain()
 }
 
-func ToDomainTrainedPokemonAttackTarget(schema schema.TrainedPokemonAttackTarget) (*trainings.TrainedPokemonAttackTarget, error) {
+func ToDomainTrainedPokemonAttackTarget(schema *schema.TrainedPokemonAttackTarget) (*trainings.TrainedPokemonAttackTarget, error) {
 	builder := factory.NewTrainedAttackTargetBuilder()
 	builder.Id(schema.ID)
 	builder.TrainedPokemonId(schema.TrainedPokemonId)
@@ -152,7 +169,7 @@ func ToDomainTrainedPokemonAttackTarget(schema schema.TrainedPokemonAttackTarget
 	return builder.BuildDomain()
 }
 
-func ToDomainTrainedPokemonDefenceTarget(schema schema.TrainedPokemonDefenceTarget) (*trainings.TrainedPokemonDefenceTarget, error) {
+func ToDomainTrainedPokemonDefenceTarget(schema *schema.TrainedPokemonDefenseTarget) (*trainings.TrainedPokemonDefenseTarget, error) {
 	builder := factory.NewTrainedDefenseTargetBuilder()
 	builder.Id(schema.ID)
 	builder.TrainedPokemonId(schema.TrainedPokemonId)
@@ -166,7 +183,7 @@ func ToDomainTrainedPokemonDefenceTarget(schema schema.TrainedPokemonDefenceTarg
 	return builder.BuildDomain()
 }
 
-func ToDomainParty(party schema.Party) (*parties.Party, error) {
+func ToDomainParty(party *schema.Party) (*parties.Party, error) {
 	var userId uint64 = 0
 	if party.CreateUserId != nil {
 		userId = *party.CreateUserId
@@ -186,17 +203,28 @@ func ToDomainParty(party schema.Party) (*parties.Party, error) {
 		func(tp schema.TrainedPokemon) uint64 {
 			return tp.ID
 		})
-	input := factory.NewPartyInput(party.ID, party.Name, string(party.BattleFormat), party.IsPrivate,
-		userId, partyResultIds, partyTagIds, trainedPokemonIds)
-	return input.BuildDomain()
+	builder := factory.NewPartyBuilder()
+	builder.Id(party.ID)
+	builder.Name(party.Name)
+	builder.BattleFormat(string(party.BattleFormat))
+	builder.SetIsPrivate(party.IsPrivate)
+	builder.UserId(userId)
+	builder.PartyResultIds(partyResultIds)
+	builder.PartyTagIds(partyTagIds)
+	builder.TrainedPokemonIds(trainedPokemonIds)
+	return builder.BuildDomain()
 }
 
-func ToDomainPartyTag(schema schema.PartyTag) (*parties.PartyTag, error) {
-	input := factory.NewPartyTagInput(schema.ID, schema.Name, *schema.IsGeneration, *schema.IsSeason)
-	return input.BuildDomain()
+func ToDomainPartyTag(schema *schema.PartyTag) (*parties.PartyTag, error) {
+	builder := factory.NewPartyTagBuilder()
+	builder.Id(schema.ID)
+	builder.Name(schema.Name)
+	builder.SetIsGeneration(*schema.IsGeneration)
+	builder.SetIsSeason(*schema.IsSeason)
+	return builder.BuildDomain()
 }
 
-func ToDomainPartyBattleResult(schema schema.PartySeasonResult) (*parties.PartyBattleResult, error) {
+func ToDomainPartyBattleResult(schema *schema.PartySeasonResult) (*parties.PartyBattleResult, error) {
 	builder := factory.NewPartyBattleResultBuilder()
 	builder.Id(schema.ID)
 	builder.Generation(uint64(schema.Generation))
@@ -210,7 +238,7 @@ func ToDomainPartyBattleResult(schema schema.PartySeasonResult) (*parties.PartyB
 	return builder.BuildDomain()
 }
 
-func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, error) {
+func ToDomainBattleRecord(schema *schema.BattleRecord) (*battles.BattleRecord, error) {
 	selfElectionPokemonIds := []uint16{}
 	lists.AddLiterals(selfElectionPokemonIds, schema.SelfElectionPokemonId1,
 		schema.SelfElectionPokemonId2, schema.SelfElectionPokemonId3, schema.SelfElectionPokemonId4)
@@ -221,8 +249,7 @@ func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, er
 	lists.AddLiterals(opponentElectionPokemonIds, schema.OpponentElectionPokemonId1,
 		schema.OpponentElectionPokemonId2, schema.OpponentElectionPokemonId3, schema.OpponentElectionPokemonId4)
 
-	opponentPartyInput := toBattleOpponentPartyInput(schema.BattleOpponentParty)
-
+	opponentPartyInput := toBattleOpponentPartyInput(&schema.BattleOpponentParty)
 	input := factory.NewBattleRecordInput(schema.ID, schema.PartyID, schema.UserID,
 		uint64(schema.BattleSeason.Generation), uint64(schema.BattleSeason.Series), uint64(schema.BattleSeason.Season),
 		schema.Result.String(), lists.ConvertTypeUint16To64(selfElectionPokemonIds), selfTrainedPokemonIds,
@@ -230,12 +257,12 @@ func ToDomainBattleRecord(schema schema.BattleRecord) (*battles.BattleRecord, er
 	return input.BuildDomain()
 }
 
-func ToDomainBattleOpponentParty(schema schema.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
+func ToDomainBattleOpponentParty(schema *schema.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
 	input := toBattleOpponentPartyInput(schema)
 	return input.BuildDomain()
 }
 
-func toBattleOpponentPartyInput(schema schema.BattleOpponentParty) factory.BattleOpponentPartyInput {
+func toBattleOpponentPartyInput(schema *schema.BattleOpponentParty) factory.BattleOpponentPartyInput {
 	opponentPokemonIds := []uint16{}
 	lists.AddLiterals(opponentPokemonIds,
 		schema.OpponentPokemonId1, schema.OpponentPokemonId2, schema.OpponentPokemonId3,
@@ -253,7 +280,10 @@ func ToDomainSeason(schema schema.BattleSeason) (*battles.Season, error) {
 	return battles.NewSeason(uint64(schema.Generation), uint64(schema.Series), uint64(schema.Season))
 }
 
-func ToDomainUser(schema schema.User) (*users.User, error) {
-	input := factory.NewUserInput(schema.ID, schema.Name, schema.Role.String())
-	return input.BuildDomain()
+func ToDomainUser(schema *schema.User) (*users.User, error) {
+	builder := factory.NewUserBuilder()
+	builder.Id(schema.ID)
+	builder.Name(schema.Name)
+	builder.Role(schema.Role.String())
+	return builder.BuildDomain()
 }

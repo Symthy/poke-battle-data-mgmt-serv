@@ -15,7 +15,7 @@ func NewPartySpecification(userRepo repository.IUserRepository) PartySpecificati
 	return PartySpecification{userRepo: userRepo}
 }
 
-func (s PartySpecification) ValidateForCreate(party parties.Party) error {
+func (s PartySpecification) ValidateForCreate(party *parties.Party) error {
 	if !party.IsUnregister() {
 		// todo: replace err
 		return fmt.Errorf("invalid party: specified id")
@@ -26,7 +26,7 @@ func (s PartySpecification) ValidateForCreate(party parties.Party) error {
 	return nil
 }
 
-func (s PartySpecification) ValidateForUpdate(party parties.Party) error {
+func (s PartySpecification) ValidateForUpdate(party *parties.Party) error {
 	if party.IsUnregister() {
 		// todo: replace err
 		return fmt.Errorf("invalid party: non specified id")
@@ -37,7 +37,7 @@ func (s PartySpecification) ValidateForUpdate(party parties.Party) error {
 	return nil
 }
 
-func (s PartySpecification) validateSatisfy(party parties.Party) error {
+func (s PartySpecification) validateSatisfy(party *parties.Party) error {
 	user, err := s.userRepo.FindById(party.UserId().Value())
 	if err != nil {
 		return err

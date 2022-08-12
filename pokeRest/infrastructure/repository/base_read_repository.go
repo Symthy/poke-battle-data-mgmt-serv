@@ -14,19 +14,19 @@ import (
 type BaseReadRepository[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], TM infrastructure.IDomains[TD, K, I], K infrastructure.IValueId[I], I uint16 | uint64] struct {
 	BaseSingleReadRepository[TS, TD, K, I]
 	dbClient            orm.IDbClient
-	emptySchemaBuilder  func() TS
-	emptySchemasBuilder func() []TS
-	domainsConstructor  func([]TD) TM
-	toSchemaConverter   func(TD) TS
+	emptySchemaBuilder  func() *TS
+	emptySchemasBuilder func() []*TS
+	domainsConstructor  func([]*TD) *TM
+	toSchemaConverter   func(*TD) *TS
 }
 
 func NewBaseReadRepository[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], TM infrastructure.IDomains[TD, K, I], K infrastructure.IValueId[I], I uint16 | uint64](
 	dbClient orm.IDbClient,
-	emptySchemaBuilder func() TS,
-	emptySchemasBuilder func() []TS,
-	domainsConstructor func([]TD) TM,
-	toSchemaConverter func(TD) TS,
-	toDomainConverter func(TS) (*TD, error),
+	emptySchemaBuilder func() *TS,
+	emptySchemasBuilder func() []*TS,
+	domainsConstructor func([]*TD) *TM,
+	toSchemaConverter func(*TD) *TS,
+	toDomainConverter func(*TS) (*TD, error),
 ) BaseReadRepository[TS, TD, TM, K, I] {
 	return BaseReadRepository[TS, TD, TM, K, I]{
 		BaseSingleReadRepository: BaseSingleReadRepository[TS, TD, K, I]{
@@ -79,7 +79,7 @@ func (rep BaseReadRepository[TS, TD, TM, K, I]) FindAll(next uint32, pageSize ui
 	return rep.resolveReturnValues(schemas)
 }
 
-func (rep BaseReadRepository[TS, TD, TM, K, I]) resolveReturnValues(schemas []TS) (*TM, error) {
+func (rep BaseReadRepository[TS, TD, TM, K, I]) resolveReturnValues(schemas []*TS) (*TM, error) {
 	domainArray, err := conv.ConvertToDomains[TS, TD, K, I](schemas, rep.toDomainConverter)
 	if err != nil {
 		return nil, err

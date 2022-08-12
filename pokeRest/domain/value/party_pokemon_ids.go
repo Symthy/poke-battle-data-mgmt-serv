@@ -5,7 +5,7 @@ type PartyPokemonIds struct {
 	size        uint8
 }
 
-func NewPartyPokemonIds(pokemonIds []uint64) PartyPokemonIds {
+func NewPartyPokemonIds(pokemonIds []uint64) *PartyPokemonIds {
 	// Todo: validate id
 	ids := make([]*uint16, 6)
 	for i, pid := range pokemonIds {
@@ -14,7 +14,7 @@ func NewPartyPokemonIds(pokemonIds []uint64) PartyPokemonIds {
 			ids[i] = &id
 		}
 	}
-	return PartyPokemonIds{
+	return &PartyPokemonIds{
 		pokemonsIds: ids,
 		size:        uint8(len(ids)),
 	}

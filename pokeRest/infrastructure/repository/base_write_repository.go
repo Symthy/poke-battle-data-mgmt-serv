@@ -8,20 +8,20 @@ import (
 
 type BaseWriteRepository[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], K infrastructure.IValueId[I], I uint16 | uint64] struct {
 	dbClient           orm.IDbClient
-	emptySchemaBuilder func() TS
-	toSchemaConverter  func(model TD) TS
-	toDomainConverter  func(schema TS) (*TD, error)
+	emptySchemaBuilder func() *TS
+	toSchemaConverter  func(model *TD) *TS
+	toDomainConverter  func(schema *TS) (*TD, error)
 }
 
 // Todo: error handling
 
-func (rep BaseWriteRepository[TS, TD, K, I]) Create(model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) Create(model *TD) (*TD, error) {
 	return rep.CreateDelegate(rep.dbClient.Db(), model)
 }
 
-func (rep BaseWriteRepository[TS, TD, K, I]) CreateDelegate(db *gorm.DB, model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) CreateDelegate(db *gorm.DB, model *TD) (*TD, error) {
 	schema := rep.toSchemaConverter(model)
-	tx := db.Create(&schema)
+	tx := db.Create(schema)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -29,20 +29,20 @@ func (rep BaseWriteRepository[TS, TD, K, I]) CreateDelegate(db *gorm.DB, model T
 	return domain, err
 }
 
-func (rep BaseWriteRepository[TS, TD, K, I]) Update(model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) Update(model *TD) (*TD, error) {
 	return rep.UpdateDelegate(rep.dbClient.Db(), model)
 }
 
-func (rep BaseWriteRepository[TS, TD, K, I]) UpdateDelegate(db *gorm.DB, model TD) (*TD, error) {
+func (rep BaseWriteRepository[TS, TD, K, I]) UpdateDelegate(db *gorm.DB, model *TD) (*TD, error) {
 	target := rep.emptySchemaBuilder()
-	if tx := db.First(&target, model.Id().Value()); tx.Error != nil {
+	if tx := db.First(target, (*model).Id().Value()); tx.Error != nil {
 		if tx.Error == gorm.ErrRecordNotFound {
 			return nil, nil
 		}
 		return nil, tx.Error
 	}
 	schema := rep.toSchemaConverter(model)
-	tx := db.Model(&target).Updates(&schema)
+	tx := db.Model(&target).Updates(schema)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

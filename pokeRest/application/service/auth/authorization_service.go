@@ -72,5 +72,5 @@ func (a AuthorizationService) CreateSignUpUser(name string, password string) (*m
 	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return user, nil
 }

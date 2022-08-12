@@ -13,7 +13,7 @@ var _ repository.ITrainedPokemonAttackRepository = (*TrainedPokemonAttackReposit
 
 type schemaTpa = schema.TrainedPokemonAttackTarget
 
-var emptyTrainedPokemonAttackSchemaBuilder = func() schemaTpa { return schemaTpa{} }
+var emptyTrainedPokemonAttackSchemaBuilder = func() *schemaTpa { return &schemaTpa{} }
 
 type TrainedPokemonAttackRepository struct {
 	BaseWriteRepository[schemaTpa, trainings.TrainedPokemonAttackTarget, identifier.TrainedAttackTargetId, uint64]

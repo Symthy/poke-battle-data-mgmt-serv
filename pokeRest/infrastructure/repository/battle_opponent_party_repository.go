@@ -12,8 +12,8 @@ import (
 
 var _ repository.IBattleOpponentPartyRepository = (*BattleOpponentPartyRepository)(nil)
 
-var emptyBattleOpponentPartySchemaBuilder = func() schema.BattleOpponentParty {
-	return schema.BattleOpponentParty{}
+var emptyBattleOpponentPartySchemaBuilder = func() *schema.BattleOpponentParty {
+	return &schema.BattleOpponentParty{}
 }
 
 type BattleOpponentPartyRepository struct {
@@ -37,12 +37,12 @@ func NewBattleOpponentPartyRepository(dbClient orm.IDbClient) *BattleOpponentPar
 // Update <- BaseWriteRepository
 // Delete <- BaseWriteRepository
 
-func (rep BattleOpponentPartyRepository) FindParty(opponentParty battles.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
+func (rep BattleOpponentPartyRepository) FindParty(opponentParty *battles.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
 	db := rep.dbClient.Db()
 
 	searchParty := conv.ToSchemaBattleOpponentParty(opponentParty)
-	ret := schema.BattleOpponentParty{}
-	tx := db.Where(searchParty).First(&ret)
+	ret := &schema.BattleOpponentParty{}
+	tx := db.Where(searchParty).First(ret)
 	if tx.Error == gorm.ErrRecordNotFound {
 		return nil, nil
 	}

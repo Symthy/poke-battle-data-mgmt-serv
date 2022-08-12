@@ -24,7 +24,7 @@ func NewBattleRecordSpecification(
 	}
 }
 
-func (s BattleRecordSpecification) IsSatisfyForUpdate(battleRecord battles.BattleRecord) (bool, error) {
+func (s BattleRecordSpecification) IsSatisfyForUpdate(battleRecord *battles.BattleRecord) (bool, error) {
 	if _, err := s.ExistSelfParty(battleRecord.PartyId()); err != nil {
 		return false, err
 	}

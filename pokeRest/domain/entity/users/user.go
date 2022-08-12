@@ -28,8 +28,8 @@ func NewUser(
 	displayName *string,
 	email *value.Email,
 	profile *string,
-	role value.Role) User {
-	return User{
+	role value.Role) *User {
+	return &User{
 		id:          id,
 		name:        name,
 		displayName: displayName,
@@ -39,7 +39,7 @@ func NewUser(
 	}
 }
 
-func NewUserFromCommand(command command.CreateUserCommand) User {
+func NewUserFromCommand(command command.CreateUserCommand) *User {
 	name, _ := value.NewUserName(command.Name())
 	return NewUser(
 		identifier.NewEmptyUserId(),

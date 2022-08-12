@@ -11,7 +11,11 @@ import (
 var _ pokemons.IPokemonNotification = (*PokemonSchemaBuilder)(nil)
 
 type PokemonSchemaBuilder struct {
-	schema.Pokemon
+	*schema.Pokemon
+}
+
+func NewPokemonSchemaBuilder() *PokemonSchemaBuilder {
+	return &PokemonSchemaBuilder{&schema.Pokemon{}}
 }
 
 func (b *PokemonSchemaBuilder) SetId(id identifier.PokemonId) {
@@ -66,6 +70,6 @@ func (b *PokemonSchemaBuilder) SetIsFinalEvolution(value bool) {
 	b.IsFinalEvolution = value
 }
 
-func (b PokemonSchemaBuilder) Build() schema.Pokemon {
+func (b PokemonSchemaBuilder) Build() *schema.Pokemon {
 	return b.Pokemon
 }

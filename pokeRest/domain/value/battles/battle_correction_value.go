@@ -25,6 +25,10 @@ const (
 
 type DecimalCalcType string
 
+func (d DecimalCalcType) ToString() string {
+	return string(d)
+}
+
 const (
 	RoundUp                     DecimalCalcType = "up"
 	RoundDown                   DecimalCalcType = "down"
@@ -116,6 +120,13 @@ func (c BattleCorrectionValue) AnyEqualTarget(targets ...CorrectionTarget) bool 
 		}
 	}
 	return false
+}
+
+func (c BattleCorrectionValue) Notify(note ICorrectionValueNotification) {
+	note.SetTarget(c.target)
+	note.SetCorrectionValue(c.value)
+	c.triggerCondition.Notify(note)
+	note.SetDecimalCalcType(c.decimalCalcType)
 }
 
 type CorrectionType string

@@ -76,7 +76,7 @@ func (i PartyInput) BuildDomain() (*parties.Party, error) {
 		if err != nil {
 			return nil, err
 		}
-		partyResultIds = *ids
+		partyResultIds = ids
 	}
 	partyTagIds, err := value.NewPartyTagIds(i.partyTagIds)
 	if err != nil {
@@ -88,6 +88,6 @@ func (i PartyInput) BuildDomain() (*parties.Party, error) {
 	}
 
 	domain := parties.NewParty(*id, i.name, battleFormat, i.isPrivate, *userId, partyResultIds,
-		*partyTagIds, trainedPokemonIds)
+		partyTagIds, trainedPokemonIds)
 	return &domain, nil
 }

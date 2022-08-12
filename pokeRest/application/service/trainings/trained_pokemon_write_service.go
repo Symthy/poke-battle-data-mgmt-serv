@@ -29,10 +29,10 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.spec.ValidateForCreate(*domain); err != nil {
+	if err := s.spec.ValidateForCreate(domain); err != nil {
 		return nil, err
 	}
-	created, err := s.trainedRepo.Create(*domain)
+	created, err := s.trainedRepo.Create(domain)
 	if err != nil {
 		return nil, err
 	}
@@ -47,10 +47,10 @@ func (s TrainedPokemonWriteService) UpdateTrainedPokemon(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.spec.ValidateForUpdate(*domain); err != nil {
+	if err := s.spec.ValidateForUpdate(domain); err != nil {
 		return nil, err
 	}
-	updated, err := s.trainedRepo.Update(*trainedPokemon)
+	updated, err := s.trainedRepo.Update(trainedPokemon)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (s TrainedPokemonWriteService) DeleteTrainedPokemon(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.spec.ValidateForUpdate(*domain); err != nil {
+	if err := s.spec.ValidateForUpdate(domain); err != nil {
 		return nil, err
 	}
 	return s.trainedRepo.Delete(domain.Id().Value())

@@ -5,9 +5,9 @@ type ElectionTrainedPokemons struct {
 	size       uint8
 }
 
-func NewElectionTrainedPokemons(pokemonIds []uint64) ElectionTrainedPokemons {
+func NewElectionTrainedPokemons(pokemonIds []uint64) *ElectionTrainedPokemons {
 	// Todo: validate id upper limit
-	return ElectionTrainedPokemons{
+	return &ElectionTrainedPokemons{
 		pokemonIds: pokemonIds,
 		size:       uint8(len(pokemonIds)),
 	}

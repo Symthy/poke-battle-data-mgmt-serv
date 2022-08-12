@@ -42,8 +42,8 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 				"overrides": []
 			}`),
 			expected: BattleEffects{
-				Corrections: []Correction{},
-				Overrides:   []Override{},
+				Corrections: []*Correction{},
+				Overrides:   []*Override{},
 			},
 		},
 		"data full set": {
@@ -77,7 +77,7 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 					}
 				]}`),
 			expected: BattleEffects{
-				Corrections: []Correction{
+				Corrections: []*Correction{
 					{
 						Target: enum.CorrectionPhysicalMove,
 						Value:  4915,
@@ -95,7 +95,7 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 						},
 					},
 				},
-				Overrides: []Override{
+				Overrides: []*Override{
 					{
 						Target: enum.OverridePokemonType,
 						Value:  enum.Flying.String(),
@@ -122,13 +122,13 @@ func (suite BattleEffectsTestSuite) TestUnmarshal() {
 					}
 				]}`),
 			expected: BattleEffects{
-				Corrections: []Correction{
+				Corrections: []*Correction{
 					{
 						Target: enum.CorrectionDamage,
 						Value:  6144,
 					},
 				},
-				Overrides: []Override{
+				Overrides: []*Override{
 					{
 						Target: enum.OverrideFixedDamage,
 						Value:  "50",

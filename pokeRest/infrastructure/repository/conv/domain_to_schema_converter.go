@@ -16,23 +16,23 @@ import (
 )
 
 func ConvertToDomains[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDomain[K, I], K infrastructure.IValueId[I], I uint16 | uint64](
-	schemas []TS, toDomainConverter func(TS) (*TD, error)) ([]TD, error) {
-	domains := make([]TD, len(schemas), len(schemas))
+	schemas []*TS, toDomainConverter func(*TS) (*TD, error)) ([]*TD, error) {
+	domains := make([]*TD, len(schemas), len(schemas))
 	for i, schema := range schemas {
 		domain, err := toDomainConverter(schema)
 		if err != nil {
 			return nil, err
 		}
-		domains[i] = *domain
+		domains[i] = domain
 	}
 	return domains, nil
 }
 
 // Todo: autogen
 
-func ToSchemaUser(u users.User) schema.User {
+func ToSchemaUser(u *users.User) *schema.User {
 	email := u.Email().Value()
-	user := schema.User{
+	user := &schema.User{
 		Name:        u.Name().Value(),
 		DisplayName: u.DisplayName(),
 		Email:       &email,
@@ -43,71 +43,80 @@ func ToSchemaUser(u users.User) schema.User {
 	return user
 }
 
-func ToSchemaPokemon(domain pokemons.Pokemon) schema.Pokemon {
-	builder := dto.PokemonSchemaBuilder{}
-	domain.Notify(&builder)
+func ToSchemaPokemon(domain *pokemons.Pokemon) *schema.Pokemon {
+	builder := dto.NewPokemonSchemaBuilder()
+	domain.Notify(builder)
 	return builder.Build()
 }
 
-func ToSchemaAbility(a abilities.Ability) schema.Ability {
-	schema := schema.Ability{}
-	return schema
-}
-
-func ToSchemaMove(a moves.Move) schema.Move {
-	schema := schema.Move{}
-	return schema
-}
-
-func ToSchemaHeldItem(a items.HeldItem) schema.HeldItem {
-	schema := schema.HeldItem{}
-	return schema
-}
-
-func ToSchemaPartyTag(domain parties.PartyTag) schema.PartyTag {
-	builder := dto.PartyTagSchemaBuilder{}
-	domain.Notify(&builder)
+func ToSchemaAbility(domain *abilities.Ability) *schema.Ability {
+	builder := dto.NewAbilitySchemaBuilder()
+	domain.Notify(builder)
 	return builder.Build()
 }
 
-func ToSchemaTrainedPokemon(t trainings.TrainedPokemon) schema.TrainedPokemon {
-	schema := schema.TrainedPokemon{}
-	return schema
-}
-
-func ToSchemaTrainedPokemonAdjustment(t trainings.TrainedPokemonAdjustment) schema.TrainedPokemonAdjustment {
-	schema := schema.TrainedPokemonAdjustment{}
-	return schema
-}
-
-func ToSchemaTrainedPokemonAttackTarget(t trainings.TrainedPokemonAttackTarget) schema.TrainedPokemonAttackTarget {
-	schema := schema.TrainedPokemonAttackTarget{}
-	return schema
-}
-
-func ToSchemaTrainedPokemonDefenceTarget(t trainings.TrainedPokemonDefenceTarget) schema.TrainedPokemonDefenceTarget {
-	schema := schema.TrainedPokemonDefenceTarget{}
-	return schema
-}
-
-func ToSchemaParty(p parties.Party) schema.Party {
-	schema := schema.Party{}
-	return schema
-}
-
-func ToSchemaPartySeasonResult(p parties.PartyBattleResult) schema.PartySeasonResult {
-	schema := schema.PartySeasonResult{}
-	return schema
-}
-
-func ToSchemaBattleRecord(domain battles.BattleRecord) schema.BattleRecord {
-	builder := dto.BattleRecordSchemaBuilder{}
-	domain.Notify(&builder)
+func ToSchemaMove(domain *moves.Move) *schema.Move {
+	builder := dto.NewMoveSchemaBuilder()
+	domain.Notify(builder)
 	return builder.Build()
 }
 
-func ToSchemaBattleOpponentParty(domain battles.BattleOpponentParty) schema.BattleOpponentParty {
-	builder := dto.BattleOpponentPartySchemaBuilder{}
-	domain.Notify(&builder)
+func ToSchemaHeldItem(domain *items.HeldItem) *schema.HeldItem {
+	builder := dto.NewHeldItemSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaPartyTag(domain *parties.PartyTag) *schema.PartyTag {
+	builder := dto.NewPartyTagSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaTrainedPokemon(domain *trainings.TrainedPokemon) *schema.TrainedPokemon {
+	builder := dto.NewTrainedPokemonSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaTrainedPokemonAdjustment(domain *trainings.TrainedPokemonAdjustment) *schema.TrainedPokemonAdjustment {
+	builder := dto.NewTrainedPokemonAdjustmentSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaTrainedPokemonAttackTarget(domain *trainings.TrainedPokemonAttackTarget) *schema.TrainedPokemonAttackTarget {
+	builder := dto.NewTrainedPokemonAttackTargetSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaTrainedPokemonDefenceTarget(domain *trainings.TrainedPokemonDefenseTarget) *schema.TrainedPokemonDefenseTarget {
+	builder := dto.NewTrainedPokemonDefenseTargetSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaParty(domain *parties.Party) *schema.Party {
+	builder := dto.NewPartySchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaPartySeasonResult(domain *parties.PartyBattleResult) *schema.PartySeasonResult {
+	builder := dto.NewPartySeasonResultSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaBattleRecord(domain *battles.BattleRecord) *schema.BattleRecord {
+	builder := dto.NewBattleRecordBuilder()
+	domain.Notify(builder)
+	return builder.Build()
+}
+
+func ToSchemaBattleOpponentParty(domain *battles.BattleOpponentParty) *schema.BattleOpponentParty {
+	builder := dto.NewBattleOpponentPartySchemaBuilder()
+	domain.Notify(builder)
 	return builder.Build()
 }

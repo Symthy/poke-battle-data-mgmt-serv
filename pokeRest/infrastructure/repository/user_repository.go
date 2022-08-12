@@ -12,8 +12,8 @@ import (
 var _ repository.IUserRepository = (*UserRepository)(nil)
 
 var (
-	emptyUserBuilder  = func() schema.User { return schema.User{} }
-	emptyUsersBuilder = func() []schema.User { return []schema.User{} }
+	emptyUserBuilder  = func() *schema.User { return &schema.User{} }
+	emptyUsersBuilder = func() []*schema.User { return []*schema.User{} }
 )
 
 type UserRepository struct {
@@ -48,5 +48,5 @@ func (rep UserRepository) FindByName(targetName string, filterFields ...string) 
 		return nil, err
 	}
 	user := users.First()
-	return &user, err
+	return user, err
 }

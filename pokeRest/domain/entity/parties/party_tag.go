@@ -24,8 +24,8 @@ func NewPartyTag(id identifier.PartyTagId, name string, isGeneration, isSeason b
 	}
 }
 
-func NewPartyTagOfUnregistered(name string) PartyTag {
-	return PartyTag{
+func NewPartyTagOfUnregistered(name string) *PartyTag {
+	return &PartyTag{
 		name:         name,
 		isGeneration: false,
 		isSeason:     false,

@@ -26,27 +26,33 @@ func NewBattleRecordWriteService(
 
 // UC: 戦績登録 (パーティ戦績も更新)
 func (s BattleRecordWriteService) AddBattleRecord(cmd command.AddBattleRecordCommand) (*battles.BattleRecord, error) {
-	input, err := cmd.BuildDomain()
+	battleRecord, err := cmd.BuildDomain()
 	if err != nil {
 		return nil, err
 	}
-	if _, err := s.spec.IsSatisfyForUpdate(*input); err != nil {
+	if _, err := s.spec.IsSatisfyForUpdate(battleRecord); err != nil {
 		return nil, err
 	}
-	createdBattleRecord, err := s.battleRecordRepo.Create(*input)
+	createdBattleRecord, err := s.battleRecordRepo.Create(battleRecord)
+	if err != nil {
+		return nil, err
+	}
 	return createdBattleRecord, nil
 }
 
 // UC: 戦績編集 (パーティ戦績も更新)
 func (s BattleRecordWriteService) EditBattleRecord(cmd command.EditBattleRecordCommand) (*battles.BattleRecord, error) {
-	input, err := cmd.BuildDomain()
+	battleRecord, err := cmd.BuildDomain()
 	if err != nil {
 		return nil, err
 	}
-	if _, err := s.spec.IsSatisfyForUpdate(*input); err != nil {
+	if _, err := s.spec.IsSatisfyForUpdate(battleRecord); err != nil {
 		return nil, err
 	}
-	updatedBattleRecord, err := s.battleRecordRepo.Update(*input)
+	updatedBattleRecord, err := s.battleRecordRepo.Update(battleRecord)
+	if err != nil {
+		return nil, err
+	}
 	return updatedBattleRecord, nil
 }
 

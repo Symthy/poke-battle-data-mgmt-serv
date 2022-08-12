@@ -13,19 +13,19 @@ type BattleRecord struct {
 	partyId                  identifier.PartyId
 	userId                   identifier.UserId
 	battleResult             value.BattleResult
-	selfElectionPokemons     ElectionPokemons
-	selfTrainedPokemons      ElectionTrainedPokemons
-	opponentElectionPokemons ElectionPokemons
-	BattleOpponentParty
-	Season
+	selfElectionPokemons     *ElectionPokemons
+	selfTrainedPokemons      *ElectionTrainedPokemons
+	opponentElectionPokemons *ElectionPokemons
+	*BattleOpponentParty
+	*Season
 }
 
 func NewBattleRecord(
 	id identifier.BattleRecordId, partyId identifier.PartyId, userId identifier.UserId,
-	season Season, battleResult value.BattleResult, selfElectionPokemons ElectionPokemons,
-	selfTrainedPokemons ElectionTrainedPokemons, opponentElectionPokemons ElectionPokemons,
-	opponentParty BattleOpponentParty) BattleRecord {
-	return BattleRecord{
+	season *Season, battleResult value.BattleResult, selfElectionPokemons *ElectionPokemons,
+	selfTrainedPokemons *ElectionTrainedPokemons, opponentElectionPokemons *ElectionPokemons,
+	opponentParty *BattleOpponentParty) *BattleRecord {
+	return &BattleRecord{
 		id:                       id,
 		partyId:                  partyId,
 		battleResult:             battleResult,
@@ -49,11 +49,11 @@ func (b BattleRecord) UserId() identifier.UserId {
 	return b.userId
 }
 
-func (b BattleRecord) OpponentParty() BattleOpponentParty {
+func (b BattleRecord) OpponentParty() *BattleOpponentParty {
 	return b.BattleOpponentParty
 }
 
-func (b *BattleRecord) ApplyOpponentParty(opponentParty BattleOpponentParty) {
+func (b *BattleRecord) ApplyOpponentParty(opponentParty *BattleOpponentParty) {
 	b.BattleOpponentParty = opponentParty
 }
 

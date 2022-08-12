@@ -1,17 +1,17 @@
 package users
 
 type Users struct {
-	items []User
+	items []*User
 }
 
-func NewUsers(items []User) Users {
-	return Users{items: items}
+func NewUsers(items []*User) *Users {
+	return &Users{items: items}
 }
 
-func (u Users) Items() []User {
+func (u Users) Items() []*User {
 	return u.items
 }
 
-func (u Users) First() User {
+func (u Users) First() *User {
 	return u.items[0]
 }

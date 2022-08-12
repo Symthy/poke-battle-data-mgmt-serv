@@ -6,9 +6,9 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 )
 
-var _ entity.IDomain[identifier.TrainedDefenseTargetId, uint64] = (*TrainedPokemonDefenceTarget)(nil)
+var _ entity.IDomain[identifier.TrainedDefenseTargetId, uint64] = (*TrainedPokemonDefenseTarget)(nil)
 
-type TrainedPokemonDefenceTarget struct {
+type TrainedPokemonDefenseTarget struct {
 	id                   identifier.TrainedDefenseTargetId
 	trainedPokemonId     identifier.TrainedPokemonId
 	moveId               identifier.MoveId
@@ -22,7 +22,7 @@ func NewTrainedPokemonDefenceTarget(
 	id identifier.TrainedDefenseTargetId, trainedPokemonId identifier.TrainedPokemonId,
 	moveId identifier.MoveId, targetPokemonId identifier.PokemonId, targetPokemonNature string,
 	targetPokemonEffortA, targetPokemonEffortC uint64,
-) (*TrainedPokemonDefenceTarget, error) {
+) (*TrainedPokemonDefenseTarget, error) {
 	effortValueA, err := value.NewEffortValue(targetPokemonEffortA, value.A)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func NewTrainedPokemonDefenceTarget(
 	if err != nil {
 		return nil, err
 	}
-	return &TrainedPokemonDefenceTarget{
+	return &TrainedPokemonDefenseTarget{
 		id:                   id,
 		trainedPokemonId:     trainedPokemonId,
 		moveId:               moveId,
@@ -43,15 +43,15 @@ func NewTrainedPokemonDefenceTarget(
 }
 
 // Todo: refactor Notification
-func (t TrainedPokemonDefenceTarget) Id() identifier.TrainedDefenseTargetId {
+func (t TrainedPokemonDefenseTarget) Id() identifier.TrainedDefenseTargetId {
 	return t.id
 }
 
-func (t TrainedPokemonDefenceTarget) TrainedPokemonId() identifier.TrainedPokemonId {
+func (t TrainedPokemonDefenseTarget) TrainedPokemonId() identifier.TrainedPokemonId {
 	return t.trainedPokemonId
 }
 
-func (t TrainedPokemonDefenceTarget) Notify(note ITrainedPokemonDefenceNotification) {
+func (t TrainedPokemonDefenseTarget) Notify(note ITrainedPokemonDefenseNotification) {
 	note.SetId(t.id)
 	note.SetTargetPokemonId(t.targetPokemonId)
 	note.SetMoveId(t.moveId)

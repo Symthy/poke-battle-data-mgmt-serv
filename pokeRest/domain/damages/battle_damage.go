@@ -1,13 +1,16 @@
 package damages
 
-import "github.com/Symthy/PokeRest/pokeRest/common/fmath"
+import (
+	"github.com/Symthy/PokeRest/pokeRest/common/fmath"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
+)
 
 type BattleDamage struct {
-	calcElements DamageCalcElements
+	calcElements battles.PokemonBattleBaseParams
 	damages      []uint16
 }
 
-func NewBattleDamage(calcElements DamageCalcElements) BattleDamage {
+func NewBattleDamage(calcElements battles.PokemonBattleBaseParams) BattleDamage {
 	return BattleDamage{
 		calcElements: calcElements,
 		damages:      calculate(calcElements),
@@ -15,7 +18,7 @@ func NewBattleDamage(calcElements DamageCalcElements) BattleDamage {
 }
 
 // Todo: method split
-func calculate(calcElements DamageCalcElements) []uint16 {
+func calculate(calcElements battles.PokemonBattleBaseParams) []uint16 {
 	if calcElements.IsNoDamage() {
 		return []uint16{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	}
@@ -51,16 +54,16 @@ func calculate(calcElements DamageCalcElements) []uint16 {
 	return damages
 }
 
-func calcBaseDamage(calcElements DamageCalcElements) uint16 {
+func calcBaseDamage(calcElements battles.PokemonBattleBaseParams) uint16 {
 	// 最終威力
-	attackPower := calcElements.resolvePowerCorrectedValue()
+	attackPower := calcElements.PowerCorrectedValue()
 	attackPower = fmath.Round[uint16](float64(attackPower*calcElements.FieldCorrectedValue()) / 4096.0)
-	movePower := calcElements.resolveMovePowerValue()
+	movePower := calcElements.MovePowerValue()
 	finalPowerValue := fmath.RoundUpIfDecimalGreaterFive[uint16](float64(movePower*attackPower) / 4096.0)
 	// 最終攻撃
-	finalAttackValue := calcElements.AttackActualValue()
+	finalAttackValue := calcElements.AttackCorrectedActualValue()
 	// 最終防御
-	finalDefenseValue := calcElements.DefenseActualValue()
+	finalDefenseValue := calcElements.DefenseCorrectedActualValue()
 
 	level := 50.0
 	levelCorrection := float64(fmath.RoundDown[uint16](level*2.0/5.0 + 2.0))
@@ -69,11 +72,11 @@ func calcBaseDamage(calcElements DamageCalcElements) uint16 {
 	return fmath.RoundDown[uint16](damageBaseValue/50 + 2)
 }
 
-func calcDamageCorrectedWeather(damage uint16, calcElements DamageCalcElements) uint16 {
+func calcDamageCorrectedWeather(damage uint16, calcElements battles.PokemonBattleBaseParams) uint16 {
 	return fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage * calcElements.WeatherCorrectedValue()))
 }
 
-func calcDamageCorrectedTypeMatch(damage uint16, calcElements DamageCalcElements) uint16 {
+func calcDamageCorrectedTypeMatch(damage uint16, calcElements battles.PokemonBattleBaseParams) uint16 {
 	result := damage
 	if calcElements.IsTypeMatchAttackSide() {
 		result = fmath.RoundUpIfDecimalGreaterFive[uint16](float64(damage) * 6144.0 / 4096.0)
@@ -81,11 +84,11 @@ func calcDamageCorrectedTypeMatch(damage uint16, calcElements DamageCalcElements
 	return result
 }
 
-func calcDamageCorrectedTypeCompatibility(damage uint16, calcElements DamageCalcElements) uint16 {
-	return fmath.Round[uint16](float64(damage) * calcElements.TypeCompatibilityDamageRate())
+func calcDamageCorrectedTypeCompatibility(damage uint16, calcElements battles.PokemonBattleBaseParams) uint16 {
+	return fmath.Round[uint16](float64(damage) * float64(calcElements.TypeCompatibilityDamageRate()))
 }
 
-func calcDamageCorrectedBurn(damage uint16, calcElements DamageCalcElements) uint16 {
+func calcDamageCorrectedBurn(damage uint16, calcElements battles.PokemonBattleBaseParams) uint16 {
 	result := damage
 	if calcElements.IsBurnAttackSide() {
 		correctionValue := calcElements.AbnormalStateAttackSideCorectedValue()

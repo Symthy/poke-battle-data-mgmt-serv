@@ -49,5 +49,5 @@ func (t TrainedPokemon) Notify(note ITrainedPokemonNotification) {
 	note.SetDescription(t.description)
 	note.SetIsPrivate(t.isPrivate)
 	note.SetUserId(t.userId)
-	note.SetAdjustment(t.TrainedPokemonAdjustment)
+	// note.SetAdjustment(t.TrainedPokemonAdjustment)
 }

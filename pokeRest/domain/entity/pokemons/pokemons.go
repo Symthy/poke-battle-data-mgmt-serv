@@ -1,21 +1,21 @@
 package pokemons
 
 type Pokemons struct {
-	pokemons []Pokemon
+	pokemons []*Pokemon
 }
 
-func NewPokemons(pokemons []Pokemon) Pokemons {
-	return Pokemons{pokemons: pokemons}
+func NewPokemons(pokemons []*Pokemon) *Pokemons {
+	return &Pokemons{pokemons: pokemons}
 }
 
-func (li Pokemons) Items() []Pokemon {
-	return li.pokemons
+func (p Pokemons) Items() []*Pokemon {
+	return p.pokemons
 }
 
-func (li Pokemons) Count() int {
-	return len(li.pokemons)
+func (p Pokemons) Count() int {
+	return len(p.pokemons)
 }
 
-func (li Pokemons) IsEmpty() bool {
-	return len(li.pokemons) == 0
+func (p Pokemons) IsEmpty() bool {
+	return len(p.pokemons) == 0
 }

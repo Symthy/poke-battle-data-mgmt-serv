@@ -23,7 +23,10 @@ require (
 	moul.io/zapgorm2 v1.1.2
 )
 
-require github.com/stretchr/objx v0.2.0 // indirect
+require (
+	github.com/dave/jennifer v1.5.1 // indirect
+	github.com/stretchr/objx v0.2.0 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

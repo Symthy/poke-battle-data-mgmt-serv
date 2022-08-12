@@ -99,7 +99,7 @@ func (b BattleRecordInput) BuildDomain() (*battles.BattleRecord, error) {
 	if err != nil {
 		return nil, err
 	}
-	domain := battles.NewBattleRecord(*id, *partyId, *userId, *season, result, selfPokemons, selfTrainedPokemons,
-		opponentPokemons, *opponentParty)
-	return &domain, nil
+	domain := battles.NewBattleRecord(*id, *partyId, *userId, season, result, selfPokemons, selfTrainedPokemons,
+		opponentPokemons, opponentParty)
+	return domain, nil
 }

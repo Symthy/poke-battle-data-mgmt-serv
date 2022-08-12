@@ -4,6 +4,10 @@ import "github.com/Symthy/PokeRest/pokeRest/common/lists"
 
 type ConditionEntry string
 
+func (c ConditionEntry) ToString() string {
+	return string(c)
+}
+
 const (
 	ConditionPokemonType       ConditionEntry = "pokemonType"
 	ConditionTypeCompatibility ConditionEntry = "typeCompatibility"

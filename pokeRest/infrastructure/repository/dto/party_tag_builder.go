@@ -9,7 +9,11 @@ import (
 var _ parties.IPartyTagNotification = (*PartyTagSchemaBuilder)(nil)
 
 type PartyTagSchemaBuilder struct {
-	schema.PartyTag
+	*schema.PartyTag
+}
+
+func NewPartyTagSchemaBuilder() *PartyTagSchemaBuilder {
+	return &PartyTagSchemaBuilder{&schema.PartyTag{}}
 }
 
 func (b *PartyTagSchemaBuilder) SetId(id identifier.PartyTagId) {
@@ -25,6 +29,6 @@ func (b *PartyTagSchemaBuilder) SetIsSeason(value bool) {
 	b.IsSeason = &value
 }
 
-func (b PartyTagSchemaBuilder) Build() schema.PartyTag {
+func (b PartyTagSchemaBuilder) Build() *schema.PartyTag {
 	return b.PartyTag
 }

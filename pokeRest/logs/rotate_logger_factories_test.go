@@ -1,10 +1,10 @@
 package logs
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/Symthy/PokeRest/pokeRest/config"
-	"github.com/Symthy/PokeRest/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -45,8 +45,7 @@ func TestLoggerFactoriesTestSuite(t *testing.T) {
 
 func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
 	suite.Run("new logger factories", func() {
-		absPath := test.GetAbsolutePath()
-		configYamlModelPath := absPath + "conf/config.yml.model"
+		configYamlModelPath := filepath.Join("../..", "conf", "config.yml.model")
 		config, err := config.LoadConfig(configYamlModelPath)
 		if err != nil {
 			assert.Fail(suite.T(), "load failure config.yml.model.", err.Error())

@@ -40,3 +40,7 @@ func (o BattleOverrideValues) Apply(target OverrideTarget, value string) string 
 	}
 	return array[0].Apply()
 }
+
+func (o BattleOverrideValues) ToSlice() []*BattleOverrideValue {
+	return o.values
+}

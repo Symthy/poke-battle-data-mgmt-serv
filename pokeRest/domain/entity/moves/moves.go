@@ -1,13 +1,13 @@
 package moves
 
 type Moves struct {
-	items []Move
+	items []*Move
 }
 
-func NewMoves(items []Move) Moves {
-	return Moves{items: items}
+func NewMoves(items []*Move) *Moves {
+	return &Moves{items: items}
 }
 
-func (m Moves) Items() []Move {
+func (m Moves) Items() []*Move {
 	return m.items
 }

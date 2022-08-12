@@ -13,3 +13,7 @@ func resolveBattleFormat(value string) BattleFormat {
 	}
 	return Single
 }
+
+func (b BattleFormat) String() string {
+	return string(b)
+}

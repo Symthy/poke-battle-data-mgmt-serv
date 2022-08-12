@@ -11,7 +11,7 @@ import (
 
 var _ repository.ITrainedPokemonRepository = (*TrainedPokemonRepository)(nil)
 
-var emptyTrainedPokemonSchemaBuilder = func() schema.TrainedPokemon { return schema.TrainedPokemon{} }
+var emptyTrainedPokemonSchemaBuilder = func() *schema.TrainedPokemon { return &schema.TrainedPokemon{} }
 
 type TrainedPokemonRepository struct {
 	//BaseWriteRepository[schema.TrainedPokemon, trainings.TrainedPokemonParam, identifier.TrainedPokemonId]
@@ -32,7 +32,7 @@ func NewTrainedPokemonRepository(dbClient orm.IDbClient) *TrainedPokemonReposito
 	}
 }
 
-func (rep TrainedPokemonRepository) Create(domain trainings.TrainedPokemon) (*trainings.TrainedPokemon, error) {
+func (rep TrainedPokemonRepository) Create(domain *trainings.TrainedPokemon) (*trainings.TrainedPokemon, error) {
 	schema := conv.ToSchemaTrainedPokemon(domain)
 	db := rep.dbClient.Db()
 	db.Transaction(func(tx *gorm.DB) error {
@@ -41,8 +41,8 @@ func (rep TrainedPokemonRepository) Create(domain trainings.TrainedPokemon) (*tr
 			return err
 		}
 		if adjustment == nil {
-			adjustmentSchema := conv.ToSchemaTrainedPokemonAdjustment(*adjustment)
-			schema.TrainedPokemonAdjustment = adjustmentSchema
+			adjustmentSchema := conv.ToSchemaTrainedPokemonAdjustment(adjustment)
+			schema.TrainedPokemonAdjustment = *adjustmentSchema
 		} else {
 			schema.AdjustmentID = adjustment.Id().Value()
 		}
@@ -56,17 +56,17 @@ func (rep TrainedPokemonRepository) Create(domain trainings.TrainedPokemon) (*tr
 	return conv.ToDomainTrainedPokemon(schema)
 }
 
-func (rep TrainedPokemonRepository) Update(domain trainings.TrainedPokemon) (*trainings.TrainedPokemon, error) {
+func (rep TrainedPokemonRepository) Update(domain *trainings.TrainedPokemon) (*trainings.TrainedPokemon, error) {
 	trainedPoke := conv.ToSchemaTrainedPokemon(domain)
 	db := rep.dbClient.Db()
-	updated := schema.TrainedPokemon{}
+	updated := emptyTrainedPokemonSchemaBuilder()
 	db.Transaction(func(tx *gorm.DB) error {
 		adjustment, err := rep.adjustmentRepo.Find(tx, domain.TrainedPokemonAdjustment)
 		if err != nil {
 			return err
 		}
 		if adjustment == nil {
-			adjustmentDomain, err := rep.adjustmentRepo.CreateDelegate(tx, domain.TrainedPokemonAdjustment)
+			adjustmentDomain, err := rep.adjustmentRepo.CreateDelegate(tx, &domain.TrainedPokemonAdjustment)
 			if err != nil {
 				return err
 			}
@@ -86,7 +86,7 @@ func (rep TrainedPokemonRepository) Update(domain trainings.TrainedPokemon) (*tr
 
 func (rep TrainedPokemonRepository) Delete(id uint64) (*trainings.TrainedPokemon, error) {
 	db := rep.dbClient.Db()
-	deleted := schema.TrainedPokemon{}
+	deleted := emptyTrainedPokemonSchemaBuilder()
 	db.Transaction(func(tx *gorm.DB) error {
 		if ret := db.First(schema.TrainedPokemon{}, id); tx.Error != nil {
 			return ret.Error

@@ -15,7 +15,7 @@ func NewTrainedPokemonSpecification(userRepo repository.IUserRepository) Trained
 	return TrainedPokemonSpecification{userRepo: userRepo}
 }
 
-func (s TrainedPokemonSpecification) ValidateForCreate(poke trainings.TrainedPokemon) error {
+func (s TrainedPokemonSpecification) ValidateForCreate(poke *trainings.TrainedPokemon) error {
 	if !poke.IsUnregister() {
 		// todo: replace err
 		return fmt.Errorf("invalid trained pokemon: specified id")
@@ -26,7 +26,7 @@ func (s TrainedPokemonSpecification) ValidateForCreate(poke trainings.TrainedPok
 	return nil
 }
 
-func (s TrainedPokemonSpecification) ValidateForUpdate(poke trainings.TrainedPokemon) error {
+func (s TrainedPokemonSpecification) ValidateForUpdate(poke *trainings.TrainedPokemon) error {
 	if poke.IsUnregister() {
 		// todo: replace err
 		return fmt.Errorf("invalid trained pokemon: non specified id")
@@ -37,7 +37,7 @@ func (s TrainedPokemonSpecification) ValidateForUpdate(poke trainings.TrainedPok
 	return nil
 }
 
-func (s TrainedPokemonSpecification) validateSatisfy(poke trainings.TrainedPokemon) error {
+func (s TrainedPokemonSpecification) validateSatisfy(poke *trainings.TrainedPokemon) error {
 	user, err := s.userRepo.FindById(poke.UserId().Value())
 	if err != nil {
 		return err

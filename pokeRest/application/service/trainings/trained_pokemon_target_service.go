@@ -17,7 +17,7 @@ func (s TrainedPokemonTargetService) AddAttackTarget(
 	if err != nil {
 		return nil, err
 	}
-	created, err := s.attackTargetRepo.Create(*domain)
+	created, err := s.attackTargetRepo.Create(domain)
 	if err != nil {
 		return nil, err
 	}

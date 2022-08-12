@@ -47,7 +47,7 @@ func (suite TypeServiceTestSuite) TestGetTypeCompatibilityTable() {
 	for _, tt := range tests {
 		types := suite.serv.GetTypeCompatibility()
 		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRateTable())
-		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
+		assert.EqualValues(suite.T(), tt.expectedTypeOrder, types.GenerateTypeNames(tt.lang))
 	}
 }
 
@@ -75,7 +75,7 @@ func (suite TypeServiceTestSuite) TestResolveAttackTypeCompatibility() {
 	for _, tt := range tests {
 		types := suite.serv.GetTypeCompatibility().ResolveAttackTypeCompatibility(tt.attackType)
 		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRates())
-		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
+		assert.EqualValues(suite.T(), tt.expectedTypeOrder, types.GenerateTypeNames(tt.lang))
 	}
 }
 
@@ -103,7 +103,7 @@ func (suite TypeServiceTestSuite) TestResolveDeffenceTypeCompatibility() {
 	for _, tt := range tests {
 		types := suite.serv.GetTypeCompatibility().ResolveDeffenceTypeCompatibility(tt.deffenceType)
 		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeDamageRates())
-		assert.EqualValues(suite.T(), tt.expectedCompatibility, types.GenerateTypeNames(tt.lang))
+		assert.EqualValues(suite.T(), tt.expectedTypeOrder, types.GenerateTypeNames(tt.lang))
 	}
 }
 

@@ -13,7 +13,7 @@ import (
 
 var _ repository.IBattleRecordRepository = (*BattleRecordRepository)(nil)
 
-var emptyBattleRecordSchemaBuilder = func() schema.BattleRecord { return schema.BattleRecord{} }
+var emptyBattleRecordSchemaBuilder = func() *schema.BattleRecord { return &schema.BattleRecord{} }
 
 type BattleRecordRepository struct {
 	BaseSingleReadRepository[schema.BattleRecord, battles.BattleRecord, identifier.BattleRecordId, uint64]
@@ -36,7 +36,7 @@ func NewBattleRecordRepository(dbClient orm.IDbClient) *BattleRecordRepository {
 
 // FindById <- BaseSingleReadRepository
 
-func (rep BattleRecordRepository) Create(domain battles.BattleRecord) (*battles.BattleRecord, error) {
+func (rep BattleRecordRepository) Create(domain *battles.BattleRecord) (*battles.BattleRecord, error) {
 	db := rep.dbClient.Db()
 	if domain.UnsolvedSeason() {
 		currentSeason, err := rep.seasonRepo.FindCurrent()
@@ -55,7 +55,7 @@ func (rep BattleRecordRepository) Create(domain battles.BattleRecord) (*battles.
 
 		if opponentParty == nil {
 			opponentPartySchema := conv.ToSchemaBattleOpponentParty(domain.OpponentParty())
-			battleRecordSchema.BattleOpponentParty = opponentPartySchema
+			battleRecordSchema.BattleOpponentParty = *opponentPartySchema
 			tx.Omit("Season").Create(&battleRecordSchema)
 		} else {
 			battleRecordSchema.ID = opponentParty.Id().Value()
@@ -66,7 +66,7 @@ func (rep BattleRecordRepository) Create(domain battles.BattleRecord) (*battles.
 	return conv.ToDomainBattleRecord(battleRecordSchema)
 }
 
-func (rep BattleRecordRepository) Update(domain battles.BattleRecord) (*battles.BattleRecord, error) {
+func (rep BattleRecordRepository) Update(domain *battles.BattleRecord) (*battles.BattleRecord, error) {
 	db := rep.dbClient.Db()
 	if domain.UnsolvedSeason() {
 		currentSeason, err := rep.seasonRepo.FindCurrent()
@@ -76,7 +76,7 @@ func (rep BattleRecordRepository) Update(domain battles.BattleRecord) (*battles.
 		domain.ApplySeason(*currentSeason)
 	}
 
-	ret := schema.BattleRecord{}
+	ret := emptyBattleRecordSchemaBuilder()
 	battleRecordSchema := conv.ToSchemaBattleRecord(domain)
 	db.Transaction(func(tx *gorm.DB) error {
 		opponentParty, err := rep.opponentPartyRepo.FindParty(domain.OpponentParty())
@@ -100,7 +100,7 @@ func (rep BattleRecordRepository) Update(domain battles.BattleRecord) (*battles.
 
 func (rep BattleRecordRepository) Delete(id uint64) (*battles.BattleRecord, error) {
 	db := rep.dbClient.Db()
-	deleted := schema.BattleRecord{}
+	deleted := emptyBattleRecordSchemaBuilder()
 	db.Transaction(func(tx *gorm.DB) error {
 		if ret := tx.First(schema.BattleRecord{}, id); tx.Error != nil {
 			return ret.Error

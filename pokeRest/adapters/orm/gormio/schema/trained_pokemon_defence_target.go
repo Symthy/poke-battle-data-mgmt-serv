@@ -4,7 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 )
 
-type TrainedPokemonDefenceTarget struct {
+type TrainedPokemonDefenseTarget struct {
 	ID                        uint64 `gorm:"primaryKey;autoIncrement:true"`
 	TrainedPokemonId          uint64
 	TrainedPokemon            TrainedPokemon `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
@@ -21,6 +21,6 @@ type TrainedPokemonDefenceTarget struct {
 	TargetPokemonEffortValueC uint8    `gorm:"default:0"`
 }
 
-func (TrainedPokemonDefenceTarget) TableName() string {
+func (TrainedPokemonDefenseTarget) TableName() string {
 	return "trained_pokemon_defence_targets"
 }

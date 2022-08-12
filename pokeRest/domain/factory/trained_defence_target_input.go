@@ -49,7 +49,7 @@ func (i *TrainedDefenseTargetInput) TargetPokemonEffortValueC(effortValueC uint6
 	i.targetPokemonEffortValueC = effortValueC
 }
 
-func (i TrainedDefenseTargetInput) BuildDomain() (*trainings.TrainedPokemonDefenceTarget, error) {
+func (i TrainedDefenseTargetInput) BuildDomain() (*trainings.TrainedPokemonDefenseTarget, error) {
 	id, err := identifier.NewTrainedDefenseTargetId(i.id)
 	if err != nil {
 		return nil, err

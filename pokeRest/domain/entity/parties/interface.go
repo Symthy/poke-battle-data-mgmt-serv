@@ -11,19 +11,19 @@ type IPartyNotification interface {
 	SetName(string)
 	SetBattleFormat(value.BattleFormat)
 	SetIsPrivate(bool)
-	SetPartyResultIds(value.PartyBattleResultIds)
-	SetPartyTagIds(value.PartyTagIds)
-	SetTrainedPokemons(value.PartyPokemonIds)
-	SetUserId(identifier.UserId)
+	// SetPartyResultIds(*value.PartyBattleResultIds)
+	// SetPartyTagIds(*value.PartyTagIds)
+	// SetTrainedPokemons(*value.PartyPokemonIds)
+	// SetUserId(identifier.UserId)
 }
 
 type IPartyBattleResultNotification interface {
 	SetId(identifier.PartyBattleResultId)
-	SetMaxRate(int)
-	SetSeasonRanking(int)
-	SetMaxSeasonRanking(int)
-	SetWinCount(int)
-	SetLoseCount(int)
+	SetMaxRate(uint16)
+	SetSeasonRanking(uint16)
+	SetMaxSeasonRanking(uint16)
+	SetWinCount(uint16)
+	SetLoseCount(uint16)
 	battles.IBattleSeasonNotification
 }
 

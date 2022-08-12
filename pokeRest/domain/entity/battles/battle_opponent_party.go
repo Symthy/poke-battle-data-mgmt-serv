@@ -10,15 +10,15 @@ var _ entity.IDomain[identifier.BattleOpponentPartyId, uint64] = (*BattleOpponen
 
 type BattleOpponentParty struct {
 	id         identifier.BattleOpponentPartyId
-	pokemonIds value.PartyPokemonIds
+	pokemonIds *value.PartyPokemonIds
 }
 
-func NewBattleOpponentPartyOfUnregister(pokemonIds value.PartyPokemonIds) BattleOpponentParty {
+func NewBattleOpponentPartyOfUnregister(pokemonIds *value.PartyPokemonIds) BattleOpponentParty {
 	return NewBattleOpponentParty(identifier.NewEmptyBattleOpponentPartyId(), pokemonIds)
 }
 
 func NewBattleOpponentParty(
-	id identifier.BattleOpponentPartyId, pokemonIds value.PartyPokemonIds,
+	id identifier.BattleOpponentPartyId, pokemonIds *value.PartyPokemonIds,
 ) BattleOpponentParty {
 	return BattleOpponentParty{
 		id:         id,

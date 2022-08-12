@@ -14,10 +14,16 @@ func NewBattleOverrideValue(target string, value string, condition *TriggerCondi
 	}
 }
 
-func (v BattleOverrideValue) IsMatch(target OverrideTarget) bool {
-	return v.target == target
+func (o BattleOverrideValue) IsMatch(target OverrideTarget) bool {
+	return o.target == target
 }
 
-func (v BattleOverrideValue) Apply() string {
-	return v.value
+func (o BattleOverrideValue) Apply() string {
+	return o.value
+}
+
+func (o BattleOverrideValue) Notify(note IOverrideValueNotification) {
+	note.SetTarget(o.target)
+	note.SetOverrideValue(o.value)
+	o.triggerCondition.Notify(note)
 }

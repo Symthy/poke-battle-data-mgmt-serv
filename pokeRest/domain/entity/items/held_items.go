@@ -1,13 +1,13 @@
 package items
 
 type HeldItems struct {
-	items []HeldItem
+	items []*HeldItem
 }
 
-func NewHeldItems(items []HeldItem) HeldItems {
-	return HeldItems{items: items}
+func NewHeldItems(items []*HeldItem) *HeldItems {
+	return &HeldItems{items: items}
 }
 
-func (i HeldItems) Items() []HeldItem {
+func (i HeldItems) Items() []*HeldItem {
 	return i.items
 }

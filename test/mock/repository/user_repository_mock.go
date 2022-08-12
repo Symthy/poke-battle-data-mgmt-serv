@@ -33,11 +33,11 @@ func (mock UserRepositoryMock) FindByName(targetName string, filterFields ...str
 	return conv.ToDomainUser(dummyUser)
 }
 
-func (mock UserRepositoryMock) Create(user users.User) (*users.User, error) {
+func (mock UserRepositoryMock) Create(user *users.User) (*users.User, error) {
 	return &users.User{}, nil
 }
 
-func (mock UserRepositoryMock) Update(user users.User) (*users.User, error) {
+func (mock UserRepositoryMock) Update(user *users.User) (*users.User, error) {
 	return &users.User{}, nil
 }
 

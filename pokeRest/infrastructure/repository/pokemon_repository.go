@@ -12,8 +12,8 @@ import (
 var _ repository.IPokemonRepository = (*PokemonRepository)(nil)
 
 var (
-	emptyPokemonBuilder  = func() schema.Pokemon { return schema.Pokemon{} }
-	emptyPokemonsBuilder = func() []schema.Pokemon { return []schema.Pokemon{} }
+	emptyPokemonBuilder  = func() *schema.Pokemon { return &schema.Pokemon{} }
+	emptyPokemonsBuilder = func() []*schema.Pokemon { return []*schema.Pokemon{} }
 )
 
 type PokemonRepository struct {
@@ -33,8 +33,8 @@ func NewPokemonRepository(dbClient orm.IDbClient) *PokemonRepository {
 
 func (rep PokemonRepository) FindById(id uint16) (*pokemons.Pokemon, error) {
 	db := rep.dbClient.Db()
-	var pokemon = schema.Pokemon{}
-	tx := db.First(&pokemon, id)
+	pokemon := emptyPokemonBuilder()
+	tx := db.First(pokemon, id)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -44,10 +44,10 @@ func (rep PokemonRepository) FindById(id uint16) (*pokemons.Pokemon, error) {
 // Todo: args is condition
 func (rep PokemonRepository) FindAll(next uint32, pageSize uint16) (*pokemons.Pokemons, error) {
 	db := rep.dbClient.Db()
-	var schemas = []schema.Pokemon{}
+	schemas := emptyPokemonsBuilder()
 
 	paginate := rep.dbClient.Paginate(next, pageSize)
-	tx := db.Scopes(paginate).Find(&schemas)
+	tx := db.Scopes(paginate).Find(schemas)
 
 	if tx.Error != nil {
 		return nil, tx.Error
@@ -56,8 +56,7 @@ func (rep PokemonRepository) FindAll(next uint32, pageSize uint16) (*pokemons.Po
 	if err != nil {
 		return nil, err
 	}
-	pokemonList := pokemons.NewPokemons(pokemonDomains)
-	return &pokemonList, nil
+	return pokemons.NewPokemons(pokemonDomains), nil
 }
 
 func (rep PokemonRepository) FindByMove(moveId uint16) (*pokemons.Pokemons, error) {

@@ -41,6 +41,29 @@ type TriggerConditionParams interface {
 	HasItemDefenseSide() bool
 }
 
+type IBattleEffectsNotification interface {
+	SetCorrections()
+	SetOverrides()
+}
+
+type ICorrectionValueNotification interface {
+	SetTarget(CorrectionTarget)
+	SetCorrectionValue(CorrectionNum)
+	SetDecimalCalcType(DecimalCalcType)
+	ITriggerConditionNotification
+}
+
+type ITriggerConditionNotification interface {
+	SetEntry(ConditionEntry)
+	SetConditionValue(string)
+}
+
+type IOverrideValueNotification interface {
+	SetTarget(OverrideTarget)
+	SetOverrideValue(string)
+	ITriggerConditionNotification
+}
+
 var _ IPokemonBattleDataSet = (*EmptyPokemonBattleDataSet)(nil)
 
 type EmptyPokemonBattleDataSet struct {

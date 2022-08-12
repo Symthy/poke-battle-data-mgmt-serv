@@ -98,8 +98,7 @@ func TestBattleDataSetResolver(t *testing.T) {
 	dummyId, _ := identifier.NewMoveId(1)
 	for _, tt := range cases {
 		resolver := DamageCalcElementsService{tt.inputAttackSideResolver, tt.inputDefenseSideResolver, types.NewTypeReadService()}
-		elements, err := resolver.Resolve(nil, *dummyId)
-		actual := elements.GetPokemonBattleDataSet()
+		actual, err := resolver.Resolve(nil, *dummyId)
 		assert.NoError(t, err)
 		assert.Equal(t, tt.expectedAttackPokemonTypeFirst, actual.AttackPokemonTypeOfFirst())
 		assert.Equal(t, tt.expectedAttackPokemonTypeSecond, actual.AttackPokemonTypeOfSecond())

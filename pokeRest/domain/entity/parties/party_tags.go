@@ -1,13 +1,13 @@
 package parties
 
 type PartyTags struct {
-	items []PartyTag
+	items []*PartyTag
 }
 
-func NewPartyTags(tags []PartyTag) PartyTags {
-	return PartyTags{items: tags}
+func NewPartyTags(tags []*PartyTag) *PartyTags {
+	return &PartyTags{items: tags}
 }
 
-func (t PartyTags) Items() []PartyTag {
+func (t PartyTags) Items() []*PartyTag {
 	return t.items
 }

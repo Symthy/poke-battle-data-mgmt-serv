@@ -13,7 +13,7 @@ type IValueId[I uint16 | uint32 | uint64] interface {
 }
 
 type IDomains[T IDomain[K, I], K IValueId[I], I uint16 | uint32 | uint64] interface {
-	Items() []T
+	Items() []*T
 }
 
 type ISingleRecordFinder[T IDomain[K, I], K IValueId[I], I uint16 | uint32 | uint64] interface {

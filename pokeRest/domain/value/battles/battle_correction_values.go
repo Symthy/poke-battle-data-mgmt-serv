@@ -59,3 +59,7 @@ func (c *BattleCorrectionValues) Merge(corrections *BattleCorrectionValues) {
 	c.values = append(c.values, corrections.values...)
 	c.targets = append(c.targets, corrections.targets...)
 }
+
+func (c BattleCorrectionValues) ToSlice() []*BattleCorrectionValue {
+	return c.values
+}

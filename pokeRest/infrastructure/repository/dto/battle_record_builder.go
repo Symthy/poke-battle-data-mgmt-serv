@@ -11,13 +11,17 @@ import (
 var _ battles.IBattleRecordNotification = (*BattleRecordSchemaBuilder)(nil)
 
 type BattleRecordSchemaBuilder struct {
-	schema.BattleRecord
-	BattleOpponentPartySchemaBuilder
-	BattleSeasonBuilder
+	*schema.BattleRecord
+	*BattleOpponentPartySchemaBuilder
+	*BattleSeasonBuilder
 }
 
-func NewBattleRecordBuilder() BattleRecordSchemaBuilder {
-	return BattleRecordSchemaBuilder{}
+func NewBattleRecordBuilder() *BattleRecordSchemaBuilder {
+	return &BattleRecordSchemaBuilder{
+		&schema.BattleRecord{},
+		NewBattleOpponentPartySchemaBuilder(),
+		NewBattleSeasonBuilder(),
+	}
 }
 
 func (b *BattleRecordSchemaBuilder) SetId(id identifier.BattleRecordId) {
@@ -37,7 +41,7 @@ func (b *BattleRecordSchemaBuilder) SetBattleOpponentPartyId(id identifier.Battl
 }
 
 // Todo: refactor
-func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.ElectionPokemons) {
+func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids *battles.ElectionPokemons) {
 	b.BattleRecord.SelfElectionPokemonId1 = ids.Get(0)
 	b.BattleRecord.SelfElectionPokemonId2 = ids.Get(1)
 	b.BattleRecord.SelfElectionPokemonId3 = ids.Get(2)
@@ -45,7 +49,7 @@ func (b *BattleRecordSchemaBuilder) SetSelfElectionPokemons(ids battles.Election
 		b.BattleRecord.SelfElectionPokemonId4 = ids.Get(3)
 	}
 }
-func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionTrainedPokemons) {
+func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids *battles.ElectionTrainedPokemons) {
 	b.BattleRecord.SelfTrainedPokemonId1 = ids.Get(0)
 	b.BattleRecord.SelfTrainedPokemonId2 = ids.Get(1)
 	b.BattleRecord.SelfTrainedPokemonId3 = ids.Get(2)
@@ -53,7 +57,7 @@ func (b *BattleRecordSchemaBuilder) SetSelfTrainedPokemons(ids battles.ElectionT
 		b.BattleRecord.SelfTrainedPokemonId4 = ids.Get(3)
 	}
 }
-func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids battles.ElectionPokemons) {
+func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids *battles.ElectionPokemons) {
 	b.BattleRecord.OpponentElectionPokemonId1 = ids.Get(0)
 	b.BattleRecord.OpponentElectionPokemonId2 = ids.Get(1)
 	b.BattleRecord.OpponentElectionPokemonId3 = ids.Get(2)
@@ -62,6 +66,6 @@ func (b *BattleRecordSchemaBuilder) SetOpponentElectionPokemons(ids battles.Elec
 	}
 }
 
-func (b BattleRecordSchemaBuilder) Build() schema.BattleRecord {
+func (b BattleRecordSchemaBuilder) Build() *schema.BattleRecord {
 	return b.BattleRecord
 }

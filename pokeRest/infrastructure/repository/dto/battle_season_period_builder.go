@@ -10,25 +10,29 @@ import (
 var _ battles.IBattleSeasonPeriodNotification = (*BattleSeasonPeriodSchemaBuilder)(nil)
 
 type BattleSeasonPeriodSchemaBuilder struct {
-	schema.BattleSeason
+	*schema.BattleSeason
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetGeneration(value uint16) {
+func (b *BattleSeasonPeriodSchemaBuilder) SetGeneration(value uint16) {
 	b.Generation = value
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetSeries(value uint16) {
+func (b *BattleSeasonPeriodSchemaBuilder) SetSeries(value uint16) {
 	b.Series = value
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetSeason(value uint16) {
+func (b *BattleSeasonPeriodSchemaBuilder) SetSeason(value uint16) {
 	b.Season = value
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetStartDateTime(value time.Time) {
+func (b *BattleSeasonPeriodSchemaBuilder) SetStartDateTime(value time.Time) {
 	b.StartDateTime = value
 }
 
-func (b BattleSeasonPeriodSchemaBuilder) SetEndDateTime(value time.Time) {
+func (b *BattleSeasonPeriodSchemaBuilder) SetEndDateTime(value time.Time) {
 	b.EndDateTime = value
+}
+
+func (b BattleSeasonPeriodSchemaBuilder) Build() *schema.BattleSeason {
+	return b.BattleSeason
 }

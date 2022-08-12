@@ -12,8 +12,8 @@ import (
 var _ repository.IMoveRepository = (*MoveRepository)(nil)
 
 var (
-	emptyMoveBuilder  = func() schema.Move { return schema.Move{} }
-	emptyMovesBuilder = func() []schema.Move { return []schema.Move{} }
+	emptyMoveBuilder  = func() *schema.Move { return &schema.Move{} }
+	emptyMovesBuilder = func() []*schema.Move { return []*schema.Move{} }
 )
 
 type MoveRepository struct {

@@ -28,8 +28,8 @@ type IPokemonStatsRepository[L entity.IDomains[T, K, uint16], T entity.IDomain[K
 }
 
 type IWritableRepository[TD entity.IDomain[K, I], K entity.IValueId[I], I uint16 | uint32 | uint64] interface {
-	Create(TD) (*TD, error)
-	Update(TD) (*TD, error)
+	Create(*TD) (*TD, error)
+	Update(*TD) (*TD, error)
 	Delete(id I) (*TD, error)
 }
 
@@ -96,7 +96,7 @@ type IBattleRecordTransactionalRepository interface {
 
 type IBattleOpponentPartyRepository interface {
 	IWritableRepository[battles.BattleOpponentParty, identifier.BattleOpponentPartyId, uint64]
-	FindParty(battles.BattleOpponentParty) (*battles.BattleOpponentParty, error)
+	FindParty(*battles.BattleOpponentParty) (*battles.BattleOpponentParty, error)
 }
 
 type ITrainedPokemonRepository interface {
@@ -115,7 +115,7 @@ type ITrainedPokemonAttackRepository interface {
 }
 
 type ITrainedPokemonDeffenceRepository interface {
-	IWritableRepository[trainings.TrainedPokemonDefenceTarget, identifier.TrainedDefenseTargetId, uint64]
+	IWritableRepository[trainings.TrainedPokemonDefenseTarget, identifier.TrainedDefenseTargetId, uint64]
 }
 
 type IUserRepository interface {

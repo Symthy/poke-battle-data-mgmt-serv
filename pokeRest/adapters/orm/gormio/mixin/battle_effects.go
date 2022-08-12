@@ -10,8 +10,15 @@ import (
 )
 
 type BattleEffects struct {
-	Corrections []Correction `json:"corrections"`
-	Overrides   []Override   `json:"overrides"`
+	Corrections []*Correction `json:"corrections"`
+	Overrides   []*Override   `json:"overrides"`
+}
+
+func NewBattleEffects() *BattleEffects {
+	return &BattleEffects{
+		Corrections: []*Correction{},
+		Overrides:   []*Override{},
+	}
 }
 
 func (b *BattleEffects) Scan(value interface{}) error {

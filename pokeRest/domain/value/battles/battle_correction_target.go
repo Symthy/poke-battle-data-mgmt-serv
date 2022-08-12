@@ -4,6 +4,10 @@ import "github.com/Symthy/PokeRest/pokeRest/common/lists"
 
 type CorrectionTarget string
 
+func (c CorrectionTarget) ToString() string {
+	return string(c)
+}
+
 const (
 	// 技威力への補正
 	CorrectionPhysicalMove CorrectionTarget = "PhysicalMove" // 物理技

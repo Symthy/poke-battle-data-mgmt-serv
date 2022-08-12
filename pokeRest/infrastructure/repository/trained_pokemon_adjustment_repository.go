@@ -12,7 +12,7 @@ import (
 
 var _ repository.ITrainedPokemonAdjustmentRepository = (*TrainedPokemonAdjustmentRepository)(nil)
 
-var emptyAdjustmentSchemaBuilder = func() schema.TrainedPokemonAdjustment { return schema.TrainedPokemonAdjustment{} }
+var emptyAdjustmentSchemaBuilder = func() *schema.TrainedPokemonAdjustment { return &schema.TrainedPokemonAdjustment{} }
 
 type adjustmentDomain = trainings.TrainedPokemonAdjustment
 type adjustmentId = identifier.TrainedAdjustmentId

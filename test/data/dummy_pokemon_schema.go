@@ -8,11 +8,11 @@ import (
 )
 
 // test dummy data
-func DummyPokemon3() schema.Pokemon {
+func DummyPokemon3() *schema.Pokemon {
 	var abilityId1 = &sql.NullInt16{Int16: 3, Valid: true}
 	var abilityId2 = &sql.NullInt16{Int16: 0, Valid: false}
 	var abilityId3 = &sql.NullInt16{Int16: 100, Valid: true}
-	return schema.Pokemon{
+	return &schema.Pokemon{
 		ID:               3,
 		PokedexNo:        3,
 		FormNo:           1,

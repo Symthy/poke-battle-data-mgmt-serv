@@ -10,6 +10,10 @@ type BattleSeasonBuilder struct {
 	season     uint16
 }
 
+func NewBattleSeasonBuilder() *BattleSeasonBuilder {
+	return &BattleSeasonBuilder{}
+}
+
 func (b *BattleSeasonBuilder) SetGeneration(generation uint16) {
 	b.generation = generation
 }

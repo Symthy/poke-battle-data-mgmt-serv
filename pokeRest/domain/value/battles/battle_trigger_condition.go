@@ -10,17 +10,26 @@ import (
 type ConditionStisfiesResolver func(TriggerConditionParams, BattleSideType) bool
 
 type TriggerCondition struct {
+	entry    ConditionEntry
+	value    string
 	resolver ConditionStisfiesResolver
 }
 
 func NewTriggerCondition(entry ConditionEntry, conditionValue string) *TriggerCondition {
 	return &TriggerCondition{
+		entry:    entry,
+		value:    conditionValue,
 		resolver: buildConditionStisfiesResolver(entry, conditionValue),
 	}
 }
 
 func (t TriggerCondition) isSatisfy(data TriggerConditionParams, side BattleSideType) bool {
 	return t.resolver(data, side)
+}
+
+func (t TriggerCondition) Notify(note ITriggerConditionNotification) {
+	note.SetEntry(t.entry)
+	note.SetConditionValue(t.value)
 }
 
 func buildConditionStisfiesResolver(entry ConditionEntry, conditionValue string) ConditionStisfiesResolver {

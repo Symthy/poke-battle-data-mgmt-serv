@@ -6,6 +6,7 @@ import (
 	"github.com/Symthy/PokeRest/pokeRest/domain/damages"
 	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value"
+	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
 	"github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
 	"golang.org/x/sync/errgroup"
 )
@@ -42,7 +43,7 @@ func NewDamageCalcPartialValuesFactory(effectsResolver *BattleEffectsResolver, p
 
 func (r DamageCalcElementsService) Resolve(
 	adjustment *s_damages.BattlePokemonAdjustment, moveId identifier.MoveId,
-) (*damages.DamageCalcElements, error) {
+) (battles.IPokemonBattleDataSet, error) {
 	eg := new(errgroup.Group)
 
 	attackChan := make(chan AttackSide, 1)
@@ -69,8 +70,7 @@ func (r DamageCalcElementsService) Resolve(
 		r.resolveTypeCompatibility(attackSide.moveType, defenseSide.PokemonTypes()),
 		attackSide.toAttackSideBattleEffects(),
 		defenseSide.toDefenseSideBattleEffects())
-	damageCalcElements := damages.NewDamageCalcElements(battlePokemons)
-	return damageCalcElements, nil
+	return battlePokemons, nil
 }
 
 func (r DamageCalcElementsService) resolveTypeCompatibility(

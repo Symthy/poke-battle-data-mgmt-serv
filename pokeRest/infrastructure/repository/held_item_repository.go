@@ -12,8 +12,8 @@ import (
 var _ repository.IHeldItemRepository = (*HeldItemRepository)(nil)
 
 var (
-	emptyHeldItemBuilder  = func() schema.HeldItem { return schema.HeldItem{} }
-	emptyHeldItemsBuilder = func() []schema.HeldItem { return []schema.HeldItem{} }
+	emptyHeldItemBuilder  = func() *schema.HeldItem { return &schema.HeldItem{} }
+	emptyHeldItemsBuilder = func() []*schema.HeldItem { return []*schema.HeldItem{} }
 )
 
 type HeldItemRepository struct {

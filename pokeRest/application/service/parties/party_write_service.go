@@ -26,10 +26,10 @@ func (s PartyWriteService) SaveParty(cmd command.CreatePartyCommand) (*parties.P
 	if err != nil {
 		return nil, err
 	}
-	if err := s.spec.ValidateForCreate(*domain); err != nil {
+	if err := s.spec.ValidateForCreate(domain); err != nil {
 		return nil, err
 	}
-	return s.repo.Create(*domain)
+	return s.repo.Create(domain)
 }
 
 func (s PartyWriteService) UpdateParty(cmd command.UpdatePartyCommand) (*parties.Party, error) {
@@ -37,10 +37,10 @@ func (s PartyWriteService) UpdateParty(cmd command.UpdatePartyCommand) (*parties
 	if err != nil {
 		return nil, err
 	}
-	if err := s.spec.ValidateForUpdate(*domain); err != nil {
+	if err := s.spec.ValidateForUpdate(domain); err != nil {
 		return nil, err
 	}
-	return s.repo.Update(*domain)
+	return s.repo.Update(domain)
 }
 
 func (s PartyWriteService) DeleteParty(cmd command.DeletePartyCommand) (*parties.Party, error) {
@@ -48,7 +48,7 @@ func (s PartyWriteService) DeleteParty(cmd command.DeletePartyCommand) (*parties
 	if err != nil {
 		return nil, err
 	}
-	if err := s.spec.ValidateForUpdate(*domain); err != nil {
+	if err := s.spec.ValidateForUpdate(domain); err != nil {
 		return nil, err
 	}
 	return s.repo.Delete(domain.Id().Value())

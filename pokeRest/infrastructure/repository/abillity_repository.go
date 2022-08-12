@@ -12,8 +12,8 @@ import (
 var _ repository.IAbilityRepository = (*AbilityRepository)(nil)
 
 var (
-	emptyAbilityBuilder   = func() schema.Ability { return schema.Ability{} }
-	emptyAbilitiesBuilder = func() []schema.Ability { return []schema.Ability{} }
+	emptyAbilityBuilder   = func() *schema.Ability { return &schema.Ability{} }
+	emptyAbilitiesBuilder = func() []*schema.Ability { return []*schema.Ability{} }
 )
 
 type AbilityRepository struct {

@@ -11,7 +11,7 @@ import (
 
 var _ repository.IPartyBattleResultRepository = (*PartySeasonResultRepository)(nil)
 
-var emptyPartySeasonResultSchemaBuilder = func() schema.PartySeasonResult { return schema.PartySeasonResult{} }
+var emptyPartySeasonResultSchemaBuilder = func() *schema.PartySeasonResult { return &schema.PartySeasonResult{} }
 
 type PartySeasonResultRepository struct {
 	BaseWriteRepository[schema.PartySeasonResult, parties.PartyBattleResult, identifier.PartyBattleResultId, uint64]

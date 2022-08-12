@@ -16,6 +16,23 @@ func NewPartyTagInput(id uint64, name string, isGeneration, isSeason bool) Party
 	return PartyTagInput{id, name, isGeneration, isSeason}
 }
 
+func NewPartyTagBuilder() *PartyTagInput {
+	return &PartyTagInput{}
+}
+
+func (i *PartyTagInput) Id(id uint64) {
+	i.id = id
+}
+func (i *PartyTagInput) Name(name string) {
+	i.name = name
+}
+func (i *PartyTagInput) SetIsGeneration(isGeneration bool) {
+	i.isGeneration = isGeneration
+}
+func (i *PartyTagInput) SetIsSeason(isSeason bool) {
+	i.isSeason = isSeason
+}
+
 func (i PartyTagInput) BuildDomain() (*parties.PartyTag, error) {
 	id, err := identifier.NewPartyTagId(i.id)
 	if err != nil {

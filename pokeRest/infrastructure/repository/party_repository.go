@@ -11,7 +11,7 @@ import (
 
 var _ repository.IPartyRepository = (*PartyRepository)(nil)
 
-var emptyPartySchemaBuilder = func() schema.Party { return schema.Party{} }
+var emptyPartySchemaBuilder = func() *schema.Party { return &schema.Party{} }
 
 type PartyRepository struct {
 	BaseSingleReadRepository[schema.Party, parties.Party, identifier.PartyId, uint64]
