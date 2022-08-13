@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"path/filepath"
 	"runtime"
 
@@ -9,8 +8,9 @@ import (
 )
 
 const (
-	schemaPath = "pokeRest/adapters/orm/gormio/schema/"
-	entityPath = "pokeRest/domain/entity"
+	schemaPath    = "pokeRest/adapters/orm/gormio/schema/"
+	entityPath    = "pokeRest/domain/entity"
+	testInputPath = "tools/codegen/test/input"
 )
 
 var (
@@ -19,10 +19,12 @@ var (
 
 func main() {
 	rootPath := filepath.Join(filepath.Dir(thisPath), "../../..")
-	err := parser.Parse(filepath.Join(rootPath, schemaPath, "user.go"))
-	if err != nil {
-		fmt.Print(err)
-	}
+	parser.Parse(filepath.Join(rootPath, testInputPath, "move.go"))
+	// err := parser.Parse(filepath.Join(rootPath, entityPath, "users", "users.go"))
+
+	// if err != nil {
+	// 	fmt.Print(fields)
+	// }
 
 	// err := builder.BuildItemFactory(homePath)
 	// if err != nil {

@@ -70,7 +70,7 @@ type Move struct {
     name               string
 	description        *string
     effects            *battles.Effects
-	usableMember       []*Member
+	usedMember         []*Member
     leanableCharacters []Character
     mixin.UpdateTimes
 }
@@ -97,7 +97,7 @@ type Move struct {
 15  .  .  .  Name: "identifier"
 16  .  .  }
 17  .  .  Sel: *ast.Ident {
-18  .  .  .  NamePos: D:\dev_git\PokeRest\pokeRest\domain\entity\items\held_item.go:12:27
+18  .  .  .  NamePos: <full path>\move.go:12:27
 19  .  .  .  Name: "HeldItemId"
 20  .  .  }
 21  .  }
@@ -182,7 +182,35 @@ type Move struct {
 25  }
 ```
 
-- leanableCharacters []Character
+- ポインタ配列 usedMember []\*Member
+
+```
+0  *ast.Field {
+1  .  Names: []*ast.Ident (len = 1) {
+2  .  .  0: *ast.Ident {
+3  .  .  .  NamePos: <full path>\move.go:4:2
+4  .  .  .  Name: "items"
+5  .  .  .  Obj: *ast.Object {
+6  .  .  .  .  Kind: var
+7  .  .  .  .  Name: "items"
+8  .  .  .  .  Decl: *(obj @ 0)
+9  .  .  .  }
+10  .  .  }
+11  .  }
+12  .  Type: *ast.ArrayType {
+13  .  .  Lbrack: <full path>\move.go:4:8
+14  .  .  Elt: *ast.StarExpr {
+15  .  .  .  Star: <full path>\move.go:4:10
+16  .  .  .  X: *ast.Ident {
+17  .  .  .  .  NamePos: <full path>\move.go:4:11
+18  .  .  .  .  Name: "User"
+19  .  .  .  }
+20  .  .  }
+21  .  }
+22  }
+```
+
+- 配列 leanableCharacters []Character
 
 ```
 0  *ast.Field {
@@ -207,7 +235,41 @@ type Move struct {
 19  }
 ```
 
-- mixin.UpdateTimes
+- ポインタ配列
+
+```
+0  *ast.Field {
+1  .  Names: []*ast.Ident (len = 1) {
+2  .  .  0: *ast.Ident {
+3  .  .  .  NamePos: <full path>\move.go:16:2
+4  .  .  .  Name: "leanablePokemons"
+5  .  .  .  Obj: *ast.Object {
+6  .  .  .  .  Kind: var
+7  .  .  .  .  Name: "leanablePokemons"
+8  .  .  .  .  Decl: *(obj @ 0)
+9  .  .  .  }
+10  .  .  }
+11  .  }
+12  .  Type: *ast.ArrayType {
+13  .  .  Lbrack: <full path>\move.go:16:19
+14  .  .  Elt: *ast.StarExpr {
+15  .  .  .  Star: <full path>\move.go:16:21
+16  .  .  .  X: *ast.SelectorExpr {
+17  .  .  .  .  X: *ast.Ident {
+18  .  .  .  .  .  NamePos: <full path>\move.go:16:22
+19  .  .  .  .  .  Name: "identifier"
+20  .  .  .  .  }
+21  .  .  .  .  Sel: *ast.Ident {
+22  .  .  .  .  .  NamePos: <full path>\move.go:16:33
+23  .  .  .  .  .  Name: "PokemonId"
+24  .  .  .  .  }
+25  .  .  .  }
+26  .  .  }
+27  .  }
+28  }
+```
+
+- 埋め込み mixin.UpdateTimes
 
 ```
 0  *ast.Field {

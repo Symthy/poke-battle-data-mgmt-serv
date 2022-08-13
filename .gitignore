@@ -1,8 +1,6 @@
 node_modules
 
 pokeRest/adapters/rest/autogen/*
-pokeRest/adapters/orm/autogen/ent/*
-!pokeRest/adapters/orm/autogen/ent/generate.go
 pokeRest/adapters/di/wire_gen.go
 
 conf/config.yml
@@ -10,8 +8,8 @@ log/
 
 tools/schema/drivers/
 tools/schema/output/
+tools/codegen/output/
 
 .vscode
 .VSCodeCounter
-
-trial/
+*.txt
