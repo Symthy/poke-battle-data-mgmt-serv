@@ -1,10 +1,11 @@
 module github.com/Symthy/PokeRest
 
-go 1.18
+go 1.19
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/buildkite/interpolate v0.0.0-20200526001904-07f35b4ae251
+	github.com/dave/jennifer v1.5.1
 	github.com/deepmap/oapi-codegen v1.10.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/golang-jwt/jwt v3.2.2+incompatible
@@ -23,10 +24,7 @@ require (
 	moul.io/zapgorm2 v1.1.2
 )
 
-require (
-	github.com/dave/jennifer v1.5.1 // indirect
-	github.com/stretchr/objx v0.2.0 // indirect
-)
+require github.com/stretchr/objx v0.2.0 // indirect
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
