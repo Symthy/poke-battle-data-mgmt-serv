@@ -11,31 +11,77 @@ import (
 
 var (
 	_, thisPath, _, _ = runtime.Caller(0)
+	testInputFilePath = filepath.Join(filepath.Dir(thisPath), "../../test/input", "move.go")
 )
 
-func TestParse(t *testing.T) {
+func TestPartImport(t *testing.T) {
 	cases := []struct {
 		inputFilePath string
-		expected      []*internal.FieldInfo
+		expected      []*internal.ImportInfo
 	}{
 		{
-			inputFilePath: filepath.Join(filepath.Dir(thisPath), "../../test/input", "move.go"),
-			expected: []*internal.FieldInfo{
-				internal.NewFieldInfo("id", internal.NewTypeInfo("identifier", "MoveId")),
-				internal.NewFieldInfo("name", internal.NewStandardTypeInfo("string")),
-				internal.NewFieldInfo("description", internal.NewPointerTypeInfo("", "string")),
-				internal.NewFieldInfo("effects", internal.NewPointerTypeInfo("battles", "BattleEffects")),
-				internal.NewFieldInfo("acquiredMember", internal.NewPointerArrayTypeInfo("", "Member")),
-				internal.NewFieldInfo("characters", internal.NewArrayTypeInfo("", "Character")),
-				internal.NewFieldInfo("leanablePokemons", internal.NewPointerArrayTypeInfo("identifier", "PokemonId")),
-				internal.NewEmbeddedFieldInfo(internal.NewTypeInfo("mixin", "UpdateTimes")),
+			inputFilePath: testInputFilePath,
+			expected: []*internal.ImportInfo{
+				internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"),
+				internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/domain/value/battles"),
+				internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"),
 			},
 		},
 	}
 
 	for _, tt := range cases {
-		fields, err := Parse(tt.inputFilePath)
+		fileNode, err := parseGoFile(tt.inputFilePath)
 		assert.NoError(t, err)
-		assert.EqualValues(t, tt.expected, fields)
+		imports := parseImport(fileNode)
+		assert.EqualValues(t, tt.expected, imports)
+	}
+}
+
+func TestParseStruct(t *testing.T) {
+	cases := []struct {
+		inputFilePath string
+		expected      []*internal.StructInfo
+	}{
+		{
+			inputFilePath: testInputFilePath,
+			expected: []*internal.StructInfo{
+				internal.NewStructInfo(
+					"Move",
+					[]*internal.ImportInfo{
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"),
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/domain/value/battles"),
+						internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"),
+					},
+					[]*internal.FieldInfo{
+						internal.NewFieldInfo("id", internal.NewTypeInfo("ident", "MoveId")),
+						internal.NewFieldInfo("name", internal.NewStandardTypeInfo("string")),
+						internal.NewFieldInfo("description", internal.NewPointerTypeInfo("", "string")),
+						internal.NewFieldInfo("effects", internal.NewPointerTypeInfo("battles", "BattleEffects")),
+						internal.NewFieldInfo("acquiredMember", internal.NewPointerArrayTypeInfo("", "Member")),
+						internal.NewFieldInfo("characters", internal.NewArrayTypeInfo("", "Character")),
+						internal.NewFieldInfo("leanablePokemons", internal.NewPointerArrayTypeInfo("ident", "PokemonId")),
+						internal.NewEmbeddedFieldInfo(internal.NewTypeInfo("mixin", "UpdateTimes")),
+					},
+				),
+				internal.NewStructInfo(
+					"Test",
+					[]*internal.ImportInfo{
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"),
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/domain/value/battles"),
+						internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"),
+					},
+					[]*internal.FieldInfo{
+						internal.NewFieldInfo("test", internal.NewStandardTypeInfo("string")),
+					},
+				),
+			},
+		},
+	}
+
+	for _, tt := range cases {
+		fileNode, err := parseGoFile(tt.inputFilePath)
+		assert.NoError(t, err)
+		structs := parseStruct(fileNode)
+		assert.EqualValues(t, tt.expected, structs)
 	}
 }

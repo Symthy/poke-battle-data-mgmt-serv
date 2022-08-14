@@ -1,6 +1,10 @@
 package schema
 
 type BattleOpponentParty struct {
+	BattleOpponentPartySchema
+}
+
+type BattleOpponentPartySchema struct {
 	ID                 uint64  `gorm:"primaryKey;autoIncrement:true"`
 	OpponentPokemonId1 *uint16 // M:1 <- Pokemon
 	OpponentPokemonId2 *uint16

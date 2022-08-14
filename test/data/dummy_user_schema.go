@@ -28,11 +28,13 @@ func DummyUser1(filterFields ...string) *schema.User {
 	}
 
 	dummyUser := &schema.User{
-		Name:        "dummy_user",
-		DisplayName: displayName,
-		Email:       email,
-		Profile:     profile,
-		Role:        enum.User,
+		UserSchema: schema.UserSchema{
+			Name:        "dummy_user",
+			DisplayName: displayName,
+			Email:       email,
+			Profile:     profile,
+			Role:        enum.User,
+		},
 	}
 	dummyUser.ID = id
 	return dummyUser

@@ -6,6 +6,15 @@ import (
 )
 
 type User struct {
+	UserSchema
+	mixin.UpdateTimes
+
+	// relation
+	TrainedPokemon []TrainedPokemon `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
+	Party          []Party          `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
+}
+
+type UserSchema struct {
 	ID          uint64 `gorm:"primaryKey;autoIncrement:true"`
 	Name        string
 	TwitterID   string `gorm:"unique"`
@@ -13,11 +22,6 @@ type User struct {
 	Email       *string
 	Profile     *string
 	Role        enum.Role
-	mixin.UpdateTimes
-
-	// relation
-	TrainedPokemon []TrainedPokemon `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
-	Party          []Party          `gorm:"foreignKey:CreateUserId;references:id"` // 1:M
 }
 
 func (User) TableName() string {

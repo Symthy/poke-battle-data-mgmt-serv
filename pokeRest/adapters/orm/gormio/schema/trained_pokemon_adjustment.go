@@ -6,6 +6,11 @@ import (
 )
 
 type TrainedPokemonAdjustment struct {
+	TrainedPokemonAdjustmentSchema
+	mixin.UpdateTimes
+}
+
+type TrainedPokemonAdjustmentSchema struct {
 	ID           uint64 `gorm:"primaryKey;autoIncrement:true"`
 	PokemonID    uint16
 	Pokemon      Pokemon // belongs to
@@ -22,7 +27,6 @@ type TrainedPokemonAdjustment struct {
 	MoveID2      *uint16 // M:1 <- Move
 	MoveID3      *uint16 // M:1 <- Move
 	MoveID4      *uint16 // M:1 <- Move
-	mixin.UpdateTimes
 }
 
 func (TrainedPokemonAdjustment) TableName() string {

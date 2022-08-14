@@ -1,17 +1,38 @@
 package parser
 
 import (
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"path/filepath"
 
+	"github.com/Symthy/PokeRest/pokeRest/common/lists"
 	"github.com/Symthy/PokeRest/tools/codegen/internal"
 )
 
-func Parse(filename string) ([]*internal.FieldInfo, error) {
-	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, filename, nil, parser.Mode(0))
+func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*internal.StructInfo, error) {
+	isErr := false
+	structs := []*internal.StructInfo{}
+	for file, structName := range fileToStruct {
+		path := filepath.Join(targetPkgPath, file)
+		sts, err := ParseFile(path, structName)
+		if err != nil {
+			isErr = true
+			fmt.Printf("[Error] %s %s: %v\n", file, structName, err)
+			continue
+		}
+		structs = append(structs, sts...)
+		fmt.Printf("[Info]  %s %s: success\n", file, structName)
+	}
+	if isErr {
+		return structs, fmt.Errorf("Failed to Parse.\n")
+	}
+	return structs, nil
+}
 
+func ParseFile(gofilePath string, filterTypeNames ...string) ([]*internal.StructInfo, error) {
+	fileNode, err := parseGoFile(gofilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -20,13 +41,46 @@ func Parse(filename string) ([]*internal.FieldInfo, error) {
 	// 	fmt.Println()
 	// }
 
-	fields := []*internal.FieldInfo{}
+	structs := parseStruct(fileNode, filterTypeNames...)
+	if len(structs) == 0 {
+		return nil, fmt.Errorf("Specied Type noting.")
+	}
 
-	ast.Inspect(f, func(node ast.Node) bool {
+	return structs, nil
+}
+
+func parseGoFile(gofilePath string) (*ast.File, error) {
+	fset := token.NewFileSet()
+	return parser.ParseFile(fset, gofilePath, nil, parser.Mode(0))
+}
+
+func parseImport(fileNode *ast.File) []*internal.ImportInfo {
+	imports := []*internal.ImportInfo{}
+	for _, i := range fileNode.Imports {
+		alias := ""
+		if i.Name != nil {
+			alias = i.Name.Name
+		}
+		imports = append(imports, internal.NewImportInfo(alias, i.Path.Value))
+	}
+	return imports
+}
+
+func parseStruct(fileNode *ast.File, filterTypeNames ...string) []*internal.StructInfo {
+	structs := []*internal.StructInfo{}
+	imports := parseImport(fileNode)
+
+	// ファイル内にあるtypeの数だけ呼び出される
+	ast.Inspect(fileNode, func(node ast.Node) bool {
 		t, ok := node.(*ast.TypeSpec)
 		if !ok {
 			return true
 		}
+		if len(filterTypeNames) > 0 && !lists.Contains(filterTypeNames, t.Name.Name) {
+			return true
+		}
+		typeName := t.Name.Name
+		fields := []*internal.FieldInfo{}
 
 		st, ok := t.Type.(*ast.StructType)
 		if !ok {
@@ -101,8 +155,9 @@ func Parse(filename string) ([]*internal.FieldInfo, error) {
 			}
 
 		}
+		structInfo := internal.NewStructInfo(typeName, imports, fields)
+		structs = append(structs, structInfo)
 		return true
 	})
-
-	return fields, nil
+	return structs
 }

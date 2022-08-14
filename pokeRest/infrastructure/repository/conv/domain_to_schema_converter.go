@@ -1,7 +1,6 @@
 package conv
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/abilities"
 	"github.com/Symthy/PokeRest/pokeRest/domain/entity/battles"
@@ -30,17 +29,10 @@ func ConvertToDomains[TS infrastructure.ISchema[TD, K, I], TD infrastructure.IDo
 
 // Todo: autogen
 
-func ToSchemaUser(u *users.User) *schema.User {
-	email := u.Email().Value()
-	user := &schema.User{
-		Name:        u.Name().Value(),
-		DisplayName: u.DisplayName(),
-		Email:       &email,
-		Profile:     u.Profile(),
-		Role:        enum.Role(u.Role().String()),
-	}
-	user.ID = u.Id().Value()
-	return user
+func ToSchemaUser(domain *users.User) *schema.User {
+	builder := dto.NewUserSchemaBuilder()
+	domain.Notify(builder)
+	return builder.Build()
 }
 
 func ToSchemaPokemon(domain *pokemons.Pokemon) *schema.Pokemon {

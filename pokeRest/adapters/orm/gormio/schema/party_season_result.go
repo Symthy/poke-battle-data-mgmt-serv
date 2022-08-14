@@ -1,6 +1,10 @@
 package schema
 
 type PartySeasonResult struct {
+	PartySeasonResultSchema
+}
+
+type PartySeasonResultSchema struct {
 	ID               uint64 `gorm:"primaryKey;autoIncrement:true"`
 	PartyID          uint64
 	Generation       uint16

@@ -55,7 +55,6 @@ func (u User) ValidatePassword(password string) error {
 	return bcrypt.CompareHashAndPassword(u.Password(), []byte(password))
 }
 
-// Todo: refactor Notification
 func (u User) Id() identifier.UserId {
 	return u.id
 }
@@ -86,4 +85,12 @@ func (u User) Role() value.Role {
 
 func (u *User) MaskPassword() {
 	u.password = nil
+}
+
+func (u User) Notify(note IUserNotification) {
+	note.SetId(u.id)
+	note.SetName(u.name)
+	note.SetDisplayName(u.displayName)
+	note.SetProfile(u.profile)
+	note.SetRole(u.role)
 }
