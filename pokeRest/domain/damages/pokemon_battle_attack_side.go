@@ -7,13 +7,13 @@ import (
 
 type AttackSidePokemon struct {
 	attackPokemonActualValues *value.PokemonActualValues
-	attackPokemonType         value.PokemonTypeSet
+	attackPokemonType         *value.PokemonTypeSet
 	attackPokemonNature       value.PokemonNature
 	attackPokemonHasItem      bool
 }
 
 func NewAttackSidePokemon(
-	actualValues *value.PokemonActualValues, pokemonTypeSet value.PokemonTypeSet,
+	actualValues *value.PokemonActualValues, pokemonTypeSet *value.PokemonTypeSet,
 	nature value.PokemonNature, hasItem bool) *AttackSidePokemon {
 	return &AttackSidePokemon{
 		attackPokemonActualValues: actualValues,

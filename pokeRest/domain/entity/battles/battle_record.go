@@ -16,7 +16,7 @@ type BattleRecord struct {
 	selfElectionPokemons     *ElectionPokemons
 	selfTrainedPokemons      *ElectionTrainedPokemons
 	opponentElectionPokemons *ElectionPokemons
-	*BattleOpponentParty
+	opponentParty            *BattleOpponentParty
 	*Season
 }
 
@@ -32,7 +32,7 @@ func NewBattleRecord(
 		selfElectionPokemons:     selfElectionPokemons,
 		selfTrainedPokemons:      selfTrainedPokemons,
 		opponentElectionPokemons: opponentElectionPokemons,
-		BattleOpponentParty:      opponentParty,
+		opponentParty:            opponentParty,
 		Season:                   season,
 	}
 }
@@ -50,11 +50,11 @@ func (b BattleRecord) UserId() identifier.UserId {
 }
 
 func (b BattleRecord) OpponentParty() *BattleOpponentParty {
-	return b.BattleOpponentParty
+	return b.opponentParty
 }
 
 func (b *BattleRecord) ApplyOpponentParty(opponentParty *BattleOpponentParty) {
-	b.BattleOpponentParty = opponentParty
+	b.opponentParty = opponentParty
 }
 
 func (b BattleRecord) Notify(note IBattleRecordNotification) {
@@ -65,6 +65,6 @@ func (b BattleRecord) Notify(note IBattleRecordNotification) {
 	note.SetSelfElectionPokemons(b.selfElectionPokemons)
 	note.SetSelfTrainedPokemons(b.selfTrainedPokemons)
 	note.SetOpponentElectionPokemons(b.opponentElectionPokemons)
-	b.BattleOpponentParty.Notify(note)
+	b.opponentParty.Notify(note)
 	b.Season.Notify(note)
 }

@@ -8,13 +8,13 @@ import (
 type DefenseSidePokemon struct {
 	defensePokemonActualValues *value.PokemonActualValues
 	defensePokemonNature       value.PokemonNature
-	defensePokemonTypes        value.PokemonTypeSet
+	defensePokemonTypes        *value.PokemonTypeSet
 	defensePokemonHasItems     bool
 }
 
 func NewDefenseSidePokemon(
 	deffencePokemonActualValues *value.PokemonActualValues, defensePokemonNature value.PokemonNature,
-	defensePokemonTypes value.PokemonTypeSet, hasItem bool) *DefenseSidePokemon {
+	defensePokemonTypes *value.PokemonTypeSet, hasItem bool) *DefenseSidePokemon {
 	return &DefenseSidePokemon{
 		defensePokemonActualValues: deffencePokemonActualValues,
 		defensePokemonNature:       defensePokemonNature,

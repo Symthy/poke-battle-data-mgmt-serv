@@ -63,6 +63,9 @@ func (i TrainedDefenseTargetInput) BuildDomain() (*trainings.TrainedPokemonDefen
 		return nil, err
 	}
 	pokemonId, err := identifier.NewPokemonId(i.targetPokemonId)
+	if err != nil {
+		return nil, err
+	}
 	return trainings.NewTrainedPokemonDefenceTarget(
 		*id, *trainedPokemonId, *moveId, *pokemonId, i.targetPokemonNature,
 		i.targetPokemonEffortValueA, i.targetPokemonEffortValueC)

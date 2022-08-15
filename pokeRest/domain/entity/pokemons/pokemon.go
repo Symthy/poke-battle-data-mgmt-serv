@@ -16,8 +16,8 @@ type Pokemon struct {
 	name             string
 	englishName      string
 	generation       uint16
-	typeSet          value.PokemonTypeSet
-	abilitySet       value.PokemonAbilityIdSet
+	typeSet          *value.PokemonTypeSet
+	abilitySet       *value.PokemonAbilityIdSet
 	baseStatsH       value.PokemonBaseStats
 	baseStatsA       value.PokemonBaseStats
 	baseStatsB       value.PokemonBaseStats
@@ -34,8 +34,8 @@ func NewPokemon(
 	name string,
 	englishName string,
 	generation uint64,
-	typeSet value.PokemonTypeSet,
-	abilitySet value.PokemonAbilityIdSet,
+	typeSet *value.PokemonTypeSet,
+	abilitySet *value.PokemonAbilityIdSet,
 	baseStatsH value.PokemonBaseStats,
 	baseStatsA value.PokemonBaseStats,
 	baseStatsB value.PokemonBaseStats,

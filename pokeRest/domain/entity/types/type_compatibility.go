@@ -30,7 +30,7 @@ func (t TypeCompatibility) GetDamageRate(targetType value.PokemonType) float32 {
 	return t.typeToDamageRate[targetType]
 }
 
-func (t TypeCompatibility) GetTotalDamageRate(targetTypes value.PokemonTypeSet) float32 {
+func (t TypeCompatibility) GetTotalDamageRate(targetTypes *value.PokemonTypeSet) float32 {
 	rate1 := t.GetDamageRate(targetTypes.FirstType())
 	rate2 := t.GetDamageRate(targetTypes.SecondType())
 	return rate1 * rate2

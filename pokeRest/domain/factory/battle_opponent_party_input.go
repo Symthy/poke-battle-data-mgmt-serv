@@ -11,8 +11,22 @@ type BattleOpponentPartyInput struct {
 	opponentPokemonIds []uint64
 }
 
-func NewBattleOpponentPartyInput(id uint64, pokemonIds ...uint64) BattleOpponentPartyInput {
-	return BattleOpponentPartyInput{id, pokemonIds}
+func NewBattleOpponentPartyInput(id uint64, pokemonIds []uint64) *BattleOpponentPartyInput {
+	return &BattleOpponentPartyInput{id, pokemonIds}
+}
+
+func NewBattleOpponentPartyBuilder() *BattleOpponentPartyInput {
+	return &BattleOpponentPartyInput{}
+}
+
+func (b *BattleOpponentPartyInput) Id(id uint64) *BattleOpponentPartyInput {
+	b.id = id
+	return b
+}
+
+func (b *BattleOpponentPartyInput) OpponentPokemonIds(ids []uint64) *BattleOpponentPartyInput {
+	b.opponentPokemonIds = ids
+	return b
 }
 
 func (i BattleOpponentPartyInput) BuildDomain() (*battles.BattleOpponentParty, error) {

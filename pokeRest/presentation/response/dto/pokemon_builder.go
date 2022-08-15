@@ -32,13 +32,13 @@ func (b *PokemonResponseBuilder) SetEnglishName(value string) {
 }
 func (b *PokemonResponseBuilder) SetGeneration(value uint16) {
 }
-func (b *PokemonResponseBuilder) SetTypeSet(value value.PokemonTypeSet) {
+func (b *PokemonResponseBuilder) SetTypeSet(value *value.PokemonTypeSet) {
 	type1, type2 := value.GetTypeEnglishNames()
 	b.Type1 = type1
 	b.Type2 = &type2
 }
-func (b *PokemonResponseBuilder) SetAbilitySet(value value.PokemonAbilityIdSet) {
-	abilityId1, abilityId2, hiddenAbilityId := value.GetAbilityIds()
+func (b *PokemonResponseBuilder) SetAbilitySet(abilityIdSet *value.PokemonAbilityIdSet) {
+	abilityId1, abilityId2, hiddenAbilityId := abilityIdSet.GetIds()
 	b.Ability1 = abilityId1.Value()
 	ability2 := abilityId2.Value()
 	b.Ability2 = &ability2

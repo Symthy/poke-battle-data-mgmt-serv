@@ -1,6 +1,10 @@
 package internal
 
-import "github.com/Symthy/PokeRest/pokeRest/common/lists"
+import (
+	"strings"
+
+	"github.com/Symthy/PokeRest/pokeRest/common/lists"
+)
 
 type StructInfo struct {
 	name    string
@@ -26,10 +30,25 @@ func (s StructInfo) AliasImports() []*ImportInfo {
 	})
 }
 
-func (s StructInfo) NormalImports() []*ImportInfo {
-	return lists.Filter(s.imports, func(i *ImportInfo) bool {
+func (s StructInfo) NormalImportPaths() []string {
+	filteredImports := lists.Filter(s.imports, func(i *ImportInfo) bool {
 		return i.alias == ""
 	})
+	return lists.Map(filteredImports, func(i *ImportInfo) string {
+		return i.path
+	})
+}
+
+func (s StructInfo) ResolvePkgPath(pkgName string) string {
+	if pkgName == "" {
+		return pkgName
+	}
+	for _, importInfo := range s.imports {
+		if importInfo.alias == pkgName || importInfo.pkgName == pkgName {
+			return importInfo.path
+		}
+	}
+	return pkgName
 }
 
 func (s StructInfo) Fields() []*FieldInfo {
@@ -49,18 +68,27 @@ func (s StructInfo) FieldNames() []string {
 }
 
 type ImportInfo struct {
-	alias string
-	path  string
+	alias   string
+	pkgName string
+	path    string
 }
 
 func NewImportInfo(alias string, path string) *ImportInfo {
+	unquotedPath := exculdeQuotes(path)
 	return &ImportInfo{
-		alias: alias,
-		path:  exculdeQuotes(path),
+		alias:   alias,
+		pkgName: resolvePkgName(unquotedPath),
+		path:    unquotedPath,
 	}
 }
 
+func resolvePkgName(unquotedPath string) string {
+	pkgElems := strings.Split(unquotedPath, "/")
+	return pkgElems[len(pkgElems)-1]
+}
+
 func exculdeQuotes(quotedPath string) string {
+	// ASTから取得したパスは”で括られているため外す
 	path := quotedPath
 	if path[0] == '"' {
 		path = path[1:]
@@ -69,6 +97,14 @@ func exculdeQuotes(quotedPath string) string {
 		path = path[:len(path)-1]
 	}
 	return path
+}
+
+func (i ImportInfo) AliasName() string {
+	return i.alias
+}
+
+func (i ImportInfo) Path() string {
+	return i.path
 }
 
 type FieldInfo struct {
@@ -91,6 +127,26 @@ func NewEmbeddedFieldInfo(typeInfo *TypeInfo) *FieldInfo {
 		typeInfo:   typeInfo,
 		isEmbedded: true,
 	}
+}
+
+func (f FieldInfo) Name() string {
+	return f.fieldName
+}
+
+func (f FieldInfo) TypeName() string {
+	return f.typeInfo.typeName
+}
+
+func (f FieldInfo) TypePkgName() string {
+	return f.typeInfo.pkgName
+}
+
+func (f FieldInfo) IsPointer() bool {
+	return f.typeInfo.isPointer
+}
+
+func (f FieldInfo) IsArray() bool {
+	return f.typeInfo.isArray
 }
 
 type TypeInfo struct {

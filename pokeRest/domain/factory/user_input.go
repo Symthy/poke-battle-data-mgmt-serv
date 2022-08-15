@@ -40,6 +40,6 @@ func (i UserInput) BuildDomain() (*users.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	domain := users.NewUser(*id, *name, nil, nil, nil, value.Role(i.role))
+	domain := users.NewUser(*id, *name, nil, nil, value.Role(i.role))
 	return domain, nil
 }

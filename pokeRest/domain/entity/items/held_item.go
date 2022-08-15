@@ -17,8 +17,8 @@ type HeldItem struct {
 
 func NewHeldItem(
 	id identifier.HeldItemId, name, description string, battleEffects *battles.BattleEffects,
-) HeldItem {
-	return HeldItem{
+) *HeldItem {
+	return &HeldItem{
 		id:            id,
 		name:          name,
 		description:   description,

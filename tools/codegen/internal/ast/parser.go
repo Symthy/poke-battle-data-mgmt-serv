@@ -1,4 +1,4 @@
-package parser
+package ast
 
 import (
 	"fmt"
@@ -16,7 +16,15 @@ func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*intern
 	structs := []*internal.StructInfo{}
 	for file, structName := range fileToStruct {
 		path := filepath.Join(targetPkgPath, file)
-		sts, err := ParseFile(path, structName)
+
+		var sts []*internal.StructInfo
+		var err error
+		if structName == "" {
+			sts, err = ParseFile(path)
+		} else {
+			sts, err = ParseFile(path, structName)
+		}
+
 		if err != nil {
 			isErr = true
 			fmt.Printf("[Error] %s %s: %v\n", file, structName, err)
@@ -29,6 +37,14 @@ func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*intern
 		return structs, fmt.Errorf("Failed to Parse.\n")
 	}
 	return structs, nil
+}
+
+func ParseSingleStruct(gofilePath string, structName string) (*internal.StructInfo, error) {
+	structs, err := ParseFile(gofilePath, structName)
+	if err != nil {
+		return nil, err
+	}
+	return structs[0], nil
 }
 
 func ParseFile(gofilePath string, filterTypeNames ...string) ([]*internal.StructInfo, error) {

@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/Symthy/PokeRest/tools/codegen/internal/ast"
 	"github.com/Symthy/PokeRest/tools/codegen/internal/builder"
-	"github.com/Symthy/PokeRest/tools/codegen/internal/parser"
 )
 
 const (
@@ -34,24 +34,51 @@ var (
 		"trained_pokemon_defense_target.go": "TrainedPokemonDefenseTargetSchema",
 		"trained_pokemon.go":                "TrainedPokemonSchema",
 	}
+
+	targetEntities = map[string]string{
+		"abilities/Ability.go":                        "",
+		"battles/battle_record.go":                    "",
+		"battles/battle_opponent_party.go":            "",
+		"battles/season.go":                           "",
+		"items/held_item.go":                          "",
+		"moves/move.go":                               "",
+		"parties/party.go":                            "",
+		"parties/party_battle_result.go":              "",
+		"parties/party_tag.go":                        "",
+		"pokemons/pokemon.go":                         "",
+		"trainings/trained_pokemon_adjustment.go":     "",
+		"trainings/trained_pokemon_attack_target.go":  "",
+		"trainings/trained_pokemon_defense_target.go": "",
+		"trainings/trained_pokemon.go":                "",
+		"users/user.go":                               "",
+	}
 )
 
 func main() {
 	rootPath := filepath.Join(filepath.Dir(thisPath), "../../..")
-	// parser.Parse(filepath.Join(rootPath, testInputPath, "move.go"))
-
-	schemaStructs, err := parser.ParseFiles(filepath.Join(rootPath, schemaPath), targetSchemas)
-	if err != nil {
-		fmt.Print(err)
-		return
-	}
-
 	homePath := filepath.Join(rootPath, "tools/codegen")
+
+	schemaStructs, err := ast.ParseFiles(filepath.Join(rootPath, schemaPath), targetSchemas)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	err = builder.GenerateFuncSchemaFieldsGetter(homePath, schemaStructs)
-	// err := builder.BuildItemFactory(filepath.Join(rootPath, "tools/codegen"))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	entityStructs, err := ast.ParseFiles(filepath.Join(rootPath, entityPath), targetEntities)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
+	err = builder.GenerateEntityFactoryStructs(rootPath, homePath, entityStructs)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
 	fmt.Print("Code generation success.")
 }

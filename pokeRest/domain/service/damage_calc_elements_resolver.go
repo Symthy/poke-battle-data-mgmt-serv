@@ -74,7 +74,7 @@ func (r DamageCalcElementsService) Resolve(
 }
 
 func (r DamageCalcElementsService) resolveTypeCompatibility(
-	attackMoveType value.PokemonType, defensePokemonType value.PokemonTypeSet) float32 {
+	attackMoveType value.PokemonType, defensePokemonType *value.PokemonTypeSet) float32 {
 	typeCompatibility := r.typeServ.GetAttackTypeCompatibility(attackMoveType.NameEN())
 	return typeCompatibility.GetTotalDamageRate(defensePokemonType)
 }

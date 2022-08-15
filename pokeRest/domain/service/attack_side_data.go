@@ -11,7 +11,7 @@ var _ moves.IMoveNotificationForDamageCalc = (*AttackSide)(nil)
 
 type AttackSide struct {
 	actualValues      *value.PokemonActualValues
-	pokemonTypeSet    value.PokemonTypeSet
+	pokemonTypeSet    *value.PokemonTypeSet
 	nature            value.PokemonNature
 	moveSpecies       value.MoveSpecies
 	moveType          value.PokemonType
@@ -23,7 +23,7 @@ type AttackSide struct {
 }
 
 func NewAttackSide(
-	actualValues *value.PokemonActualValues, pokemonType value.PokemonTypeSet, nature value.PokemonNature,
+	actualValues *value.PokemonActualValues, pokemonType *value.PokemonTypeSet, nature value.PokemonNature,
 	additionalEffects *battles.BattleEffects, move *moves.Move, hasItem bool,
 ) AttackSide {
 	attackPokemon := &AttackSide{

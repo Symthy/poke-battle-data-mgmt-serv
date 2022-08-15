@@ -10,67 +10,71 @@ type BattleRecordInput struct {
 	id                            uint64
 	partyId                       uint64
 	userId                        uint64
-	generation                    uint64
-	series                        uint64
-	season                        uint64
+	season                        *SeasonInput
 	battleResult                  string
 	selfElectionPokemonIds        []uint64
 	selfElectionTrainedPokemonIds []uint64
 	opponentElectionPokemonIds    []uint64
-	BattleOpponentPartyInput
+	opponentParty                 *BattleOpponentPartyInput
 }
 
 func NewBattleRecordInput(
-	id, partyId, userId, generation, series, season uint64, battleResult string,
+	id, partyId, userId uint64, battleResult string, seasonInput *SeasonInput,
 	selfElectionPokemonIds, selfElectionTrainedPokemonIds, opponentElectionPokemonIds []uint64,
-	opponentPartyInput BattleOpponentPartyInput,
+	opponentPartyInput *BattleOpponentPartyInput,
 ) BattleRecordInput {
 	return BattleRecordInput{
-		id:      id,
-		partyId: partyId,
-		userId:  userId,
-		// Todo
+		id:                            id,
+		partyId:                       partyId,
+		userId:                        userId,
+		season:                        seasonInput,
 		battleResult:                  battleResult,
 		selfElectionPokemonIds:        selfElectionPokemonIds,
 		selfElectionTrainedPokemonIds: selfElectionTrainedPokemonIds,
 		opponentElectionPokemonIds:    opponentElectionPokemonIds,
-		BattleOpponentPartyInput:      opponentPartyInput,
+		opponentParty:                 opponentPartyInput,
 	}
 }
 
-func NewBattleRecordBuilder() BattleRecordInput {
-	return BattleRecordInput{}
+func NewBattleRecordBuilder() *BattleRecordInput {
+	return &BattleRecordInput{}
 }
 
-func (i *BattleRecordInput) Id(id uint64) {
+func (i *BattleRecordInput) Id(id uint64) *BattleRecordInput {
 	i.id = id
+	return i
 }
-func (i *BattleRecordInput) PartyId(partyId uint64) {
+func (i *BattleRecordInput) PartyId(partyId uint64) *BattleRecordInput {
 	i.partyId = partyId
+	return i
 }
-func (i *BattleRecordInput) UserId(userId uint64) {
+func (i *BattleRecordInput) UserId(userId uint64) *BattleRecordInput {
 	i.userId = userId
+	return i
 }
-func (i *BattleRecordInput) Generation(generation uint64) {
-	i.generation = generation
-}
-func (i *BattleRecordInput) Series(series uint64) {
-	i.series = series
-}
-func (i *BattleRecordInput) Season(season uint64) {
+func (i *BattleRecordInput) Season(season *SeasonInput) *BattleRecordInput {
 	i.season = season
+	return i
 }
-func (i *BattleRecordInput) BattleResult(battleResult string) {
+func (i *BattleRecordInput) BattleResult(battleResult string) *BattleRecordInput {
 	i.battleResult = battleResult
+	return i
 }
-func (i *BattleRecordInput) SelfElectionPokemonIds(ids []uint64) {
+func (i *BattleRecordInput) SelfElectionPokemonIds(ids []uint64) *BattleRecordInput {
 	i.selfElectionPokemonIds = ids
+	return i
 }
-func (i *BattleRecordInput) OpponentElectionPokemonIds(ids []uint64) {
+func (i *BattleRecordInput) SelfElectionTrainedPokemonIds(ids []uint64) *BattleRecordInput {
+	i.selfElectionTrainedPokemonIds = ids
+	return i
+}
+func (i *BattleRecordInput) OpponentElectionPokemonIds(ids []uint64) *BattleRecordInput {
 	i.opponentElectionPokemonIds = ids
+	return i
 }
-func (i *BattleRecordInput) BattleOpponentParty(input BattleOpponentPartyInput) {
-	i.BattleOpponentPartyInput = input
+func (i *BattleRecordInput) BattleOpponentParty(input *BattleOpponentPartyInput) *BattleRecordInput {
+	i.opponentParty = input
+	return i
 }
 
 func (b BattleRecordInput) BuildDomain() (*battles.BattleRecord, error) {
@@ -86,8 +90,7 @@ func (b BattleRecordInput) BuildDomain() (*battles.BattleRecord, error) {
 	if err != nil {
 		return nil, err
 	}
-	// Todo
-	season, err := battles.NewSeason(0, 0, 0)
+	season, err := b.season.BuildDomain()
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +98,7 @@ func (b BattleRecordInput) BuildDomain() (*battles.BattleRecord, error) {
 	selfPokemons := battles.NewElectionPokemons(b.selfElectionPokemonIds)
 	selfTrainedPokemons := battles.NewElectionTrainedPokemons(b.selfElectionTrainedPokemonIds)
 	opponentPokemons := battles.NewElectionPokemons(b.opponentElectionPokemonIds)
-	opponentParty, err := b.BattleOpponentPartyInput.BuildDomain()
+	opponentParty, err := b.opponentParty.BuildDomain()
 	if err != nil {
 		return nil, err
 	}

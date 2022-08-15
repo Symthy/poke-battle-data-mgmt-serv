@@ -249,12 +249,24 @@ func ToDomainBattleRecord(schema *schema.BattleRecord) (*battles.BattleRecord, e
 	lists.AddLiterals(opponentElectionPokemonIds, schema.OpponentElectionPokemonId1,
 		schema.OpponentElectionPokemonId2, schema.OpponentElectionPokemonId3, schema.OpponentElectionPokemonId4)
 
-	opponentPartyInput := toBattleOpponentPartyInput(&schema.BattleOpponentParty)
-	input := factory.NewBattleRecordInput(schema.ID, schema.PartyID, schema.UserID,
-		uint64(schema.BattleSeason.Generation), uint64(schema.BattleSeason.Series), uint64(schema.BattleSeason.Season),
-		schema.Result.String(), lists.ConvertTypeUint16To64(selfElectionPokemonIds), selfTrainedPokemonIds,
-		lists.ConvertTypeUint16To64(opponentElectionPokemonIds), opponentPartyInput)
-	return input.BuildDomain()
+	season := factory.NewSeasonBuilder().
+		Generation(uint64(schema.BattleSeason.Generation)).
+		Series(uint64(schema.BattleSeason.Series)).
+		Season(uint64(schema.BattleSeason.Season))
+
+	opponentParty := toBattleOpponentPartyInput(&schema.BattleOpponentParty)
+
+	builder := factory.NewBattleRecordBuilder().
+		Id(schema.ID).
+		PartyId(schema.PartyID).
+		UserId(schema.UserID).
+		Season(season).
+		BattleResult(schema.Result.String()).
+		SelfElectionPokemonIds(lists.ConvertTypeUint16To64(selfElectionPokemonIds)).
+		SelfElectionTrainedPokemonIds(selfTrainedPokemonIds).
+		OpponentElectionPokemonIds(lists.ConvertTypeUint16To64(opponentElectionPokemonIds)).
+		BattleOpponentParty(opponentParty)
+	return builder.BuildDomain()
 }
 
 func ToDomainBattleOpponentParty(schema *schema.BattleOpponentParty) (*battles.BattleOpponentParty, error) {
@@ -262,12 +274,12 @@ func ToDomainBattleOpponentParty(schema *schema.BattleOpponentParty) (*battles.B
 	return input.BuildDomain()
 }
 
-func toBattleOpponentPartyInput(schema *schema.BattleOpponentParty) factory.BattleOpponentPartyInput {
+func toBattleOpponentPartyInput(schema *schema.BattleOpponentParty) *factory.BattleOpponentPartyInput {
 	opponentPokemonIds := []uint16{}
 	lists.AddLiterals(opponentPokemonIds,
 		schema.OpponentPokemonId1, schema.OpponentPokemonId2, schema.OpponentPokemonId3,
 		schema.OpponentPokemonId4, schema.OpponentPokemonId5, schema.OpponentPokemonId6)
-	input := factory.NewBattleOpponentPartyInput(schema.ID, lists.ConvertTypeUint16To64(opponentPokemonIds)...)
+	input := factory.NewBattleOpponentPartyInput(schema.ID, lists.ConvertTypeUint16To64(opponentPokemonIds))
 	return input
 }
 

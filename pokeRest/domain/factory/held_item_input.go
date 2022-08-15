@@ -40,5 +40,5 @@ func (i HeldItemInput) BuildDomain() (*items.HeldItem, error) {
 		return nil, err
 	}
 	domain := items.NewHeldItem(*id, i.name, i.description, i.battleEffects)
-	return &domain, nil
+	return domain, nil
 }
