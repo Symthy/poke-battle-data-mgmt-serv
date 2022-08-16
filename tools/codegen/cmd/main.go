@@ -7,12 +7,14 @@ import (
 
 	"github.com/Symthy/PokeRest/tools/codegen/internal/ast"
 	"github.com/Symthy/PokeRest/tools/codegen/internal/builder"
+	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem"
 )
 
 const (
-	schemaPath    = "pokeRest/adapters/orm/gormio/schema/"
-	entityPath    = "pokeRest/domain/entity"
-	testInputPath = "tools/codegen/test/input"
+	schemaPath         = "pokeRest/adapters/orm/gormio/schema/"
+	entityPath         = "pokeRest/domain/entity/"
+	serverResponsePath = "pokeRest/adapters/rest/autogen/server/"
+	testInputPath      = "tools/codegen/test/input"
 )
 
 var (
@@ -52,30 +54,88 @@ var (
 		"trainings/trained_pokemon.go":                "",
 		"users/user.go":                               "",
 	}
+
+	targetResponses = []string{
+		"Ability",
+		"BattleOpponentParty",
+		"BattleRecord",
+		"BattleSeason",
+		"CorrectionData",
+		"DamageResult",
+		"HeldItem",
+		"Move",
+		"Party",
+		"PartyTag",
+		"Pokemon",
+		"PokemonDetail",
+		"TrainedPokemon",
+		"TrainedPokemonAttack",
+		"TrainedPokemonDeffense",
+		"TrainedPokemonDetail",
+		"User",
+	}
 )
 
 func main() {
 	rootPath := filepath.Join(filepath.Dir(thisPath), "../../..")
 	homePath := filepath.Join(rootPath, "tools/codegen")
+	outputPath := filepath.Join(homePath, "output")
+	if err := filesystem.MakeDirIfNotExists(outputPath); err != nil {
+		fmt.Println(err)
+		return
+	}
 
+	outSchemaPath := filepath.Join(outputPath, "schema")
+	if err := filesystem.MakeDirIfNotExists(outSchemaPath); err != nil {
+		fmt.Println(err)
+		return
+	}
 	schemaStructs, err := ast.ParseFiles(filepath.Join(rootPath, schemaPath), targetSchemas)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	err = builder.GenerateFuncSchemaFieldsGetter(homePath, schemaStructs)
-	if err != nil {
+	if err := builder.GenerateFuncSchemaFieldsGetter(homePath, outSchemaPath, schemaStructs); err != nil {
 		fmt.Println(err)
 		return
 	}
 
+	outDomainPath := filepath.Join(outputPath, "domain")
+	if err := filesystem.MakeDirIfNotExists(outDomainPath); err != nil {
+		fmt.Print(err)
+		return
+	}
+	outFactoryPath := filepath.Join(outDomainPath, "factory")
+	if err := filesystem.MakeDirIfNotExists(outFactoryPath); err != nil {
+		fmt.Print(err)
+		return
+	}
 	entityStructs, err := ast.ParseFiles(filepath.Join(rootPath, entityPath), targetEntities)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
-	err = builder.GenerateEntityFactoryStructs(rootPath, homePath, entityStructs)
+	if err := builder.GenerateEntityFactoryStructs(rootPath, homePath, outFactoryPath, entityStructs); err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	outResponsePath := filepath.Join(outputPath, "response")
+	if err := filesystem.MakeDirIfNotExists(outResponsePath); err != nil {
+		fmt.Print(err)
+		return
+	}
+	outResDtoPath := filepath.Join(outResponsePath, "dto")
+	if err := filesystem.MakeDirIfNotExists(outResDtoPath); err != nil {
+		fmt.Print(err)
+		return
+	}
+	responseStructs, err := ast.ParseSingleFile(filepath.Join(rootPath, serverResponsePath, "types.gen.go"), targetResponses...)
 	if err != nil {
+		fmt.Print(err)
+		return
+	}
+	if err := builder.GenerateResponseModelBuilderStruct(homePath, outResDtoPath, responseStructs); err != nil {
 		fmt.Print(err)
 		return
 	}

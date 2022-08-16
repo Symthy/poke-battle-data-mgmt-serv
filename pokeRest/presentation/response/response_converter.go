@@ -86,7 +86,7 @@ func ConvertTypeTableToResponse(domain types.TypeCompatibilityTable, lang string
 
 func ConvertTypesToResponse(domain types.TypeCompatibility, lang string) server.TypeCompatibility {
 	return server.TypeCompatibility{
-		TargetType:      domain.ResolveTargetType(lang),
+		TargetPokeType:  domain.ResolveTargetType(lang),
 		Compatibilities: domain.GenerateTypeDamageRates(),
 		TypeOrder:       domain.GenerateTypeNames(lang),
 	}

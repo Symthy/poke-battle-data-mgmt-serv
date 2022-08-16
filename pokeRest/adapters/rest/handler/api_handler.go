@@ -174,7 +174,7 @@ func (h *PokeRestHandler) GetTypeCompabilityOfAttackSide(ctx echo.Context, pType
 // get type compability of defense side
 // (GET /types/compability/defense/{type})
 func (h *PokeRestHandler) GetTypeCompabilityOfDefenseSide(ctx echo.Context, pType string) error {
-	return h.typeController.GetDeffenceTypeCompatibility(ctx, pType)
+	return h.typeController.GetDeffenseTypeCompatibility(ctx, pType)
 }
 
 /* transaction data */
@@ -322,32 +322,32 @@ func (h *PokeRestHandler) DeleteTrainedPokemonsIdAttacksId(ctx echo.Context, tra
 	return nil
 }
 
-// (GET /trainedpokemons/{id}/deffences)
-func (h *PokeRestHandler) GetTrainedPokemonsIdDeffences(ctx echo.Context, id uint64) error {
+// (GET /trainedpokemons/{id}/deffenses)
+func (h *PokeRestHandler) GetTrainedPokemonsIdDeffenses(ctx echo.Context, id uint64) error {
 	return nil
 }
 
-// POST trained pokemon deffence adjustment
-// (POST /trainedpokemons/{id}/deffences)
-func (h *PokeRestHandler) PostTrainedpokemonsIdDeffences(ctx echo.Context, id uint64) error {
+// POST trained pokemon deffense adjustment
+// (POST /trainedpokemons/{id}/deffenses)
+func (h *PokeRestHandler) PostTrainedpokemonsIdDeffenses(ctx echo.Context, id uint64) error {
 	return nil
 }
 
-// GET trained pokemon deffence adjustment
-// (GET /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) GetTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId uint64, deffenceId uint64) error {
+// GET trained pokemon deffense adjustment
+// (GET /trainedpokemons/{trainedPokemonId}/deffenses/{deffenseId})
+func (h *PokeRestHandler) GetTrainedPokemonsIdDeffensesId(ctx echo.Context, trainedPokemonId uint64, deffenseId uint64) error {
 	return nil
 }
 
-// PUT trained pokemon deffence adjustment
-// (PUT /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdDeffencesDeffenceId(ctx echo.Context, trainedPokemonId uint64, deffenceId uint64) error {
+// PUT trained pokemon deffense adjustment
+// (PUT /trainedpokemons/{trainedPokemonId}/deffenses/{deffenseId})
+func (h *PokeRestHandler) PutTrainedpokemonsTrainedPokemonIdDeffensesDeffenseId(ctx echo.Context, trainedPokemonId uint64, deffenseId uint64) error {
 	return nil
 }
 
-// DELETE trained pokemon deffence adjustment
-// (DELETE /trainedpokemons/{trainedPokemonId}/deffences/{deffenceId})
-func (h *PokeRestHandler) DeleteTrainedPokemonsIdDeffencesId(ctx echo.Context, trainedPokemonId uint64, deffenceId uint64) error {
+// DELETE trained pokemon deffense adjustment
+// (DELETE /trainedpokemons/{trainedPokemonId}/deffenses/{deffenseId})
+func (h *PokeRestHandler) DeleteTrainedPokemonsIdDeffensesId(ctx echo.Context, trainedPokemonId uint64, deffenseId uint64) error {
 	return nil
 }
 

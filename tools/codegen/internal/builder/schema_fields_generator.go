@@ -5,15 +5,13 @@ import (
 	"path/filepath"
 
 	"github.com/Symthy/PokeRest/tools/codegen/internal"
-	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem"
 
 	"github.com/dave/jennifer/jen"
 )
 
-const outputGoFileName = "schema_fields.go"
+const outputGoFileName = "schema_fields.gen.go"
 
-func GenerateFuncSchemaFieldsGetter(homePath string, structs []*internal.StructInfo) error {
-	outPath := filepath.Join(homePath, "output/schema")
+func GenerateFuncSchemaFieldsGetter(homePath, outPath string, structs []*internal.StructInfo) error {
 	f := jen.NewFile("schema")
 
 	for _, structInfo := range structs {
@@ -28,8 +26,6 @@ func GenerateFuncSchemaFieldsGetter(homePath string, structs []*internal.StructI
 			jen.Return(jen.Id(fieldsVarName)),
 		)
 	}
-
-	filesystem.MakeDirIfNotExists(outPath)
 	newFilePath := filepath.Join(outPath, outputGoFileName)
 	err := f.Save(newFilePath)
 	if err != nil {

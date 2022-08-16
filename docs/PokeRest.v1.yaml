@@ -1103,7 +1103,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RequestUpdateTrainedPokeAttackTarget'
-  '/trainedpokemons/{id}/deffences':
+  '/trainedpokemons/{id}/deffenses':
     parameters:
       - schema:
           type: integer
@@ -1113,7 +1113,7 @@ paths:
         required: true
         description: trained pokemon id
     get:
-      summary: GET trained pokemon deffence adjustments
+      summary: GET trained pokemon deffense adjustments
       tags:
         - User Transaction Data
       responses:
@@ -1122,7 +1122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrainedPokemonDeffences'
+                $ref: '#/components/schemas/TrainedPokemonDeffenses'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1139,17 +1139,17 @@ paths:
           $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-trained-pokemons-id-deffences
+      operationId: get-trained-pokemons-id-deffenses
     post:
-      summary: POST trained pokemon deffence adjustment
-      operationId: post-trainedpokemons-id-deffences
+      summary: POST trained pokemon deffense adjustment
+      operationId: post-trainedpokemons-id-deffenses
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrainedPokemonDeffence'
+                $ref: '#/components/schemas/TrainedPokemonDeffense'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1172,8 +1172,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestCreateTrainedPokeDefenceTarget'
-  '/trainedpokemons/{trainedPokemonId}/deffences/{deffenceId}':
+              $ref: '#/components/schemas/RequestCreateTrainedPokeDefenseTarget'
+  '/trainedpokemons/{trainedPokemonId}/deffenses/{deffenseId}':
     parameters:
       - schema:
           type: integer
@@ -1185,12 +1185,12 @@ paths:
       - schema:
           type: integer
           format: uint64
-        name: deffenceId
+        name: deffenseId
         in: path
         required: true
-        description: deffence adjustment id
+        description: deffense adjustment id
     get:
-      summary: GET trained pokemon deffence adjustment
+      summary: GET trained pokemon deffense adjustment
       tags:
         - User Transaction Data
       responses:
@@ -1210,15 +1210,15 @@ paths:
           $ref: '#/components/responses/415'
         '500':
           $ref: '#/components/responses/500'
-      operationId: get-trained-pokemons-id-deffences-id
+      operationId: get-trained-pokemons-id-deffenses-id
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TrainedPokemonDeffence'
+              $ref: '#/components/schemas/TrainedPokemonDeffense'
     delete:
-      summary: DELETE trained pokemon deffence adjustment
-      operationId: delete-trained-pokemons-id-deffences-id
+      summary: DELETE trained pokemon deffense adjustment
+      operationId: delete-trained-pokemons-id-deffenses-id
       responses:
         '200':
           description: OK
@@ -1237,15 +1237,15 @@ paths:
         '500':
           $ref: '#/components/responses/500'
     put:
-      summary: PUT trained pokemon deffence adjustment
-      operationId: put-trainedpokemons-trainedPokemonId-deffences-deffenceId
+      summary: PUT trained pokemon deffense adjustment
+      operationId: put-trainedpokemons-trainedPokemonId-deffenses-deffenseId
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrainedPokemonDeffence'
+                $ref: '#/components/schemas/TrainedPokemonDeffense'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1268,7 +1268,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenceTarget'
+              $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenseTarget'
   /parties:
     get:
       summary: GET Parties
@@ -2071,9 +2071,9 @@ components:
         baseStatsS:
           type: integer
           format: uint8
-        type1:
+        pokeType1:
           type: string
-        type2:
+        pokeType2:
           type: string
         ability1:
           type: integer
@@ -2097,7 +2097,7 @@ components:
         - baseStatsC
         - baseStatsD
         - baseStatsS
-        - type1
+        - pokeType1
         - ability1
     PokemonDetail:
       description: Pokemon Detail
@@ -2139,9 +2139,9 @@ components:
         baseStatsS:
           type: integer
           format: uint8
-        type1:
+        pokeType1:
           type: string
-        type2:
+        pokeType2:
           type: string
         ability1:
           $ref: '#/components/schemas/Ability'
@@ -2163,7 +2163,7 @@ components:
         - baseStatsC
         - baseStatsD
         - baseStatsS
-        - type1
+        - pokeType1
         - ability1
         - moves
     Pokemons:
@@ -2218,7 +2218,7 @@ components:
           format: uint16
         name:
           type: string
-        type:
+        pokeType:
           type: string
         species:
           description: 分類（物理/特殊）
@@ -2258,7 +2258,7 @@ components:
       required:
         - id
         - name
-        - type
+        - pokeType
         - species
         - power
         - specialPower
@@ -2414,7 +2414,7 @@ components:
       x-examples: {}
       title: TypeCompatibility
       properties:
-        targetType:
+        targetPokeType:
           type: string
         compatibilities:
           type: array
@@ -2426,7 +2426,7 @@ components:
           items:
             type: string
       required:
-        - targetType
+        - targetPokeType
         - compatibilities
         - typeOrder
     Form:
@@ -2638,13 +2638,9 @@ components:
         move4:
           $ref: '#/components/schemas/Move'
         attackAdjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrainedPokemonAttack'
+          $ref: '#/components/schemas/TrainedPokemonAttacks'
         deffenceAdjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrainedPokemonDeffence'
+          $ref: '#/components/schemas/TrainedPokemonDeffenses'
         isPrivate:
           type: boolean
         createdUserId:
@@ -2687,26 +2683,21 @@ components:
         move:
           $ref: '#/components/schemas/Move'
         opponentPokemon:
-          type: object
-          required:
-            - pokemon
-            - effortValueH
-            - effortValueB
-            - effortValueD
-          properties:
-            pokemon:
-              $ref: '#/components/schemas/Pokemon'
-            nature:
-              type: string
-            effortValueH:
-              type: integer
-              format: uint8
-            effortValueB:
-              type: integer
-              format: uint8
-            effortValueD:
-              type: integer
-              format: uint8
+          $ref: '#/components/schemas/Pokemon'
+        opponentPokemonNature:
+          type: string
+        opponentPokemonEffortValueH:
+          type: integer
+          minimum: 0
+          maximum: 252
+        opponentPokemonEffortValueB:
+          type: integer
+          minimum: 0
+          maximum: 252
+        opponentPokemonEffortValueD:
+          type: integer
+          minimum: 0
+          maximum: 252
       required:
         - move
         - opponentPokemon
@@ -2723,42 +2714,37 @@ components:
       required:
         - attackAdjustments
         - count
-    TrainedPokemonDeffence:
-      title: TrainedPokemonDeffence
+    TrainedPokemonDeffense:
+      title: TrainedPokemonDeffense
       type: object
       properties:
         move:
           $ref: '#/components/schemas/Move'
         opponentPokemon:
-          type: object
-          required:
-            - pokemon
-            - effortValueA
-            - effortValueC
-          properties:
-            pokemon:
-              $ref: '#/components/schemas/Pokemon'
-            nature:
-              type: string
-            effortValueA:
-              type: integer
-              format: uint8
-            effortValueC:
-              type: integer
-              format: uint8
+          $ref: '#/components/schemas/Pokemon'
+        opponentPokemonNature:
+          type: string
+        opponentPokemonEffortValueA:
+          type: integer
+          minimum: 0
+          maximum: 252
+        opponentPokemonEffortValueC:
+          type: integer
+          minimum: 0
+          maximum: 252
       required:
         - move
         - opponentPokemon
-    TrainedPokemonDeffences:
-      title: TrainedPokemonDeffences
+    TrainedPokemonDeffenses:
+      title: TrainedPokemonDeffenses
       type: object
       properties:
-        deffenceAdjustments:
-          $ref: '#/components/schemas/TrainedPokemonDeffence'
+        deffenseAdjustments:
+          $ref: '#/components/schemas/TrainedPokemonDeffense'
         count:
           type: integer
       required:
-        - deffenceAdjustments
+        - deffenseAdjustments
         - count
     Party:
       title: Party
@@ -3287,8 +3273,8 @@ components:
       required:
         - id
         - trainedPokemonId
-    RequestCreateTrainedPokeDefenceTarget:
-      title: RequestCreateTrainedPokeDefenceTarget
+    RequestCreateTrainedPokeDefenseTarget:
+      title: RequestCreateTrainedPokeDefenseTarget
       type: object
       description: ''
       properties:
@@ -3319,8 +3305,8 @@ components:
       required:
         - trainedPokemonId
         - moveId
-    RequestUpdateTrainedPokeDefenceTarget:
-      title: RequestUpdateTrainedPokeDefenceTarget
+    RequestUpdateTrainedPokeDefenseTarget:
+      title: RequestUpdateTrainedPokeDefenseTarget
       type: object
       properties:
         id:
@@ -3604,16 +3590,16 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RequestUpdateTrainedPokeAttackTarget'
-    CreateTrainedPokeDefenceTarget:
+    CreateTrainedPokeDefenseTarget:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RequestCreateTrainedPokeDefenceTarget'
-    UpdateTrainedPokeDefenceTarget:
+            $ref: '#/components/schemas/RequestCreateTrainedPokeDefenseTarget'
+    UpdateTrainedPokeDefenseTarget:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenceTarget'
+            $ref: '#/components/schemas/RequestUpdateTrainedPokeDefenseTarget'
     CalculateMultiDamages:
       content:
         application/json:

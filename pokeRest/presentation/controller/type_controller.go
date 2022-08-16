@@ -37,7 +37,7 @@ func (c TypeController) GetAttackTypeCompatibility(ctx echo.Context, attackType 
 	return ctx.JSON(http.StatusOK, res)
 }
 
-func (c TypeController) GetDeffenceTypeCompatibility(ctx echo.Context, deffenceType string) error {
+func (c TypeController) GetDeffenseTypeCompatibility(ctx echo.Context, deffenceType string) error {
 	lang := lang.NewRequestLanguage(*ctx.Request())
 	types := c.service.GetDeffenceTypeCompatibility(deffenceType)
 	res := response.ConvertTypesToResponse(types, lang.Lang())

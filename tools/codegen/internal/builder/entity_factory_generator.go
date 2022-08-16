@@ -6,23 +6,11 @@ import (
 
 	"github.com/Symthy/PokeRest/tools/codegen/internal"
 	"github.com/Symthy/PokeRest/tools/codegen/internal/ast"
-	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem"
-	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem/strs"
+	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/strs"
 	"github.com/dave/jennifer/jen"
 )
 
 const (
-	typeUint8       = "uint8"
-	typeUint16      = "uint16"
-	typeUint32      = "uint32"
-	typeUint64      = "uint64"
-	typeArrayUint8  = "[]" + typeUint8
-	typeArrayUint16 = "[]" + typeUint16
-	typeArrayUint32 = "[]" + typeUint32
-	typeArrayUint64 = "[]" + typeUint64
-	typeString      = "string"
-	typeArrayString = "[]" + typeString
-
 	factoryTypeSuffix = "Input"
 )
 
@@ -90,14 +78,11 @@ var (
 	}
 )
 
-func GenerateEntityFactoryStructs(rootPath string, homePath string, entityStructs []*internal.StructInfo) error {
+func GenerateEntityFactoryStructs(
+	rootPath, homePath, outPath string, entityStructs []*internal.StructInfo,
+) error {
 	typeNameToMultiFieldStruct, err := parseMultiFieldStructs(rootPath)
 	if err != nil {
-		return err
-	}
-
-	outPath := filepath.Join(homePath, "output/factory")
-	if err := filesystem.MakeDirIfNotExists(outPath); err != nil {
 		return err
 	}
 
@@ -111,11 +96,11 @@ func GenerateEntityFactoryStructs(rootPath string, homePath string, entityStruct
 
 		f := jen.NewFile("factory")
 		addImportStatement(f, st)
-		addStructStatement(f, factoryTypeName, st, typeNameToMultiFieldStruct)
+		addEntityFactoryStructStatement(f, factoryTypeName, st, typeNameToMultiFieldStruct)
 
-		err := f.Save(filepath.Join(outPath, strs.ToSnakeCase(factoryTypeName)+".go"))
+		err := f.Save(filepath.Join(outPath, strs.ToSnakeCase(factoryTypeName)+".gen.go"))
 		if err != nil {
-			fmt.Printf("[Error] failed to factory code gen (%s): %v\n", st.Name(), err)
+			fmt.Printf("[Error] failed to entity factory code gen (%s): %v\n", st.Name(), err)
 			isErr = true
 		}
 	}
@@ -127,16 +112,7 @@ func GenerateEntityFactoryStructs(rootPath string, homePath string, entityStruct
 	return nil
 }
 
-func addImportStatement(f *jen.File, st *internal.StructInfo) {
-	for _, importPath := range st.NormalImportPaths() {
-		f.ImportName(importPath, "")
-	}
-	for _, importInfo := range st.AliasImports() {
-		f.ImportAlias(importInfo.Path(), importInfo.AliasName())
-	}
-}
-
-func addStructStatement(
+func addEntityFactoryStructStatement(
 	f *jen.File, factoryTypeName string, entityStruct *internal.StructInfo,
 	typeNameToMultiFieldStruct map[string]*internal.StructInfo,
 ) {
@@ -151,7 +127,7 @@ func addStructStatement(
 					fieldName = strs.ToTopLower(typeName) + strs.ToTopUpper(innerField.Name())
 				}
 				fieldStatement := jen.Id(fieldName)
-				fieldTypeStatement := resolveTypeStatement(innerField, entityStruct)
+				fieldTypeStatement := resolveEntityFactoryTypeStatement(innerField, entityStruct)
 				fieldStatement.Add(fieldTypeStatement)
 				fieldStatements = append(fieldStatements, fieldStatement)
 
@@ -182,7 +158,7 @@ func addStructStatement(
 		fieldName := strs.ToTopLower(field.Name())
 		fieldStatement := jen.Id(fieldName)
 		typeName := field.TypeName()
-		typeStatement := resolveTypeStatement(field, entityStruct)
+		typeStatement := resolveEntityFactoryTypeStatement(field, entityStruct)
 		fieldStatement.Add(typeStatement)
 		fieldStatements = append(fieldStatements, fieldStatement)
 
@@ -201,38 +177,13 @@ func addStructStatement(
 		}
 	})
 
-	f.Func().Id("New"+entityStruct.Name()+"Builder").
-		Params().
-		Op("*").Qual("", factoryTypeName).
-		Block(
-			jen.Return(jen.Op("&").Qual("", factoryTypeName).Block()),
-		)
-
+	f.Add(buildBuilderConstructorStatement(entityStruct.Name(), factoryTypeName))
 	for _, funcStatement := range funcStatements {
 		f.Add(funcStatement)
 	}
-
 }
 
-func buildSetterMethodStatement(
-	receiverName, factoryTypeName, methodName, fieldName, fieldTypeName string, typeStatement *jen.Statement, fieldInfo *internal.FieldInfo,
-) *jen.Statement {
-	structMemberName := fieldName
-	if fieldInfo.IsEmbedded() {
-		structMemberName = fieldTypeName
-	}
-	return jen.Func().
-		Params(jen.Id(receiverName).Op("*").Id(factoryTypeName)). // pointer receiver
-		Id(methodName).                                           // func
-		Params(jen.Id(fieldName).Add(typeStatement)).             // arguments
-		Op("*").Qual("", factoryTypeName).                        // return type
-		Block(
-			jen.Id(receiverName).Op(".").Id(structMemberName).Op("=").Id(fieldName),
-			jen.Return(jen.Id(receiverName)),
-		)
-}
-
-func resolveTypeStatement(fieldInfo *internal.FieldInfo, structInfo *internal.StructInfo) *jen.Statement {
+func resolveEntityFactoryTypeStatement(fieldInfo *internal.FieldInfo, structInfo *internal.StructInfo) *jen.Statement {
 	typeName := fieldInfo.TypeName()
 	if tn, ok := fieldMapping[fieldInfo.TypeName()]; ok {
 		typeName = tn
@@ -247,15 +198,7 @@ func resolveTypeStatement(fieldInfo *internal.FieldInfo, structInfo *internal.St
 	case typeArrayString:
 		return jen.Index().String()
 	default:
-		statement := jen.Empty()
-		if fieldInfo.IsPointer() {
-			statement.Op("*")
-		}
-		if fieldInfo.IsArray() {
-			statement.Index()
-		}
-		statement.Qual(structInfo.ResolvePkgPath(fieldInfo.TypePkgName()), fieldInfo.TypeName())
-		return statement
+		return resolveTypeStatement(fieldInfo, structInfo)
 	}
 }
 

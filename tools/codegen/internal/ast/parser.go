@@ -20,9 +20,9 @@ func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*intern
 		var sts []*internal.StructInfo
 		var err error
 		if structName == "" {
-			sts, err = ParseFile(path)
+			sts, err = ParseSingleFile(path)
 		} else {
-			sts, err = ParseFile(path, structName)
+			sts, err = ParseSingleFile(path, structName)
 		}
 
 		if err != nil {
@@ -40,14 +40,14 @@ func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*intern
 }
 
 func ParseSingleStruct(gofilePath string, structName string) (*internal.StructInfo, error) {
-	structs, err := ParseFile(gofilePath, structName)
+	structs, err := ParseSingleFile(gofilePath, structName)
 	if err != nil {
 		return nil, err
 	}
 	return structs[0], nil
 }
 
-func ParseFile(gofilePath string, filterTypeNames ...string) ([]*internal.StructInfo, error) {
+func ParseSingleFile(gofilePath string, filterTypeNames ...string) ([]*internal.StructInfo, error) {
 	fileNode, err := parseGoFile(gofilePath)
 	if err != nil {
 		return nil, err

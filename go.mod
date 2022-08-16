@@ -15,7 +15,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.7.2
 	go.uber.org/zap v1.20.0
-	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
 	golang.org/x/text v0.3.7
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -24,7 +23,10 @@ require (
 	moul.io/zapgorm2 v1.1.2
 )
 
-require github.com/stretchr/objx v0.2.0 // indirect
+require (
+	github.com/stretchr/objx v0.2.0 // indirect
+	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
