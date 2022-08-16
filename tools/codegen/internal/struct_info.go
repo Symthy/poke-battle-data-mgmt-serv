@@ -41,6 +41,7 @@ func (s StructInfo) NormalImportPaths() []string {
 
 func (s StructInfo) ResolvePkgPath(pkgName string) string {
 	if pkgName == "" {
+		// byte等の標準型や同パッケージの型はそのままにする
 		return pkgName
 	}
 	for _, importInfo := range s.imports {
@@ -147,6 +148,10 @@ func (f FieldInfo) IsPointer() bool {
 
 func (f FieldInfo) IsArray() bool {
 	return f.typeInfo.isArray
+}
+
+func (f FieldInfo) IsEmbedded() bool {
+	return f.isEmbedded
 }
 
 type TypeInfo struct {

@@ -31,7 +31,7 @@ func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*intern
 			continue
 		}
 		structs = append(structs, sts...)
-		fmt.Printf("[Info]  %s %s: success\n", file, structName)
+		fmt.Printf("[Info]  %s %s: success to parse\n", file, structName)
 	}
 	if isErr {
 		return structs, fmt.Errorf("Failed to Parse.\n")

@@ -18,6 +18,5 @@ func NewUserWriteService(repository repository.IUserRepository) UserWriteService
 func (s UserReadService) SaveUser(command command.CreateUserCommand) (*users.User, error) {
 	user := users.NewUserFromCommand(command)
 	createdUser, err := s.repository.Create(user)
-	createdUser.MaskPassword()
 	return createdUser, err
 }

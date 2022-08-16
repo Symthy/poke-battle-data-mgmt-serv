@@ -80,5 +80,6 @@ func main() {
 		return
 	}
 
+	fmt.Println()
 	fmt.Print("Code generation success.")
 }

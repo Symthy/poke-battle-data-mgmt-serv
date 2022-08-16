@@ -1,12 +1,16 @@
 package builder
 
 import (
+	"fmt"
 	"path/filepath"
 
-	"github.com/Symthy/PokeRest/tools/codegen/filesystem"
 	"github.com/Symthy/PokeRest/tools/codegen/internal"
+	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem"
+
 	"github.com/dave/jennifer/jen"
 )
+
+const outputGoFileName = "schema_fields.go"
 
 func GenerateFuncSchemaFieldsGetter(homePath string, structs []*internal.StructInfo) error {
 	outPath := filepath.Join(homePath, "output/schema")
@@ -14,7 +18,8 @@ func GenerateFuncSchemaFieldsGetter(homePath string, structs []*internal.StructI
 
 	for _, structInfo := range structs {
 		fieldsVarName := "fields"
-		f.Func().Id(structInfo.Name()+"Fields").Params().Index().String().Block(
+		funcName := structInfo.Name() + "Fields"
+		f.Func().Id(funcName).Params().Index().String().Block(
 			jen.Id(fieldsVarName).Op(":=").Index().String().ValuesFunc(func(g *jen.Group) {
 				for _, fieldName := range structInfo.FieldNames() {
 					g.Lit(fieldName)
@@ -25,6 +30,11 @@ func GenerateFuncSchemaFieldsGetter(homePath string, structs []*internal.StructI
 	}
 
 	filesystem.MakeDirIfNotExists(outPath)
-	newFilePath := filepath.Join(outPath, "schema_fields.go")
-	return f.Save(newFilePath)
+	newFilePath := filepath.Join(outPath, outputGoFileName)
+	err := f.Save(newFilePath)
+	if err != nil {
+		return fmt.Errorf("[Error] failed to generate: %v", err)
+	}
+	fmt.Printf("success to code generation: %s\n", outputGoFileName)
+	return nil
 }

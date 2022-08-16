@@ -3,12 +3,11 @@ package builder
 import (
 	"fmt"
 	"path/filepath"
-	"strings"
-	"unicode"
 
-	"github.com/Symthy/PokeRest/tools/codegen/filesystem"
 	"github.com/Symthy/PokeRest/tools/codegen/internal"
 	"github.com/Symthy/PokeRest/tools/codegen/internal/ast"
+	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem"
+	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem/strs"
 	"github.com/dave/jennifer/jen"
 )
 
@@ -22,26 +21,28 @@ const (
 	typeArrayUint32 = "[]" + typeUint32
 	typeArrayUint64 = "[]" + typeUint64
 	typeString      = "string"
-	typeArrayString = "[]string"
+	typeArrayString = "[]" + typeString
+
+	factoryTypeSuffix = "Input"
 )
 
 var (
 	entityToFactory = map[string]string{
-		"Ability":                     "AbilityInput",
-		"BattleRecord":                "BattleRecordInput",
-		"BattleOpponentParty":         "BattleOpponentPartyInput",
-		"Season":                      "SeasonInput",
-		"HeldItem":                    "HeldItemInput",
-		"Move":                        "MoveInput",
-		"Party":                       "PartyInput",
-		"PartyTag":                    "PartyTagInput",
-		"PartyBattleResult":           "PartyBattleResultInput",
-		"Pokemon":                     "PokemonInput",
-		"TrainedPokemon":              "TraindPokemonInput",
-		"TrainedPokemonAdjustment":    "TraindPokemonAdjustmentInput",
-		"TrainedPokemonAttackTarget":  "TraindPokemonAttackTargetInput",
-		"TrainedPokemonDefenseTarget": "TraindPokemonDefenseTargetInput",
-		"User":                        "UserInput",
+		"Ability":                     "Ability" + factoryTypeSuffix,
+		"BattleRecord":                "BattleRecord" + factoryTypeSuffix,
+		"BattleOpponentParty":         "BattleOpponentParty" + factoryTypeSuffix,
+		"Season":                      "Season" + factoryTypeSuffix,
+		"HeldItem":                    "HeldItem" + factoryTypeSuffix,
+		"Move":                        "Move" + factoryTypeSuffix,
+		"Party":                       "Party" + factoryTypeSuffix,
+		"PartyTag":                    "PartyTag" + factoryTypeSuffix,
+		"PartyBattleResult":           "PartyBattleResult" + factoryTypeSuffix,
+		"Pokemon":                     "Pokemon" + factoryTypeSuffix,
+		"TrainedPokemon":              "TraindPokemon" + factoryTypeSuffix,
+		"TrainedPokemonAdjustment":    "TraindPokemonAdjustment" + factoryTypeSuffix,
+		"TrainedPokemonAttackTarget":  "TraindPokemonAttackTarget" + factoryTypeSuffix,
+		"TrainedPokemonDefenseTarget": "TraindPokemonDefenseTarget" + factoryTypeSuffix,
+		"User":                        "User" + factoryTypeSuffix,
 	}
 
 	// Todo: auto gen
@@ -109,37 +110,10 @@ func GenerateEntityFactoryStructs(rootPath string, homePath string, entityStruct
 		}
 
 		f := jen.NewFile("factory")
-		for _, importPath := range st.NormalImportPaths() {
-			f.ImportName(importPath, "")
-		}
-		for _, importInfo := range st.AliasImports() {
-			f.ImportAlias(importInfo.Path(), importInfo.AliasName())
-		}
+		addImportStatement(f, st)
+		addStructStatement(f, factoryTypeName, st, typeNameToMultiFieldStruct)
 
-		f.Type().Id(factoryTypeName).StructFunc(func(g *jen.Group) {
-			for _, field := range st.Fields() {
-				if multiFieldStruct, ok := typeNameToMultiFieldStruct[field.TypeName()]; ok {
-					for _, innerField := range multiFieldStruct.Fields() {
-						innerFieldTypeName := toTopLower(innerField.TypeName()) + toTopUpper(innerField.Name())
-						innerFieldStatement := jen.Id(innerFieldTypeName)
-						innerFieldStatement.Add(resolveTypeStatement(innerField, st))
-						g.Add(innerFieldStatement)
-					}
-					continue
-				}
-
-				fieldStatement := jen.Id(field.Name())
-				if tn, ok := entityToFactory[field.TypeName()]; ok {
-					fieldStatement.Op("*").Qual("", tn)
-					g.Add(fieldStatement)
-					continue
-				}
-				fieldStatement.Add(resolveTypeStatement(field, st))
-				g.Add(fieldStatement)
-			}
-		})
-
-		err := f.Save(filepath.Join(outPath, toSnakeCase(factoryTypeName)+".go"))
+		err := f.Save(filepath.Join(outPath, strs.ToSnakeCase(factoryTypeName)+".go"))
 		if err != nil {
 			fmt.Printf("[Error] failed to factory code gen (%s): %v\n", st.Name(), err)
 			isErr = true
@@ -147,9 +121,115 @@ func GenerateEntityFactoryStructs(rootPath string, homePath string, entityStruct
 	}
 
 	if isErr {
-		return fmt.Errorf("[Error] failed to factory structs code generation.")
+		return fmt.Errorf("failed to entity factory structs code generation.")
 	}
+	fmt.Println("success to entity factory structs code generation.")
 	return nil
+}
+
+func addImportStatement(f *jen.File, st *internal.StructInfo) {
+	for _, importPath := range st.NormalImportPaths() {
+		f.ImportName(importPath, "")
+	}
+	for _, importInfo := range st.AliasImports() {
+		f.ImportAlias(importInfo.Path(), importInfo.AliasName())
+	}
+}
+
+func addStructStatement(
+	f *jen.File, factoryTypeName string, entityStruct *internal.StructInfo,
+	typeNameToMultiFieldStruct map[string]*internal.StructInfo,
+) {
+	fieldStatements := []*jen.Statement{}
+	funcStatements := []*jen.Statement{}
+	for _, field := range entityStruct.Fields() {
+		if multiFieldStruct, ok := typeNameToMultiFieldStruct[field.TypeName()]; ok {
+			for _, innerField := range multiFieldStruct.Fields() {
+				fieldName := ""
+				typeName := field.TypeName()
+				if !field.IsEmbedded() {
+					fieldName = strs.ToTopLower(typeName) + strs.ToTopUpper(innerField.Name())
+				}
+				fieldStatement := jen.Id(fieldName)
+				fieldTypeStatement := resolveTypeStatement(innerField, entityStruct)
+				fieldStatement.Add(fieldTypeStatement)
+				fieldStatements = append(fieldStatements, fieldStatement)
+
+				funcName := strs.ToTopUpper(fieldName)
+				funcStatement := buildSetterMethodStatement("b", factoryTypeName, funcName, fieldName, typeName, fieldTypeStatement, field)
+				funcStatements = append(funcStatements, funcStatement)
+			}
+			continue
+		}
+
+		if convertedTypeName, ok := entityToFactory[field.TypeName()]; ok {
+			fieldName := strs.ToTopLower(field.Name())
+			fieldStatement := jen.Id(fieldName)
+			typeName := convertedTypeName
+			typeStatement := jen.Empty().Op("*").Qual("", typeName)
+			fieldStatement.Add(typeStatement)
+			fieldStatements = append(fieldStatements, fieldStatement)
+
+			funcName := strs.ToTopUpper(typeName)[:len(typeName)-len(factoryTypeSuffix)]
+			if field.IsEmbedded() {
+				fieldName = strs.ToTopLower(typeName)
+			}
+			funcStatement := buildSetterMethodStatement("b", factoryTypeName, funcName, fieldName, typeName, typeStatement, field)
+			funcStatements = append(funcStatements, funcStatement)
+			continue
+		}
+
+		fieldName := strs.ToTopLower(field.Name())
+		fieldStatement := jen.Id(fieldName)
+		typeName := field.TypeName()
+		typeStatement := resolveTypeStatement(field, entityStruct)
+		fieldStatement.Add(typeStatement)
+		fieldStatements = append(fieldStatements, fieldStatement)
+
+		funcName := strs.ToTopUpper(field.Name())
+		if field.IsEmbedded() {
+			funcName = strs.ToTopUpper(typeName)
+			fieldName = strs.ToTopLower(typeName)
+		}
+		funcStatement := buildSetterMethodStatement("b", factoryTypeName, funcName, fieldName, typeName, typeStatement, field)
+		funcStatements = append(funcStatements, funcStatement)
+	}
+
+	f.Type().Id(factoryTypeName).StructFunc(func(g *jen.Group) {
+		for _, fieldStatement := range fieldStatements {
+			g.Add(fieldStatement)
+		}
+	})
+
+	f.Func().Id("New"+entityStruct.Name()+"Builder").
+		Params().
+		Op("*").Qual("", factoryTypeName).
+		Block(
+			jen.Return(jen.Op("&").Qual("", factoryTypeName).Block()),
+		)
+
+	for _, funcStatement := range funcStatements {
+		f.Add(funcStatement)
+	}
+
+}
+
+func buildSetterMethodStatement(
+	receiverName, factoryTypeName, methodName, fieldName, fieldTypeName string, typeStatement *jen.Statement, fieldInfo *internal.FieldInfo,
+) *jen.Statement {
+	structMemberName := fieldName
+	if fieldInfo.IsEmbedded() {
+		structMemberName = fieldTypeName
+	}
+	return jen.Func().
+		Params(jen.Id(receiverName).Op("*").Id(factoryTypeName)). // pointer receiver
+		Id(methodName).                                           // func
+		Params(jen.Id(fieldName).Add(typeStatement)).             // arguments
+		Op("*").Qual("", factoryTypeName).                        // return type
+		Block(
+			jen.Id(receiverName).Op(".").Id(structMemberName).Op("=").Id(fieldName),
+			jen.Return(jen.Id(receiverName)),
+		)
 }
 
 func resolveTypeStatement(fieldInfo *internal.FieldInfo, structInfo *internal.StructInfo) *jen.Statement {
@@ -190,45 +270,4 @@ func parseMultiFieldStructs(rootPath string) (map[string]*internal.StructInfo, e
 		ret[typeName] = stInfo
 	}
 	return ret, nil
-}
-
-func toTopUpper(name string) string {
-	b := &strings.Builder{}
-	for i, r := range name {
-		if i == 0 {
-			b.WriteRune(unicode.ToUpper(r))
-			continue
-		}
-		b.WriteRune(r)
-	}
-	return b.String()
-}
-
-func toTopLower(name string) string {
-	b := &strings.Builder{}
-	for i, r := range name {
-		if i == 0 {
-			b.WriteRune(unicode.ToLower(r))
-			continue
-		}
-		b.WriteRune(r)
-	}
-	return b.String()
-}
-
-func toSnakeCase(pascal string) string {
-	b := &strings.Builder{}
-	for i, r := range pascal {
-		if i == 0 {
-			b.WriteRune(unicode.ToLower(r))
-			continue
-		}
-		if unicode.IsUpper(r) {
-			b.WriteRune('_')
-			b.WriteRune(unicode.ToLower(r))
-			continue
-		}
-		b.WriteRune(r)
-	}
-	return b.String()
 }
