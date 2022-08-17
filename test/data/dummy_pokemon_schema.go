@@ -3,8 +3,8 @@ package data
 import (
 	"database/sql"
 
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
+	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/schema"
 )
 
 // test dummy data

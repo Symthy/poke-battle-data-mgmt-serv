@@ -1,8 +1,8 @@
 package pokemon
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
+	"github.com/Symthy/PokeRest/internal/domain/entity/pokemons"
+	"github.com/Symthy/PokeRest/internal/domain/factory"
 )
 
 func Venusaur003() *pokemons.Pokemon {

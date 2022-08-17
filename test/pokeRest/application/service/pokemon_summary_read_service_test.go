@@ -3,8 +3,8 @@ package service
 import (
 	"testing"
 
-	"github.com/Symthy/PokeRest/pokeRest/application/service/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
+	"github.com/Symthy/PokeRest/internal/application/service/pokemons"
+	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock/repository"
 	"github.com/stretchr/testify/assert"

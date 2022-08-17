@@ -7,7 +7,7 @@ import (
 	"go/token"
 	"path/filepath"
 
-	"github.com/Symthy/PokeRest/pokeRest/common/lists"
+	"github.com/Symthy/PokeRest/internal/pkg/lists"
 	"github.com/Symthy/PokeRest/tools/codegen/internal"
 )
 
@@ -31,7 +31,6 @@ func ParseFiles(targetPkgPath string, fileToStruct map[string]string) ([]*intern
 			continue
 		}
 		structs = append(structs, sts...)
-		fmt.Printf("[Info]  %s %s: success to parse\n", file, structName)
 	}
 	if isErr {
 		return structs, fmt.Errorf("Failed to Parse.\n")

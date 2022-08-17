@@ -1,1 +1,1 @@
-go run ./pokeRest/cmd/main.go --migrate=true
+go run ./internal/cmd/main.go --migrate=true

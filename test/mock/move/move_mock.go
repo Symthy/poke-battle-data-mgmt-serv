@@ -1,10 +1,10 @@
 package move
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/moves"
-	"github.com/Symthy/PokeRest/pokeRest/domain/factory"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
+	"github.com/Symthy/PokeRest/internal/domain/entity/moves"
+	"github.com/Symthy/PokeRest/internal/domain/factory"
+	"github.com/Symthy/PokeRest/internal/domain/value"
+	"github.com/Symthy/PokeRest/internal/domain/value/battles"
 )
 
 func MoveAcrobatics() *moves.Move {

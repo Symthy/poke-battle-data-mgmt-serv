@@ -1,1 +1,1 @@
-go run ./pokeRest/cmd/main.go --alldrop=true
+go run ./internal/cmd/main.go --alldrop=true

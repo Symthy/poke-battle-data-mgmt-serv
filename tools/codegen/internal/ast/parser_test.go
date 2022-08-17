@@ -22,9 +22,9 @@ func TestPartImport(t *testing.T) {
 		{
 			inputFilePath: testInputFilePath,
 			expected: []*internal.ImportInfo{
-				internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"),
-				internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/domain/value/battles"),
-				internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"),
+				internal.NewImportInfo("", "github.com/Symthy/PokeRest/internal/adapters/orm/gormio/mixin"),
+				internal.NewImportInfo("", "github.com/Symthy/PokeRest/internal/domain/value/battles"),
+				internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/internal/domain/value/identifier"),
 			},
 		},
 	}
@@ -48,9 +48,9 @@ func TestParseStruct(t *testing.T) {
 				internal.NewStructInfo(
 					"Move",
 					[]*internal.ImportInfo{
-						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"),
-						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/domain/value/battles"),
-						internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"),
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/internal/adapters/orm/gormio/mixin"),
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/internal/domain/value/battles"),
+						internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/internal/domain/value/identifier"),
 					},
 					[]*internal.FieldInfo{
 						internal.NewFieldInfo("id", internal.NewTypeInfo("ident", "MoveId")),
@@ -66,9 +66,9 @@ func TestParseStruct(t *testing.T) {
 				internal.NewStructInfo(
 					"Test",
 					[]*internal.ImportInfo{
-						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"),
-						internal.NewImportInfo("", "github.com/Symthy/PokeRest/pokeRest/domain/value/battles"),
-						internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"),
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/internal/adapters/orm/gormio/mixin"),
+						internal.NewImportInfo("", "github.com/Symthy/PokeRest/internal/domain/value/battles"),
+						internal.NewImportInfo("ident", "github.com/Symthy/PokeRest/internal/domain/value/identifier"),
 					},
 					[]*internal.FieldInfo{
 						internal.NewFieldInfo("test", internal.NewStandardTypeInfo("string")),

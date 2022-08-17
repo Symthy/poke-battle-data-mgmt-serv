@@ -1,9 +1,9 @@
 package data
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/schema"
-	"github.com/Symthy/PokeRest/pokeRest/common/lists"
+	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/enum"
+	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/schema"
+	"github.com/Symthy/PokeRest/internal/pkg/lists"
 )
 
 func DummyUser1(filterFields ...string) *schema.User {

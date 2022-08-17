@@ -1,3 +1,5 @@
+//go:generate go run .
+
 package main
 
 import (
@@ -6,14 +8,14 @@ import (
 	"runtime"
 
 	"github.com/Symthy/PokeRest/tools/codegen/internal/ast"
-	"github.com/Symthy/PokeRest/tools/codegen/internal/builder"
+	"github.com/Symthy/PokeRest/tools/codegen/internal/code"
 	"github.com/Symthy/PokeRest/tools/codegen/internal/pkg/filesystem"
 )
 
 const (
-	schemaPath         = "pokeRest/adapters/orm/gormio/schema/"
-	entityPath         = "pokeRest/domain/entity/"
-	serverResponsePath = "pokeRest/adapters/rest/autogen/server/"
+	schemaPath         = "internal/adapters/orm/gormio/schema/"
+	entityPath         = "internal/domain/entity/"
+	serverResponsePath = "internal/adapters/rest/autogen/server/"
 	testInputPath      = "tools/codegen/test/input"
 )
 
@@ -95,7 +97,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	if err := builder.GenerateFuncSchemaFieldsGetter(homePath, outSchemaPath, schemaStructs); err != nil {
+	if err := code.GenerateFuncSchemaFieldsGetter(homePath, outSchemaPath, schemaStructs); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -115,7 +117,7 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	if err := builder.GenerateEntityFactoryStructs(rootPath, homePath, outFactoryPath, entityStructs); err != nil {
+	if err := code.GenerateEntityFactoryStructs(rootPath, homePath, outFactoryPath, entityStructs); err != nil {
 		fmt.Print(err)
 		return
 	}
@@ -135,7 +137,7 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	if err := builder.GenerateResponseModelBuilderStruct(homePath, outResDtoPath, responseStructs); err != nil {
+	if err := code.GenerateResponseModelBuilderStruct(homePath, outResDtoPath, responseStructs); err != nil {
 		fmt.Print(err)
 		return
 	}

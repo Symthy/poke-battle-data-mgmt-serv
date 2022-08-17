@@ -1,9 +1,9 @@
 package input
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/adapters/orm/gormio/mixin"
-	"github.com/Symthy/PokeRest/pokeRest/domain/value/battles"
-	ident "github.com/Symthy/PokeRest/pokeRest/domain/value/identifier"
+	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/mixin"
+	"github.com/Symthy/PokeRest/internal/domain/value/battles"
+	ident "github.com/Symthy/PokeRest/internal/domain/value/identifier"
 )
 
 type Move struct {

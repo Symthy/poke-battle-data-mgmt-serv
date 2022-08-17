@@ -1,7 +1,7 @@
 node_modules
 
-pokeRest/adapters/rest/autogen/*
-pokeRest/adapters/di/wire_gen.go
+internal/adapters/rest/autogen/*
+internal/adapters/di/wire_gen.go
 
 conf/config.yml
 log/

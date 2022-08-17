@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/Symthy/PokeRest/pokeRest/domain/entity/pokemons"
-	"github.com/Symthy/PokeRest/pokeRest/domain/repository"
-	"github.com/Symthy/PokeRest/pokeRest/infrastructure/repository/conv"
+	"github.com/Symthy/PokeRest/internal/domain/entity/pokemons"
+	"github.com/Symthy/PokeRest/internal/domain/repository"
+	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 )
 

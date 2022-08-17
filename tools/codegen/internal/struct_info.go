@@ -3,7 +3,7 @@ package internal
 import (
 	"strings"
 
-	"github.com/Symthy/PokeRest/pokeRest/common/lists"
+	"github.com/Symthy/PokeRest/internal/pkg/lists"
 )
 
 type StructInfo struct {

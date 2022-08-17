@@ -7,7 +7,7 @@ db:
 auth:
   secretKey:
 logs:
-  dirPath: /var/log/pokeRest/
+  dirPath: /var/log/internal/
   server:
     filename: server.log
     maxFileSizeMB: 200

@@ -1,4 +1,4 @@
-# AST & Jennifer
+# golang AST & Jennifer によるコード自動生成
 
 モチベーション：
 
@@ -6,7 +6,7 @@ ref: [entity からコード自動生成した話](https://tech.mfkessai.co.jp/2
 
 ベースとなるソースファイルから AST 取得し必要情報抽出 ⇒ jennifer にてソース自動生成
 
-- その他 refs
+- その他自動生成参考になりそうなもの
   - [コードの自動生成は高いレバレッジを達成できる手段 Go におけるコマンド、モデル、テンプレートを組み合わせた実装](https://logmi.jp/tech/articles/326270#s4)
   - [go 言語の AST の全てのコメントは、\*ast.File 以下の子孫ノードから集める事はできないという話](https://pod.hatenablog.com/entry/2018/03/06/104109)
 - ※template を使用する場合は、以下が参考になる
@@ -64,17 +64,35 @@ func Parse(filename string) error {
 
 ## 解析結果
 
+以下サンプルを解析した結果
+
 ```golang
 type Move struct {
     id                 identifier.MoveId
     name               string
-	description        *string
+	description        *string  // *stringとするのはBatだがサンプルとして試す
     effects            *battles.Effects
 	usedMember         []*Member
     leanableCharacters []Character
+	leanablePokemons   []*identifier.PokemonId
     mixin.UpdateTimes
 }
 ```
+
+AST 上では
+
+- 1 フィールドの情報は、\*ast.Field に格納されている
+  - \*ast.Field は Names と Type を持つ
+  - `a, b string` のように 1 フィールドに複数変数定義した場合は全て Names に格納される
+- 各フィールドの型(Type)情報はそれぞれ以下の構造体で表現されている
+  - 外部パッケージの型（例：identifier.MoveId）： \*ast.SelectorExpr
+  - ポインタ型 (例：\*string)： \*ast.StarExpr
+  - 配列/スライス (例：[]Character)：　\*ast.ArrayType
+  - 末端の要素 (string、identifier、MoveId 等)： \*ast.Ident
+  - 複合パターンも上記の組み合わせで表現： []\*identifier.PokemonId の場合 \*ast.ArrayType -> \*ast.StarExpr -> \*ast.SelectorExpr
+  - 埋め込みの場合は、Names がないだけで Type は構造に変わりなし
+
+### 実際の結果
 
 - id identifier.MoveId
 
@@ -235,7 +253,7 @@ type Move struct {
 19  }
 ```
 
-- ポインタ配列
+- ポインタ配列: leanablePokemons []\*indetifier.PokemonId
 
 ```
 0  *ast.Field {
@@ -284,4 +302,18 @@ type Move struct {
 9  .  .  }
 10  .  }
 11  }
+```
+
+## jennifer によるコード生成
+
+以下に example はあるものの読み取るの大変なためケースごとのコードを記載
+
+refs:
+
+- [jennifer (Github - README)](https://github.com/dave/jennifer)
+- [jennifer (godoc)](https://pkg.go.dev/github.com/dave/jennifer/jen)
+
+```golang
+
+
 ```
