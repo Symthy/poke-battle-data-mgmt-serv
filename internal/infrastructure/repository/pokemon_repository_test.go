@@ -7,7 +7,6 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Symthy/PokeRest/internal/adapters/orm"
 	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/internal/infrastructure/repository"
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
@@ -18,7 +17,7 @@ import (
 type PokemonRepositoryTestSuite struct {
 	suite.Suite
 	dbClient   *orm.GormDbClient
-	repository repository.PokemonRepository
+	repository PokemonRepository
 	mock       sqlmock.Sqlmock
 }
 
@@ -27,7 +26,7 @@ func (suite *PokemonRepositoryTestSuite) SetupTest() {
 	db, mock, _ := mock.GetGormDBMock()
 	suite.mock = mock
 	suite.dbClient = orm.NewGormDbClientForTesting(db)
-	pokemonRepository := repository.NewPokemonRepository(suite.dbClient)
+	pokemonRepository := NewPokemonRepository(suite.dbClient)
 	suite.repository = *pokemonRepository
 }
 
@@ -48,8 +47,8 @@ func (suite *PokemonRepositoryTestSuite) TestFindById() {
 			`SELECT * FROM "pokemons" WHERE "pokemons"."id" = $1 ORDER BY "pokemons"."id" LIMIT 1`)).
 			WithArgs(id).
 			WillReturnRows(sqlmock.NewRows([]string{"ID", "PokedexNo", "FormNo", "FormName", "Name",
-				"EnglishName", "Generation", "Type1", "Type2", "AbilityId1", "AbilityId2",
-				"HiddenAbilityId", "BaseStatsH", "BaseStatsA", "BaseStatsB", "BaseStatsC",
+				"EnglishName", "Generation", "Type1", "Type2", "AbilityID1", "AbilityID2",
+				"HiddenAbilityID", "BaseStatsH", "BaseStatsA", "BaseStatsB", "BaseStatsC",
 				"BaseStatsD", "BaseStatsS", "IsFinalEvolution"}).
 				AddRow(3, 3, 1, "Standard", "フシギバナ", "Venusaur", 1, []byte(enum.Grass),
 					[]byte(enum.Poison), dummyPokemon.AbilityID1, dummyPokemon.AbilityID2,

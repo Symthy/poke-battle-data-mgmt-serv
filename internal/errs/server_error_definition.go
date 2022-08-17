@@ -1,6 +1,6 @@
 package errs
 
-import "github.com/Symthy/PokeRest/internal/common"
+import "github.com/Symthy/PokeRest/internal/logs"
 
 type ServerErrKey string
 type ErrorCode string
@@ -24,20 +24,20 @@ const (
 // Todo: out to file
 var (
 	serverErrorMap = map[ServerErrKey]ServerError{
-		ErrAuth:           initServerError(common.Error, C1, "invalid token"),
-		ErrAuthentication: initServerError(common.Error, A1, "Authentication error. Invalid Password"),
-		ErrUserNotFound:   initServerError(common.Warn, A2, "user not found"),
-		ErrInvalidValue:   initServerErrorWithFields(common.Warn, D1, "invalid value.", "class,field,value"),
-		ErrNoValue:        initServerErrorWithFields(common.Error, D2, "no value", "class,field"),
-		ErrUnexpected:     initServerError(common.Error, C9999, "unexpected error"),
+		ErrAuth:           initServerError(logs.Error, C1, "invalid token"),
+		ErrAuthentication: initServerError(logs.Error, A1, "Authentication error. Invalid Password"),
+		ErrUserNotFound:   initServerError(logs.Warn, A2, "user not found"),
+		ErrInvalidValue:   initServerErrorWithFields(logs.Warn, D1, "invalid value.", "class,field,value"),
+		ErrNoValue:        initServerErrorWithFields(logs.Error, D2, "no value", "class,field"),
+		ErrUnexpected:     initServerError(logs.Error, C9999, "unexpected error"),
 	}
 )
 
-func initServerError(level common.Level, errCode ErrorCode, message string) ServerError {
+func initServerError(level logs.Level, errCode ErrorCode, message string) ServerError {
 	return initServerErrorWithFields(level, errCode, message, "")
 }
 
-func initServerErrorWithFields(level common.Level, errCode ErrorCode, message string, fields string) ServerError {
+func initServerErrorWithFields(level logs.Level, errCode ErrorCode, message string, fields string) ServerError {
 	return ServerError{level: level, errCode: errCode, message: message, fields: fields}
 }
 

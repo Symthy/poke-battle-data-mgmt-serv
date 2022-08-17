@@ -54,7 +54,7 @@ func (rep BattleSeasonRepository) FindAll() (*battles.SeasonPeriods, error) {
 
 // non use common func. season is non id...
 func convertToDomains(schemas []schema.BattleSeason) ([]battles.SeasonPeriod, error) {
-	domains := make([]battles.SeasonPeriod, len(schemas), len(schemas))
+	domains := make([]battles.SeasonPeriod, len(schemas))
 	for i, s := range schemas {
 		d, err := conv.ToDomainSeasonPeriod(s)
 		if err != nil {

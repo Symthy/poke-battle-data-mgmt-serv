@@ -3,13 +3,12 @@ package logs
 import (
 	"io"
 
-	"github.com/Symthy/PokeRest/internal/common"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 // public for testing
-func BuildZapLogger(writer io.Writer, level common.Level, options ...zap.Option) *zap.Logger {
+func BuildZapLogger(writer io.Writer, level Level, options ...zap.Option) *zap.Logger {
 	encoderConfig := buildZapCommonEncoderConfig()
 	logCore := zapcore.NewCore(
 		zapcore.NewConsoleEncoder(encoderConfig),
@@ -35,17 +34,17 @@ func buildZapCommonEncoderConfig() zapcore.EncoderConfig {
 	}
 }
 
-func convertLevel(level common.Level) zapcore.Level {
+func convertLevel(level Level) zapcore.Level {
 	switch level {
-	case common.Fatal:
+	case Fatal:
 		return zapcore.FatalLevel
-	case common.Error:
+	case Error:
 		return zapcore.ErrorLevel
-	case common.Warn:
+	case Warn:
 		return zapcore.WarnLevel
-	case common.Info:
+	case Info:
 		return zapcore.InfoLevel
-	case common.Debug:
+	case Debug:
 		return zapcore.DebugLevel
 	default:
 		return zapcore.WarnLevel

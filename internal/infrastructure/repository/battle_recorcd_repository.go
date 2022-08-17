@@ -47,7 +47,7 @@ func (rep BattleRecordRepository) Create(domain *battles.BattleRecord) (*battles
 	}
 
 	battleRecordSchema := conv.ToSchemaBattleRecord(domain)
-	db.Transaction(func(tx *gorm.DB) error {
+	err := db.Transaction(func(tx *gorm.DB) error {
 		opponentParty, err := rep.opponentPartyRepo.FindParty(domain.OpponentParty())
 		if err != nil {
 			return err
@@ -63,6 +63,9 @@ func (rep BattleRecordRepository) Create(domain *battles.BattleRecord) (*battles
 		}
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	return conv.ToDomainBattleRecord(battleRecordSchema)
 }
 
@@ -78,7 +81,7 @@ func (rep BattleRecordRepository) Update(domain *battles.BattleRecord) (*battles
 
 	ret := emptyBattleRecordSchemaBuilder()
 	battleRecordSchema := conv.ToSchemaBattleRecord(domain)
-	db.Transaction(func(tx *gorm.DB) error {
+	err := db.Transaction(func(tx *gorm.DB) error {
 		opponentParty, err := rep.opponentPartyRepo.FindParty(domain.OpponentParty())
 		if err != nil {
 			return err
@@ -95,13 +98,16 @@ func (rep BattleRecordRepository) Update(domain *battles.BattleRecord) (*battles
 		tx.Model(&ret).Omit(clause.Associations).Updates(&battleRecordSchema)
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	return conv.ToDomainBattleRecord(ret)
 }
 
 func (rep BattleRecordRepository) Delete(id uint64) (*battles.BattleRecord, error) {
 	db := rep.dbClient.Db()
 	deleted := emptyBattleRecordSchemaBuilder()
-	db.Transaction(func(tx *gorm.DB) error {
+	err := db.Transaction(func(tx *gorm.DB) error {
 		if ret := tx.First(schema.BattleRecord{}, id); tx.Error != nil {
 			return ret.Error
 		}
@@ -111,6 +117,9 @@ func (rep BattleRecordRepository) Delete(id uint64) (*battles.BattleRecord, erro
 		}
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	// Todo:
 	// delete used opponent party if ref num is zero
 	isRefZero := false

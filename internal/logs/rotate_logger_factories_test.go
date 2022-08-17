@@ -43,7 +43,7 @@ func TestLoggerFactoriesTestSuite(t *testing.T) {
 	suite.Run(t, new(LoggerFactoriesTestSuite))
 }
 
-func (suite LoggerFactoriesTestSuite) TestLoggerFactories() {
+func (suite *LoggerFactoriesTestSuite) TestLoggerFactories() {
 	suite.Run("new logger factories", func() {
 		configYamlModelPath := filepath.Join("../..", "conf", "config.yml.model")
 		config, err := config.LoadConfig(configYamlModelPath)

@@ -43,6 +43,9 @@ func (s TrainedPokemonWriteService) SaveTrainedPokemon(
 func (s TrainedPokemonWriteService) UpdateTrainedPokemon(
 	cmd command.UpdateTrainedPokemonCommand) (*trainings.TrainedPokemon, error) {
 	trainedPokemon, err := cmd.BuildDomain()
+	if err != nil {
+		return nil, err
+	}
 	domain, err := cmd.BuildDomain()
 	if err != nil {
 		return nil, err

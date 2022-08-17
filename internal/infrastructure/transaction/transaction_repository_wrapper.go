@@ -41,7 +41,7 @@ func NewTransactionalRepositoryWrapper[TD infrastructure.IDomain[K, uint64], K i
 	}
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) StartTransaction() error {
+func (trw *TransactionalRepositoryWrapper[TD, K]) StartTransaction() error {
 	db := trw.dbClient.Db()
 	tx := db.Begin()
 	if tx.Error != nil {
@@ -51,7 +51,7 @@ func (trw TransactionalRepositoryWrapper[TD, K]) StartTransaction() error {
 	return nil
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) CancelTransaction() error {
+func (trw *TransactionalRepositoryWrapper[TD, K]) CancelTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
 		return fmt.Errorf("could't rollback")
@@ -61,7 +61,7 @@ func (trw TransactionalRepositoryWrapper[TD, K]) CancelTransaction() error {
 	return err
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) FinishTransaction() error {
+func (trw *TransactionalRepositoryWrapper[TD, K]) FinishTransaction() error {
 	if trw.tx == nil {
 		// Todo: error
 		return fmt.Errorf("could't commit")
@@ -69,28 +69,29 @@ func (trw TransactionalRepositoryWrapper[TD, K]) FinishTransaction() error {
 	return trw.tx.Commit().Error
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) PanicPostProcess() {
+func (trw *TransactionalRepositoryWrapper[TD, K]) PanicPostProcess() error {
 	if r := recover(); r != nil {
-		trw.CancelTransaction()
+		return trw.CancelTransaction()
 	}
+	return nil
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) Create(model TD) (*TD, error) {
+func (trw *TransactionalRepositoryWrapper[TD, K]) Create(model TD) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.CreateRecord(trw.tx, model)
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) Update(model TD) (*TD, error) {
+func (trw *TransactionalRepositoryWrapper[TD, K]) Update(model TD) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.UpdateRecord(trw.tx, model)
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) Delete(id uint) (*TD, error) {
+func (trw *TransactionalRepositoryWrapper[TD, K]) Delete(id uint) (*TD, error) {
 	trw.validateTransactioning()
 	return trw.DeleteRecord(trw.tx, id)
 }
 
-func (trw TransactionalRepositoryWrapper[TD, K]) validateTransactioning() {
+func (trw *TransactionalRepositoryWrapper[TD, K]) validateTransactioning() {
 	if trw.tx == nil {
 		panic("error: non transactioning")
 	}

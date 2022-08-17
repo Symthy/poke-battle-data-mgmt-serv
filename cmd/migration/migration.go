@@ -1,6 +1,8 @@
 package migration
 
 import (
+	"fmt"
+
 	"github.com/Symthy/PokeRest/internal/adapters/orm"
 	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/internal/config"
@@ -8,7 +10,7 @@ import (
 
 func RunAutoMigration(dbConfig config.DbConfig) {
 	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
-	db.AutoMigrate(
+	err := db.AutoMigrate(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},
 		&schema.BattleSeason{},
@@ -26,11 +28,14 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 		&schema.TrainedPokemonDefenseTarget{},
 		&schema.User{},
 	)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func RunDropTables(dbConfig config.DbConfig) {
 	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
-	db.Migrator().DropTable(
+	err := db.Migrator().DropTable(
 		&schema.Ability{},
 		&schema.BattleOpponentParty{},
 		&schema.BattleRecord{},
@@ -51,4 +56,7 @@ func RunDropTables(dbConfig config.DbConfig) {
 		"trained_pokemons_parties",
 		"parties_party_tags",
 	)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

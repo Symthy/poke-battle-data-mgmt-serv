@@ -1,9 +1,8 @@
-package service
+package pokemons
 
 import (
 	"testing"
 
-	"github.com/Symthy/PokeRest/internal/application/service/pokemons"
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock/repository"
@@ -13,12 +12,12 @@ import (
 
 type PokemonControllerTestSuite struct {
 	suite.Suite
-	serv pokemons.PokemonSummaryReadService
+	serv PokemonSummaryReadService
 }
 
 // Before
 func (suite *PokemonControllerTestSuite) SetupTest() {
-	suite.serv = pokemons.NewPokemonSummaryReadService(repository.NewPokemonRepositoryMock())
+	suite.serv = NewPokemonSummaryReadService(repository.NewPokemonRepositoryMock())
 }
 
 // After

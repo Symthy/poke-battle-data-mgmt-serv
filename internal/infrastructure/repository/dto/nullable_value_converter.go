@@ -6,13 +6,20 @@ import (
 	"github.com/Symthy/PokeRest/internal/infrastructure"
 )
 
+// Todo:
 func convertIdToNullInt16[T uint16 | uint32 | uint64](id infrastructure.IValueId[T]) sql.NullInt16 {
 	value := id.Value()
-	nullInt := sql.NullInt16{}
+	var nullInt sql.NullInt16
 	if value == 0 {
-		nullInt.Scan(nil)
+		nullInt = sql.NullInt16{
+			Int16: 0,
+			Valid: false,
+		}
 	} else {
-		nullInt.Scan(value)
+		nullInt = sql.NullInt16{
+			Int16: int16(value),
+			Valid: true,
+		}
 	}
 	return nullInt
 }

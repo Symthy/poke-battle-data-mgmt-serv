@@ -3,7 +3,6 @@ package errs
 import (
 	"fmt"
 
-	"github.com/Symthy/PokeRest/internal/common"
 	"github.com/Symthy/PokeRest/internal/logs"
 	"github.com/labstack/echo/v4"
 )
@@ -73,15 +72,15 @@ func (e AppError) WriteServerError() {
 		logger.Error("unexpected error:" + e.serverError.Error())
 	}
 	switch serverErr.GetLogLevel() {
-	case common.Fatal:
+	case logs.Fatal:
 		logger.Fatal(serverErr.Error())
-	case common.Error:
+	case logs.Error:
 		logger.Error(serverErr.Error())
-	case common.Warn:
+	case logs.Warn:
 		logger.Warn(serverErr.Error())
-	case common.Info:
+	case logs.Info:
 		logger.Info(serverErr.Error())
-	case common.Debug:
+	case logs.Debug:
 		logger.Debug(serverErr.Error())
 	default:
 		// unknown level error

@@ -2,12 +2,10 @@ package logs
 
 import (
 	"io"
-
-	"github.com/Symthy/PokeRest/internal/common"
 )
 
 type ILogLevelResolver interface {
-	ResolveLogLevel() common.Level
+	ResolveLogLevel() Level
 }
 
 type IAccessLoggerFactory interface {

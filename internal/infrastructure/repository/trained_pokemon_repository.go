@@ -35,7 +35,7 @@ func NewTrainedPokemonRepository(dbClient orm.IDbClient) *TrainedPokemonReposito
 func (rep TrainedPokemonRepository) Create(domain *trainings.TrainedPokemon) (*trainings.TrainedPokemon, error) {
 	schema := conv.ToSchemaTrainedPokemon(domain)
 	db := rep.dbClient.Db()
-	db.Transaction(func(tx *gorm.DB) error {
+	err := db.Transaction(func(tx *gorm.DB) error {
 		adjustment, err := rep.adjustmentRepo.Find(tx, domain.TrainedPokemonAdjustment)
 		if err != nil {
 			return err
@@ -53,6 +53,9 @@ func (rep TrainedPokemonRepository) Create(domain *trainings.TrainedPokemon) (*t
 		}
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	return conv.ToDomainTrainedPokemon(schema)
 }
 
@@ -60,7 +63,7 @@ func (rep TrainedPokemonRepository) Update(domain *trainings.TrainedPokemon) (*t
 	trainedPoke := conv.ToSchemaTrainedPokemon(domain)
 	db := rep.dbClient.Db()
 	updated := emptyTrainedPokemonSchemaBuilder()
-	db.Transaction(func(tx *gorm.DB) error {
+	err := db.Transaction(func(tx *gorm.DB) error {
 		adjustment, err := rep.adjustmentRepo.Find(tx, domain.TrainedPokemonAdjustment)
 		if err != nil {
 			return err
@@ -81,13 +84,16 @@ func (rep TrainedPokemonRepository) Update(domain *trainings.TrainedPokemon) (*t
 		}
 		return nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	return conv.ToDomainTrainedPokemon(updated)
 }
 
 func (rep TrainedPokemonRepository) Delete(id uint64) (*trainings.TrainedPokemon, error) {
 	db := rep.dbClient.Db()
 	deleted := emptyTrainedPokemonSchemaBuilder()
-	db.Transaction(func(tx *gorm.DB) error {
+	err := db.Transaction(func(tx *gorm.DB) error {
 		if ret := db.First(schema.TrainedPokemon{}, id); tx.Error != nil {
 			return ret.Error
 		}
@@ -105,6 +111,9 @@ func (rep TrainedPokemonRepository) Delete(id uint64) (*trainings.TrainedPokemon
 		if err != nil {
 			return nil, err
 		}
+	}
+	if err != nil {
+		return nil, err
 	}
 	return conv.ToDomainTrainedPokemon(deleted)
 }

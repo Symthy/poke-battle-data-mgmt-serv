@@ -26,7 +26,7 @@ func TestTypeControllerTestSuite(t *testing.T) {
 	suite.Run(t, new(TypeServiceTestSuite))
 }
 
-func (suite TypeServiceTestSuite) TestGetTypeCompatibilityTable() {
+func (suite *TypeServiceTestSuite) TestGetTypeCompatibilityTable() {
 	tests := []struct {
 		expectedCompatibility [][]float32
 		expectedTypeOrder     []string
@@ -51,7 +51,7 @@ func (suite TypeServiceTestSuite) TestGetTypeCompatibilityTable() {
 	}
 }
 
-func (suite TypeServiceTestSuite) TestResolveAttackTypeCompatibility() {
+func (suite *TypeServiceTestSuite) TestResolveAttackTypeCompatibility() {
 	tests := []struct {
 		expectedCompatibility []float32
 		expectedTypeOrder     []string
@@ -79,7 +79,7 @@ func (suite TypeServiceTestSuite) TestResolveAttackTypeCompatibility() {
 	}
 }
 
-func (suite TypeServiceTestSuite) TestResolveDeffenceTypeCompatibility() {
+func (suite *TypeServiceTestSuite) TestResolveDeffenceTypeCompatibility() {
 	tests := []struct {
 		expectedCompatibility []float32
 		expectedTypeOrder     []string

@@ -10,6 +10,4 @@ type DamageCalculationService struct {
 }
 
 func Calculate(cmd command.DamageCalculation) {
-
-	return
 }

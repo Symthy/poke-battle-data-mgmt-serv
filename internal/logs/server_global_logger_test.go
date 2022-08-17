@@ -6,7 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Symthy/PokeRest/internal/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"go.uber.org/zap"
@@ -33,7 +32,7 @@ func (suite *ServerGlobalLoggerTestSuite) SetupTest() {
 	date := time.Date(2021, 12, 29, 17, 05, 22, 1, time.UTC)
 	clock := constantClock(date)
 	suite.buf = new(bytes.Buffer)
-	logger := BuildZapLogger(suite.buf, common.Debug, zap.WithClock(clock))
+	logger := BuildZapLogger(suite.buf, Debug, zap.WithClock(clock))
 	InitGlobalServerLogger(logger)
 	suite.logger = GetGlobalServerLogger()
 }
@@ -42,7 +41,7 @@ func TestServerGlobalLoggerTestSuite(t *testing.T) {
 	suite.Run(t, new(ServerGlobalLoggerTestSuite))
 }
 
-func (suite ServerGlobalLoggerTestSuite) TestServerGlobalLogger() {
+func (suite *ServerGlobalLoggerTestSuite) TestServerGlobalLogger() {
 	suite.Run("logger level methods output", func() {
 		logger := suite.logger
 		tests := []struct {

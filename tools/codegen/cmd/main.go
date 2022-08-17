@@ -16,7 +16,6 @@ const (
 	schemaPath         = "internal/adapters/orm/gormio/schema/"
 	entityPath         = "internal/domain/entity/"
 	serverResponsePath = "internal/adapters/rest/autogen/server/"
-	testInputPath      = "tools/codegen/test/input"
 )
 
 var (

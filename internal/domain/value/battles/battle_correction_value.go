@@ -44,9 +44,6 @@ type BattleCorrectionValue struct {
 }
 
 func NewDefaultCorrectionValue(target CorrectionTarget, value CorrectionNum, condition *TriggerCondition) *BattleCorrectionValue {
-	if isInvalidValue(value) {
-		return NewNonCorrectionValue()
-	}
 	correctionTarget := CorrectionTarget(target)
 	return &BattleCorrectionValue{
 		target:           correctionTarget,
@@ -59,9 +56,6 @@ func NewDefaultCorrectionValue(target CorrectionTarget, value CorrectionNum, con
 func NewCorrectionValue(
 	target CorrectionTarget, value CorrectionNum, condition *TriggerCondition, decimalCalcType DecimalCalcType,
 ) *BattleCorrectionValue {
-	if isInvalidValue(value) {
-		return nil
-	}
 	correctionTarget := CorrectionTarget(target)
 	return &BattleCorrectionValue{
 		target:           correctionTarget,
@@ -75,10 +69,6 @@ func NewNonCorrectionValue() *BattleCorrectionValue {
 	return &BattleCorrectionValue{
 		target: CorrectionNone,
 	}
-}
-
-func isInvalidValue(value CorrectionNum) bool {
-	return value < 0
 }
 
 func overrideDecimalCalcType(target CorrectionTarget, decimalCalcType DecimalCalcType) DecimalCalcType {

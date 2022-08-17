@@ -31,6 +31,7 @@ func DummyUser1(filterFields ...string) *schema.User {
 		UserSchema: schema.UserSchema{
 			Name:        "dummy_user",
 			DisplayName: displayName,
+			TwitterID:   "twitterId",
 			Email:       email,
 			Profile:     profile,
 			Role:        enum.User,

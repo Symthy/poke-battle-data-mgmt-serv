@@ -1,5 +1,5 @@
 #!/bin/bash
-pushd tools > /dev/null
+pushd tools/schema > /dev/null
 
 docker-compose up
 

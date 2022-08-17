@@ -8,7 +8,6 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Symthy/PokeRest/internal/adapters/orm"
 	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/enum"
-	"github.com/Symthy/PokeRest/internal/infrastructure/repository"
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
@@ -19,7 +18,7 @@ import (
 type UserRepositoryTestSuite struct {
 	suite.Suite
 	dbClient   *orm.GormDbClient
-	repository repository.UserRepository
+	repository UserRepository
 	mock       sqlmock.Sqlmock
 }
 
@@ -28,7 +27,7 @@ func (suite *UserRepositoryTestSuite) SetupTest() {
 	db, mock, _ := mock.GetGormDBMock()
 	suite.mock = mock
 	suite.dbClient = orm.NewGormDbClientForTesting(db)
-	userRepository := repository.NewUserRepository(suite.dbClient)
+	userRepository := NewUserRepository(suite.dbClient)
 	suite.repository = *userRepository
 }
 
@@ -47,8 +46,8 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 		dummyUser := data.DummyUser1()
 		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL ORDER BY "users"."id" LIMIT 1`)).
 			WithArgs(id).
-			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "DisplayName", "Email", "Profile", "Role"}).
-				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
+			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "TwitterID", "DisplayName", "Email", "Profile", "Role"}).
+				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "twitterId", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
 
 		expected, _ := conv.ToDomainUser(dummyUser)
 		actual, err := suite.repository.FindById(id)
@@ -60,10 +59,10 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 
 	suite.Run("find by name when non filter", func() {
 		dummyUser := data.DummyUser1()
-		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE name = $1 AND "users"."deleted_at" IS NULL`)).
+		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "users" WHERE Name = $1 AND "users"."deleted_at" IS NULL`)).
 			WithArgs("dummy_user").
-			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "DisplayName", "Email", "Profile", "Role"}).
-				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
+			WillReturnRows(sqlmock.NewRows([]string{"ID", "CreatedAt", "UpdatedAt", "DeletedAt", "Name", "TwitterID", "DisplayName", "Email", "Profile", "Role"}).
+				AddRow(1, time.Now(), time.Now(), nil, "dummy_user", "twitterId", "dummy dummy user", "test@test.com", "detail\nprofile", []byte(enum.User)))
 
 		expected, _ := conv.ToDomainUser(dummyUser)
 		actual, err := suite.repository.FindByName("dummy_user")
@@ -76,7 +75,7 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 	suite.Run("find by name when exist filter", func() {
 		filterFields := []string{"id", "name", "displayName", "role"}
 		dummyUser := data.DummyUser1(filterFields...)
-		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT "id","name","display_name","role" FROM "users" WHERE name = $1 AND "users"."deleted_at" IS NULL`)).
+		suite.mock.ExpectQuery(regexp.QuoteMeta(`SELECT "id","name","display_name","role" FROM "users" WHERE Name = $1 AND "users"."deleted_at" IS NULL`)).
 			WithArgs("dummy_user").
 			WillReturnRows(sqlmock.NewRows([]string{"ID", "Name", "DisplayName", "Role"}).
 				AddRow(1, "dummy_user", "dummy dummy user", []byte(enum.User)))
@@ -91,12 +90,12 @@ func (suite *UserRepositoryTestSuite) TestFind() {
 }
 
 func (suite *UserRepositoryTestSuite) TestCreate() {
-	var id uint = 1
+	var id uint64 = 1
 	dummyUser := data.DummyUser1()
 	suite.mock.ExpectBegin()
 	suite.mock.ExpectQuery(regexp.QuoteMeta(
-		`INSERT INTO "users" ("created_at","updated_at","deleted_at","name","display_name","email","profile","role") ` +
-			`VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING "id"`)).
+		`INSERT INTO "users" ("name","twitter_id","display_name","email","profile","role","created_at","updated_at","deleted_at","id") ` +
+			`VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"`)).
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(id))
 	suite.mock.ExpectCommit()
 

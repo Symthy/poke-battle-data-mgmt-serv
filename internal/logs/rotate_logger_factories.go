@@ -3,7 +3,6 @@ package logs
 import (
 	"io"
 
-	"github.com/Symthy/PokeRest/internal/common"
 	"github.com/Symthy/PokeRest/internal/config"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -17,7 +16,7 @@ func NewLoggerFactories(conf config.LogsConfig) (IServerLoggerFactory, IAccessLo
 
 type ServerLoggerFactory struct {
 	dirPath  string
-	logLevel common.Level
+	logLevel Level
 	conf     config.ServerLogConfig
 }
 
@@ -29,17 +28,17 @@ func NewServerLoggerFactory(conf config.LogsConfig) ServerLoggerFactory {
 	}
 }
 
-func (f ServerLoggerFactory) ResolveLogLevel() common.Level {
+func (f ServerLoggerFactory) ResolveLogLevel() Level {
 	return f.logLevel
 }
 
 func (f ServerLoggerFactory) BuildBaseServerLogger() io.Writer {
 	rotateLogger := f.BuildRotateServerLogger()
-	return &rotateLogger
+	return rotateLogger
 }
 
 // public for testing
-func (f ServerLoggerFactory) BuildRotateServerLogger() lumberjack.Logger {
+func (f ServerLoggerFactory) BuildRotateServerLogger() *lumberjack.Logger {
 	var fileName = f.conf.Filename
 	if fileName == "" {
 		fileName = "server.log"
@@ -56,7 +55,7 @@ func (f ServerLoggerFactory) BuildRotateServerLogger() lumberjack.Logger {
 
 type AccessLoggerFactory struct {
 	dirPath  string
-	logLevel common.Level
+	logLevel Level
 	conf     config.AccessLogConfig
 }
 
@@ -68,17 +67,17 @@ func NewAccessLoggerFactory(conf config.LogsConfig) AccessLoggerFactory {
 	}
 }
 
-func (f AccessLoggerFactory) ResolveLogLevel() common.Level {
+func (f AccessLoggerFactory) ResolveLogLevel() Level {
 	return f.logLevel
 }
 
 func (f AccessLoggerFactory) BuildBaseAccessLogger() io.Writer {
 	rotateLogger := f.BuildRotateAccessLogger()
-	return &rotateLogger
+	return rotateLogger
 }
 
 // public for testing
-func (f AccessLoggerFactory) BuildRotateAccessLogger() lumberjack.Logger {
+func (f AccessLoggerFactory) BuildRotateAccessLogger() *lumberjack.Logger {
 	var fileName = f.conf.Filename
 	if fileName == "" {
 		fileName = ""
@@ -95,7 +94,7 @@ func (f AccessLoggerFactory) BuildRotateAccessLogger() lumberjack.Logger {
 
 type DbLoggerFactory struct {
 	dirPath  string
-	logLevel common.Level
+	logLevel Level
 	conf     config.DbLogConfig
 }
 
@@ -107,17 +106,17 @@ func NewDbLoggerFactory(conf config.LogsConfig) DbLoggerFactory {
 	}
 }
 
-func (f DbLoggerFactory) ResolveLogLevel() common.Level {
+func (f DbLoggerFactory) ResolveLogLevel() Level {
 	return f.logLevel
 }
 
 func (f DbLoggerFactory) BuildBaseDbLogger() io.Writer {
 	rotateLogger := f.BuildRotateDbLogger()
-	return &rotateLogger
+	return rotateLogger
 }
 
 // public for testing
-func (f DbLoggerFactory) BuildRotateDbLogger() lumberjack.Logger {
+func (f DbLoggerFactory) BuildRotateDbLogger() *lumberjack.Logger {
 	var fileName = f.conf.Filename
 	if fileName == "" {
 		fileName = "db.log" // default
@@ -145,7 +144,7 @@ const (
 	defaultMaxRetentionDays int = 30
 )
 
-func buildRotateLogger(filePath string, maxFileSizeMB int, maxBackupFileNum int, maxRetentionDays int, isCompress bool) lumberjack.Logger {
+func buildRotateLogger(filePath string, maxFileSizeMB int, maxBackupFileNum int, maxRetentionDays int, isCompress bool) *lumberjack.Logger {
 	var fileSizeMB = defaultMaxFileSizeMB
 	var backupFileNum = defaultMaxBackupFileNum
 	var retentionDays = defaultMaxRetentionDays
@@ -158,7 +157,7 @@ func buildRotateLogger(filePath string, maxFileSizeMB int, maxBackupFileNum int,
 	if maxRetentionDays > 0 {
 		retentionDays = maxRetentionDays
 	}
-	return lumberjack.Logger{
+	return &lumberjack.Logger{
 		Filename:   filePath,
 		MaxSize:    fileSizeMB,
 		MaxBackups: backupFileNum,

@@ -1,12 +1,45 @@
 {
-  "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.4.10",
-    "@types/node": "^14.14.37",
-    "prisma": "^2.21.2",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+  "name": "pokerest",
+  "version": "0.0.0",
+  "description": "Pokemon REST API",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
   },
-  "dependencies": {
-    "@prisma/client": "^2.21.2"
+  "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "codegen": "scripts/run_autogen.sh",
+    "test": "go test ./...",
+    "testd": "go test -v ./...",
+    "fmt": "go fmt ./...",
+    "vet": "go vet ./...",
+    "lint": "golangci-lint run -c .golangci.yml",
+    "lintd": "golangci-lint run -v -c .golangci.yml",
+    "fmtlint": "npm run fmt && npm run lint",
+    "build": "go build -o ./bin",
+    "db_up": "docker-compose up",
+    "db_init_migrate": "go run ./cmd/main.go --migrate=true",
+    "db_alldrop": "go run ./cmd/main.go --alldrop=true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Symthy/PokeRest.git"
+  },
+  "author": "SYM",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Symthy/PokeRest/issues"
+  },
+  "homepage": "https://github.com/Symthy/PokeRest#readme",
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  },
+  "lint-staged": {
+    "*.go": [
+      "gofmt -w",
+      "golangci-lint run -c .golangci.yml"
+    ]
   }
 }

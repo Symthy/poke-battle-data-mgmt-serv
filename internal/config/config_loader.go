@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/Symthy/PokeRest/internal/common"
 	"gopkg.in/yaml.v3"
 )
 
@@ -28,25 +27,25 @@ type (
 		DbLogConfig     DbLogConfig     `json:"db" yaml:"db"`
 	}
 	ServerLogConfig struct {
-		Filename         string       `json:"filename" yaml:"filename"`
-		MaxFileSizeMB    int          `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
-		MaxBackupNum     int          `json:"maxBackupNum" yaml:"maxBackupNum"`
-		MaxRetentionDays int          `json:"maxRetentionDays" yaml:"maxRetentionDays"`
-		Level            common.Level `json:"level" yaml:"level"`
+		Filename         string `json:"filename" yaml:"filename"`
+		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
+		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`
+		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
+		Level            string `json:"level" yaml:"level"`
 	}
 	AccessLogConfig struct {
-		Filename         string       `json:"filename" yaml:"filename"`
-		MaxFileSizeMB    int          `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
-		MaxBackupNum     int          `json:"maxBackupNum" yaml:"maxBackupNum"`
-		MaxRetentionDays int          `json:"maxRetentionDays" yaml:"maxRetentionDays"`
-		Level            common.Level `json:"level" yaml:"level"`
+		Filename         string `json:"filename" yaml:"filename"`
+		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
+		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`
+		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
+		Level            string `json:"level" yaml:"level"`
 	}
 	DbLogConfig struct {
-		Filename         string       `json:"filename" yaml:"filename"`
-		MaxFileSizeMB    int          `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
-		MaxBackupNum     int          `json:"maxBackupNum" yaml:"maxBackupNum"`
-		MaxRetentionDays int          `json:"maxRetentionDays" yaml:"maxRetentionDays"`
-		Level            common.Level `json:"level" yaml:"level"`
+		Filename         string `json:"filename" yaml:"filename"`
+		MaxFileSizeMB    int    `json:"maxFileSizeMB" yaml:"maxFileSizeMB"`
+		MaxBackupNum     int    `json:"maxBackupNum" yaml:"maxBackupNum"`
+		MaxRetentionDays int    `json:"maxRetentionDays" yaml:"maxRetentionDays"`
+		Level            string `json:"level" yaml:"level"`
 	}
 
 	ConfigYaml struct {

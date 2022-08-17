@@ -58,7 +58,7 @@ func (s StructInfo) Fields() []*FieldInfo {
 
 func (s StructInfo) NormalFields() []*FieldInfo {
 	return lists.Filter(s.fields, func(f *FieldInfo) bool {
-		return f.isEmbedded == false
+		return !f.isEmbedded
 	})
 }
 

@@ -26,7 +26,7 @@ func TestBattleEffectsTestSuite(t *testing.T) {
 	suite.Run(t, new(BattleEffectsTestSuite))
 }
 
-func (suite BattleEffectsTestSuite) TestUnmarshal() {
+func (suite *BattleEffectsTestSuite) TestUnmarshal() {
 
 	tests := map[string]struct {
 		inputBytes []byte

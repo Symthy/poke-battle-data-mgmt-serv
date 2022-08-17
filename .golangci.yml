@@ -1,0 +1,6 @@
+run:
+  go: "1.19"
+linters:
+  disable:
+    - unused # interim measure
+    - deadcode # interim measure

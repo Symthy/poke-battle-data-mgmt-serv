@@ -124,11 +124,11 @@ func (_m *MockAbilityRepository) FindById(abilityId uint16) (*abilities.Ability,
 	return ret.Get(0).(*abilities.Ability), ret.Error(1)
 }
 
-func (_m MockAbilityRepository) FindAll(page uint32, pageSize uint16) (*abilities.Abilities, error) {
+func (_m *MockAbilityRepository) FindAll(page uint32, pageSize uint16) (*abilities.Abilities, error) {
 	return nil, nil
 }
 
-func (_m MockAbilityRepository) FindOfPokemon(pokemonId uint16) (*abilities.Abilities, error) {
+func (_m *MockAbilityRepository) FindOfPokemon(pokemonId uint16) (*abilities.Abilities, error) {
 	return nil, nil
 }
 
@@ -143,7 +143,7 @@ func (_m *MockHeldItemRepository) FindById(itemId uint16) (*items.HeldItem, erro
 	return ret.Get(0).(*items.HeldItem), ret.Error(1)
 }
 
-func (_m MockHeldItemRepository) FindAll(page uint32, pageSize uint16) (*items.HeldItems, error) {
+func (_m *MockHeldItemRepository) FindAll(page uint32, pageSize uint16) (*items.HeldItems, error) {
 	return nil, nil
 }
 
@@ -153,11 +153,11 @@ type MockPokemonRepository struct {
 	mock.Mock
 }
 
-func (_m MockPokemonRepository) FindById(id uint16) (*pokemons.Pokemon, error) {
+func (_m *MockPokemonRepository) FindById(id uint16) (*pokemons.Pokemon, error) {
 	ret := _m.Called(id)
 	return ret.Get(0).(*pokemons.Pokemon), ret.Error(1)
 }
-func (_m MockPokemonRepository) FindAll(page uint32, pageSize uint16) (*pokemons.Pokemons, error) {
+func (_m *MockPokemonRepository) FindAll(page uint32, pageSize uint16) (*pokemons.Pokemons, error) {
 	return nil, nil
 }
 
@@ -167,15 +167,15 @@ type MockMoveRepository struct {
 	mock.Mock
 }
 
-func (_m MockMoveRepository) FindById(id uint16) (*moves.Move, error) {
+func (_m *MockMoveRepository) FindById(id uint16) (*moves.Move, error) {
 	ret := _m.Called(id)
 	return ret.Get(0).(*moves.Move), ret.Error(1)
 }
-func (_m MockMoveRepository) FindAll(page uint32, pageSize uint16) (*moves.Moves, error) {
+func (_m *MockMoveRepository) FindAll(page uint32, pageSize uint16) (*moves.Moves, error) {
 	return nil, nil
 }
 
-func (_m MockMoveRepository) FindOfPokemon(pokemonId uint16) (*moves.Moves, error) {
+func (_m *MockMoveRepository) FindOfPokemon(pokemonId uint16) (*moves.Moves, error) {
 	return nil, nil
 }
 
@@ -269,7 +269,8 @@ func TestAttackSideResolver(t *testing.T) {
 
 		resolver := attackSideResolver{effectsResolver, mockPokemonRepo, mockMoveRepo}
 		attackSideChan := make(chan AttackSide, 1)
-		resolver.resolve(adjustment, move.Id(), attackSideChan)
+		err := resolver.resolve(adjustment, move.Id(), attackSideChan)
+		assert.NoError(t, err)
 		actual := <-attackSideChan
 
 		assert.Equal(t, tt.expectedActualValues, actual.actualValues)
@@ -324,7 +325,8 @@ func TestToDefenseSideResolver(t *testing.T) {
 
 		resolver := defenseSideResolver{effectsResolver, mockPokemonRepo}
 		defenseSideChan := make(chan DefenseSide, 1)
-		resolver.resolve(adjustment, defenseSideChan)
+		err := resolver.resolve(adjustment, defenseSideChan)
+		assert.NoError(t, err)
 		actual := <-defenseSideChan
 
 		assert.Equal(t, tt.expectedActualValues, actual.actualValues)

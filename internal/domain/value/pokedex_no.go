@@ -1,19 +1,14 @@
 package value
 
-import "github.com/Symthy/PokeRest/internal/errs"
-
 type PokedexId struct {
 	pokedexNo uint16
 	formNo    uint16
 }
 
 func NewPokedexNumber(pokedexNo, formNo uint64) (*PokedexId, error) {
-	if pokedexNo < 0 {
-		return nil, errs.ThrowErrorInvalidValue("PokedexId", "pokedexNo", string(rune(pokedexNo)))
-	}
-	if pokedexNo < 0 {
-		return nil, errs.ThrowErrorInvalidValue("PokedexId", "formNo", string(rune(pokedexNo)))
-	}
+	// if pokedexNo > xxx { // Todo: validate
+	// 	return nil, errs.ThrowErrorInvalidValue("PokedexId", "pokedexNo", string(rune(pokedexNo)))
+	// }
 	return &PokedexId{
 		pokedexNo: uint16(pokedexNo),
 		formNo:    uint16(formNo),

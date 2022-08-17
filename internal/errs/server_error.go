@@ -3,16 +3,16 @@ package errs
 import (
 	"fmt"
 
-	"github.com/Symthy/PokeRest/internal/common"
+	"github.com/Symthy/PokeRest/internal/logs"
 	pkgerrors "github.com/pkg/errors"
 )
 
 type ServerError struct {
 	wrappedErr    error
-	level         common.Level // required
-	errCode       ErrorCode    // required
-	message       string       // required
-	fields        string       // optional
+	level         logs.Level // required
+	errCode       ErrorCode  // required
+	message       string     // required
+	fields        string     // optional
 	fieldToValues *string
 	stackTrace    *string
 }
@@ -79,7 +79,7 @@ func (e ServerError) GetErrorCode() ErrorCode {
 	return e.errCode
 }
 
-func (e ServerError) GetLogLevel() common.Level {
+func (e ServerError) GetLogLevel() logs.Level {
 	return e.level
 }
 
@@ -88,7 +88,7 @@ func (e ServerError) HasStackTrace() bool {
 }
 
 func (e ServerError) IsSaveOwnStackTrace() bool {
-	if e.level == common.Error || e.level == common.Fatal {
+	if e.level == logs.Error || e.level == logs.Fatal {
 		return true
 	}
 	return false
@@ -104,7 +104,7 @@ type IServerError interface {
 	GetStackTrace() string
 	GetMessageAndStackTrace() string
 	GetErrorCode() ErrorCode
-	GetLogLevel() common.Level
+	GetLogLevel() logs.Level
 	HasStackTrace() bool
 	IsSaveOwnStackTrace() bool
 	IsNextError() bool
@@ -121,10 +121,9 @@ func BuildErrorMessage(target error) string {
 		return target.Error()
 	}
 
-	var errTopMsg string = ""
 	var errDetailHeader string = ""
 	var errDetailFooter string = ""
-	errTopMsg = serverError.GetMessage()
+	errTopMsg := serverError.GetMessage()
 	if serverError.IsNextError() {
 		errDetailHeader = "\n---detail---\n"
 		errDetailFooter = "\n------------\n"

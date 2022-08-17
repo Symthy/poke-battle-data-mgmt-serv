@@ -24,13 +24,14 @@ type UserRepository struct {
 
 func NewUserRepository(dbClient orm.IDbClient) *UserRepository {
 	return &UserRepository{
-		BaseReadRepository: BaseReadRepository[schema.User, users.User, users.Users, identifier.UserId, uint64]{
-			dbClient:            dbClient,
-			emptySchemaBuilder:  emptyUserBuilder,
-			emptySchemasBuilder: emptyUsersBuilder,
-			domainsConstructor:  users.NewUsers,
-			toSchemaConverter:   conv.ToSchemaUser,
-		},
+		BaseReadRepository: NewBaseReadRepository[schema.User, users.User, users.Users, identifier.UserId, uint64](
+			dbClient,
+			emptyUserBuilder,
+			emptyUsersBuilder,
+			users.NewUsers,
+			conv.ToSchemaUser,
+			conv.ToDomainUser,
+		),
 		BaseWriteRepository: BaseWriteRepository[schema.User, users.User, identifier.UserId, uint64]{
 			dbClient:           dbClient,
 			emptySchemaBuilder: emptyUserBuilder,

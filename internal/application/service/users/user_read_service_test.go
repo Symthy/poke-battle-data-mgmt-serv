@@ -1,9 +1,8 @@
-package service
+package users
 
 import (
 	"testing"
 
-	"github.com/Symthy/PokeRest/internal/application/service/users"
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
 	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock/repository"
@@ -13,12 +12,12 @@ import (
 
 type UserServiceTestSuite struct {
 	suite.Suite
-	serv users.UserReadService
+	serv UserReadService
 }
 
 // Before
 func (suite *UserServiceTestSuite) SetupTest() {
-	suite.serv = users.NewUserReadService(repository.NewUserRepositoryMock())
+	suite.serv = NewUserReadService(repository.NewUserRepositoryMock())
 }
 
 // After

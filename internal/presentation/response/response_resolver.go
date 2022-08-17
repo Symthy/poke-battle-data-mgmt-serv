@@ -21,6 +21,9 @@ func (r ResponseResolver[TD, TR]) Resolve(ctx echo.Context, domain *TD, err erro
 		return err
 	}
 	res := r.converter(*domain)
-	ctx.JSON(http.StatusOK, res)
+	err = ctx.JSON(http.StatusOK, res)
+	if err != nil {
+		return err
+	}
 	return nil
 }

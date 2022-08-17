@@ -1,4 +1,4 @@
-package pkg
+package logs
 
 type Level string
 

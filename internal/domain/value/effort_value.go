@@ -9,7 +9,7 @@ type EffortValue struct {
 }
 
 func NewEffortValue(value uint64, param PokemonParam) (*EffortValue, error) {
-	if value < 0 || value > 252 {
+	if value > 252 {
 		return nil, errs.ThrowErrorInvalidValue("EffortValue", "value:"+string(param), string(rune(value)))
 	}
 	return &EffortValue{uint8(value), param}, nil

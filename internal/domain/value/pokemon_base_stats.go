@@ -5,9 +5,7 @@ type PokemonBaseStats struct {
 }
 
 func NewPokemonBaseStats(value uint64) PokemonBaseStats {
-	if value < 0 {
-		return PokemonBaseStats{0}
-	} else if value > 252 {
+	if value > 252 {
 		return PokemonBaseStats{252}
 	}
 	return PokemonBaseStats{uint8(value)}

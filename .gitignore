@@ -5,6 +5,7 @@ internal/adapters/di/wire_gen.go
 
 conf/config.yml
 log/
+bin/
 
 tools/schema/drivers/
 tools/schema/output/
@@ -13,3 +14,4 @@ tools/codegen/output/
 .vscode
 .VSCodeCounter
 *.txt
+*.exe
