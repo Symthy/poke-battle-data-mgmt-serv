@@ -1,6 +1,6 @@
 # golang AST & Jennifer によるコード自動生成
 
-モチベーション：
+モチベーション：以下と似ている
 
 ref: [entity からコード自動生成した話](https://tech.mfkessai.co.jp/2019/09/ebgen/)
 
@@ -12,6 +12,11 @@ ref: [entity からコード自動生成した話](https://tech.mfkessai.co.jp/2
 - ※template を使用する場合は、以下が参考になる
   - [Go でひたすら運用を楽にするためのコード生成をする](https://medium.com/eureka-engineering/advent-calendar-2020-vim-go-generate-1a2a11cf0cef)
   - https://github.com/kaneshin/go-generate-sample
+
+template を使わない理由
+
+- template と埋め込むコードの２つを管理するのが手間なため（コードのみで済むのは１つの利点に思う）
+- 特殊ケース等あり、無理に共通化しようとすると煩雑化しやすいし、template 分けるにしても物がどんどん増えて、大変になりそうなイメージがあるため (物が増えてくるとこの辺のバランスとるのが大変になりそう。コードのみで済むなら１ケース１ソースにし共通化できる部分は外出しして管理しやすいと思われる)
 
 ## AST（抽象構文木） 取得/解析コード
 
@@ -306,14 +311,115 @@ AST 上では
 
 ## jennifer によるコード生成
 
-以下に example はあるものの読み取るの大変なためケースごとのコードを記載
+以下に example はあるものの読み取るのが大変なためケースごとに一部だけコードを記載
 
 refs:
 
 - [jennifer (Github - README)](https://github.com/dave/jennifer)
 - [jennifer (godoc)](https://pkg.go.dev/github.com/dave/jennifer/jen)
 
+パッケージ
+
 ```golang
-
-
+f := jen.NewFile("pkg")
+// package pkg
 ```
+
+インポート
+
+```golang
+// f.ImportName("github.com/Symthy/Product/internal/xxx", "xxx")  // どちらでも変わらない模様
+f.ImportName("github.com/Symthy/Product/internal/xxx", "")
+// import xxx "github.com/Symthy/internal/xxx"
+
+f.ImportAlias("github.com/Symthy/Product/internal/yyy", "ailias")
+// import ailias "github.com/Symthy/internal/yyy"
+
+importNames := map[string]string{
+	"github.com/Symthy/Product/internal/xxx": "xxx",
+	"github.com/Symthy/Product/internal/yyy": "yyy",
+	"github.com/Symthy/Product/internal/zzz": "zzz",
+}
+f.ImportNames(importNames)
+// import (
+//     xxx "github.com/Symthy/Product/internal/xxx"
+//     yyy "github.com/Symthy/Product/internal/yyy"
+//     zzz "github.com/Symthy/Product/internal/zzz"
+// )
+```
+
+構造体
+
+```golang
+f.Type().Id("SampleBuilder").Struct(
+  jen.Id("id").Qual("github.com/Symthy/Product/internal/domain/value", "Indetifier"),
+  jen.Id("name").String(),
+  jen.Id("description").String(),
+  jen.Id("effects").Index().Op("*").Qual("github.com/Symthy/Product/internal/domain/battles", "Effects"),
+)
+// type SampleBuilder struct {
+//     id          value.Identifier
+//     name        string
+//     description string
+//     effects     []*battles.Effects
+//}
+
+// 以下のように組み立てることも可能
+fieldStatements := []*jen.Statement
+fieldStatements = append(fieldStatements, jen.Id("id").Qual("github.com/Symthy/Product/internal/domain/value", "Indetifier"))
+//  : 略
+f.Type().Id("SampleBuilder").StructFunc(func(g *jen.Group) {
+    for _, fieldStatement := range fieldStatements {
+        g.Add(fieldStatement)
+    }
+})
+```
+
+コンストラクタ or 関数
+
+```golang
+typeName := "SampleBuilder"
+f.Func().Id("New"+typeName).
+		Params().
+		Op("*").Qual("", typeName).
+		Block(
+			jen.Return(jen.Op("&").Qual("", typeName).Block()),
+		)
+// func NewSampleBuilder() *SampleBuilder {
+//     return &SampleBuilder{}
+// }
+```
+
+メソッド (セッター)
+
+```golang
+receiverName = "s"
+typeName := "SampleBuilder"
+argVarName := "name"
+f.Func().
+		Params(jen.Id(receiverName).Op("*").Id(typeName)).   // pointer receiver
+		Id("Name").                                          // func
+		Params(jen.Id(argVarName).String()).                 // arguments
+		Op("*").Qual("", typeName).                          // return type
+		Block(
+			jen.Id(receiverName).Op(".").Id("name").Op("=").Id(argVarName),
+			jen.Return(jen.Id(receiverName)),
+		)
+// func (s *SampleBuilder) Name(name string) *SampleBuilder {
+//     s.name = name
+//     return s
+// }
+```
+
+部分的にに作って、Add() で任意の要素に付け足すことが可能なため柔軟。
+
+## go での コード生成
+
+- go generate で完結するようにした方が良い
+- コード生成を行うための go ファイルに以下を追加すれば、 `go generate ./...` で実行できる
+
+```golang
+//go:generate go run .
+```
+
+ref: [go generate のベストプラクティス](https://qiita.com/yaegashi/items/d1fd9f7d0c75b2bb7446)

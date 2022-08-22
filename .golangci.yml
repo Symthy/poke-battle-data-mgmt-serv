@@ -4,3 +4,7 @@ linters:
   disable:
     - unused # interim measure
     - deadcode # interim measure
+exclude-rules:
+  - path: test/*
+    linters:
+      - typecheck

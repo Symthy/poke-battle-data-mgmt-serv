@@ -7,6 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
+    "all": "npm run fmt && npm run lint && npm run test",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "codegen": "scripts/run_autogen.sh",
@@ -38,8 +39,7 @@
   },
   "lint-staged": {
     "*.go": [
-      "gofmt -w",
-      "golangci-lint run -c .golangci.yml"
+      "gofmt -w"
     ]
   }
 }

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Symthy/PokeRest/cmd/migration"
 	"github.com/Symthy/PokeRest/internal/adapters/di"
 	"github.com/Symthy/PokeRest/internal/adapters/orm"
 	"github.com/Symthy/PokeRest/internal/adapters/rest/autogen/server"
@@ -18,26 +17,10 @@ import (
 
 func main() {
 	var port = flag.Int("port", 8080, "Port for test HTTP server")
-	// Todo: Detach from main code and move to test code
-	var isMigration = flag.Bool("migrate", false, "run migration")
-	var isDropTables = flag.Bool("alldrop", false, "run drop all table")
-	flag.Parse()
 
 	conf, err := config.LoadConfigYaml()
 	if err != nil {
 		log.Fatalf(err.Error())
-	}
-	// move test
-	if *isMigration {
-		log.Print("Start Migration")
-		migration.RunAutoMigration(conf.DbConfig)
-		log.Print("End Migration")
-		return
-	} else if *isDropTables {
-		log.Print("Start Drop All Tables")
-		migration.RunDropTables(conf.DbConfig)
-		log.Print("End Drop All Tables")
-		return
 	}
 
 	// Clear out the servers array in the swagger spec, that skips validating

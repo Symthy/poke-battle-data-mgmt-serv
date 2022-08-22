@@ -1,4 +1,5 @@
 //go:generate go run .
+//go:build tools
 
 package main
 

@@ -2,13 +2,34 @@ package migration
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/Symthy/PokeRest/internal/adapters/orm"
 	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/schema"
 	"github.com/Symthy/PokeRest/internal/config"
 )
 
-func RunAutoMigration(dbConfig config.DbConfig) {
+func CreateTable() {
+	conf, err := config.LoadConfigYaml()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	log.Print("Start Migration")
+	runAutoMigration(conf.DbConfig)
+	log.Print("End Migration")
+}
+
+func AllTableDrop() {
+	conf, err := config.LoadConfigYaml()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	log.Print("Start Drop All Tables")
+	runDropTables(conf.DbConfig)
+	log.Print("End Drop All Tables")
+}
+
+func runAutoMigration(dbConfig config.DbConfig) {
 	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
 	err := db.AutoMigrate(
 		&schema.Ability{},
@@ -33,7 +54,7 @@ func RunAutoMigration(dbConfig config.DbConfig) {
 	}
 }
 
-func RunDropTables(dbConfig config.DbConfig) {
+func runDropTables(dbConfig config.DbConfig) {
 	db := orm.NewGormDbClientForStdOut(dbConfig).Db()
 	err := db.Migrator().DropTable(
 		&schema.Ability{},
