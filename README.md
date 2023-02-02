@@ -2,6 +2,8 @@
 
 Pokemon REST API
 
+開発頓挫のため再設計＆再計画中 -> [設計＆今後の方針 【執筆中】](https://symthy.hatenablog.com/entry/2022/11/27/225949)
+
 構成は以下を参考
 
 - https://github.com/golang-standards/project-layout
@@ -20,9 +22,9 @@ https://github.com/cbrand/go-filterparams
 ただし、一部項目に OR/AND 条件指定が必要なため。一部パラメータでは以下により指定
 
 | 条件 | 指定記号 | 例(encode 無し)   |
-| :--- | :------- | :---------------- | -------- | --- | ---- |
-| AND  | `&`      | xxx='aaa&bbb&ccc' |
-| OR   | `        | `                 | xxx='aaa | bbb | ccc' |
+| :--- | :------- | :---------------- | 
+| AND  | `&`      | `xxx='aaa&bbb&ccc'` |
+| OR   | `\|`      | `xxx='aaa\|bbb\|ccc'` |
 
 ※高度な検索が必要になるなら別途検討
 
