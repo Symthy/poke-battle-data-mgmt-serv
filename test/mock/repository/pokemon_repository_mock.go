@@ -4,7 +4,7 @@ import (
 	"github.com/Symthy/PokeRest/internal/domain/entity/pokemons"
 	"github.com/Symthy/PokeRest/internal/domain/repository"
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
-	"github.com/Symthy/PokeRest/test/data"
+	"github.com/Symthy/PokeRest/test/mock/data"
 )
 
 var _ repository.IPokemonRepository = (*PokemonRepositoryMock)(nil)

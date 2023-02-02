@@ -5,7 +5,7 @@ package main
 import (
 	"flag"
 
-	"github.com/Symthy/PokeRest/test/repository_ct/migration"
+	"github.com/Symthy/PokeRest/test/e2e/internal/migration"
 )
 
 func main() {

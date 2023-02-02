@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
-	"github.com/Symthy/PokeRest/test/data"
+	"github.com/Symthy/PokeRest/test/mock/data"
 	"github.com/Symthy/PokeRest/test/mock/repository"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

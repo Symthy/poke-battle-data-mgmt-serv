@@ -9,8 +9,8 @@ import (
 	"github.com/Symthy/PokeRest/internal/adapters/orm"
 	"github.com/Symthy/PokeRest/internal/adapters/orm/gormio/enum"
 	"github.com/Symthy/PokeRest/internal/infrastructure/repository/conv"
-	"github.com/Symthy/PokeRest/test/data"
 	"github.com/Symthy/PokeRest/test/mock"
+	"github.com/Symthy/PokeRest/test/mock/data"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
